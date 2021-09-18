@@ -1,0 +1,11 @@
+const PRIMARY_COLOR = "";
+const SECONDARY_COLOR = "";
+const PRIMARY_VARIANT = "";
+const SECONDARY_VARIANT = "";
+
+export {
+    PRIMARY_COLOR,
+    SECONDARY_COLOR,
+    PRIMARY_VARIANT,
+    SECONDARY_VARIANT,
+}
