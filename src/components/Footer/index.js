@@ -27,4 +27,4 @@ const Footer = (prop) =>{
 
 
 
-export {Footer as default}
+export default Footer
