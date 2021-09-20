@@ -1,0 +1,58 @@
+.navLink {
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    float: right;
+    height: 100%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.navLink:hover {
+    color: orange;
+}
+
+.navBar {
+    background: linear-gradient(to right,#15861f,#66bb6a, #15861f);
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem calc((100vw - 1000px) / 2);
+    z-index: 10;
+}
+
+.logo {
+    font-size: 30px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 4rem;
+    height: 100%;
+}
+
+.loginLink {
+    color: #000;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    float: right;
+    height: 100%;
+    cursor: pointer;
+    font-weight: bold;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+49% {
+    color: rgb(117, 209, 63);
+}
+50%, 100% {
+    color: #e50000;
+  }
+}
