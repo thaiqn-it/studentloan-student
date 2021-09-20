@@ -1,0 +1,13 @@
+.container{
+    width: 100%;
+}
+
+.img{
+    width: 100px;
+    display: inline-block;
+}
+
+.linkList{
+    display: inline-block;
+    margin: 10px;
+}
