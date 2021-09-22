@@ -40,7 +40,7 @@ const NavBar = (props) => {
                             {props.isLoggedIn && ( 
                                 <Link className={styles.navLink} to={"/"} onClick={logoutHandler}>Log out</Link> 
                             )}          
-                            <Link className={styles.navLink} to={"/Services"}>Sign Up</Link> 
+                            <Link className={styles.navLink} to={"/SignUp"}>Sign Up</Link> 
                             <Link className={styles.navLink} to={"/Services"}>Services</Link> 
                             <Link className={styles.navLink} to={"/About"}>About</Link> 
                         </Grid>
