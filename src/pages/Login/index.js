@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import {
   Link,
   Grid,
@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import styles from "./Login.module.css";
-import axios from "axios";
-import { defaultInstance } from "../../apis";
+import { userApi } from "../../apis/user"
 
 export default function Login() {
   const handleSubmit = (event) => {
@@ -19,6 +18,13 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log(data.get("email") + " " + data.get("password"));
+
+    userApi.login(data.get("email"),data.get("password"))
+            .then((res) => {
+
+            }).catch((err) => {
+
+            })
 
     // axios
     //   .post("http://localhost:5000/api/auth/signin", {
