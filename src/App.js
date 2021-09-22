@@ -14,6 +14,8 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import ForgotPassword from "./pages/ForgotPassword/";
 import Login from "./pages/Login/";
+import SignUp from "./pages/SignUp/";
+import Breadcrumb from "./components/Breadcrumbs";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,6 +36,7 @@ function App() {
             <Route path='/About' exact component={About} />
             <Route path='/Services' exact component={ForgotPassword} />
             <Route path='/Login' exact component={Login} />
+            <Route path='/SignUp' exact component={SignUp} />
         </Switch>
       </Router>
     </ThemeProvider>
