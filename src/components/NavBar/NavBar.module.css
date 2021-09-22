@@ -16,7 +16,6 @@
 }
 
 .navBar {
-    background: linear-gradient(to right,#15861f,#66bb6a, #15861f);
     height: 80px;
     display: flex;
     justify-content: space-between;

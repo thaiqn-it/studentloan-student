@@ -20,16 +20,16 @@ export default function Login() {
     // eslint-disable-next-line no-console
     console.log(data.get("email") + " " + data.get("password"));
 
-    axios
-      .post("http://localhost:5000/api/auth/signin", {
-        username: data.get("email"),
-        password: data.get("password"),
-      })
-      .then((resoponse) => {
-        console.log(resoponse.data);
-      }).catch(error => {
-        console.log(error);
-      });
+    // axios
+    //   .post("http://localhost:5000/api/auth/signin", {
+    //     username: data.get("email"),
+    //     password: data.get("password"),
+    //   })
+    //   .then((resoponse) => {
+    //     console.log(resoponse.data);
+    //   }).catch(error => {
+    //     console.log(error);
+    //   });
   };
   return (
     <div>
