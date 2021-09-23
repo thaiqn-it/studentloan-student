@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link,
   Grid,
@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import styles from "./Login.module.css";
-import { userApi } from "../../apis/user"
+import loginImage from "../../assets/loginImage.svg";
+// import { userApi } from "../../apis/user"
 
 export default function Login() {
   const handleSubmit = (event) => {
@@ -19,23 +20,12 @@ export default function Login() {
     // eslint-disable-next-line no-console
     console.log(data.get("email") + " " + data.get("password"));
 
-    userApi.login(data.get("email"),data.get("password"))
-            .then((res) => {
+    // userApi.login(data.get("email"),data.get("password"))
+    //         .then((res) => {
 
-            }).catch((err) => {
+    //         }).catch((err) => {
 
-            })
-
-    // axios
-    //   .post("http://localhost:5000/api/auth/signin", {
-    //     username: data.get("email"),
-    //     password: data.get("password"),
-    //   })
-    //   .then((resoponse) => {
-    //     console.log(resoponse.data);
-    //   }).catch(error => {
-    //     console.log(error);
-    //   });
+    //         })
   };
   return (
     <div>
@@ -56,10 +46,7 @@ export default function Login() {
               <Typography variant="p">Sign in to continue.</Typography>
             </Grid>
             <Grid item xs={12} className={styles.cardImage}>
-              <CardMedia
-                component="img"
-                image="https://d19j0qt0x55bap.cloudfront.net/production/assets/loginGraphic.svg"
-              />
+              <CardMedia component="img" image={loginImage} />
             </Grid>
           </Grid>
           {/* <Box component="form" noValidate onSubmit={handleSubmit}> */}
