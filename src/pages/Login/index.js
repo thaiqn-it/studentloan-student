@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Link,
   Grid,
@@ -7,104 +7,94 @@ import {
   Typography,
   TextField,
   Button,
+  Container,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import styles from "./Login.module.css";
 import loginImage from "../../assets/loginImage.svg";
-// import { userApi } from "../../apis/user"
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log(data.get("email") + " " + data.get("password"));
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    // userApi.login(data.get("email"),data.get("password"))
-    //         .then((res) => {
-
-    //         }).catch((err) => {
-
-    //         })
+  const signIn = () => {
+    console.log(email);
+    console.log(password);
   };
+
+  const handleInputEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleInputPassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+
   return (
     <div>
-      <Box component="div" className={styles.header}>
-        <Link href="/" underline="none" color="primary">
-          STUDENT LOAN
-        </Link>
-      </Box>
-      <Divider />
-
-      <Box component="div" className={styles.container}>
-        <Grid container>
-          <Grid item xs={12} md={6}>
+      <Container maxWidth="md" sx={{ marginTop: 15 }} className={styles.container}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={7}>Y
+          
             <Grid item xs={12}>
               <Typography variant="p">Welcome.</Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="p">Sign in to continue.</Typography>
             </Grid>
-            <Grid item xs={12} className={styles.cardImage}>
+            <Grid item xs={12}>
               <CardMedia component="img" image={loginImage} />
             </Grid>
           </Grid>
-          {/* <Box component="form" noValidate onSubmit={handleSubmit}> */}
-          <Grid
-            item
-            xs={12}
-            md={6}
-            onSubmit={handleSubmit}
-            component="form"
-            noValidate
-          >
-            <Grid container sx={{ padding: "1rem" }}>
-              <Grid item xs={12} sx={{ padding: "1rem" }}>
+          <Grid item xs={12} md={5}>
+            <Grid container>
+              <Grid item xs={12} sx={{ marginTop: "4rem" }}>
                 <TextField
-                  id="email"
                   label="Email"
                   name="email"
+                  value={email}
                   autoComplete="email"
+                  onChange={handleInputEmail}
                   autoFocus
                   variant="standard"
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12} sx={{ padding: "1rem" }}>
+              <Grid item xs={12} sx={{ marginTop: "1rem" }}>
                 <TextField
                   name="password"
-                  label="Password"
+                  label="Mật khẩu"
                   type="password"
-                  id="password"
+                  onChange={handleInputPassword}
+                  value={password}
                   autoComplete="current-password"
                   variant="standard"
                   fullWidth
                 />
               </Grid>
-              <Grid item xs={12} md={6} sx={{ padding: "1rem" }}>
-                <Link href="/forgotPassword">Forgot Password ?</Link>
+              <Grid item xs={12} md={6} sx={{ marginTop: "1rem" }}>
+                <Link href="/forgotPassword">Quên mật khẩu ?</Link>
               </Grid>
-              <Grid item xs={12} md={6} sx={{ padding: "1rem" }}>
+              <Grid item xs={12} md={6} sx={{ marginTop: "1rem" }}>
                 <Button
                   variant="contained"
-                  type="submit"
                   fullWidth
                   sx={{ color: "white" }}
+                  onClick={signIn}
                 >
-                  Login
+                  Đăng nhập
                 </Button>
               </Grid>
               <Divider />
-              <Grid item xs={12} sx={{ padding: "1rem" }}>
+              <Grid item xs={12} sx={{ marginTop: "1rem" }}>
                 <Button variant="outlined" fullWidth href="/signup">
-                  Create Account
+                  Tạo tài khoản
                 </Button>
               </Grid>
             </Grid>
           </Grid>
-          {/* </Box> */}
         </Grid>
-      </Box>
+      </Container>
     </div>
   );
 }

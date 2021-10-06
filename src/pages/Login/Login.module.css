@@ -1,4 +1,4 @@
-.header {
+/* .header {
   height: 4rem;
   width: 100%;
   align-items: center;
@@ -10,23 +10,9 @@
   margin-left: 20px;
   font-weight: 500;
   font-size: 1.5rem;
-}
-
-.container {
-  width: 60%;
-  margin: auto;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 100px 50px;
-}
+} */
 
 .container span {
   font-size: 2rem;
   font-weight: 50;
-}
-
-.cardImage {
-  width: 20.5rem;
-  height: 12.5rem;
 }
