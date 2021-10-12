@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 import React from "react";
 import StudentNav from "../../components/NavBar/StudentNav";
 import SideBar from "../../components/Sidebar";
-
+import RequestLoanPost from "../RequestLoanPost/index";
 import classes from "./StudentLanding.module.css";
 
 const StudentLanding = () => {
@@ -29,7 +29,7 @@ const StudentLanding = () => {
             marginRight: "2%",
           }}
         >
-          <p> Content</p>
+          <RequestLoanPost />
         </Box>
       </div>
     </>
