@@ -34,8 +34,7 @@ export default function Login() {
     <div>
       <Container maxWidth="md" sx={{ marginTop: 15 }} className={styles.container}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={7}>Y
-          
+          <Grid item xs={12} md={7}>
             <Grid item xs={12}>
               <Typography variant="p">Welcome.</Typography>
             </Grid>
