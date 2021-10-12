@@ -1,13 +1,25 @@
-.container{
-    width: 100%;
+.container {
+  width: 100%;
+  background-color: #e8f5e9;
 }
 
-.img{
-    width: 100px;
-    display: inline-block;
+.img {
+  width: 100px;
+  display: inline-block;
 }
 
-.linkList{
-    display: inline-block;
-    margin: 10px;
+.link {
+  margin: 0 auto;
+  color: #338a3e;
+  text-align: center;
+}
+.center {
+  margin: 0 auto;
+}
+
+.infomation {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 15px;
+  text-align: center;
 }
