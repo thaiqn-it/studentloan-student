@@ -87,45 +87,53 @@ const LandingPage = (props) => {
           </Container>
 
           <Box className={classes.moneyBox}>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <Typography variant="h3">How much do you need</Typography>
-              <Typography
-                variant="h4"
-                sx={{ alignSelf: "center" }}
-              >{`${sliderValue}`}</Typography>
-              <Slider
-                aria-label="c"
-                value={typeof sliderValue === "number" ? sliderValue : 0}
-                defaultValue={2}
-                step={0.5}
-                min={2}
-                max={50}
-                marks={marks}
-                onChange={sliderValueChangeHandler}
-              />
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#338a3e",
-                  width: "40%",
-                  alignSelf: "center",
+            <Box className={classes.moneyWrapper}>
+              <Box
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "15px",
                 }}
-                size="large"
               >
-                <Link className={classes.linkButton}>Apply</Link>
-              </Button>
-            </div>
-            <div className={classes.paymentInfo}>
-              <Typography variant="h4">Example Payment</Typography>
-              <Typography variant="h3">200k</Typography>
-              <Typography variant="h6">
-                Repayment a month whilst studying
-              </Typography>
-              <Typography variant="h3">{`${monthlyPayment}k`}</Typography>
-              <Typography variant="h6">
-                Repayment a month once graduated
-              </Typography>
-            </div>
+                <Typography variant="h3">How much do you need</Typography>
+                <Typography
+                  variant="h4"
+                  sx={{ alignSelf: "center" }}
+                >{`${sliderValue}`}</Typography>
+                <Slider
+                  aria-label="c"
+                  value={typeof sliderValue === "number" ? sliderValue : 0}
+                  defaultValue={2}
+                  step={0.5}
+                  min={2}
+                  max={50}
+                  marks={marks}
+                  onChange={sliderValueChangeHandler}
+                />
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#338a3e",
+                    width: "40%",
+                    alignSelf: "center",
+                  }}
+                  size="large"
+                >
+                  <Link className={classes.linkButton}>Apply</Link>
+                </Button>
+              </Box>
+              <Box className={classes.paymentInfo}>
+                <Typography variant="h4">Example Payment</Typography>
+                <Typography variant="h3">200k</Typography>
+                <Typography variant="h6">
+                  Repayment a month whilst studying
+                </Typography>
+                <Typography variant="h3">{`${monthlyPayment}k`}</Typography>
+                <Typography variant="h6">
+                  Repayment a month once graduated
+                </Typography>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </div>

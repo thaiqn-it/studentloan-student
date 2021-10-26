@@ -10,12 +10,18 @@
 
 .moneyBox {
   flex-direction: row;
-
+  padding: 3em;
   display: flex;
-
+  background-color: white;
   gap: 0.5em;
 }
 
+.moneyWrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+  background-color: aliceblue;
+}
 .container {
   max-width: 100%;
   background-color: #e8f5e9;
@@ -43,4 +49,5 @@
 
 .paymentInfo {
   margin-left: 3em;
+  padding: 15px;
 }
