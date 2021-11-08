@@ -9,7 +9,6 @@ import {
   Divider,
   Box,
   TextField,
-  Button,
   CardMedia,
 } from "@mui/material";
 import DropFileInput from "../../components/DropFileZone";
@@ -66,7 +65,7 @@ export default function PostInfoPage(props) {
             }}
           >
             <Grid container spacing={2}>
-              <Grid item xs="6" md="6">
+              <Grid item xs="12" md="6">
                 <Typography variant="h5" sx={{ marginBottom: 2 }}>
                   Expected graduate time
                 </Typography>
@@ -83,7 +82,7 @@ export default function PostInfoPage(props) {
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item xs="6" md="6">
+              <Grid item xs="12" md="6">
                 <Typography variant="h5" sx={{ marginBottom: 2 }}>
                   When this post expire
                 </Typography>

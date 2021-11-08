@@ -21,6 +21,8 @@ const DropFileInput = (props) => {
     if (newFile) {
       connectFirebase(newFile);
     }
+    const url = URL.createObjectURL(newFile);
+    props.onFileChangeURL(url);
   };
 
   const connectFirebase = (image) => {

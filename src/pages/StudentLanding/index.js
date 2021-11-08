@@ -3,6 +3,8 @@ import React from "react";
 import StudentNav from "../../components/NavBar/StudentNav";
 import SideBar from "../../components/Sidebar";
 import RequestLoanPost from "../RequestLoanPost/index";
+import ViewPost from "../ViewPost"
+import Report from "../Report"
 import classes from "./StudentLanding.module.css";
 
 const StudentLanding = () => {
@@ -23,13 +25,14 @@ const StudentLanding = () => {
         <StudentNav />
         <Box
           sx={{
-            backgroundColor: "primary.main",
             height: "100%",
             marginTop: "20px",
             marginRight: "2%",
           }}
         >
           <RequestLoanPost />
+          <ViewPost/>
+          <Report/>
         </Box>
       </div>
     </>
