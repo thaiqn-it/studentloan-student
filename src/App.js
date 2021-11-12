@@ -32,9 +32,12 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={LandingPage} />
-          <Route path="/About" exact component={StudentLanding} />
+          <Route path="/About" component={""} />
+          <Route path="/Landing" component={StudentLanding} />
           <Route path="/Services" exact component={ResetPassword} />
-          <Route path="/Profile" exact component={StudentProfile} />
+          <Route path="/SignUp" exact component={SignUp} />
+          <Route path="/Login" exact component={Login} />
+          <Route path="/ForgotPassword" exact component={ForgotPassword} />
         </Switch>
       </Router>
     </ThemeProvider>

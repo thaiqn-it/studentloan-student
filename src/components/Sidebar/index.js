@@ -1,5 +1,5 @@
 import { List, ListItem, ListItemText } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Sidebar.module.css";
 import SidebarLink from "../SidebarLink";
 import { Link } from "react-router-dom";

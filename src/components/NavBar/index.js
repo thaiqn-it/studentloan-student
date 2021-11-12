@@ -87,7 +87,7 @@ const NavBar = ({ display, ...props }) => {
                   }}
                   disableRipple
                 >
-                  <Link className={styles.apply} to={"/Services"}>
+                  <Link className={styles.apply} to={"/SignUp"}>
                     Apply
                   </Link>
                 </Button>
