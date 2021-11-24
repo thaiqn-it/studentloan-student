@@ -87,7 +87,7 @@ export default function RequestLoanPost() {
     //   {page === "4" ? <ThankyouPage /> : null}
     // </>
     <>
-      <Box sx={{ width: "100%", marginTop: 6 }}>
+      <Box sx={{ width: "100%", marginTop: 10 }}>
         <Stepper nonLinear activeStep={activeStep} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={label} completed={completed[index]}>

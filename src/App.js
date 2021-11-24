@@ -35,6 +35,7 @@ function App() {
           <Route path="/About" exact component={StudentLanding} />
           <Route path="/Services" exact component={ResetPassword} />
           <Route path="/Profile" exact component={StudentProfile} />
+          <Route path="/Login" exact component={Login} />
         </Switch>
       </Router>
     </ThemeProvider>

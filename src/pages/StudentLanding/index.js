@@ -5,9 +5,18 @@ import SideBar from "../../components/Sidebar";
 import RequestLoanPost from "../RequestLoanPost/index";
 import ViewPost from "../ViewPost"
 import Report from "../Report"
+import MyLoanItem from "..//..//components/MyLoanItem"
 import classes from "./StudentLanding.module.css";
 
 const StudentLanding = () => {
+
+  const investor = {
+    avatar:
+      "https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg",
+    name: "Ha Nguyen",
+    money: "200.000"
+  };
+
   const routesProps = [
     { to: "/Profile", text: "profile" },
     { to: "/Profile", text: "profile" },
@@ -15,7 +24,7 @@ const StudentLanding = () => {
     { to: "/Profile", text: "profile" },
     { to: "/Profile", text: "profile" },
     { to: "/Profile", text: "profile" },
-    { to: "/Profile", text: "profile" },
+    { to: "/MyLoan", text: "My loan" },
   ];
   return (
     <>
@@ -30,9 +39,11 @@ const StudentLanding = () => {
             marginRight: "2%",
           }}
         >
+          <MyLoanItem investor={investor}/>
           <RequestLoanPost />
           <ViewPost/>
           <Report/>
+
         </Box>
       </div>
     </>
