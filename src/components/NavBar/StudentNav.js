@@ -9,7 +9,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import styles from "./StudentNav.module.css";
 import { BACKGROUD_COLOR } from "../../constants/color";
 import { JWT_TOKEN } from "../../constants";
-const StudentNav = ({ handleSidebarToggle, ...props }) => {
+const StudentNav = ({
+  handleSidebarToggle,
+  handleMobileSidebarToggle,
+  ...props
+}) => {
   const logInHandler = () => {
     props.changeIsLogged(true);
     if (localStorage.getItem(JWT_TOKEN)) {
@@ -27,12 +31,24 @@ const StudentNav = ({ handleSidebarToggle, ...props }) => {
       <AppBar position="static" style={{ borderRadius: "15px" }}>
         <Toolbar>
           <IconButton
-            sx={{ display: { xs: "block", sm: "none" } }}
+            sx={{ display: { xs: "none", sm: "block" } }}
             size="large"
             edge="start"
             color="inherit"
             onClick={() => {
               handleSidebarToggle();
+            }}
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
+          <IconButton
+            sx={{ display: { xs: "block", sm: "none" } }}
+            size="large"
+            edge="start"
+            color="inherit"
+            onClick={() => {
+              handleMobileSidebarToggle();
             }}
             aria-label="menu"
           >
