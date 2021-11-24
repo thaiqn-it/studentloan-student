@@ -22,7 +22,6 @@
   justify-content: center;
 
   background-color: var(--input-bg);
-  margin-top: 1rem;
 }
 
 .drop-file-input input {
