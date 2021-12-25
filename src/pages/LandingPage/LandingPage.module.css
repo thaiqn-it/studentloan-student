@@ -12,7 +12,7 @@
   flex-direction: row;
   padding: 3em;
   display: flex;
-  background-color: white;
+
   gap: 0.5em;
 }
 
@@ -20,15 +20,9 @@
   display: flex;
   flex-direction: row;
   padding: 1em;
-  background-color: aliceblue;
 }
 .container {
   max-width: 100%;
-  background-color: #e8f5e9;
-}
-
-.button {
-  color: white;
 }
 
 .calculator {
@@ -36,7 +30,6 @@
 }
 
 .linkButton {
-  color: white;
   text-decoration: none;
   cursor: pointer;
   font-weight: bold;
@@ -50,4 +43,44 @@
 .paymentInfo {
   margin-left: 3em;
   padding: 15px;
+}
+
+.infoSection {
+  padding: 0 15px 0 15px;
+}
+.infoBox {
+  padding: 40px 10px 50px;
+  color: #fff;
+  background-color: black;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.founder {
+}
+
+.service {
+}
+.serviceBox{
+  
+}
+
+.process {
+}
+
+.pratice {
+}
+.team {
+}
+
+.advicer {
+}
+
+.client {
+}
+
+.faq {
 }
