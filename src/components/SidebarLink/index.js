@@ -1,9 +1,9 @@
-import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-const SidebarLink = ({ icon, text, to }) => {
+const SidebarLink = ({ icon, text, to, selected }) => {
   const renderLink = React.useMemo(
     () =>
       React.forwardRef((itemProps, ref) => (
@@ -14,7 +14,7 @@ const SidebarLink = ({ icon, text, to }) => {
 
   return (
     <li>
-      <ListItem button component={renderLink}>
+      <ListItemButton selected={selected} component={renderLink}>
         {icon ? (
           <ListItemIcon>{icon}</ListItemIcon>
         ) : (
@@ -23,7 +23,7 @@ const SidebarLink = ({ icon, text, to }) => {
           </ListItemIcon>
         )}
         <ListItemText primary={text} />
-      </ListItem>
+      </ListItemButton>
     </li>
   );
 };
