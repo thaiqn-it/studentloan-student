@@ -8,8 +8,7 @@ import { Button, Grid } from "@mui/material";
 
 import styles from "./NavBar.module.css";
 import { JWT_TOKEN } from "../../constants/";
-import { BACKGROUD_COLOR } from "../../constants/color";
-import { style } from "@mui/system";
+import { PRIMARY_COLOR } from "../../constants/color";
 
 const NavBar = ({ display, ...props }) => {
   const logInHandler = () => {
@@ -30,9 +29,7 @@ const NavBar = ({ display, ...props }) => {
       {display && (
         <AppBar
           position="fixed"
-          className={styles.navBar}
           style={{
-            backgroundColor: BACKGROUD_COLOR,
             boxShadow: "none",
             zIndex: 10,
           }}
@@ -41,10 +38,10 @@ const NavBar = ({ display, ...props }) => {
             <Grid container>
               <Grid item xs={4} style={{ display: "flex" }}>
                 <Link className={styles.navLink} to={"/Services"}>
-                  Services
+                  Dịch Vụ
                 </Link>
                 <Link className={styles.navLink} to={"/About"}>
-                  About
+                  Chi Tiết
                 </Link>
               </Grid>
               <Grid
@@ -67,7 +64,7 @@ const NavBar = ({ display, ...props }) => {
                     onClick={logInHandler}
                     to={"/Login"}
                   >
-                    Log In
+                    Đăng Nhập
                   </Link>
                 )}
                 {props.isLoggedIn && (
@@ -79,16 +76,9 @@ const NavBar = ({ display, ...props }) => {
                     Log out
                   </Link>
                 )}
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#338a3e",
-                    textTransform: "none",
-                  }}
-                  disableRipple
-                >
+                <Button variant="contained" disableRipple>
                   <Link className={styles.apply} to={"/SignUp"}>
-                    Apply
+                    Đăng Kí
                   </Link>
                 </Button>
               </Grid>
