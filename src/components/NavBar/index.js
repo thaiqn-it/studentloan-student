@@ -10,18 +10,18 @@ import styles from "./NavBar.module.css";
 import { JWT_TOKEN } from "../../constants/";
 import { PRIMARY_COLOR } from "../../constants/color";
 
-const NavBar = ({ display, ...props }) => {
+const NavBar = ({ display, isLoggedIn, changeIsLogged, ...props }) => {
   const logInHandler = () => {
-    props.changeIsLogged(true);
+    changeIsLogged(true);
     if (localStorage.getItem(JWT_TOKEN)) {
-      props.changeIsLogged(true);
+      changeIsLogged(true);
     }
   };
 
   const logoutHandler = () => {
     localStorage.removeItem(JWT_TOKEN);
     localStorage.clear();
-    props.changeIsLogged(false);
+    changeIsLogged(false);
   };
 
   return (
@@ -32,7 +32,9 @@ const NavBar = ({ display, ...props }) => {
           style={{
             boxShadow: "none",
             zIndex: 10,
+            backgroundColor: "#f3f1e9",
           }}
+          color="inherit"
         >
           <Toolbar variant="regular">
             <Grid container>
@@ -49,7 +51,7 @@ const NavBar = ({ display, ...props }) => {
                 xs={4}
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <Link className={styles.logo} to={"/"}>
+                <Link className={`${styles.navLink} ${styles.logo}`} to={"/"}>
                   Student Loan
                 </Link>
               </Grid>
@@ -76,8 +78,15 @@ const NavBar = ({ display, ...props }) => {
                     Log out
                   </Link>
                 )}
-                <Button variant="contained" disableRipple>
-                  <Link className={styles.apply} to={"/SignUp"}>
+                <Button
+                  variant="outlined"
+                  className={styles.button}
+                  sx={{ "&:hover": { backgroundColor: "#00bfa6" } }}
+                >
+                  <Link
+                    className={`${styles.navLink} ${styles.apply}`}
+                    to={"/SignUp"}
+                  >
                     Đăng Kí
                   </Link>
                 </Button>

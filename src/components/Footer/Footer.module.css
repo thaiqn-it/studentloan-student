@@ -1,6 +1,5 @@
 .container {
   width: 100%;
-  background-color: #e8f5e9;
 }
 
 .img {
@@ -10,7 +9,7 @@
 
 .link {
   margin: 0 auto;
-  color: #338a3e;
+
   text-align: center;
 }
 .center {

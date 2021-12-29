@@ -1,6 +1,6 @@
 .navLink {
   font-size: 20px;
-
+  color: black;
   margin: 10px;
   text-decoration: none;
   cursor: pointer;
@@ -9,19 +9,20 @@
 
 .apply {
   font-size: 20px;
-
+  margin: 0;
   text-decoration: none;
   cursor: pointer;
+
   font-weight: bold;
 }
 
 .logo {
   font-size: 30px;
-
+  margin: 0;
   display: flex;
   align-items: center;
   text-decoration: none;
-
+  color: #00bfa6;
   height: 100%;
 }
 
@@ -45,4 +46,8 @@
 .navCenter {
   display: flex;
   justify-content: center;
+}
+
+.button {
+  border-radius: 10px;
 }

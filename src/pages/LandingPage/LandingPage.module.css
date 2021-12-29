@@ -1,3 +1,6 @@
+.landing {
+  background: #f3f1e9;
+}
 .landingContent {
   display: flex;
   justify-content: center;
@@ -12,7 +15,7 @@
   flex-direction: row;
   padding: 3em;
   display: flex;
-
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -20,6 +23,9 @@
   display: flex;
   flex-direction: row;
   padding: 1em;
+
+  border-radius: 12px;
+  background-color: white;
 }
 .container {
   max-width: 100%;
@@ -31,8 +37,7 @@
 
 .linkButton {
   text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
+  color: #000000;
 }
 
 .text {
@@ -46,34 +51,71 @@
 }
 
 .infoSection {
-  padding: 0 15px 0 15px;
+  padding: 2em 15px 2em 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .infoBox {
   padding: 40px 10px 50px;
   color: #fff;
-  background-color: black;
+  background-color: #00bfa6;
   max-width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  row-gap: 15px;
+  margin: auto;
 }
 
 .founder {
+  padding: 1em;
+}
+.founderImg {
+  width: 100%;
+  height: 70%;
+}
+.founderImgBox {
+  width: 70%;
+  margin-left: auto;
 }
 
-.service {
-}
-.serviceBox{
-  
+.founderTextBox {
+  flex-direction: column;
+
+  display: flex;
+  height: 100%;
+  gap: 2em;
+  padding: 1.5em;
+  justify-content: center;
 }
 
 .process {
+  background-color: rgba(111, 193, 157, 1);
+  color: white;
+  padding: 1.5em;
+  margin-bottom: 1.5rem;
+  height: 50vh;
 }
 
-.pratice {
+.processTextBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.team {
+
+.processImg {
+  max-width: 49px;
+}
+
+.question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(111, 193, 157, 1);
 }
 
 .advicer {
@@ -83,4 +125,6 @@
 }
 
 .faq {
+  margin: 1.5em;
+  padding: 1.5em;
 }
