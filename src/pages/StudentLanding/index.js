@@ -1,4 +1,4 @@
-import { Box, Drawer } from "@mui/material";
+import { Box, CssBaseline, Drawer } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import React, { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
@@ -27,7 +27,7 @@ const closedMixin = (theme) => ({
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
+    width: `calc(${theme.spacing(7)} + 1px)`,
   },
 });
 const WebDrawer = styled(MuiDrawer, {
@@ -48,9 +48,8 @@ const WebDrawer = styled(MuiDrawer, {
 }));
 
 const StudentLanding = (props) => {
-  let { path, url } = useRouteMatch();
-  const routesProps = [{ to: `${url}/Profile`, text: "profile" }];
   const { window } = props;
+  const theme = useTheme();
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -66,6 +65,7 @@ const StudentLanding = (props) => {
   return (
     <>
       <Box sx={{ display: "flex" }}>
+        <CssBaseline />
         <WebDrawer
           variant="permanent"
           open={sidebarOpen}
@@ -73,7 +73,7 @@ const StudentLanding = (props) => {
             display: { xs: "none", sm: "block" },
           }}
         >
-          <SideBar display routesProps={routesProps} />
+          <SideBar display />
         </WebDrawer>
 
         <Drawer
@@ -92,10 +92,10 @@ const StudentLanding = (props) => {
             },
           }}
         >
-          <SideBar display routesProps={routesProps} />
+          <SideBar display />
         </Drawer>
 
-        <Box className={classes.mainContent}>
+        <Box>
           <StudentNav
             handleSidebarToggle={() => {
               handleSidebarToggle();
@@ -104,7 +104,7 @@ const StudentLanding = (props) => {
               handleMobileSidebarToggle();
             }}
           />
-          <Box>
+          <Box className={classes.mainContent}>
             <StudentRoute />
           </Box>
         </Box>

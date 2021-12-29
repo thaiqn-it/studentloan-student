@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import classes from "./Sidebar.module.css";
 import SidebarLink from "../SidebarLink";
 import { Link } from "react-router-dom";
-import { BACKGROUD_COLOR } from "../../constants/color";
+import { BACKGROUND_COLOR } from "../../constants/color";
 import { useRouteMatch } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { Mail } from "@mui/icons-material";
@@ -37,7 +37,7 @@ const SideBar = (props) => {
       {display && (
         <List
           sx={{
-            bgcolor: BACKGROUD_COLOR,
+            bgcolor: BACKGROUND_COLOR,
             width: "100%",
             height: "100%",
           }}
