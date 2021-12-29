@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { JWT_TOKEN } from "./constants/";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavBar from "./components/NavBar/";
-import Home from "./pages/Home";
-import About from "./pages/About";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
+import theme from "./assets/theme";
+
+import StudentLanding from "./pages/StudentLanding";
+
 import ForgotPassword from "./pages/ForgotPassword/";
 import Login from "./pages/Login/";
 import SignUp from "./pages/SignUp/";
-import Breadcrumb from "./components/Breadcrumbs";
-import ResetPassword from "./pages/ResetPassword";
-import Footer from "./components/Footer";
-import LandingPage from "./pages/LandingPage";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme";
-import StudentProfile from "./pages/StudentProfile";
-import SideBar from "./components/Sidebar";
-import StudentLanding from "./pages/StudentLanding";
 
+import ResetPassword from "./pages/ResetPassword";
+
+import LandingPage from "./pages/LandingPage";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -29,6 +27,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Router>
         <Switch>
           <Route path="/" exact component={LandingPage} />
