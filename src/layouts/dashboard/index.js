@@ -118,12 +118,26 @@ function Dashboard() {
                 title="Sales Overview"
                 description={
                   <SuiBox display="flex" alignItems="center">
-                    <SuiBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
+                    <SuiBox
+                      fontSize={size.lg}
+                      color="success"
+                      mb={0.3}
+                      mr={0.5}
+                      lineHeight={0}
+                    >
                       <Icon className="font-bold">arrow_upward</Icon>
                     </SuiBox>
-                    <SuiTypography variant="button" color="text" fontWeight="medium">
+                    <SuiTypography
+                      variant="button"
+                      color="text"
+                      fontWeight="medium"
+                    >
                       4% more{" "}
-                      <SuiTypography variant="button" color="text" fontWeight="regular">
+                      <SuiTypography
+                        variant="button"
+                        color="text"
+                        fontWeight="regular"
+                      >
                         in 2021
                       </SuiTypography>
                     </SuiTypography>

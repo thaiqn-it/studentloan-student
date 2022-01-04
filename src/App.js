@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+
 import "./App.css";
 import { JWT_TOKEN } from "./constants/";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider } from "@emotion/react";
 
 import theme from "./assets/theme";
 
@@ -16,8 +18,12 @@ import SignUp from "./pages/SignUp/";
 import ResetPassword from "./pages/ResetPassword";
 
 import LandingPage from "./pages/LandingPage";
+import Dashboard from "layouts/dashboard";
+import StudentDashboard from "pages/StudentDashboard";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Cache for the rtl
 
   useEffect(() => {
     if (localStorage.getItem(JWT_TOKEN)) {
@@ -35,6 +41,7 @@ function App() {
           <Route path="/Landing" component={StudentLanding} />
           <Route path="/Services" exact component={ResetPassword} />
           <Route path="/SignUp" exact component={SignUp} />
+          <Route path="/Dashboard" component={StudentDashboard} />
           <Route path="/Login" exact component={Login} />
           <Route path="/ForgotPassword" exact component={ForgotPassword} />
         </Switch>
