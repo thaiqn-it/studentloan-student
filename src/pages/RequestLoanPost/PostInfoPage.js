@@ -108,9 +108,17 @@ export default function PostInfoPage(props) {
                 </LocalizationProvider>
               </Grid>
               <Grid item xs="12" md="6">
-                <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                <SuiTypography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                  sx={{ marginBottom: 2 }}
+                >
                   When this post expire
-                </Typography>
+                </SuiTypography>
+                {/* <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                  When this post expire
+                </Typography> */}
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     label=""
