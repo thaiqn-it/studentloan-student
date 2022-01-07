@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import DropFileInput from "../../components/DropFileZone";
 import SuiTypography from "components/SuiTypography";
+import SuiButton from "components/SuiButton";
 
 export default function ArchievementPage(props) {
   const [listArchievement, setListArchievement] = useState([
@@ -115,9 +116,9 @@ export default function ArchievementPage(props) {
                   </>
                 ))}
 
-                <Button
+                <SuiButton
                   variant="contained"
-                  color="secondary"
+                  color="dark"
                   sx={{
                     margin: "0 auto",
                     display: "block",
@@ -127,7 +128,7 @@ export default function ArchievementPage(props) {
                   onClick={addArchievement}
                 >
                   Add
-                </Button>
+                </SuiButton>
                 <SuiTypography
                   label="Title"
                   variant="h6"
