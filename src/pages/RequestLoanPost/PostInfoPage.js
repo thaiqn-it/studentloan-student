@@ -12,6 +12,11 @@ import {
   CardMedia,
 } from "@mui/material";
 import DropFileInput from "../../components/DropFileZone";
+import SuiTypography from "components/SuiTypography";
+import SuiInput from "components/SuiInput";
+
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import SuiBox from "components/SuiBox";
 
 export default function PostInfoPage(props) {
   const [date, setDate] = useState(new Date());
@@ -39,36 +44,56 @@ export default function PostInfoPage(props) {
         </Typography>
       </Box>
       <Divider />
+
+      <Container sx={{ padding: "3rem 3rem" }} maxWidth="xl">
+        <Grid container spacing={3}>
+          <Grid item xs="12" md="5">
+            <SuiTypography
+              variant="h6"
+              fontWeight="medium"
+              textTransform="capitalize"
+            >
+              Title
+            </SuiTypography>
+            <SuiTypography variant="button" fontWeight="regular" color="text">
+              Add your title, a brief description about your loan purpose
+            </SuiTypography>
+          </Grid>
+          <Grid item xs="12" md="7">
+            <SuiInput multiline placeholder="Your title" />
+          </Grid>
+        </Grid>
+      </Container>
+
+      <Divider />
+
       <Container sx={{ padding: "3rem 3rem" }}>
         <Grid container spacing={3}>
           <Grid item xs="12" md="5">
-            <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
-              Borrow information
-            </Typography>
-            <Typography
+            <SuiTypography
               variant="h6"
-              sx={{ fontSize: "1.1rem", paddingRight: "2rem" }}
+              fontWeight="medium"
+              textTransform="capitalize"
             >
+              Borrow information
+            </SuiTypography>
+            <SuiTypography variant="button" fontWeight="regular" color="text">
               Write a clear, brief title and subtitle to help people quickly
               understand your project. Both will appear on your project and
               pre-launch pages.
-            </Typography>
+            </SuiTypography>
           </Grid>
-          <Grid
-            item
-            xs="12"
-            md="7"
-            sx={{
-              h5: {
-                fontSize: "15px",
-              },
-            }}
-          >
+          <Grid item xs="12" md="7">
             <Grid container spacing={2}>
               <Grid item xs="12" md="6">
-                <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                <SuiTypography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                  sx={{ marginBottom: 2 }}
+                >
                   Expected graduate time
-                </Typography>
+                </SuiTypography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     label=""
@@ -83,9 +108,17 @@ export default function PostInfoPage(props) {
                 </LocalizationProvider>
               </Grid>
               <Grid item xs="12" md="6">
-                <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                <SuiTypography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                  sx={{ marginBottom: 2 }}
+                >
                   When this post expire
-                </Typography>
+                </SuiTypography>
+                {/* <Typography variant="h5" sx={{ marginBottom: 2 }}>
+                  When this post expire
+                </Typography> */}
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
                     label=""
@@ -105,16 +138,17 @@ export default function PostInfoPage(props) {
       <Container sx={{ padding: "3rem 3rem" }}>
         <Grid container spacing={3}>
           <Grid item xs="12" md="5">
-            <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
-              Discription
-            </Typography>
-            <Typography
+            <SuiTypography
               variant="h6"
-              sx={{ fontSize: "1.1rem", paddingRight: "2rem" }}
+              fontWeight="medium"
+              textTransform="capitalize"
             >
+              Description
+            </SuiTypography>
+            <SuiTypography variant="button" fontWeight="regular" color="text">
               Write a brief description about yourself and goal of life. The
               backers will read this and may help you
-            </Typography>
+            </SuiTypography>
           </Grid>
           <Grid
             item
@@ -126,14 +160,57 @@ export default function PostInfoPage(props) {
               },
             }}
           >
+            <SuiInput
+              rows={10}
+              multiline
+              placeholder="Write awesome thing about you"
+            />
+          </Grid>
+        </Grid>
+      </Container>
+      <Divider />
+      <Container sx={{ padding: "3rem 3rem" }}>
+        <Grid container spacing={3}>
+          <Grid item xs="12" md="5">
+            <SuiTypography
+              variant="h6"
+              fontWeight="medium"
+              textTransform="capitalize"
+            >
+              Funding goal
+            </SuiTypography>
+            <SuiTypography variant="button" fontWeight="regular" color="text">
+              Set an achievable goal that covers what you need to complete your
+              project. Funding is all-or-nothing. If you don’t meet your goal,
+              you won’t receive any money.
+            </SuiTypography>
+            {/* <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
+              Funding goal
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{ fontSize: "1.1rem", paddingRight: "2rem" }}
+            >
+              Set an achievable goal that covers what you need to complete your
+              project. Funding is all-or-nothing. If you don’t meet your goal,
+              you won’t receive any money.
+            </Typography> */}
+          </Grid>
+          <Grid item xs="12" md="7">
             <Grid container spacing={2}>
               <Grid item xs="12" md="12">
-                <TextField
-                  variant="outlined"
-                  placeholder="Write awesome thing about you"
-                  multiline
-                  rows={10}
-                  fullWidth
+                <SuiTypography
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  Goal amount
+                </SuiTypography>
+              </Grid>
+              <Grid item xs="12" md="6">
+                {/* <TextField  align="right" variant="outlined" fullWidth /> */}
+                <SuiInput
+                  icon={{ component: <AttachMoneyIcon />, direction: "left" }}
                 />
               </Grid>
             </Grid>
@@ -144,44 +221,18 @@ export default function PostInfoPage(props) {
       <Container sx={{ padding: "3rem 3rem" }}>
         <Grid container spacing={3}>
           <Grid item xs="12" md="5">
-            <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
-              Funding goal
-            </Typography>
-            <Typography
+            <SuiTypography
               variant="h6"
-              sx={{ fontSize: "1.1rem", paddingRight: "2rem" }}
+              fontWeight="medium"
+              textTransform="capitalize"
             >
-              Set an achievable goal that covers what you need to complete your
-              project. Funding is all-or-nothing. If you don’t meet your goal,
-              you won’t receive any money.
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs="12"
-            md="7"
-            sx={{
-              h5: {
-                fontSize: "15px",
-              },
-            }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs="12" md="12">
-                <Typography variant="h5">Goal amount</Typography>
-              </Grid>
-              <Grid item xs="12" md="6">
-                <TextField align="right" variant="outlined" fullWidth />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Container>
-      <Divider />
-      <Container sx={{ padding: "3rem 3rem" }}>
-        <Grid container spacing={3}>
-          <Grid item xs="12" md="5">
-            <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
+              Demand note
+            </SuiTypography>
+            <SuiTypography variant="button" fontWeight="regular" color="text">
+              We need demand note as an evidence for your post. This will affect
+              whether your post is approved or not
+            </SuiTypography>
+            {/* <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
               Demand note
             </Typography>
             <Typography
@@ -190,18 +241,9 @@ export default function PostInfoPage(props) {
             >
               We need demand note as an evidence for your post. This will affect
               whether your post is approved or not
-            </Typography>
+            </Typography> */}
           </Grid>
-          <Grid
-            item
-            xs="12"
-            md="7"
-            sx={{
-              h5: {
-                fontSize: "15px",
-              },
-            }}
-          >
+          <Grid item xs="12" md="7">
             {/* <Button
               onClick={showImage}
               variant="contained"

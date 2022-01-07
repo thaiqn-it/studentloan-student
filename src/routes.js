@@ -58,6 +58,9 @@ import LandingPage from "pages/LandingPage";
 import StudentProfile from "pages/StudentProfile";
 import Wallet from "pages/Wallet";
 import Report from "pages/Report";
+import RequestLoanPost from "pages/RequestLoanPost";
+import ViewPost from "pages/ViewPost";
+
 const routes = [
   {
     type: "collapse",
@@ -84,6 +87,24 @@ const routes = [
     route: "/report",
     icon: <SpaceShip size="12px" />,
     component: Report,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Request",
+    key: "request",
+    route: "/request",
+    icon: <SpaceShip size="12px" />,
+    component: RequestLoanPost,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "View post",
+    key: "view-post",
+    route: "/view",
+    icon: <SpaceShip size="12px" />,
+    component: ViewPost,
     noCollapse: true,
   },
 ];
