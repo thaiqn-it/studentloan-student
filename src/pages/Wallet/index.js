@@ -1,130 +1,85 @@
-import { Button, Grid, Typography, Box } from "@mui/material";
-import React from "react";
+import { Button, Grid, Typography, Box, Card, Icon } from "@mui/material";
+import React, { useState } from "react";
 import classes from "./Wallet.module.css";
 import SendIcon from "@mui/icons-material/Send";
+import SuiBox from "components/SuiBox";
+import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
+import OrdersOverview from "layouts/dashboard/components/OrderOverview";
+import SuiTypography from "components/SuiTypography";
+import TimelineItem from "examples/Timeline/TimelineItem";
+import { userApi } from "apis/user";
+import { ClosedCaptionDisabledOutlined } from "@mui/icons-material";
+import BillingInformation from "layouts/billing/components/BillingInformation";
+import Invoices from "layouts/billing/components/Invoices";
+import Transactions from "layouts/billing/components/Transactions";
+import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
+import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 
 const Wallet = () => {
+  const [wallet, setWallet] = useState({});
+  const getWalletInfo = async () => {
+    try {
+      const wallet = await userApi.getWalletInfo();
+      if (wallet === null) throw new Error();
+      setWallet(wallet);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const { chart, items } = reportsBarChartData;
+
   return (
     <>
-      <Grid container sx={{ width: "80%" }}>
-        <Grid item xs={3}>
-          <Box className={classes.walletAccount}>
-            <Typography>Current Balance</Typography>
-            <Typography variant="h6" color="green">
-              60000
-            </Typography>
-          </Box>
+      <SuiBox mb={3}>
+        <SuiBox mb={3} sx={{ marginTop: "20px" }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} xl={3}>
+              <MiniStatisticsCard
+                title={{ text: "today's money" }}
+                count={wallet?.money}
+                percentage={{ color: "success", text: "+55%" }}
+                icon={{ color: "info", component: "paid" }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} xl={3}>
+              <MiniStatisticsCard
+                title={{ text: "today's users" }}
+                count="2,300"
+                percentage={{ color: "success", text: "+3%" }}
+                icon={{ color: "info", component: "public" }}
+              />
+            </Grid>
+          </Grid>
+        </SuiBox>
+        <Grid container spacing={3}>
+          <Grid item xs={12} lg={8}>
+            <ReportsBarChart
+              title="current status"
+              description={
+                <>
+                  (<strong>+23%</strong>) than last week
+                </>
+              }
+              chart={chart}
+              items={items}
+            />
+          </Grid>
+          <Grid item xs={12} lg={4}>
+            <Invoices />
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <Box className={classes.walletAccount}>
-            <Typography>Current Debt</Typography>
-            <Typography variant="h6" color="red">
-              60000
-            </Typography>
-          </Box>
+      </SuiBox>
+
+      <SuiBox mb={3}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={7}>
+            <BillingInformation />
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <Transactions />
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <Box className={classes.walletAccount}>
-            <Typography>Debt per month</Typography>
-            <Typography variant="h6" color="blue">
-              60000 / month
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={3}>
-          <Box className={classes.walletAccount}>
-            <Button>Pay Debt</Button>
-          </Box>
-        </Grid>
-      </Grid>
-
-      <Box xs={{ width: "60%" }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography>Recent Activity</Typography>
-          <Typography>See All</Typography>
-        </Box>
-
-        <Box className={classes.activity}>
-          <Box
-            sx={{
-              background: "gray",
-              width: "35px",
-              height: "35px",
-              display: "flex",
-              justifyContent: "center",
-              borderRadius: "10px",
-            }}
-          >
-            <SendIcon />
-          </Box>
-
-          <Box>
-            <Typography>Send Money To App</Typography>
-            <Typography>xx:xx Mon x/xx/xxxx</Typography>
-          </Box>
-          <Typography>-xxxxx</Typography>
-        </Box>
-      </Box>
-      <Box className={classes.activity}>
-        <Box
-          sx={{
-            background: "gray",
-            width: "35px",
-            height: "35px",
-            display: "flex",
-            justifyContent: "center",
-            borderRadius: "10px",
-          }}
-        >
-          <SendIcon />
-        </Box>
-
-        <Box>
-          <Typography>Send Money To App</Typography>
-          <Typography>xx:xx Mon x/xx/xxxx</Typography>
-        </Box>
-        <Typography>-xxxxx</Typography>
-      </Box>
-      <Box className={classes.activity}>
-        <Box
-          sx={{
-            background: "gray",
-            width: "35px",
-            height: "35px",
-            display: "flex",
-            justifyContent: "center",
-            borderRadius: "10px",
-          }}
-        >
-          <SendIcon />
-        </Box>
-
-        <Box>
-          <Typography>Send Money To App</Typography>
-          <Typography>xx:xx Mon x/xx/xxxx</Typography>
-        </Box>
-        <Typography>-xxxxx</Typography>
-      </Box>
-      <Box className={classes.activity}>
-        <Box
-          sx={{
-            background: "gray",
-            width: "35px",
-            height: "35px",
-            display: "flex",
-            justifyContent: "center",
-            borderRadius: "10px",
-          }}
-        >
-          <SendIcon />
-        </Box>
-
-        <Box>
-          <Typography>Send Money To App</Typography>
-          <Typography>xx:xx Mon x/xx/xxxx</Typography>
-        </Box>
-        <Typography>-xxxxx</Typography>
-      </Box>
+      </SuiBox>
     </>
   );
 };

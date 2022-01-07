@@ -2,10 +2,16 @@ import routes from "routes";
 import Sidenav from "examples/Sidenav";
 import Dashboard from "layouts/dashboard";
 import React, { useEffect, useState, useMemo } from "react";
+import {
+  useSoftUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 
-import { useSoftUIController } from "context";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import Wallet from "pages/Wallet";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 var currentRoute = [...routes];
 
@@ -17,8 +23,8 @@ const StudentDashboard = () => {
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
-    if (!onMouseEnter) {
-      //   setMiniSidenav(dispatch, false);
+    if (miniSidenav && !onMouseEnter) {
+      setMiniSidenav(dispatch, false);
       setOnMouseEnter(true);
     }
   };
@@ -26,7 +32,7 @@ const StudentDashboard = () => {
   // Close sidenav when mouse leave mini sidenav
   const handleOnMouseLeave = () => {
     if (onMouseEnter) {
-      //   setMiniSidenav(dispatch, true);
+      setMiniSidenav(dispatch, true);
       setOnMouseEnter(false);
     }
   };
@@ -45,19 +51,21 @@ const StudentDashboard = () => {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       />
-
-      <Switch>
-        {currentRoute.map((route, index) => {
-          return (
-            <Route
-              exact={index === 0}
-              path={route.route}
-              component={route.component}
-              key={route.key}
-            />
-          );
-        })}
-      </Switch>
+      <DashboardLayout>
+        <DashboardNavbar />
+        <Switch>
+          {currentRoute.map((route, index) => {
+            return (
+              <Route
+                exact={index === 0}
+                path={route.route}
+                component={route.component}
+                key={route.key}
+              />
+            );
+          })}
+        </Switch>
+      </DashboardLayout>
     </>
   );
 };

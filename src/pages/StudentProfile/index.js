@@ -13,6 +13,8 @@ import {
   InputLabel,
   FormControl,
   Avatar,
+  DialogContentText,
+  Box,
 } from "@mui/material";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -25,15 +27,27 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import CakeIcon from "@mui/icons-material/Cake";
 import classes from "./StudentProfile.module.css";
-import { Box } from "@mui/system";
+
+import SuiBox from "components/SuiBox";
 import CreateIcon from "@mui/icons-material/Create";
 import { DesktopDatePicker } from "@mui/lab";
+import ProfileFormDialog from "components/ProfileFormDialog";
+import { userApi } from "apis/user";
 
 const StudentProfile = () => {
   const [gender, setGender] = useState(true);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditSummary, setIsEditSummary] = useState(false);
-  const [birthDate, setBirthDate] = useState(new Date());
+  const [userProfile, setUserProfile] = useState({});
+
+  const getUserProfile = async () => {
+    try {
+      const userProfile = await userApi.getUserProfile();
+      if (userProfile === null) throw new Error();
+
+      setUserProfile(userProfile);
+    } catch (e) {}
+  };
 
   const isEditProfileChangeHandler = () => {
     setIsEditProfile(!isEditProfile);
@@ -43,12 +57,111 @@ const StudentProfile = () => {
     setIsEditSummary(!isEditSummary);
   };
 
-  const genderChangeHandler = () => {
-    setGender(!gender);
-  };
+  const EditProfile = () => {
+    const [gender, setGender] = useState(true);
+    const [birthDate, setBirthDate] = useState(new Date());
 
-  const birthDateChangeHandler = (value) => {
-    setBirthDate(value);
+    const genderChangeHandler = () => {
+      setGender(!gender);
+    };
+    const birthDateChangeHandler = (value) => {
+      setBirthDate(value);
+    };
+    return (
+      <>
+        <ProfileFormDialog
+          open={isEditProfile}
+          handleClose={isEditProfileChangeHandler}
+          handleFormSubmit={isEditProfileChangeHandler}
+          title="Edit Profile"
+        >
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <PersonOutlineIcon
+              style={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            <TextField
+              label="First name"
+              variant="standard"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            ></TextField>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <PersonOutlineIcon
+              style={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            <TextField
+              label="Last name"
+              variant="standard"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            ></TextField>
+          </Box>
+
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            <CheckroomIcon style={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <FormLabel fontSize={20}>Gender</FormLabel>
+          </Box>
+          <Box>
+            <Radio
+              checked={gender === true}
+              onChange={genderChangeHandler}
+              value={true}
+              name="radio-buttons"
+              inputProps={{ "aria-label": "A" }}
+            />
+            <FormLabel>Male</FormLabel>
+
+            <Radio
+              checked={gender === false}
+              onChange={genderChangeHandler}
+              value={false}
+              name="radio-buttons"
+              inputProps={{ "aria-label": "B" }}
+            />
+            <FormLabel>Female</FormLabel>
+          </Box>
+
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DesktopDatePicker
+              value={birthDate}
+              onChange={birthDateChangeHandler}
+              label="BirthDate"
+              inputFormat="dd/MM/yyyy"
+              renderInput={(params) => (
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <CakeIcon
+                    style={{ color: "action.active", mr: 1, my: 0.5 }}
+                  />
+                  <TextField {...params} variant="standard" fullWidth />
+                </Box>
+              )}
+            />
+          </LocalizationProvider>
+
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <AccountBalanceIcon
+              style={{ color: "action.active", mr: 1, my: 0.5 }}
+            />
+            <TextField
+              label="School"
+              variant="standard"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            ></TextField>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <SchoolIcon style={{ color: "action.active", mr: 1, my: 0.5 }} />
+            <TextField
+              label="Major"
+              variant="standard"
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+            ></TextField>
+          </Box>
+        </ProfileFormDialog>
+      </>
+    );
   };
 
   const Profile = () => {
@@ -167,109 +280,44 @@ const StudentProfile = () => {
     );
   };
 
-  const EditProfile = () => {
-    return (
-      <>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <PersonOutlineIcon style={{ paddingRight: "10px" }} />
-          <TextField label="Firstname" variant="standard" fullWidth></TextField>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <PersonOutlineIcon style={{ paddingRight: "10px" }} />
-          <TextField label="Lastname" variant="standard" fullWidth></TextField>
-        </Box>
-
-        <Box style={{ display: "flex", alignItems: "center" }}>
-          <CheckroomIcon style={{ paddingRight: "10px" }} />
-          <FormLabel fontSize={20}>Gender</FormLabel>
-
-          <Radio
-            checked={gender === true}
-            onChange={genderChangeHandler}
-            value={true}
-            name="radio-buttons"
-            inputProps={{ "aria-label": "A" }}
-          />
-          <FormLabel>Male</FormLabel>
-
-          <Radio
-            checked={gender === false}
-            onChange={genderChangeHandler}
-            value={false}
-            name="radio-buttons"
-            inputProps={{ "aria-label": "B" }}
-          />
-          <FormLabel>Female</FormLabel>
-        </Box>
-
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DesktopDatePicker
-            value={birthDate}
-            onChange={birthDateChangeHandler}
-            label="BirthDate"
-            inputFormat="dd/MM/yyyy"
-            renderInput={(params) => (
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <CakeIcon style={{ paddingRight: "10px" }} />
-                <TextField {...params} variant="standard" fullWidth />
-              </Box>
-            )}
-          />
-        </LocalizationProvider>
-
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <AccountBalanceIcon style={{ paddingRight: "10px" }} />
-          <TextField label="School" variant="standard" fullWidth></TextField>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-          <SchoolIcon style={{ paddingRight: "10px" }} />
-          <TextField label="Major" variant="standard" fullWidth></TextField>
-        </Box>
-
-        <Button onClick={isEditProfileChangeHandler}>Update Profile</Button>
-      </>
-    );
-  };
-
   const EditSummary = () => {
     return (
       <>
-        <Box>
+        <ProfileFormDialog
+          open={isEditSummary}
+          handleClose={isEditSummaryChangeHandler}
+          handleFormSubmit={isEditSummaryChangeHandler}
+          title="Edit Summary"
+        >
           <Box>
-            <img
-              alt="avatar"
-              src="https://www.w3schools.com/howto/img_avatar.png"
-              className={classes.avatar}
-            />
+            <TextField
+              multiline
+              rows={10}
+              rowsMax={10}
+              label="Sumary"
+              fullWidth
+              variant="standard"
+            ></TextField>
           </Box>
-          <TextField
-            multiline
-            rows={10}
-            rowsMax={10}
-            label="Sumary"
-            fullWidth
-            variant="standard"
-          ></TextField>
-          <Box>
-            <Button onClick={isEditSummaryChangeHandler}>Update Profile</Button>
-          </Box>
-        </Box>
+        </ProfileFormDialog>
       </>
     );
   };
 
   return (
     <>
-      <div className={classes.container}>
+      <Box className={classes.container}>
+        <EditProfile />
+        <EditSummary />
         <Grid container spacing={0}>
           <Grid item xs={8}>
             <Box className={classes.profileBox}>
-              {isEditSummary ? <EditSummary /> : <Summary />}
+              <Summary />
             </Box>
           </Grid>
           <Grid item xs={4}>
             <Box className={classes.profileBox}>
-              {isEditProfile ? <EditProfile /> : <Profile />}
+              <Profile />
             </Box>
           </Grid>
         </Grid>
@@ -287,7 +335,7 @@ const StudentProfile = () => {
           <Typography variant="h5">Student Card</Typography>
           <Typography>None</Typography>
         </Box>
-      </div>
+      </Box>
     </>
   );
 };

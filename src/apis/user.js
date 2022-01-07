@@ -23,8 +23,20 @@ const sendOTP = (phoneNumber) => {
   return defaultInstance.post("user/sendOTP", { phoneNumber });
 };
 
-const verifiOTP = (token, secret) => {
+const verifyOTP = (token, secret) => {
   return defaultInstance.post("user/verifyOTP", { token, secret });
+};
+
+const getUserProfile = () => {
+  return defaultInstance.post("user/student/me");
+};
+
+const getWalletInfo = () => {
+  return defaultInstance.post("user/me/wallet");
+};
+
+const getTransactions = () => {
+  return defaultInstance.post("user/me/transactions");
 };
 
 export const userApi = {
@@ -33,5 +45,8 @@ export const userApi = {
   signUp,
   checkEmail,
   sendOTP,
-  verifiOTP,
+  verifyOTP,
+  getUserProfile,
+  getWalletInfo,
+  getTransactions,
 };

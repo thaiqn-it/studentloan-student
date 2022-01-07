@@ -55,77 +55,35 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import LandingPage from "pages/LandingPage";
-
+import StudentProfile from "pages/StudentProfile";
+import Wallet from "pages/Wallet";
+import Report from "pages/Report";
 const routes = [
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    route: "/",
-    icon: <Shop size="12px" />,
-    component: Dashboard,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: Tables,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: Billing,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
-    icon: <Cube size="12px" />,
-    component: VirtualReality,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="12px" />,
-    component: RTL,
-    noCollapse: true,
-  },
   {
     type: "collapse",
     name: "Profile",
     key: "profile",
     route: "/profile",
-    icon: <CustomerSupport size="12px" />,
-    component: Profile,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    route: "/authentication/sign-in",
-    icon: <Document size="12px" />,
-    component: SignIn,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
-    component: SignUp,
+    component: StudentProfile,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Wallet",
+    key: "wallet",
+    route: "/wallet",
+    icon: <SpaceShip size="12px" />,
+    component: Wallet,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Report",
+    key: "report",
+    route: "/report",
+    icon: <SpaceShip size="12px" />,
+    component: Report,
     noCollapse: true,
   },
 ];

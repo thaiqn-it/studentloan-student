@@ -152,7 +152,7 @@ const SignUp = () => {
     try {
       const token = otp;
       const secret = otpSecret;
-      const res = await userApi.verifiOTP(token, secret);
+      const res = await userApi.verifyOTP(token, secret);
       console.log(res);
       const isValid = res.data.isValid;
       if (isValid) {

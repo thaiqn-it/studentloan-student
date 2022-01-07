@@ -19,9 +19,12 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
-  border-radius: 10px;
-
-  border: 1px solid black;
+  border-radius: 1rem;
+  border: 0 solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0rem 1.25rem 1.6875rem 0rem rgba(0, 0, 0, 0.05);
+  opacity: 1;
+  background: #ffffff;
+  color: #344767;
 }
 
 .profile {
