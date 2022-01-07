@@ -102,7 +102,7 @@ const routes = [
     type: "collapse",
     name: "View post",
     key: "view-post",
-    route: "/view",
+    route: "/view-post",
     icon: <SpaceShip size="12px" />,
     component: ViewPost,
     noCollapse: true,
