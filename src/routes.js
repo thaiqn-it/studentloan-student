@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
+
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
 import Office from "examples/Icons/Office";
@@ -55,6 +56,8 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import LandingPage from "pages/LandingPage";
+import RequestLoanPost from "pages/RequestLoanPost";
+import ViewPost from "pages/ViewPost";
 
 const routes = [
   {
@@ -126,6 +129,24 @@ const routes = [
     route: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
     component: SignUp,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Request",
+    key: "request",
+    route: "/request",
+    icon: <SpaceShip size="12px" />,
+    component: RequestLoanPost,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "View post",
+    key: "view-post",
+    route: "/view",
+    icon: <SpaceShip size="12px" />,
+    component: ViewPost,
     noCollapse: true,
   },
 ];

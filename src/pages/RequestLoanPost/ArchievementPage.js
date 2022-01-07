@@ -10,6 +10,7 @@ import {
   CardMedia,
 } from "@mui/material";
 import DropFileInput from "../../components/DropFileZone";
+import SuiTypography from "components/SuiTypography";
 
 export default function ArchievementPage(props) {
   const [listArchievement, setListArchievement] = useState([
@@ -65,40 +66,43 @@ export default function ArchievementPage(props) {
       <Container sx={{ padding: "3rem 3rem" }}>
         <Grid container spacing={3}>
           <Grid item xs="12" md="5">
-            <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
-              Archievement
-            </Typography>
-            <Typography
+            <SuiTypography
               variant="h6"
-              sx={{ fontSize: "1.1rem", paddingRight: "2rem" }}
+              fontWeight="bold"
+              textTransform="capitalize"
             >
+              Archievement
+            </SuiTypography>
+            <SuiTypography variant="button" fontWeight="regular" color="text">
               Set an achievable goal that covers what you need to complete your
               project. Funding is all-or-nothing. If you don’t meet your goal,
               you won’t receive any money.
-            </Typography>
+            </SuiTypography>
           </Grid>
-          <Grid
-            item
-            xs="12"
-            md="7"
-            sx={{
-              h5: {
-                fontSize: "15px",
-              },
-            }}
-          >
+          <Grid item xs="12" md="7">
             <Grid container spacing={4}>
               <Grid item xs="12" md="12">
                 {listArchievement.map((items) => (
                   <>
-                    <TextField
+                    {/* <TextField
                       align="right"
                       label="Title"
                       variant="outlined"
                       fullWidth
                       defaultValue={items.description}
                       sx={{ marginTop: 2 }}
-                    />
+                    /> */}
+
+                    <SuiTypography
+                      label="Title"
+                      variant="h6"
+                      fontWeight="medium"
+                      textTransform="capitalize"
+                      defaultValue={items.description}
+                      sx={{ marginTop: 2 }}
+                    >
+                      Archievement
+                    </SuiTypography>
                     <CardMedia
                       sx={{ marginTop: 2 }}
                       component="img"
@@ -107,7 +111,6 @@ export default function ArchievementPage(props) {
                       alt={items.url}
                     />
 
-                    
                     <Divider sx={{ margin: "60px 0px" }} />
                   </>
                 ))}
@@ -125,7 +128,15 @@ export default function ArchievementPage(props) {
                 >
                   Add
                 </Button>
-                <Typography variant="h5">Title</Typography>
+                <SuiTypography
+                  label="Title"
+                  variant="h6"
+                  fontWeight="medium"
+                  textTransform="capitalize"
+                >
+                  Title
+                </SuiTypography>
+                {/* <Typography variant="h5">Title</Typography> */}
                 <TextField
                   align="right"
                   variant="outlined"
@@ -154,7 +165,6 @@ export default function ArchievementPage(props) {
         </Grid>
       </Container>
       <Divider />
-      
     </>
   );
 }
