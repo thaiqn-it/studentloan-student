@@ -13,7 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 function collapseItem(theme, ownerState) {
-  const { palette, transitions, breakpoints, boxShadows, borders, functions } = theme;
+  const { palette, transitions, breakpoints, boxShadows, borders, functions } =
+    theme;
   const { active, transparentSidenav } = ownerState;
 
   const { dark, white, text, transparent } = palette;
@@ -27,7 +28,9 @@ function collapseItem(theme, ownerState) {
     display: "flex",
     alignItems: "center",
     width: "100%",
-    padding: `${pxToRem(10.8)} ${pxToRem(12.8)} ${pxToRem(10.8)} ${pxToRem(16)}`,
+    padding: `${pxToRem(10.8)} ${pxToRem(12.8)} ${pxToRem(10.8)} ${pxToRem(
+      16
+    )}`,
     margin: `0 ${pxToRem(16)}`,
     borderRadius: borderRadius.md,
     cursor: "pointer",
@@ -51,7 +54,8 @@ function collapseItem(theme, ownerState) {
 }
 
 function collapseIconBox(theme, ownerState) {
-  const { palette, transitions, breakpoints, boxShadows, borders, functions } = theme;
+  const { palette, transitions, breakpoints, boxShadows, borders, functions } =
+    theme;
   const { active, transparentSidenav, color } = ownerState;
 
   const { white, info, light, gradients } = palette;
@@ -60,13 +64,7 @@ function collapseIconBox(theme, ownerState) {
   const { pxToRem } = functions;
 
   return {
-    background: () => {
-      if (active) {
-        return color === "default" ? info.main : palette[color].main;
-      }
-
-      return light.main;
-    },
+    background: active ? info.main : light.main,
     minWidth: pxToRem(32),
     minHeight: pxToRem(32),
     borderRadius: borderRadius.md,
@@ -119,7 +117,8 @@ function collapseText(theme, ownerState) {
     [breakpoints.up("xl")]: {
       opacity: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : 1,
       maxWidth: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : "100%",
-      marginLeft: miniSidenav || (miniSidenav && transparentSidenav) ? 0 : pxToRem(12.8),
+      marginLeft:
+        miniSidenav || (miniSidenav && transparentSidenav) ? 0 : pxToRem(12.8),
       transition: transitions.create(["opacity", "margin"], {
         easing: transitions.easing.easeInOut,
         duration: transitions.duration.standard,
