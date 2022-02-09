@@ -24,7 +24,7 @@ import Menu from "@mui/material/Menu";
 import SuiBox from "components/SuiBox";
 
 // Soft UI Dashboard React example components
-import DefaultNavbarLink from "./DefaultNavbarLink";
+import DefaultNavbarLink from "examples/Navbars/DefaultNavbar/DefaultNavbarLink";
 
 function DefaultNavbarMobile({ open, close }) {
   const { width } = open && open.getBoundingClientRect();
