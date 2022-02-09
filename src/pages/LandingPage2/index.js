@@ -19,7 +19,8 @@ function valuetext(value) {
 }
 
 export default function LandingPage() {
-  const [moneyText, setMoneyText] = useState("10.000.000");
+  const [moneyText, setMoneyText] = useState("50.000.000");
+  const [moneyResult, setMoneyResult] = useState("60.500.000 VND");
 
   const handleSliderChange = (event, newValue) => {
     var temp = newValue.toLocaleString("it-IT", {
@@ -27,6 +28,13 @@ export default function LandingPage() {
       currency: "VND",
     });
     setMoneyText(temp);
+    var result =
+      (newValue * 3) / 100 + ((newValue * 1.5) / 100) * 12 + newValue;
+    result = result.toLocaleString("it-IT", {
+      style: "currency",
+      currency: "VND",
+    });
+    setMoneyResult(result);
   };
 
   return (
@@ -86,6 +94,11 @@ export default function LandingPage() {
         position="relative"
         padding="0 20px 0 20px"
         marginTop="30px"
+        sx={{
+          "@media (max-width: 1024px)": {
+            marginTop: "100px",
+          },
+        }}
       >
         <Container textAlign="center">
           <SuiTypography variant="h2" fontWeight="regular">
@@ -114,6 +127,9 @@ export default function LandingPage() {
               "@media (max-width: 780px)": {
                 marginTop: "20px",
               },
+              "@media (max-width: 1024px)": {
+                marginTop: "20px",
+              },
             }}
           >
             <Grid item xs="12" md="12" lg="6">
@@ -134,13 +150,14 @@ export default function LandingPage() {
                 </SuiTypography>
 
                 <Slider
-                  defaultValue={10000000}
+                  defaultValue={50000000}
                   aria-label="Default"
                   size="medium"
                   onChange={handleSliderChange}
                   min={2000000}
-                  max={10000000}
+                  max={50000000}
                   step={500000}
+
                 />
                 <Box
                   display="flex"
@@ -151,7 +168,7 @@ export default function LandingPage() {
                     2.000.000 VND
                   </SuiTypography>
                   <SuiTypography variant="h6" fontWeight="bold" color="text">
-                    10.000.000 VND
+                    50.000.000 VND
                   </SuiTypography>
                 </Box>
                 <SuiTypography variant="h6" fontWeight="bold">
@@ -185,7 +202,7 @@ export default function LandingPage() {
                     color="dark"
                     marginBottom="30px"
                   >
-                    1000 VND
+                    {moneyResult}
                   </SuiTypography>
                   <Grid container marginBottom="30px">
                     <Grid item xs="12" md="4">
@@ -201,7 +218,7 @@ export default function LandingPage() {
                         fontWeight="bold"
                         color="inherit"
                       >
-                        1.5%
+                        1.5% / month
                       </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="4">
