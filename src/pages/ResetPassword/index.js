@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
-import classes from "./ResetPassword.module.css";
+import classes from "./resetPassword.module.css";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
