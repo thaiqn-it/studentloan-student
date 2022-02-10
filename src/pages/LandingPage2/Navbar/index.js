@@ -83,7 +83,7 @@ function DefaultNavbar({ transparent, light, action }) {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        position="absolute"
+        position="fixed"
         left={0}
         zIndex={3}
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
@@ -92,23 +92,23 @@ function DefaultNavbar({ transparent, light, action }) {
         })}
       >
         <SuiBox component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
-          <SuiTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            Soft UI Dashboard
+          <SuiTypography variant="h5" fontWeight="bold" color={light ? "white" : "dark"}>
+            Student Loan
           </SuiTypography>
         </SuiBox>
         <SuiBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
+          <DefaultNavbarLink icon="donut_large" name="dashboard" direct="/dashboard" light={light} />
+          <DefaultNavbarLink icon="person" name="profile" route="contact" offset={-150} light={light} />
           <DefaultNavbarLink
             icon="account_circle"
             name="sign up"
-            route="/authentication/sign-up"
+            direct="/authentication/sign-up"
             light={light}
           />
           <DefaultNavbarLink
             icon="key"
             name="sign in"
-            route="/authentication/sign-in"
+            direct="/authentication/sign-in"
             light={light}
           />
         </SuiBox>

@@ -12,8 +12,11 @@ import theme from "./assets/theme";
 import StudentLanding from "./pages/StudentLanding";
 
 import ForgotPassword from "./pages/ForgotPassword/";
-import Login from "./pages/Login/";
-import SignUp from "./pages/SignUp/";
+// import Login from "./pages/Login/";
+// import SignUp from "./pages/SignUp/";
+
+import Login from "./layouts/authentication/sign-in";
+import SignUp from "./layouts/authentication/sign-up"
 
 import ResetPassword from "./pages/resetPassword";
 
@@ -40,9 +43,9 @@ function App() {
           <Route path="/About" component={""} />
           <Route path="/Landing" component={StudentLanding} />
           <Route path="/Services" exact component={ResetPassword} />
-          <Route path="/SignUp" exact component={SignUp} />
+          <Route path="/authentication/sign-up" exact component={SignUp} />
           <Route path="/Dashboard" component={StudentDashboard} />
-          <Route path="/Login" exact component={Login} />
+          <Route path="/authentication/sign-in" exact component={Login} />
           <Route path="/ForgotPassword" exact component={ForgotPassword} />
         </Switch>
       </Router>
