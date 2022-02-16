@@ -19,7 +19,7 @@ var currentRoute = [...routes]
 const Routes = () => {
     return (
         <Switch>
-            <Route path="/" component={StudentProfile} />
+            <Route path="/" component={StudentProfile} exact />
             {currentRoute.map((route, index) => {
                 return (
                     <Route
