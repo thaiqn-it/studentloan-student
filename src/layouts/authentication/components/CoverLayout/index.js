@@ -24,7 +24,8 @@ import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
 // Soft UI Dashboard PRO React example components
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+// import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+import DefaultNavbar from "..//..//..//..//pages/LandingPage2/Navbar"
 import PageLayout from "examples/LayoutContainers/PageLayout";
 
 // Authentication layout components
@@ -34,12 +35,12 @@ function CoverLayout({ color, header, title, description, image, top, children }
   return (
     <PageLayout background="white">
       <DefaultNavbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
-          label: "free download",
-          color: "dark",
-        }}
+        // action={{
+        //   type: "external",
+        //   route: "https://creative-tim.com/product/soft-ui-dashboard-react",
+        //   label: "free download",
+        //   color: "dark",
+        // }}
       />
       <Grid
         container
@@ -95,7 +96,7 @@ function CoverLayout({ color, header, title, description, image, top, children }
           </SuiBox>
         </Grid>
       </Grid>
-      <Footer />
+      {/* <Footer /> */}
     </PageLayout>
   );
 }

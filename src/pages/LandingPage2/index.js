@@ -40,7 +40,7 @@ export default function LandingPage() {
     return (
         <>
             <Box className={classes.welcome}>
-                <Navbar title="Student Loan Platform"></Navbar>
+                <Navbar title={'Student Loan'} />
                 <Container>
                     <Box padding="20% 20px 0 20px">
                         <Grid container>
@@ -91,10 +91,11 @@ export default function LandingPage() {
                 </Container>
             </Box>
             <Box
+                id="contact"
                 height="100vh"
                 position="relative"
                 padding="0 20px 0 20px"
-                marginTop="30px"
+                marginTop="50px"
                 sx={{
                     '@media (max-width: 1024px)': {
                         marginTop: '100px',
@@ -102,7 +103,7 @@ export default function LandingPage() {
                 }}
             >
                 <Container textAlign="center">
-                    <SuiTypography variant="h2" fontWeight="regular">
+                    <SuiTypography variant="h2" fontWeight="medium">
                         Get started with your first installment plan
                     </SuiTypography>
                     <SuiTypography
@@ -288,6 +289,12 @@ export default function LandingPage() {
                     </Grid>
                 </Container>
             </Box>
+
+            <Box
+                height="100vh"
+                position="relative"
+                padding="0 20px 0 20px"
+            ></Box>
         </>
     )
 }

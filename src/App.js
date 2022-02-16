@@ -9,10 +9,11 @@ import CssBaseline from '@mui/material/CssBaseline'
 import theme from './assets/theme'
 
 import StudentLanding from './pages/StudentLanding'
-
 import ForgotPassword from './pages/ForgotPassword/'
-import Login from './pages/Login/'
-import SignUp from './pages/SignUp/'
+
+import Login from './layouts/authentication/sign-in'
+import SignUp from './layouts/authentication/sign-up'
+
 
 import ResetPassword from './pages/ResetPassword'
 
@@ -25,28 +26,30 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AuthProvider>
-                <Router>
-                    <Switch>
-                        <Route path="/" exact component={LandingPage} />
-                        <Route path="/About" component={''} />
-                        <Route path="/Landing" component={StudentLanding} />
-                        <Route
-                            path="/Services"
-                            exact
-                            component={ResetPassword}
-                        />
-                        <Route path="/SignUp" exact component={SignUp} />
-                        <Route path="/Dashboard" component={StudentDashboard} />
-                        <Route path="/Login" exact component={Login} />
-                        <Route
-                            path="/ForgotPassword"
-                            exact
-                            component={ForgotPassword}
-                        />
-                    </Switch>
-                </Router>
-            </AuthProvider>
+            <Router>
+                <Switch>
+                    <Route path="/" exact component={LandingPage} />
+                    <Route path="/About" component={''} />
+                    <Route path="/Landing" component={StudentLanding} />
+                    <Route path="/Services" exact component={ResetPassword} />
+                    <Route
+                        path="/authentication/sign-up"
+                        exact
+                        component={SignUp}
+                    />
+                    <Route path="/Dashboard" component={StudentDashboard} />
+                    <Route
+                        path="/authentication/sign-in"
+                        exact
+                        component={Login}
+                    />
+                    <Route
+                        path="/ForgotPassword"
+                        exact
+                        component={ForgotPassword}
+                    />
+                </Switch>
+            </Router>
         </ThemeProvider>
     )
 }

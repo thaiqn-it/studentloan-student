@@ -14,7 +14,8 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Link } from 'react-scroll';
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -26,36 +27,47 @@ import Icon from "@mui/material/Icon";
 import SuiBox from "components/SuiBox";
 import SuiTypography from "components/SuiTypography";
 
-function DefaultNavbarLink({ icon, name, route, light }) {
+import { useHistory } from "react-router-dom";
+
+function DefaultNavbarLink({ icon, name, route, light, direct, offset }) {
+  const history = useHistory();
+
+  const redirect = () =>{
+    history.push(direct)
+  }
+
   return (
     <>
-      <SuiBox
-        component={Link}
-        to={route}
-        mx={1}
-        p={1}
-        display="flex"
-        alignItems="center"
-        sx={{ cursor: "pointer", userSelect: "none" }}
-      >
-        <Icon
-          sx={{
-            color: ({ palette: { white, secondary } }) => (light ? white.main : secondary.main),
-            verticalAlign: "middle",
-          }}
+      <Link to={route} smooth={true} offset={offset} onClick={redirect} duration={1000}>
+        <SuiBox
+          // component={Link}
+          // to={route}
+          mx={1}
+          p={1}
+          display="flex"
+          alignItems="center"
+          sx={{ cursor: "pointer", userSelect: "none" }}
         >
-          {icon}
-        </Icon>
-        <SuiTypography
-          variant="button"
-          fontWeight="regular"
-          color={light ? "white" : "dark"}
-          textTransform="capitalize"
-          sx={{ width: "100%", lineHeight: 0 }}
-        >
-          &nbsp;{name}
-        </SuiTypography>
-      </SuiBox>
+          <Icon
+            sx={{
+              color: ({ palette: { white, secondary } }) =>
+                light ? white.main : secondary.main,
+              verticalAlign: "middle",
+            }}
+          >
+            {icon}
+          </Icon>
+          <SuiTypography
+            variant="button"
+            fontWeight="regular"
+            color={light ? "white" : "dark"}
+            textTransform="capitalize"
+            sx={{ width: "100%", lineHeight: 0 }}
+          >
+            &nbsp;{name}
+          </SuiTypography>
+        </SuiBox>
+      </Link>
     </>
   );
 }
