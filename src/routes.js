@@ -36,104 +36,108 @@ Coded by www.creative-tim.com
 */
 
 // Soft UI Dashboard React layouts
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import VirtualReality from "layouts/virtual-reality";
-import RTL from "layouts/rtl";
-import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+import Dashboard from 'layouts/dashboard'
+import Tables from 'layouts/tables'
+import Billing from 'layouts/billing'
+import VirtualReality from 'layouts/virtual-reality'
+import RTL from 'layouts/rtl'
+import Profile from 'layouts/profile'
+import SignIn from 'layouts/authentication/sign-in'
+import SignUp from 'layouts/authentication/sign-up'
 
 // Soft UI Dashboard React icons
-import Shop from "examples/Icons/Shop";
-import Office from "examples/Icons/Office";
-import Settings from "examples/Icons/Settings";
-import Document from "examples/Icons/Document";
-import SpaceShip from "examples/Icons/SpaceShip";
-import CustomerSupport from "examples/Icons/CustomerSupport";
-import CreditCard from "examples/Icons/CreditCard";
-import Cube from "examples/Icons/Cube";
-import LandingPage from "pages/LandingPage";
-import StudentProfile from "pages/StudentProfile";
-import Wallet from "pages/Wallet";
-import Report from "pages/Report";
-import RequestLoanPost from "pages/RequestLoanPost";
-import ViewPost from "pages/ViewPost";
+import Shop from 'examples/Icons/Shop'
+import Office from 'examples/Icons/Office'
+import Settings from 'examples/Icons/Settings'
+import Document from 'examples/Icons/Document'
+import SpaceShip from 'examples/Icons/SpaceShip'
+import CustomerSupport from 'examples/Icons/CustomerSupport'
+import CreditCard from 'examples/Icons/CreditCard'
+import Cube from 'examples/Icons/Cube'
+import LandingPage from 'pages/LandingPage'
+import StudentProfile from 'pages/StudentProfile'
+import Wallet from 'pages/Wallet'
+import Report from 'pages/Report'
+import RequestLoanPost from 'pages/RequestLoanPost'
+import ViewPost from 'pages/ViewPost'
 
-const routes = [
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    route: "/profile",
-    icon: <SpaceShip size="12px" />,
-    component: StudentProfile,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Wallet",
-    key: "wallet",
-    route: "/wallet",
-    icon: <SpaceShip size="12px" />,
-    component: Wallet,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Report",
-    key: "report",
-    route: "/report",
-    icon: <SpaceShip size="12px" />,
-    component: Report,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "Request",
-    key: "request",
-    route: "/request",
-    icon: <SpaceShip size="12px" />,
-    component: RequestLoanPost,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "View post",
-    key: "view-post",
-    route: "/view-post",
-    icon: <SpaceShip size="12px" />,
-    component: ViewPost,
-    noCollapse: true,
-  },
-];
+let routes = [
+    {
+        type: 'collapse',
+        name: 'Profile',
+        key: 'profile',
+        route: '/profile',
+        icon: <SpaceShip size="12px" />,
+        component: StudentProfile,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'Wallet',
+        key: 'wallet',
+        route: '/wallet',
+        icon: <SpaceShip size="12px" />,
+        component: Wallet,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'Report',
+        key: 'report',
+        route: '/report',
+        icon: <SpaceShip size="12px" />,
+        component: Report,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'Request',
+        key: 'request',
+        route: '/request',
+        icon: <SpaceShip size="12px" />,
+        component: RequestLoanPost,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'View post',
+        key: 'view-post',
+        route: '/view-post',
+        icon: <SpaceShip size="12px" />,
+        component: ViewPost,
+        noCollapse: true,
+    },
+]
 
 export const mainRoutes = [
-  {
-    route: "/",
-    component: LandingPage,
-    key: "landing",
-  },
-  {
-    route: "/service",
-    component: LandingPage,
-    key: "service",
-  },
-  {
-    route: "/dashboard",
-    component: SignUp,
-    key: "signUp",
-  },
-  {
-    route: "/login",
-    component: LandingPage,
-    key: "login",
-  },
-  {
-    route: "/forgot-password",
-    component: LandingPage,
-    key: "forgotPassword",
-  },
-];
-export default routes;
+    {
+        route: '/',
+        component: LandingPage,
+        key: 'landing',
+    },
+    {
+        route: '/service',
+        component: LandingPage,
+        key: 'service',
+    },
+    {
+        route: '/dashboard',
+        component: SignUp,
+        key: 'signUp',
+    },
+    {
+        route: '/login',
+        component: LandingPage,
+        key: 'login',
+    },
+    {
+        route: '/forgot-password',
+        component: LandingPage,
+        key: 'forgotPassword',
+    },
+]
+
+routes.map((route) => {
+    route.route = '/dashboard' + route.route
+})
+export default routes
