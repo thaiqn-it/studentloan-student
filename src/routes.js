@@ -60,11 +60,12 @@ import Wallet from 'pages/Wallet'
 import Report from 'pages/Report'
 import RequestLoanPost from 'pages/RequestLoanPost'
 import ViewPost from 'pages/ViewPost'
+import Verify from 'pages/Verify'
 
 let routes = [
     {
         type: 'collapse',
-        name: 'Profile',
+        name: 'Thông tin',
         key: 'profile',
         route: '/profile',
         icon: <SpaceShip size="12px" />,
@@ -73,7 +74,7 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'Wallet',
+        name: 'Ví',
         key: 'wallet',
         route: '/wallet',
         icon: <SpaceShip size="12px" />,
@@ -82,7 +83,7 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'Report',
+        name: 'Báo cáo',
         key: 'report',
         route: '/report',
         icon: <SpaceShip size="12px" />,
@@ -91,7 +92,7 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'Request',
+        name: 'Yêu cầu vay',
         key: 'request',
         route: '/request',
         icon: <SpaceShip size="12px" />,
@@ -100,11 +101,20 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'View post',
+        name: 'Xem bài',
         key: 'view-post',
         route: '/view-post',
         icon: <SpaceShip size="12px" />,
         component: ViewPost,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'Xác Thực',
+        key: 'verify',
+        route: '/verify',
+        icon: <SpaceShip size="12px" />,
+        component: Verify,
         noCollapse: true,
     },
 ]
