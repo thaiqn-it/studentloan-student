@@ -39,6 +39,10 @@ const getStudentProfile = () => {
     return defaultInstance.get('user/student/me')
 }
 
+const updateUser = (data) => {
+    return defaultInstance.put('/', data)
+}
+
 export const userApi = {
     login,
     getUserById,
@@ -49,4 +53,5 @@ export const userApi = {
     getWalletInfo,
     getTransactions,
     getStudentProfile,
+    updateUser,
 }

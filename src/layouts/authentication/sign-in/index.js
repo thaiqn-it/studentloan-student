@@ -47,7 +47,6 @@ function SignIn() {
 
     const signIn = async (e) => {
         try {
-            console.log('login')
             e.preventDefault()
             setError(false)
             const response = await loginUser(dispatch, email, password)
