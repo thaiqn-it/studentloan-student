@@ -46,6 +46,12 @@ import SignIn from 'layouts/authentication/sign-in'
 import SignUp from 'layouts/authentication/sign-up'
 
 // Soft UI Dashboard React icons
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import ContentPasteIcon from '@mui/icons-material/ContentPaste'
+import LocalAtmIcon from '@mui/icons-material/LocalAtm'
+import ListIcon from '@mui/icons-material/List'
+import KeyIcon from '@mui/icons-material/Key'
 import Shop from 'examples/Icons/Shop'
 import Office from 'examples/Icons/Office'
 import Settings from 'examples/Icons/Settings'
@@ -68,7 +74,7 @@ let routes = [
         name: 'Thông tin',
         key: 'profile',
         route: '/profile',
-        icon: <SpaceShip size="12px" />,
+        icon: <AssignmentIndIcon size="12px" />,
         component: StudentProfile,
         noCollapse: true,
     },
@@ -77,7 +83,7 @@ let routes = [
         name: 'Ví',
         key: 'wallet',
         route: '/wallet',
-        icon: <SpaceShip size="12px" />,
+        icon: <AccountBalanceWalletIcon size="12px" />,
         component: Wallet,
         noCollapse: true,
     },
@@ -86,7 +92,7 @@ let routes = [
         name: 'Báo cáo',
         key: 'report',
         route: '/report',
-        icon: <SpaceShip size="12px" />,
+        icon: <ContentPasteIcon size="12px" />,
         component: Report,
         noCollapse: true,
     },
@@ -95,7 +101,7 @@ let routes = [
         name: 'Yêu cầu vay',
         key: 'request',
         route: '/request',
-        icon: <SpaceShip size="12px" />,
+        icon: <LocalAtmIcon size="12px" />,
         component: RequestLoanPost,
         noCollapse: true,
     },
@@ -104,7 +110,7 @@ let routes = [
         name: 'Xem bài',
         key: 'view-post',
         route: '/view-post',
-        icon: <SpaceShip size="12px" />,
+        icon: <ListIcon size="12px" />,
         component: ViewPost,
         noCollapse: true,
     },
@@ -113,7 +119,7 @@ let routes = [
         name: 'Xác Thực',
         key: 'verify',
         route: '/verify',
-        icon: <SpaceShip size="12px" />,
+        icon: <KeyIcon size="12px" />,
         component: Verify,
         noCollapse: true,
     },
