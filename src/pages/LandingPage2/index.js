@@ -38,75 +38,6 @@ import {
     };
   
     return (
-<<<<<<< HEAD
-        <>
-            <Box className={classes.welcome}>
-                <Navbar title={'Student Loan'} />
-                <Container>
-                    <Box padding="20% 20px 0 20px">
-                        <Grid container>
-                            <Grid item xs="12" md="12" lg="6">
-                                <SuiTypography
-                                    variant="h1"
-                                    fontWeight="bold"
-                                    margin="50px 0 20px 0"
-                                >
-                                    Welcome,
-                                </SuiTypography>
-                                <SuiTypography
-                                    variant="h1"
-                                    fontWeight="regular"
-                                    marginBottom="20px"
-                                >
-                                    We Help You To Call For The Money
-                                </SuiTypography>
-                                <SuiTypography
-                                    variant="h6"
-                                    fontWeight="regular"
-                                    marginBottom="40px"
-                                    color="text"
-                                >
-                                    Student loan provide crowd-funding platform
-                                    for student to contrive the tuition fee.
-                                    Besides the businesses may look for their
-                                    human resource on our platform
-                                </SuiTypography>
-                                <SuiButton variant="gradient" color="dark">
-                                    Read more
-                                </SuiButton>
-                            </Grid>
-                            <Grid item xs="12" md="12" lg="6">
-                                <CardMedia
-                                    src="https://themesdesign.in/nody/images/hero-img.png"
-                                    component="img"
-                                    sx={{
-                                        height: 'auto',
-                                        maxWidth: '85%',
-                                        margin: '0px',
-                                        float: 'right',
-                                    }}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Container>
-            </Box>
-            <Box
-                id="contact"
-                height="100vh"
-                position="relative"
-                padding="0 20px 0 20px"
-                marginTop="50px"
-                sx={{
-                    '@media (max-width: 1024px)': {
-                        marginTop: '100px',
-                    },
-                }}
-            >
-                <Container textAlign="center">
-                    <SuiTypography variant="h2" fontWeight="medium">
-                        Get started with your first installment plan
-=======
       <>
         <Box className={classes.welcome}>
           <Navbar title="Student Loan" />
@@ -267,7 +198,6 @@ import {
                   >
                     <SuiTypography variant="h6" fontWeight="bold" color="text">
                       Your sample monthly payment
->>>>>>> longt4
                     </SuiTypography>
                     <SuiTypography
                       variant="h3"
@@ -327,19 +257,6 @@ import {
                         </SuiTypography>
                       </Grid>
                     </Grid>
-<<<<<<< HEAD
-                </Container>
-            </Box>
-
-            <Box
-                height="100vh"
-                position="relative"
-                padding="0 20px 0 20px"
-            ></Box>
-        </>
-    )
-}
-=======
                     <SuiButton
                       href="/authentication/sign-up"
                       variant="contained"
@@ -360,4 +277,3 @@ import {
     );
   }
   
->>>>>>> longt4

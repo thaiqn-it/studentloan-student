@@ -61,7 +61,6 @@ function DefaultNavbar({ transparent, light, action, title }) {
      The event listener that's calling the displayMobileNavbar function when 
      resizing the window.
     */
-<<<<<<< HEAD
         window.addEventListener('resize', displayMobileNavbar)
 
         // Call the displayMobileNavbar function to set the state with the initial value.
@@ -193,73 +192,6 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         {mobileNavbar ? 'close' : 'menu'}
                     </Icon>
                 </SuiBox>
-=======
-    window.addEventListener("resize", displayMobileNavbar);
-
-    // Call the displayMobileNavbar function to set the state with the initial value.
-    displayMobileNavbar();
-
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", displayMobileNavbar);
-  }, []);
-
-  return (
-    <Container>
-      <SuiBox
-        py={1.5}
-        px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
-        my={2}
-        mx={3}
-        width="calc(100% - 48px)"
-        borderRadius="section"
-        shadow={transparent ? "none" : "md"}
-        color={light ? "white" : "dark"}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        position="fixed"
-        left={0}
-        zIndex={3}
-        sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
-          backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
-        })}
-      >
-        <SuiBox component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
-          <SuiTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            {title}
-          </SuiTypography>
-        </SuiBox>
-        <SuiBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
-          <DefaultNavbarLink
-            icon="account_circle"
-            name="sign up"
-            route="/authentication/sign-up"
-            light={light}
-          />
-          <DefaultNavbarLink
-            icon="key"
-            name="sign in"
-            route="/authentication/sign-in"
-            light={light}
-          />
-        </SuiBox>
-        {action &&
-          (action.type === "internal" ? (
-            <SuiBox display={{ xs: "none", lg: "inline-block" }}>
-              <SuiButton
-                component={Link}
-                to={action.route}
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-                circular
-              >
-                {action.label}
-              </SuiButton>
->>>>>>> longt4
             </SuiBox>
             {mobileView && (
                 <DefaultNavbarMobile
