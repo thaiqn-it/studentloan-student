@@ -9,15 +9,79 @@ import {
     Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import { studentApi } from 'apis/studentApi'
 import SuiButton from 'components/SuiButton'
-import React, { useState } from 'react'
+import SuiInput from 'components/SuiInput'
+import React, { useEffect, useState } from 'react'
 import BasicInfo from './basicInfo'
 import GuardianInfo from './guardianInfo'
-import ImageUploadForm from './imageUploadForm'
+import StudentImageUploadForm from './StudentImageUploadForm'
 
 import classes from './Verify.module.css'
+import GuardianImageUploadForm from './GuardianImageUploadForm'
+
+export const InputField = ({
+    type,
+    value,
+    handleInputState,
+    error,
+    helperText,
+    label,
+    name,
+}) => {
+    return (
+        <>
+            <Box className={classes.inputBox}>
+                <Typography variant="caption" className={classes.title}>
+                    {label}
+                </Typography>
+                <SuiInput
+                    type={type}
+                    value={value}
+                    onChange={handleInputState}
+                    name={name}
+                />
+                {error && (
+                    <Typography variant="caption" className={classes.error}>
+                        {helperText}
+                    </Typography>
+                )}
+            </Box>
+        </>
+    )
+}
 
 export default function Verify() {
+    const data = {
+        firstname: '',
+        lastname: '',
+        birthDate: '',
+        citizenId: '',
+        studentCardId: '',
+        address: '',
+        school: '',
+        currentSemester: '',
+        totalSemester: '',
+        major: '',
+        frontCitizenCardImageUrl: '',
+        backCitizenCardImageUrl: '',
+        frontStudentCardImageUrl: '',
+        backStudentCardImageUrl: '',
+        citizenCardCreatedDate: '',
+        citizenCardCreatedPlace: '',
+        guardianLastName: '',
+        guardianFirstName: '',
+        guardianBirthDay: '',
+        guardianAddress: '',
+        guardianRelation: '',
+        guardianCitizenId: '',
+        guardianPhoneNumber: '',
+        guardianEmail: '',
+        guardianCitizenCardCreatedDate: '',
+        guardianCitizenCardCreatedPlace: '',
+    }
+
+    const error = {}
     const [activeStep, setActiveStep] = useState(0)
     const steps = [
         'Nhập Thông Tin Cá Nhân',
@@ -25,8 +89,8 @@ export default function Verify() {
         'Nhập thông tin người giám hộ',
         'Gửi hình giấy tờ người giám hộ',
     ]
-
     const [completed, setCompleted] = useState(0)
+    const [userData, setUserData] = useState(data)
 
     const handleStep = (step) => () => {
         if (step <= steps.length + 1) {
@@ -36,22 +100,72 @@ export default function Verify() {
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1)
+        window.scrollTo(0, 0)
     }
 
     const handleNext = () => {
-        if (activeStep === steps.length - 1) {
-            handleSubmit()
-        } else setActiveStep((prevActiveStep) => prevActiveStep + 1)
+        if (haveInputError(activeStep)) return setError(activeStep)
+
+        if (activeStep === steps.length - 1) return handleSubmit()
+
+        setActiveStep((prevActiveStep) => prevActiveStep + 1)
+        window.scrollTo(0, 0)
     }
 
-    const handleSubmit = () => {
+    const handleChange = (e) => {
+        e.preventDefault()
+        setUserData({
+            ...userData,
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    const handleChangeV2 = (stateName, value) => {
+        setUserData({
+            ...userData,
+            [stateName]: value,
+        })
+    }
+    const handleSubmit = async () => {
         try {
-            const data = {
-                ...states,
-            }
+            const data = userData
             const student = await studentApi.update(data)
             if (!student) throw new Error()
         } catch (err) {}
+    }
+
+    const haveInputError = (step) => {
+        switch (step) {
+            case 0: //Basic Info Step
+                verifyBasicInfo()
+                break
+            case 1: //Student Image Steo
+                verifyStudentImage()
+                break
+            case 2: //Guardian Info Step
+                verifyGuardianInfo()
+                break
+            case 3: //Guardian Image Step
+                verifyGuardianImage()
+                break
+            default:
+                return false
+        }
+    }
+
+    const verifyBasicInfo = () => {
+        return true
+    }
+
+    const verifyGuardianInfo = () => {
+        return true
+    }
+
+    const verifyStudentImage = () => {
+        return true
+    }
+    const verifyGuardianImage = () => {
+        return true
     }
 
     return (
@@ -79,10 +193,34 @@ export default function Verify() {
                                     Nhâp đầy đủ thông tin
                                 </Typography>
                                 <Box className={classes.form}>
-                                    {activeStep === 0 && <BasicInfo />}
-                                    {activeStep === 1 && <ImageUploadForm />}
-                                    {activeStep === 2 && <GuardianInfo />}
-                                    {activeStep === 3 && <ImageUploadForm />}
+                                    {activeStep === 0 && (
+                                        <BasicInfo
+                                            userData={userData}
+                                            handleChange={handleChange}
+                                            error={false}
+                                        />
+                                    )}
+                                    {activeStep === 1 && (
+                                        <StudentImageUploadForm
+                                            userData={userData}
+                                            handleChange={handleChangeV2}
+                                            error={error}
+                                        />
+                                    )}
+                                    {activeStep === 2 && (
+                                        <GuardianInfo
+                                            userData={userData}
+                                            handleChange={handleChange}
+                                            error={error}
+                                        />
+                                    )}
+                                    {activeStep === 3 && (
+                                        <GuardianImageUploadForm
+                                            userData={userData}
+                                            handleChange={handleChangeV2}
+                                            error={error}
+                                        />
+                                    )}
                                 </Box>
                                 <React.Fragment>
                                     <Box
