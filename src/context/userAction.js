@@ -1,7 +1,7 @@
 import { loadToken } from 'apis'
 import { USER_ID, JWT_TOKEN } from 'constants/index'
 
-const { userApi } = require('apis/user')
+const { userApi } = require('apis/userApi')
 const { USER_REDUCER_ACTION } = require('./authContext')
 
 export const loginUser = async (dispatch, email, password) => {

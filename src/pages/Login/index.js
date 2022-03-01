@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import styles from './Login.module.css'
 import loginImage from '../../assets/loginImage.svg'
-import { userApi } from '../../apis/user'
+import { userApi } from '../../apis/userApi'
 import { JWT_TOKEN } from '../../constants'
 import { useHistory } from 'react-router'
 import { useAuthDispatch } from 'context/authContext'

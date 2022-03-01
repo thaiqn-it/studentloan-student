@@ -15,7 +15,7 @@ import OtpInput from "react-otp-input";
 import { useHistory } from "react-router-dom";
 
 import theme from "../../theme";
-import { userApi } from "../../apis/user";
+import { userApi } from "../../apis/userApi";
 
 const SignUp = () => {
   const emailRef = useRef(null);
