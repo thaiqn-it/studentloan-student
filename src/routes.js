@@ -60,6 +60,7 @@ import Wallet from "pages/Wallet";
 import Report from "pages/Report";
 import RequestLoanPost from "pages/RequestLoanPost";
 import ViewPost from "pages/ViewPost";
+import ViewAllPost from "pages/ViewAllPost"
 
 const routes = [
   {
@@ -105,6 +106,15 @@ const routes = [
     route: "/view-post",
     icon: <SpaceShip size="12px" />,
     component: ViewPost,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "View all post",
+    key: "view-all-post",
+    route: "/view-all",
+    icon: <SpaceShip size="12px" />,
+    component: ViewAllPost,
     noCollapse: true,
   },
 ];

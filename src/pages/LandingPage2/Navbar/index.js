@@ -83,7 +83,7 @@ function DefaultNavbar({ transparent, light, action , title }) {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        position="absolute"
+        position="fixed"
         left={0}
         zIndex={3}
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({

@@ -61,7 +61,7 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
         overflow: "visible",
       }}
     >
-      <SuiBox position="relative" width="100.25%" shadow="xl" borderRadius="xl">
+      <SuiBox position="relative">
         <CardMedia
           src={image}
           component="img"
