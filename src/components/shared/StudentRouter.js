@@ -11,7 +11,7 @@ const StudentRoute = () => {
     <>
       <Switch>
         <Route exact path={path} component={RequestLoanPost} />
-
+        {/* <Route path={`${path}/view-all`} component={StudentProfile} /> */}
         <Route path={`${path}/Profile`} component={StudentProfile} />
         <Route path={`${path}/Wallet`} component={Wallet} />
       </Switch>

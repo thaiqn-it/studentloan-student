@@ -46,6 +46,7 @@ import SignIn from 'layouts/authentication/sign-in'
 import SignUp from 'layouts/authentication/sign-up'
 
 // Soft UI Dashboard React icons
+<<<<<<< HEAD
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
@@ -124,6 +125,80 @@ let routes = [
         noCollapse: true,
     },
 ]
+=======
+import Shop from "examples/Icons/Shop";
+import Office from "examples/Icons/Office";
+import Settings from "examples/Icons/Settings";
+import Document from "examples/Icons/Document";
+import SpaceShip from "examples/Icons/SpaceShip";
+import CustomerSupport from "examples/Icons/CustomerSupport";
+import CreditCard from "examples/Icons/CreditCard";
+import Cube from "examples/Icons/Cube";
+import LandingPage from "pages/LandingPage";
+import StudentProfile from "pages/StudentProfile";
+import Wallet from "pages/Wallet";
+import Report from "pages/Report";
+import RequestLoanPost from "pages/RequestLoanPost";
+import ViewPost from "pages/ViewPost";
+import ViewAllPost from "pages/ViewAllPost"
+
+const routes = [
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    route: "/profile",
+    icon: <SpaceShip size="12px" />,
+    component: StudentProfile,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Wallet",
+    key: "wallet",
+    route: "/wallet",
+    icon: <SpaceShip size="12px" />,
+    component: Wallet,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Report",
+    key: "report",
+    route: "/report",
+    icon: <SpaceShip size="12px" />,
+    component: Report,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Request",
+    key: "request",
+    route: "/request",
+    icon: <SpaceShip size="12px" />,
+    component: RequestLoanPost,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "View post",
+    key: "view-post",
+    route: "/view-post",
+    icon: <SpaceShip size="12px" />,
+    component: ViewPost,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "View all post",
+    key: "view-all-post",
+    route: "/view-all",
+    icon: <SpaceShip size="12px" />,
+    component: ViewAllPost,
+    noCollapse: true,
+  },
+];
+>>>>>>> longt4
 
 export const mainRoutes = [
     {
