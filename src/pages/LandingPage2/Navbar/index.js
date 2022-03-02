@@ -37,6 +37,10 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 // Soft UI Dashboard PRO React base styles
 import breakpoints from 'assets/theme/base/breakpoints'
 
+import ReleaseLogo from '../../../assets/release-logo.png'
+import { Avatar, CardMedia } from '@mui/material'
+import SuiAvatar from 'components/SuiAvatar'
+
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
     const [mobileView, setMobileView] = useState(false)
@@ -108,11 +112,16 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     to="/"
                     py={transparent ? 1.5 : 0.75}
                     lineHeight={1}
+                    display="flex"
+                    alignItems="center"
                 >
+                    {/* <Avatar alt="StudentLoan" src={ReleaseLogo} /> */}
+                    <CardMedia component="img" image={ReleaseLogo} height={25} sx={{ margin: "0", objectFit: "contain"}}/>
                     <SuiTypography
-                        variant="button"
+                        variant="h5"
                         fontWeight="bold"
                         color={light ? 'white' : 'dark'}
+                        ml={2}
                     >
                         {title}
                     </SuiTypography>
@@ -126,26 +135,25 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     <DefaultNavbarLink
                         icon="donut_large"
                         name="dashboard"
-                        direct="/dashboard"
+                        route="/dashboard"
                         light={light}
                     />
                     <DefaultNavbarLink
                         icon="person"
                         name="profile"
-                        route="contact"
-                        offset={-150}
+                        route="/profile"
                         light={light}
                     />
                     <DefaultNavbarLink
                         icon="account_circle"
                         name="sign up"
-                        direct="/authentication/sign-up"
+                        route="/authentication/sign-up"
                         light={light}
                     />
                     <DefaultNavbarLink
                         icon="key"
                         name="sign in"
-                        direct="/authentication/sign-in"
+                        route="/authentication/sign-in"
                         light={light}
                     />
                 </SuiBox>

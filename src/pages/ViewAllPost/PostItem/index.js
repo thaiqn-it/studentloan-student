@@ -19,7 +19,7 @@ export default function PostItem() {
                 display: 'flex',
                 flexDirection: 'column',
                 // backgroundColor: 'none',
-                // boxShadow: 'none',
+                boxShadow: "6",
                 // overflow: 'visible',
             }}
         >
