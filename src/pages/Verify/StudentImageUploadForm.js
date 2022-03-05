@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import DropFileInput from 'components/DropFileZone'
+import DropFileInput from 'components/DropFileZone/v2'
 import { Card, CardMedia, Grid, Typography } from '@mui/material'
 
 export default function StudentImageUploadForm({
     userData,
     handleChange,
+    handleFileDrop,
     error,
 }) {
     const {
@@ -23,6 +24,8 @@ export default function StudentImageUploadForm({
                         onFileChangeURL={(url) =>
                             handleChange('citizenIdFrontUrl', url)
                         }
+                        onFileDrop={handleFileDrop}
+                        name="citizenIdFrontUrl"
                     />
                     {citizenIdFrontUrl && (
                         <>
@@ -42,6 +45,8 @@ export default function StudentImageUploadForm({
                         onFileChangeURL={(url) =>
                             handleChange('citizenIdBehindUrl', url)
                         }
+                        onFileDrop={handleFileDrop}
+                        name="citizenIdBehindUrl"
                     />
                     {citizenIdBehindUrl && (
                         <>
@@ -61,6 +66,8 @@ export default function StudentImageUploadForm({
                         onFileChangeURL={(url) =>
                             handleChange('studentIdFront', url)
                         }
+                        onFileDrop={handleFileDrop}
+                        name="studentIdFront"
                     />
                     {studentIdFront && (
                         <>
@@ -80,6 +87,8 @@ export default function StudentImageUploadForm({
                         onFileChangeURL={(url) =>
                             handleChange('studentIdBehind', url)
                         }
+                        onFileDrop={handleFileDrop}
+                        name="studentIdBehind"
                     />
                     {studentIdBehind && (
                         <>

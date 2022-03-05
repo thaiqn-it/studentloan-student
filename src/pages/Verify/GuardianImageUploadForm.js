@@ -1,18 +1,14 @@
 import React, { useState } from 'react'
-import DropFileInput from 'components/DropFileZone'
+import DropFileInput from 'components/DropFileZone/v2'
 import { Card, CardMedia, Grid, Typography } from '@mui/material'
 
 export default function GuardianImageUploadForm({
     userData,
     handleChange,
+    handleFileDrop,
     error,
 }) {
-    const {
-        citizenIdFrontUrl,
-        citizenIdBehindUrl,
-        studentIdFront,
-        studentIdBehind,
-    } = userData
+    const { frontCitizenCardImageUrl, backCitizenCardImageUrl } = userData
 
     return (
         <>
@@ -21,15 +17,17 @@ export default function GuardianImageUploadForm({
                     <Typography>Hình CCCD/CMND trước</Typography>
                     <DropFileInput
                         onFileChangeURL={(url) =>
-                            handleChange('citizenIdFrontUrl', url)
+                            handleChange('frontCitizenCardImageUrl', url)
                         }
+                        onFileDrop={handleFileDrop}
+                        name="frontCitizenCardImage"
                     />
-                    {citizenIdFrontUrl && (
+                    {frontCitizenCardImageUrl && (
                         <>
                             <Card sx={{ maxWidth: '100%' }}>
                                 <CardMedia
                                     component="img"
-                                    image={citizenIdFrontUrl}
+                                    image={frontCitizenCardImageUrl}
                                     alt="uploaded CitizenId"
                                 />
                             </Card>
@@ -40,15 +38,17 @@ export default function GuardianImageUploadForm({
                     <Typography>Hình CCCD/CMND sau</Typography>
                     <DropFileInput
                         onFileChangeURL={(url) =>
-                            handleChange('citizenIdBehindUrl', url)
+                            handleChange('backCitizenCardImageUrl', url)
                         }
+                        onFileDrop={handleFileDrop}
+                        name="backCitizenCardImageUrl"
                     />
-                    {citizenIdBehindUrl && (
+                    {backCitizenCardImageUrl && (
                         <>
                             <Card sx={{ maxWidth: '100%' }}>
                                 <CardMedia
                                     component="img"
-                                    image={citizenIdBehindUrl}
+                                    image={backCitizenCardImageUrl}
                                     alt="uploaded CitizenId"
                                 />
                             </Card>

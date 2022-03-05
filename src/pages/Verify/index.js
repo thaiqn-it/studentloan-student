@@ -20,6 +20,10 @@ import StudentImageUploadForm from './StudentImageUploadForm'
 import classes from './Verify.module.css'
 import GuardianImageUploadForm from './GuardianImageUploadForm'
 
+import { resizeImage } from 'utils/resizeImage'
+import { imageApi } from 'apis/imageApi'
+import { tutorApi } from 'apis/tutorApi'
+
 export const InputField = ({
     type,
     value,
@@ -52,7 +56,7 @@ export const InputField = ({
 }
 
 export default function Verify() {
-    const data = {
+    const student = {
         firstname: '',
         lastname: '',
         birthDate: '',
@@ -69,18 +73,23 @@ export default function Verify() {
         backStudentCardImageUrl: '',
         citizenCardCreatedDate: '',
         citizenCardCreatedPlace: '',
-        guardianLastName: '',
-        guardianFirstName: '',
-        guardianBirthDay: '',
-        guardianAddress: '',
-        guardianRelation: '',
-        guardianCitizenId: '',
-        guardianPhoneNumber: '',
-        guardianEmail: '',
-        guardianCitizenCardCreatedDate: '',
-        guardianCitizenCardCreatedPlace: '',
     }
 
+    const tutor = {
+        firstname: '',
+        lastname: '',
+        email: '',
+        phone: '',
+        address: '',
+        birthday: '',
+        email: '',
+        relation: '',
+        citizenId: '',
+        citizenCardCreatedDate: '',
+        citizenCardCreatedPlace: '',
+        frontCitizenCardImageUrl: '',
+        backCitizenCardImageUrl: '',
+    }
     const error = {}
     const [activeStep, setActiveStep] = useState(0)
     const steps = [
@@ -90,7 +99,8 @@ export default function Verify() {
         'Gửi hình giấy tờ người giám hộ',
     ]
     const [completed, setCompleted] = useState(0)
-    const [userData, setUserData] = useState(data)
+    const [studentData, setStudentData] = useState(student)
+    const [tutorData, setTutorData] = useState(tutor)
 
     const handleStep = (step) => () => {
         if (step <= steps.length + 1) {
@@ -112,26 +122,78 @@ export default function Verify() {
         window.scrollTo(0, 0)
     }
 
-    const handleChange = (e) => {
+    const handleStudentChange = (e) => {
         e.preventDefault()
-        setUserData({
-            ...userData,
+        setStudentData({
+            ...studentData,
             [e.target.name]: e.target.value,
         })
     }
 
-    const handleChangeV2 = (stateName, value) => {
-        setUserData({
-            ...userData,
+    const handleStudentChangeV2 = (stateName, value) => {
+        setStudentData({
+            ...studentData,
             [stateName]: value,
         })
     }
-    const handleSubmit = async () => {
+
+    const handleTutorChange = (e) => {
+        e.preventDefault()
+        setTutorData({
+            ...tutorData,
+            [e.target.name]: e.target.value,
+        })
+    }
+    const handleTutorChangeV2 = (stateName, value) => {
+        setTutorData({
+            ...tutorData,
+            [stateName]: value,
+        })
+    }
+
+    const handleStudentFileDrop = async (stateName, file) => {
+        const resizeImg = resizeImage(file)
+
+        const formData = new FormData()
+        formData.append('file', resizeImg)
+
         try {
-            const data = userData
-            const student = await studentApi.update(data)
-            if (!student) throw new Error()
+            const res = await imageApi.uploadImage(formData)
+            if (res.status !== 200) throw new Error()
+            const url = res.data.url
+            setStudentData({ ...studentData, [stateName]: url })
         } catch (err) {}
+    }
+
+    const handleTutorFileDrop = async (stateName, file) => {
+        const resizeImg = await resizeImage(file)
+        console.log(resizeImg)
+        const formData = new FormData()
+        formData.append('file', resizeImg)
+        console.log('img resiezed')
+        try {   
+            console.log('send Data')
+
+            const res = await imageApi.uploadImage(formData)
+            console.log(res)
+            if (res.status !== 200) throw new Error(res)
+            console.log(res.data.url)
+            const url = res.data.url
+            setTutorData({ ...tutorData, [stateName]: url })
+        } catch (err) {}
+    }
+    const handleSubmit = async () => {
+        // try {
+        //     const tutor = { ...tutorData }
+        //     const tutorRes = await tutorApi.createTutor(tutorData)
+        //     if (tutorRes.status !== 200) throw new Error()
+
+        //     const student = { ...studentData, tutorId: tutorRes.data.id }
+        //     const studentRes = await studentApi.update(data)
+        //     if (!student) throw new Error()
+        // } catch (err) {}
+        console.log(studentData)
+        console.log(tutorData)
     }
 
     const haveInputError = (step) => {
@@ -195,29 +257,33 @@ export default function Verify() {
                                 <Box className={classes.form}>
                                     {activeStep === 0 && (
                                         <BasicInfo
-                                            userData={userData}
-                                            handleChange={handleChange}
+                                            userData={studentData}
+                                            handleChange={handleStudentChange}
                                             error={false}
                                         />
                                     )}
                                     {activeStep === 1 && (
                                         <StudentImageUploadForm
-                                            userData={userData}
-                                            handleChange={handleChangeV2}
+                                            userData={studentData}
+                                            handleChange={handleStudentChangeV2}
+                                            handleFileDrop={
+                                                handleStudentFileDrop
+                                            }
                                             error={error}
                                         />
                                     )}
                                     {activeStep === 2 && (
                                         <GuardianInfo
-                                            userData={userData}
-                                            handleChange={handleChange}
+                                            userData={tutorData}
+                                            handleChange={handleTutorChange}
                                             error={error}
                                         />
                                     )}
                                     {activeStep === 3 && (
                                         <GuardianImageUploadForm
-                                            userData={userData}
-                                            handleChange={handleChangeV2}
+                                            userData={tutorData}
+                                            handleFileDrop={handleTutorFileDrop}
+                                            handleChange={handleTutorChangeV2}
                                             error={error}
                                         />
                                     )}
