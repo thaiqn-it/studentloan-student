@@ -3,6 +3,7 @@ import theme from 'assets/theme'
 import React from 'react'
 import classes from './Cancel.module.css'
 import CloseIcon from '@mui/icons-material/Close'
+import { Button, Typography } from '@mui/material'
 
 export default function Cancel(props) {
     return (
@@ -20,6 +21,11 @@ export default function Cancel(props) {
                         We received your cancel request
                         <br /> we'll be in touch shortly!
                     </p>
+                    <Button variant="contain" color="warning">
+                        <Link to="/">
+                            <Typography>Go to Home</Typography>
+                        </Link>
+                    </Button>
                 </Card>
             </Box>
         </ThemeProvider>

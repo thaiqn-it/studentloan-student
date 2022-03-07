@@ -1,11 +1,17 @@
-import { Box, Card, ThemeProvider } from '@mui/material'
+import { Box, Button, Card, Typography } from '@mui/material'
 import theme from 'assets/theme'
 import React from 'react'
 import classes from './Success.module.css'
+import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 
 export default function Success(props) {
+    const title = 'Success'
     return (
-        <ThemeProvider theme={theme}>
+        <>
+            <Helmet>
+                <title>{title}</title>
+            </Helmet>
             <Box className={classes.container}>
                 <Card className={classes.card}>
                     <div className={classes.icon}>
@@ -16,8 +22,13 @@ export default function Success(props) {
                         We received your payment request
                         <br /> we'll be in touch shortly!
                     </p>
+                    <Button variant="contain" color="success">
+                        <Link to="/">
+                            <Typography>Go to Home</Typography>
+                        </Link>
+                    </Button>
                 </Card>
             </Box>
-        </ThemeProvider>
+        </>
     )
 }
