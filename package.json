@@ -43,6 +43,7 @@
     "lint": "eslint . --ext .js  ",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://forum.vdevs.net",
   "browserslist": {
     "production": [
       ">0.2%",

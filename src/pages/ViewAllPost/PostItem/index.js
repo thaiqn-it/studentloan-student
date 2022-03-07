@@ -2,6 +2,7 @@ import React from 'react'
 
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
+import LinearProgress from '@mui/material/LinearProgress';
 
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
@@ -19,11 +20,14 @@ export default function PostItem() {
                 display: 'flex',
                 flexDirection: 'column',
                 // backgroundColor: 'none',
-                boxShadow: "6",
+                // boxShadow: "6",
+                borderRadius: '0',
+                border: '0.1rem solid #DCDEDD',
+                maxHeight: "40rem",
                 // overflow: 'visible',
             }}
         >
-            <SuiBox position="relative" width="100.25%">
+            <SuiBox position="relative">
                 <CardMedia
                     src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
                     component="img"
@@ -32,11 +36,12 @@ export default function PostItem() {
                         margin: 0,
                         height: '15rem',
                         width: '100%',
+                        borderRadius: '0',
                     }}
                 />
             </SuiBox>
 
-            <SuiBox pt={3} px={0.5} padding={2}>
+            <SuiBox pt={1} px={0.5} padding={2} >
                 {/* <SuiBox display="flex" justifyContent="space-between">
                     <SuiTypography
                         variant="button"
@@ -57,7 +62,72 @@ export default function PostItem() {
                     </SuiTypography>
                 </SuiBox> */}
 
-                <SuiProgress value={50} label color="primary" />
+
+
+                <SuiBox mb={1}>
+                    <SuiTypography
+                        component={Link}
+                        // to={action.route}
+                        variant="h5"
+                        textTransform="capitalize"
+                        fontWeight="regular"
+                    >
+                        Vay học phí cho 9 kỳ
+                    </SuiTypography>
+                </SuiBox>
+                <SuiBox mb={2} lineHeight={0}>
+                    <SuiTypography
+                        variant="button"
+                        fontWeight="regular"
+                        color="text"
+                    >
+                        Tôi đang là sinh viên đai học FPT, tôi đang cần xin vay
+                        để đóng học phí từ kỳ 1 đến kỳ 9
+                    </SuiTypography>
+                </SuiBox>
+
+                <SuiBox mb={1} display="flex" justifyContent="space-between">
+                    <SuiTypography
+                        variant="button"
+                        fontWeight="regular"
+                        textTransform="none"
+                    >
+                        Số tiền vay:
+                    </SuiTypography>
+                    <SuiTypography variant="button" textTransform="none">
+                        245.700.000 VND
+                    </SuiTypography>
+                </SuiBox>
+
+                {/* <SuiBox mb={1} display="flex" justifyContent="space-between">
+                    <SuiTypography
+                        variant="button"
+                        fontWeight="regular"
+                        textTransform="none"
+                    >
+                        Ngày tạo:
+                    </SuiTypography>
+                    <SuiTypography variant="button" textTransform="none">
+                        24/12/2021
+                    </SuiTypography>
+                </SuiBox> */}
+
+                <SuiBox mb={3} display="flex" justifyContent="space-between">
+                    <SuiTypography
+                        variant="button"
+                        fontWeight="regular"
+                        textTransform="none"
+                    >
+                        Ngày hết hạn:
+                    </SuiTypography>
+                    <SuiTypography variant="button" textTransform="none">
+                        24/6/2022
+                    </SuiTypography>
+                </SuiBox>
+
+                <Divider variant="fullWidth" />
+
+                <SuiProgress value={50} label color="primary"/>
 
                 <SuiBox mb={3} mt={3}>
                     <Grid container>
@@ -107,69 +177,7 @@ export default function PostItem() {
                     </SuiTypography> */}
                 </SuiBox>
 
-                <Divider variant="fullWidth" />
-
-                <SuiBox mb={1} mt={1}>
-                    <SuiTypography
-                        component={Link}
-                        // to={action.route}
-                        variant="h5"
-                        textTransform="capitalize"
-                    >
-                        Vay học phí cho 9 kỳ
-                    </SuiTypography>
-                </SuiBox>
-                <SuiBox mb={2} lineHeight={0}>
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        color="text"
-                    >
-                        Tôi đang là sinh viên đai học FPT, tôi đang cần xin vay
-                        để đóng học phí từ kỳ 1 đến kỳ 9
-                    </SuiTypography>
-                </SuiBox>
-
-                <SuiBox mb={1} display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Số tiền vay:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        245.700.000 VND
-                    </SuiTypography>
-                </SuiBox>
-
-                <SuiBox mb={1} display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Ngày tạo:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        24/12/2021
-                    </SuiTypography>
-                </SuiBox>
-
-                <SuiBox mb={3} display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Ngày hết hạn:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        24/6/2022
-                    </SuiTypography>
-                </SuiBox>
-
-                <SuiBox
+                {/* <SuiBox
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
@@ -183,7 +191,7 @@ export default function PostItem() {
                     >
                         Xem
                     </SuiButton>
-                </SuiBox>
+                </SuiBox> */}
             </SuiBox>
         </Card>
     )

@@ -135,7 +135,7 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     <DefaultNavbarLink
                         icon="donut_large"
                         name="dashboard"
-                        route="/dashboard"
+                        direct="/dashboard"
                         light={light}
                     />
                     <DefaultNavbarLink
