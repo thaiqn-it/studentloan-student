@@ -16,6 +16,7 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import React from 'react'
 import CardInvestDetail from '../../components/CardInvestDetail'
+import ImageModal from '../../components/ImageModal'
 
 export default function ViewPost() {
     const investor = {
@@ -219,7 +220,7 @@ export default function ViewPost() {
                                     sx={{
                                         margin: '2rem 0 0 0',
                                         width: '100%',
-                                         '@media (max-width: 1024px)': {
+                                        '@media (max-width: 1024px)': {
                                             height: '20rem',
                                         },
                                     }}
@@ -260,8 +261,8 @@ export default function ViewPost() {
                                         margin: '2rem 0 0 0',
                                         width: '100%',
                                         '@media (max-width: 1024px)': {
-                                          height: '20rem',
-                                      },
+                                            height: '20rem',
+                                        },
                                     }}
                                 />
                             </Grid>
@@ -278,12 +279,31 @@ export default function ViewPost() {
                                     sx={{ marginTop: 2 }}
                                 />
                                 <CardMedia
-                                    sx={{ margin: '2rem 0 0 0', width: '100%' , '@media (max-width: 1024px)': {
-                                      height: '20rem',
-                                  },}}
+                                    sx={{
+                                        margin: '2rem 0 0 0',
+                                        width: '100%',
+                                        '@media (max-width: 1024px)': {
+                                            height: '20rem',
+                                        },
+                                    }}
                                     height="400"
                                     component="img"
                                     image="https://cdnmedia.baotintuc.vn/Upload/e9GdNZvHDFi8lZSWc6ubA/files/2021/04/hoc-sinh-gioi-26421a.jpg"
+                                />
+
+                                <ImageModal
+                                    image="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+                                    sx={{
+                                        margin: '2rem 0 0 0',
+                                        width: '100%',
+                                        '@media (max-width: 1024px)': {
+                                            height: '20rem',
+                                        },
+                                        cursor: 'pointer',
+                                    }}
+                                    height="400"
+                                    component="img"
+                                    outline="none"
                                 />
                             </Grid>
                         </Grid>
