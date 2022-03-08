@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export default function Success(props) {
-    const title = 'Success'
+    const title = 'Giao Dịch Thành Công'
     return (
         <>
             <Helmet>
@@ -17,14 +17,13 @@ export default function Success(props) {
                     <div className={classes.icon}>
                         <i className={`${classes.iconFont} checkmark`}>✓</i>
                     </div>
-                    <h1 className={classes.success}>Success</h1>
+                    <h1 className={classes.success}>Hoàn tất</h1>
                     <p className={classes.typo}>
-                        We received your payment request
-                        <br /> we'll be in touch shortly!
+                        Chúng tôi đã ghi nhận giao dịch của bạn
                     </p>
-                    <Button variant="contain" color="success">
-                        <Link to="/">
-                            <Typography>Go to Home</Typography>
+                    <Button variant="contain">
+                        <Link to="/" className={classes.link}>
+                            <Typography>Trở về trang chủ</Typography>
                         </Link>
                     </Button>
                 </Card>

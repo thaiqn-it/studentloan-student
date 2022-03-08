@@ -171,7 +171,7 @@ export default function Verify() {
         const formData = new FormData()
         formData.append('file', resizeImg)
         console.log('img resiezed')
-        try {   
+        try {
             console.log('send Data')
 
             const res = await imageApi.uploadImage(formData)
@@ -183,17 +183,22 @@ export default function Verify() {
         } catch (err) {}
     }
     const handleSubmit = async () => {
-        // try {
-        //     const tutor = { ...tutorData }
-        //     const tutorRes = await tutorApi.createTutor(tutorData)
-        //     if (tutorRes.status !== 200) throw new Error()
+        try {
+            const tutor = { ...tutorData }
+            const tutorRes = await tutorApi.createTutor(tutorData)
+            if (tutorRes.status !== 200) throw new Error()
 
-        //     const student = { ...studentData, tutorId: tutorRes.data.id }
-        //     const studentRes = await studentApi.update(data)
-        //     if (!student) throw new Error()
-        // } catch (err) {}
-        console.log(studentData)
-        console.log(tutorData)
+            const student = { ...studentData, tutorId: tutorRes.data.id }
+            const studentRes = await studentApi.update(data)
+            if (!student) throw new Error()
+        } catch (err) {}
+    }
+
+    const handleStudentImageDelete = (stateName) => {
+        setStudentData({ ...studentData, [stateName]: '' })
+    }
+    const handleTutorImageDelete = (stateName) => {
+        setTutorData({ ...tutorData, [stateName]: '' })
     }
 
     const haveInputError = (step) => {
@@ -269,6 +274,9 @@ export default function Verify() {
                                             handleFileDrop={
                                                 handleStudentFileDrop
                                             }
+                                            handleDelete={
+                                                handleStudentImageDelete
+                                            }
                                             error={error}
                                         />
                                     )}
@@ -284,6 +292,9 @@ export default function Verify() {
                                             userData={tutorData}
                                             handleFileDrop={handleTutorFileDrop}
                                             handleChange={handleTutorChangeV2}
+                                            handleDelete={
+                                                handleTutorImageDelete
+                                            }
                                             error={error}
                                         />
                                     )}
