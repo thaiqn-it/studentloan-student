@@ -1,7 +1,7 @@
-import { defaultInstance } from ".";
+import { defaultInstance } from '.'
 
 const getTransactionsByUserId = (userId) => {
-  return defaultInstance.post("/wallet", userId);
-};
+    return defaultInstance.post('/wallet', userId)
+}
 
-export const transaction = {};
+export const transactionApi = { getTransactionsByUserId }

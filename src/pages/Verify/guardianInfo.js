@@ -9,16 +9,16 @@ import { InputField } from '.'
 
 export default function GuardianInfo({ handleChange, userData, error }) {
     const {
-        guardianLastName,
-        guardianFirstName,
-        guardianAddress,
-        guardianBirthday,
-        guardianRelation,
-        guardianCitizenId,
-        guardianPhoneNumber,
-        guardianEmail,
-        guardianCitizenCardCreatedDate,
-        guardianCitizenCardCreatedPlace,
+        lastname,
+        firstname,
+        address,
+        birthday,
+        relation,
+        citizenId,
+        phone,
+        email,
+        citizenCardCreatedDate,
+        citizenCardCreatedPlace,
     } = userData
 
     return (
@@ -27,26 +27,26 @@ export default function GuardianInfo({ handleChange, userData, error }) {
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <InputField
-                            value={guardianLastName}
+                            value={lastname}
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ họ"
                             label="Họ"
-                            name="guardianLastName"
+                            name="lastname"
                             error={false}
                             type="text"
                         />
                         <InputField
-                            value={guardianEmail}
+                            value={email}
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ email"
                             label="Email của người giám hộ"
-                            name="guardianEmail"
+                            name="email"
                             error={false}
                             type="text"
                         />{' '}
                         <InputField
-                            value={guardianPhoneNumber}
-                            name="guardianPhoneNumber"
+                            value={phone}
+                            name="phone"
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ ô này"
                             label="Số điện thoại"
@@ -54,17 +54,17 @@ export default function GuardianInfo({ handleChange, userData, error }) {
                             type="number"
                         />
                         <InputField
-                            value={guardianCitizenCardCreatedDate}
+                            value={citizenCardCreatedDate}
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ ngày tháng "
                             label="Ngày cấp CCCD/CMND của người giám hộ"
-                            name="guardianCitizenCardCreatedDate"
+                            name="citizenCardCreatedDate"
                             error={false}
                             type="date"
                         />
                         <InputField
-                            value={guardianAddress}
-                            name="guardianAddress"
+                            value={address}
+                            name="address"
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ địa chỉ"
                             label="Địa Chỉ (Theo sổ hộ khẩu)"
@@ -74,8 +74,8 @@ export default function GuardianInfo({ handleChange, userData, error }) {
                     </Grid>
                     <Grid item xs={6}>
                         <InputField
-                            value={guardianFirstName}
-                            name="guardianFirstName"
+                            value={firstname}
+                            name="firstname"
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ tên"
                             label="Tên"
@@ -83,8 +83,8 @@ export default function GuardianInfo({ handleChange, userData, error }) {
                             type="text"
                         />
                         <InputField
-                            value={guardianBirthday}
-                            name="guardianBirthday"
+                            value={birthday}
+                            name="birthday"
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ ngày tháng năm sinh"
                             label="Ngày Sinh"
@@ -92,26 +92,26 @@ export default function GuardianInfo({ handleChange, userData, error }) {
                             type="date"
                         />
                         <InputField
-                            value={guardianCitizenId}
+                            value={citizenId}
                             handleInputState={handleChange}
-                            name="guardianCitizenId"
+                            name="citizenId"
                             helperText="Cần điền đầy đủ số CMND hoặc CCCD"
                             label="Số CCCD hoặc CMND"
                             error={false}
                             type="text"
                         />
                         <InputField
-                            value={guardianCitizenCardCreatedPlace}
+                            value={citizenCardCreatedPlace}
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ nơi cấp CCCD/CMND của người giám hộ"
                             label="Nơi cấp CCCD/CMND của người giám hộ"
-                            name="guardianCitizenCardCreatedPlace"
+                            name="citizenCardCreatedPlace"
                             error={false}
                             type="text"
                         />
                         <InputField
-                            value={guardianRelation}
-                            name="guardianRelation"
+                            value={relation}
+                            name="relation"
                             handleInputState={handleChange}
                             helperText="Cần điền đầy đủ ô này"
                             label="Quan hệ với sinh viên"

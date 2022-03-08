@@ -66,6 +66,7 @@ import Wallet from 'pages/Wallet'
 import Report from 'pages/Report'
 import RequestLoanPost from 'pages/RequestLoanPost'
 import ViewPost from 'pages/ViewPost'
+import ViewAllPost from "pages/ViewAllPost"
 import Verify from 'pages/Verify'
 
 let routes = [
@@ -122,6 +123,15 @@ let routes = [
         icon: <KeyIcon size="12px" />,
         component: Verify,
         noCollapse: true,
+    },
+    {
+      type: "collapse",
+      name: "Xem tất cả hồ sơ vay",
+      key: "view-all-post",
+      route: "/view-all",
+      icon: <SpaceShip size="12px" />,
+      component: ViewAllPost,
+      noCollapse: true,
     },
 ]
 

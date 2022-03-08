@@ -14,13 +14,14 @@ import ForgotPassword from './pages/ForgotPassword/'
 import Login from './layouts/authentication/sign-in'
 import SignUp from './layouts/authentication/sign-up'
 
-
 import ResetPassword from './pages/ResetPassword'
 
 import LandingPage from './pages/LandingPage2'
 
 import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
+import Success from 'pages/PaymentNotifycation/Success'
+import Cancel from 'pages/PaymentNotifycation/Cancel'
 
 function App() {
     return (
@@ -48,6 +49,8 @@ function App() {
                         exact
                         component={ForgotPassword}
                     />
+                    <Route path="/payment/success" exact component={Success} />
+                    <Route path="/payment/cancel" exact component={Cancel} />
                 </Switch>
             </Router>
         </ThemeProvider>
