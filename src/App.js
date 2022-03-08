@@ -22,9 +22,14 @@ import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
 import Success from 'pages/PaymentNotifycation/Success'
 import Cancel from 'pages/PaymentNotifycation/Cancel'
+import Helmet from 'react-helmet'
 
 function App() {
     return (
+        <>
+        <Helmet>
+            <title>Student Loan Platform</title>
+        </Helmet>
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Router>
@@ -53,7 +58,8 @@ function App() {
                     <Route path="/payment/cancel" exact component={Cancel} />
                 </Switch>
             </Router>
-        </ThemeProvider>
+        </ThemeProvider></>
+        
     )
 }
 

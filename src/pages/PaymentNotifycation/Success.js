@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
 export default function Success(props) {
-    const title = 'Giao Dịch Thành Công'
+    const title = 'Success'
     return (
         <>
             <Helmet>
