@@ -236,7 +236,7 @@ export default function ViewPost() {
 
                     <Paper
                         elevation={6}
-                        sx={{ padding: '2rem', borderRadius: '10px' }}
+                        sx={{ padding: '2rem', borderRadius: '5px' }}
                     >
                         <Typography variant="h5">Archivements</Typography>
                         <Grid container spacing="15">

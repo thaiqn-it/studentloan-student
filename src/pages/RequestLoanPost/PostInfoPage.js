@@ -18,7 +18,7 @@ import SuiInput from 'components/SuiInput'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import SuiBox from 'components/SuiBox'
 
-import {utilApi} from '../../apis/utilApi'
+import { utilApi } from '../../apis/utilApi'
 
 export default function PostInfoPage(props) {
     const [date, setDate] = useState(new Date())
@@ -264,16 +264,19 @@ export default function PostInfoPage(props) {
                             fontWeight="medium"
                             textTransform="capitalize"
                         >
-                            Demand note
+                            Giấy báo học phí
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
                             fontWeight="regular"
                             color="text"
                         >
-                            We need demand note as an evidence for your post.
+                            {/* We need demand note as an evidence for your post.
                             This will affect whether your post is approved or
-                            not
+                            not */}
+                            Chúng tôi cần giấy báo học phí như là bằng chứng cho
+                            hồ sơ vay, điều này sẽ liên quan đến việc hồ sơ vay
+                            của bạn có được duyệt hay không
                         </SuiTypography>
                         {/* <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
               Demand note

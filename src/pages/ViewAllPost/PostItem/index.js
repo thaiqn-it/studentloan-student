@@ -21,7 +21,7 @@ export default function PostItem() {
                 flexDirection: 'column',
                 // backgroundColor: 'none',
                 // boxShadow: "6",
-                borderRadius: '0',
+                borderRadius: '1',
                 border: '0.1rem solid #DCDEDD',
                 maxHeight: "40rem",
                 // overflow: 'visible',

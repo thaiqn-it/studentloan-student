@@ -6,16 +6,16 @@ import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
 import { CardMedia } from '@mui/material'
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    outline: 'none',
-    '@media (max-width: 1024px)': {
-        maxWidth: '400px',
-    },
-}
+// const style = {
+//     position: 'absolute',
+//     top: '50%',
+//     left: '50%',
+//     transform: 'translate(-50%, -50%)',
+//     outline: 'none',
+//     '@media (max-width: 1024px)': {
+//         maxWidth: '400px',
+//     },
+// }
 
 export default function ImageModal(props) {
     const [open, setOpen] = React.useState(false)
