@@ -1,4 +1,4 @@
-import { Box, Card, Divider, Grid, Avatar, Paper } from '@mui/material'
+import { Box, Card, Divider, Grid, Paper } from '@mui/material'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
@@ -6,11 +6,17 @@ import React from 'react'
 
 import DetailAccountCard from './components/DetailAccountCard'
 import PaperCard from './components/PaperCard'
+import AchievementCard from './components/AchievementCard'
 
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
+import SuiBox from 'components/SuiBox'
+import Table from 'examples/Tables/Table'
+import authorsTableData from './TableData'
 
 export default function StudentProfile2() {
+    const { columns, rows } = authorsTableData;
+
     const onclickAvatar = () => {
         console.log('hih')
     }
@@ -91,7 +97,44 @@ export default function StudentProfile2() {
                     <DetailAccountCard />
                 </Grid>
             </Grid>
+            <Box>
+                <SuiTypography variant="h4" fontWeight="regular" my={2}>
+                    Thông tin người giám hộ
+                </SuiTypography>
+                <Paper elevation={3} sx={{ borderRadius: '10px' }}>
+                    <Card>
+                        <SuiBox
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            p={3}
+                        >
+                            <SuiTypography variant="h6">
+                                Authors table
+                            </SuiTypography>
+                        </SuiBox>
+                        <SuiBox
+                            sx={{
+                                '& .MuiTableRow-root:not(:last-child)': {
+                                    '& td': {
+                                        borderBottom: ({
+                                            borders: {
+                                                borderWidth,
+                                                borderColor,
+                                            },
+                                        }) =>
+                                            `${borderWidth[1]} solid ${borderColor}`,
+                                    },
+                                },
+                            }}
+                        >
+                            <Table columns={columns} rows={rows} />
+                        </SuiBox>
+                    </Card>
+                </Paper>
+            </Box>
             <PaperCard />
+            <AchievementCard />
         </>
     )
 }
