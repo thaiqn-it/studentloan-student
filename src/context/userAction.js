@@ -15,11 +15,12 @@ export const loginUser = async (dispatch, email, password) => {
         localStorage.setItem(JWT_TOKEN, token)
         loadToken()
         const user = await userApi.getStudentProfile()
-        console.log(user)
         if (user.status !== 200 || !user.data) throw new Error(user.data.msg)
+        const data = user.data
+        const student = data.Student
         dispatch({
             type: USER_REDUCER_ACTION.LOGIN_SUCCESS,
-            payload: { user: user, token: token },
+            payload: { userId: data.id, studentId: student.id, token: token },
         })
         return user
     } catch (err) {
