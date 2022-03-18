@@ -38,8 +38,7 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 import breakpoints from 'assets/theme/base/breakpoints'
 
 import ReleaseLogo from '../../../assets/release-logo.png'
-import { Avatar, CardMedia } from '@mui/material'
-import SuiAvatar from 'components/SuiAvatar'
+import { CardMedia } from '@mui/material'
 
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
@@ -141,7 +140,7 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     <DefaultNavbarLink
                         icon="person"
                         name="profile"
-                        route="/profile"
+                        route="contact"
                         light={light}
                     />
                     <DefaultNavbarLink

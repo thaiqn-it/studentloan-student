@@ -163,8 +163,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
             <SuiTypography component="h6" variant="button" fontWeight="medium">
-              {/* {brandName} Student Loan */}
-              Student Loan Platform
+              {brandName}
             </SuiTypography>
           </SuiBox>
         </SuiBox>

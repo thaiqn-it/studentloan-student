@@ -85,15 +85,6 @@ export default function ArchievementPage(props) {
               <Grid item xs="12" md="12">
                 {listArchievement.map((items) => (
                   <>
-                    {/* <TextField
-                      align="right"
-                      label="Title"
-                      variant="outlined"
-                      fullWidth
-                      defaultValue={items.description}
-                      sx={{ marginTop: 2 }}
-                    /> */}
-
                     <SuiTypography
                       label="Title"
                       variant="h6"

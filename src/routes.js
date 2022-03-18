@@ -70,6 +70,7 @@ import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
 
 import StudentProfile2 from 'pages/StudentProfile2'
+import CreateLoanPost from 'pages/CreateLoanPost'
 
 let routes = [
     {
@@ -142,6 +143,15 @@ let routes = [
         route: '/profile2',
         icon: <SpaceShip size="12px" />,
         component: StudentProfile2,
+        noCollapse: false,
+    },
+    {
+        type: 'collapse',
+        name: 'Tạo hồ sơ vay',
+        key: 'createloan',
+        route: '/createloan',
+        icon: <SpaceShip size="12px" />,
+        component: CreateLoanPost,
         noCollapse: false,
     },
 ]
