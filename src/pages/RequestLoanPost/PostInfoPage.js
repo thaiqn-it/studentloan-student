@@ -1,29 +1,28 @@
 import React, { useState } from 'react'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DatePicker from '@mui/lab/DatePicker'
 import {
     Container,
     Typography,
     Grid,
     Divider,
     Box,
-    TextField,
     CardMedia,
 } from '@mui/material'
 import DropFileInput from '../../components/DropFileZone'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
+import SuiButton from 'components/SuiButton'
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import SuiBox from 'components/SuiBox'
+import AchievementList from './components/AchievementList'
+import YoutubeEmbed from './../../components/YoutubeEmbed'
 
-import {utilApi} from '../../apis/utilApi'
+import { utilApi } from '../../apis/utilApi'
 
 export default function PostInfoPage(props) {
     const [date, setDate] = useState(new Date())
     const [demandImages, setDemandImages] = useState([])
     const [moneyText, setMoneyText] = useState('')
+
+    const [youtubeId, setYoutubeId] = useState('')
 
     const onFileChangeURL = (newUrl) => {
         const id = new Date().getTime()
@@ -51,15 +50,34 @@ export default function PostInfoPage(props) {
         }
     }
 
+    const onGetYoutubeUrl = (event) => {
+        var url = event.target.value
+        var regExp =
+            /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+        var match = url.match(regExp)
+        var returnUrl = match && match[7].length == 11 ? match[7] : false
+        setYoutubeId(returnUrl)
+    }
+
     return (
         <>
-            <Box component="div" sx={{ padding: '3rem 0rem' }}>
-                <Typography variant="h5" align="center">
+            <Box component="div" sx={{ padding: '3rem 0rem' }} id="post-info">
+                <SuiTypography
+                    variant="h4"
+                    align="center"
+                    fontWeight="regular"
+                    color="black"
+                >
                     Bắt đầu với những thứ đơn giản
-                </Typography>
-                <Typography variant="h6" align="center">
+                </SuiTypography>
+                <SuiTypography
+                    variant="h6"
+                    align="center"
+                    color="text"
+                    fontWeight="regular"
+                >
                     Hãy để mọi người biết thông tin của bạn
-                </Typography>
+                </SuiTypography>
             </Box>
             <Divider />
 
@@ -68,8 +86,9 @@ export default function PostInfoPage(props) {
                     <Grid item xs="12" md="5">
                         <SuiTypography
                             variant="h6"
-                            fontWeight="medium"
+                            fontWeight="regular"
                             textTransform="capitalize"
+                            color="black"
                         >
                             Tiêu đề
                         </SuiTypography>
@@ -89,13 +108,14 @@ export default function PostInfoPage(props) {
 
             <Divider />
 
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
                             variant="h6"
-                            fontWeight="medium"
+                            fontWeight="regular"
                             textTransform="capitalize"
+                            color="black"
                         >
                             Thông tin vay
                         </SuiTypography>
@@ -113,69 +133,37 @@ export default function PostInfoPage(props) {
                         <Grid container spacing={2}>
                             <Grid item xs="12" md="6">
                                 <SuiTypography
-                                    variant="h6"
-                                    fontWeight="medium"
-                                    textTransform="capitalize"
+                                    variant="button"
+                                    fontWeight="regular"
                                     sx={{ marginBottom: 2 }}
                                 >
                                     Thời gian ra trường dự kiến
                                 </SuiTypography>
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        label=""
-                                        views={['year', 'month']}
-                                        value={date}
-                                        onChange={(newDate) => {
-                                            setDate(newDate)
-                                            console.log(newDate)
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} />
-                                        )}
-                                    />
-                                </LocalizationProvider>
+                                <SuiInput type="date" value="2022/04/12" />
                             </Grid>
                             <Grid item xs="12" md="6">
                                 <SuiTypography
-                                    variant="h6"
-                                    fontWeight="medium"
-                                    textTransform="capitalize"
+                                    variant="button"
+                                    fontWeight="regular"
                                     sx={{ marginBottom: 2 }}
                                 >
                                     Thời gian bài đăng hết hạn
                                 </SuiTypography>
-                                {/* <Typography variant="h5" sx={{ marginBottom: 2 }}>
-                  When this post expire
-                </Typography> */}
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        label=""
-                                        value={date}
-                                        onChange={(newDate) => {
-                                            setDate(newDate)
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} />
-                                        )}
-                                    />
-                                </LocalizationProvider>
+                                <SuiInput type="date" value="2022/04/12" />
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
                             variant="h6"
-                            fontWeight="medium"
+                            fontWeight="regular"
                             textTransform="capitalize"
+                            color="black"
                         >
                             Mô tả
                         </SuiTypography>
@@ -202,13 +190,14 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
                             variant="h6"
-                            fontWeight="medium"
+                            fontWeight="regular"
                             textTransform="capitalize"
+                            color="black"
                         >
                             Số tiền kêu gọi
                         </SuiTypography>
@@ -226,7 +215,7 @@ export default function PostInfoPage(props) {
                             <Grid item xs="12" md="12">
                                 <SuiTypography
                                     variant="h6"
-                                    fontWeight="medium"
+                                    fontWeight="regular"
                                     textTransform="capitalize"
                                 >
                                     Số tiền
@@ -256,50 +245,166 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
                             variant="h6"
-                            fontWeight="medium"
+                            fontWeight="regular"
                             textTransform="capitalize"
+                            color="black"
                         >
-                            Demand note
+                            Số tiền kỳ vọng
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
                             fontWeight="regular"
                             color="text"
                         >
-                            We need demand note as an evidence for your post.
-                            This will affect whether your post is approved or
-                            not
+                            Nếu bài viết chưa đạt 100% nhưng số tiền kêu gọi
+                            được lớn hơn hoặc bằng số tiền kỳ vọng chúng tôi vẫn
+                            chấp nhận và giải ngân cho bạn
                         </SuiTypography>
-                        {/* <Typography variant="h5" sx={{ fontSize: "1.3rem" }}>
-              Demand note
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{ fontSize: "1.1rem", paddingRight: "2rem" }}
-            >
-              We need demand note as an evidence for your post. This will affect
-              whether your post is approved or not
-            </Typography> */}
                     </Grid>
                     <Grid item xs="12" md="7">
-                        {/* <Button
-              onClick={showImage}
-              variant="contained"
-              color="secondary"
-              sx={{
-                margin: "0 auto",
-                display: "block",
-                marginRight: "0",
-                textTransform: "none",
-              }}
-            >
-              Add
-            </Button> */}
+                        <Grid container spacing={2}>
+                            <Grid item xs="12" md="12">
+                                <SuiTypography
+                                    variant="h6"
+                                    fontWeight="regular"
+                                    textTransform="capitalize"
+                                >
+                                    Số tiền
+                                </SuiTypography>
+                            </Grid>
+                            <Grid item xs="12" md="6">
+                                {/* <TextField  align="right" variant="outlined" fullWidth /> */}
+                                <SuiInput
+                                    onChange={getMoneyText}
+                                    type="number"
+                                    icon={{
+                                        component: 'đ',
+                                        direction: 'right',
+                                    }}
+                                />
+                                <SuiTypography
+                                    variant="button"
+                                    fontWeight="regular"
+                                    color="text"
+                                    name="moneyText"
+                                >
+                                    {moneyText}
+                                </SuiTypography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Container>
+            <Divider />
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
+                <Grid container spacing={3}>
+                    <Grid item xs="12" md="5">
+                        <SuiTypography
+                            variant="h6"
+                            fontWeight="regular"
+                            textTransform="capitalize"
+                            color="black"
+                        >
+                            Video giới thiệu
+                        </SuiTypography>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            color="text"
+                        >
+                            Bạn có thể tạo youtube video giới thiệu về hoàn cảnh
+                            hiện tại và giới thiệu về những bằng cấp bạn đã đạt
+                            được
+                        </SuiTypography>
+                    </Grid>
+                    <Grid item xs="12" md="7">
+                        <Grid container spacing={2}>
+                            <Grid item xs="12" md="12">
+                                <SuiInput
+                                    sx={{ marginBottom: 3 }}
+                                    placeholder="https://www.youtube.com/watch?v=id"
+                                    onChange={onGetYoutubeUrl}
+                                ></SuiInput>
+                                {youtubeId === '' ? null : (
+                                    <YoutubeEmbed embedId={youtubeId} />
+                                )}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Container>
+            <Divider />
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
+                <Grid container spacing={3}>
+                    <Grid item xs="12" md="5">
+                        <SuiTypography
+                            variant="h6"
+                            fontWeight="regular"
+                            textTransform="capitalize"
+                            color="black"
+                        >
+                            Giấy báo học phí
+                        </SuiTypography>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            color="text"
+                        >
+                            Chúng tôi cần giấy báo học phí như là bằng chứng cho
+                            hồ sơ vay, điều này sẽ liên quan đến việc hồ sơ vay
+                            của bạn có được duyệt hay không
+                        </SuiTypography>
+                    </Grid>
+                    <Grid item xs="12" md="7">
+                        <Grid container spacing={2}>
+                            <Grid item xs="12" md="12">
+                                {demandImages.map((items) => (
+                                    <CardMedia
+                                        component="img"
+                                        height="300"
+                                        image={items.url}
+                                        alt={items.url}
+                                        key={items.id}
+                                    />
+                                ))}
+                                <DropFileInput
+                                    onFileChangeURL={(url) =>
+                                        onFileChangeURL(url)
+                                    }
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Container>
+            <Divider />
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
+                <Grid container spacing={3}>
+                    <Grid item xs="12" md="5">
+                        <SuiTypography
+                            variant="h6"
+                            fontWeight="regular"
+                            textTransform="capitalize"
+                            color="black"
+                        >
+                            Giấy xác nhận sinh viên
+                        </SuiTypography>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            color="text"
+                        >
+                            Giấy xác nhận sinh viên sẽ giúp hệ thống chắc chắn
+                            bạn đúng là sinh viên của trường đại học và tăng
+                            thêm uy tín với nhà đầu tư
+                        </SuiTypography>
+                    </Grid>
+                    <Grid item xs="12" md="7">
                         <Grid container spacing={2}>
                             <Grid item xs="12" md="12">
                                 {demandImages.map((items) => (

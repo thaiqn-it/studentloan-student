@@ -66,8 +66,11 @@ import Wallet from 'pages/Wallet'
 import Report from 'pages/Report'
 import RequestLoanPost from 'pages/RequestLoanPost'
 import ViewPost from 'pages/ViewPost'
-import ViewAllPost from "pages/ViewAllPost"
+import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
+import TutorDetail from "pages/TutorDetail"
+
+import StudentProfile2 from 'pages/StudentProfile2'
 
 let routes = [
     {
@@ -125,13 +128,31 @@ let routes = [
         noCollapse: true,
     },
     {
-      type: "collapse",
-      name: "Xem tất cả hồ sơ vay",
-      key: "view-all-post",
-      route: "/view-all",
-      icon: <SpaceShip size="12px" />,
-      component: ViewAllPost,
-      noCollapse: true,
+        type: 'collapse',
+        name: 'Xem tất cả hồ sơ vay',
+        key: 'view-all-post',
+        route: '/view-all-post',
+        icon: <SpaceShip size="12px" />,
+        component: ViewAllPost,
+        noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'Thông tin',
+        key: 'profile2',
+        route: '/profile2',
+        icon: <SpaceShip size="12px" />,
+        component: StudentProfile2,
+        noCollapse: false,
+    },
+    {
+        type: 'collapse',
+        name: 'Chi tiết người giám hộ',
+        key: 'tutordetail',
+        route: '/tutordetail',
+        icon: <SpaceShip size="12px" />,
+        component: TutorDetail,
+        noCollapse: false,
     },
 ]
 

@@ -11,21 +11,32 @@ import {
     CardMedia,
 } from '@mui/material'
 import SuiBox from 'components/SuiBox'
+import SuiButton from 'components/SuiButton'
 import SuiProgress from 'components/SuiProgress'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import React from 'react'
+import React, { useState } from 'react'
 import CardInvestDetail from '../../components/CardInvestDetail'
+import ImageModal from '../../components/ImageModal'
+import Tab from './components/Tab'
 
 export default function ViewPost() {
+    const [currentTab, setCurrentTab] = useState("one")
+
     const investor = {
         avatar: 'https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg',
         name: 'Ha Nguyen',
         money: '200.000',
     }
 
+    const onChangeTab = (tab) => {
+        setCurrentTab(tab)
+    }
+
     return (
         <>
+            <Tab onChangeTab={onChangeTab} currentTab={currentTab} />
+            {currentTab === 'one' ? <SuiButton>One</SuiButton> : null}
             <SuiBox py={0}>
                 <SuiBox mb={3}>
                     <Box component="div" sx={{ padding: '1rem 0rem' }}>
@@ -219,7 +230,7 @@ export default function ViewPost() {
                                     sx={{
                                         margin: '2rem 0 0 0',
                                         width: '100%',
-                                         '@media (max-width: 1024px)': {
+                                        '@media (max-width: 1024px)': {
                                             height: '20rem',
                                         },
                                     }}
@@ -235,7 +246,7 @@ export default function ViewPost() {
 
                     <Paper
                         elevation={6}
-                        sx={{ padding: '2rem', borderRadius: '10px' }}
+                        sx={{ padding: '2rem', borderRadius: '5px' }}
                     >
                         <Typography variant="h5">Archivements</Typography>
                         <Grid container spacing="15">
@@ -260,8 +271,8 @@ export default function ViewPost() {
                                         margin: '2rem 0 0 0',
                                         width: '100%',
                                         '@media (max-width: 1024px)': {
-                                          height: '20rem',
-                                      },
+                                            height: '20rem',
+                                        },
                                     }}
                                 />
                             </Grid>
@@ -278,12 +289,31 @@ export default function ViewPost() {
                                     sx={{ marginTop: 2 }}
                                 />
                                 <CardMedia
-                                    sx={{ margin: '2rem 0 0 0', width: '100%' , '@media (max-width: 1024px)': {
-                                      height: '20rem',
-                                  },}}
+                                    sx={{
+                                        margin: '2rem 0 0 0',
+                                        width: '100%',
+                                        '@media (max-width: 1024px)': {
+                                            height: '20rem',
+                                        },
+                                    }}
                                     height="400"
                                     component="img"
                                     image="https://cdnmedia.baotintuc.vn/Upload/e9GdNZvHDFi8lZSWc6ubA/files/2021/04/hoc-sinh-gioi-26421a.jpg"
+                                />
+
+                                <ImageModal
+                                    image="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+                                    sx={{
+                                        margin: '2rem 0 0 0',
+                                        width: '100%',
+                                        '@media (max-width: 1024px)': {
+                                            height: '20rem',
+                                        },
+                                        cursor: 'pointer',
+                                    }}
+                                    height="400"
+                                    component="img"
+                                    outline="none"
                                 />
                             </Grid>
                         </Grid>

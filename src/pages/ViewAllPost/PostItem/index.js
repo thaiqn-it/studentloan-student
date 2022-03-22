@@ -2,7 +2,7 @@ import React from 'react'
 
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress'
 
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
@@ -21,9 +21,9 @@ export default function PostItem() {
                 flexDirection: 'column',
                 // backgroundColor: 'none',
                 // boxShadow: "6",
-                borderRadius: '0',
+                borderRadius: '1',
                 border: '0.1rem solid #DCDEDD',
-                maxHeight: "40rem",
+                maxHeight: '40rem',
                 // overflow: 'visible',
             }}
         >
@@ -34,14 +34,14 @@ export default function PostItem() {
                     sx={{
                         // maxWidth: '100%',
                         margin: 0,
-                        height: '15rem',
+                        height: '10rem',
                         width: '100%',
                         borderRadius: '0',
                     }}
                 />
             </SuiBox>
 
-            <SuiBox pt={1} px={0.5} padding={2} >
+            <SuiBox pt={1} px={0.5} padding={2}>
                 {/* <SuiBox display="flex" justifyContent="space-between">
                     <SuiTypography
                         variant="button"
@@ -61,8 +61,6 @@ export default function PostItem() {
                         Ngày hết hạn: 24/6/2022
                     </SuiTypography>
                 </SuiBox> */}
-
-
 
                 <SuiBox mb={1}>
                     <SuiTypography
@@ -112,7 +110,7 @@ export default function PostItem() {
                     </SuiTypography>
                 </SuiBox> */}
 
-                <SuiBox mb={3} display="flex" justifyContent="space-between">
+                <SuiBox display="flex" justifyContent="space-between">
                     <SuiTypography
                         variant="button"
                         fontWeight="regular"
@@ -125,11 +123,9 @@ export default function PostItem() {
                     </SuiTypography>
                 </SuiBox>
 
-                <Divider variant="fullWidth" />
+                <SuiProgress value={50} label color="primary" />
 
-                <SuiProgress value={50} label color="primary"/>
-
-                <SuiBox mb={3} mt={3}>
+                <SuiBox mt={3}>
                     <Grid container>
                         <Grid item xs={4} md={4}>
                             <SuiTypography variant="h5" textTransform="none">
@@ -140,29 +136,39 @@ export default function PostItem() {
                                 textTransform="none"
                                 color="text"
                             >
-                                Số tiền
+                                Số tiền kêu gọi
                             </SuiTypography>
                         </Grid>
                         <Grid item xs={4} md={4}>
-                            <SuiTypography variant="h5" textTransform="none">
+                            <SuiTypography
+                                variant="h5"
+                                textTransform="none"
+                                align="center"
+                            >
                                 55
                             </SuiTypography>
                             <SuiTypography
                                 variant="button"
                                 textTransform="none"
                                 color="text"
+                                align="center"
                             >
                                 Người đầu tư
                             </SuiTypography>
                         </Grid>
                         <Grid item xs={4} md={4}>
-                            <SuiTypography variant="h5" textTransform="none">
+                            <SuiTypography
+                                variant="h5"
+                                textTransform="none"
+                                align="center"
+                            >
                                 180
                             </SuiTypography>
                             <SuiTypography
                                 variant="button"
                                 textTransform="none"
                                 color="text"
+                                align="center"
                             >
                                 Số ngày còn lại
                             </SuiTypography>

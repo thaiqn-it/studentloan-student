@@ -39,7 +39,7 @@ function DashboardLayout({ children }) {
   return (
     <SuiBox
       sx={({ breakpoints, transitions, functions: { pxToRem } }) => ({
-        p: 3,
+        p: 1,
         position: "relative",
 
         [breakpoints.up("xl")]: {
