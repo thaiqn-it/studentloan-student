@@ -11,22 +11,32 @@ import {
     CardMedia,
 } from '@mui/material'
 import SuiBox from 'components/SuiBox'
+import SuiButton from 'components/SuiButton'
 import SuiProgress from 'components/SuiProgress'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import React from 'react'
+import React, { useState } from 'react'
 import CardInvestDetail from '../../components/CardInvestDetail'
 import ImageModal from '../../components/ImageModal'
+import Tab from './components/Tab'
 
 export default function ViewPost() {
+    const [currentTab, setCurrentTab] = useState("one")
+
     const investor = {
         avatar: 'https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg',
         name: 'Ha Nguyen',
         money: '200.000',
     }
 
+    const onChangeTab = (tab) => {
+        setCurrentTab(tab)
+    }
+
     return (
         <>
+            <Tab onChangeTab={onChangeTab} currentTab={currentTab} />
+            {currentTab === 'one' ? <SuiButton>One</SuiButton> : null}
             <SuiBox py={0}>
                 <SuiBox mb={3}>
                     <Box component="div" sx={{ padding: '1rem 0rem' }}>

@@ -68,9 +68,9 @@ import RequestLoanPost from 'pages/RequestLoanPost'
 import ViewPost from 'pages/ViewPost'
 import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
+import TutorDetail from "pages/TutorDetail"
 
 import StudentProfile2 from 'pages/StudentProfile2'
-import CreateLoanPost from 'pages/CreateLoanPost'
 
 let routes = [
     {
@@ -147,11 +147,11 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'Tạo hồ sơ vay',
-        key: 'createloan',
-        route: '/createloan',
+        name: 'Chi tiết người giám hộ',
+        key: 'tutordetail',
+        route: '/tutordetail',
         icon: <SpaceShip size="12px" />,
-        component: CreateLoanPost,
+        component: TutorDetail,
         noCollapse: false,
     },
 ]

@@ -41,7 +41,7 @@ export default function LandingPage() {
         <>
             <Box className={classes.welcome}>
                 <Navbar title="Student Loan" />
-                <Container>
+                <Container maxWidth="xl">
                     <Box padding="10% 20px 0 20px">
                         <Grid container>
                             <Grid item xs="12" md="12" lg="6">
@@ -109,7 +109,7 @@ export default function LandingPage() {
                     },
                 }}
             >
-                <Container textAlign="center">
+                <Container textAlign="center" maxWidth="xl">
                     <SuiTypography variant="h2" fontWeight="medium">
                         Get started with your first installment plan
                     </SuiTypography>

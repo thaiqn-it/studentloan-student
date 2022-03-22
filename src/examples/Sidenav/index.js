@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -43,12 +43,16 @@ import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 // Soft UI Dashboard PRO React context
 import { useSoftUIController, setMiniSidenav } from "context";
 
+import CreateLoanPost from "pages/CreateLoanPost";
+
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentSidenav } = controller;
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(-1)[0];
+
+  const [openCreate, setOpenCreate] = useState(false);
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -169,6 +173,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </SuiBox>
       </SuiBox>
       <Divider />
+      <CreateLoanPost
+        onOpen={openCreate}
+      />
       <List>{renderRoutes}</List>
       {/* <SuiBox pt={2} my={2} mx={2} mt="auto">
         <SidenavCard />

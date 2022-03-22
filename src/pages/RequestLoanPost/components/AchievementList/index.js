@@ -93,25 +93,26 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />
 })
 
-export default function FullScreenDialog() {
-    const [open, setOpen] = React.useState(false)
+export default function AchievementList(props) {
+    const { onOpen, onClose } = props
+    // const [open, setOpen] = React.useState(onOpen)
 
-    const handleClickOpen = () => {
-        setOpen(true)
-    }
+    // const handleClickOpen = () => {
+    //     setOpen(true)
+    // }
 
     const handleClose = () => {
-        setOpen(false)
+        onClose()
     }
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
+            {/* <Button variant="outlined" onClick={handleClickOpen}>
                 Open full-screen dialog
-            </Button>
+            </Button> */}
             <Dialog
                 fullScreen
-                open={open}
+                open={onOpen}
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >
@@ -152,8 +153,14 @@ export default function FullScreenDialog() {
                             <AchievementItem />
                         </Grid>
                     </Grid>
-                    <Divider sx={{ borderBottomWidth: 2, my:3 }} />
-                    <SuiTypography variant="h6" fontWeight="regular" color="black">Đã chọn</SuiTypography>
+                    <Divider sx={{ borderBottomWidth: 2, my: 3 }} />
+                    <SuiTypography
+                        variant="h6"
+                        fontWeight="regular"
+                        color="black"
+                    >
+                        Đã chọn
+                    </SuiTypography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={3}>
                             <AchievementItem />

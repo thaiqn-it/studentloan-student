@@ -11,7 +11,7 @@ import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
 import SuiButton from 'components/SuiButton'
 
-export default function DetailAccountCard() {
+export default function DetailInformation() {
     return (
         <>
             <Paper elevation={3} sx={{borderRadius:"10px"}}>
@@ -22,24 +22,14 @@ export default function DetailAccountCard() {
                         </SuiTypography>
                     </Box>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={12}>
                             <SuiTypography variant="h6" fontWeight="regular">
-                                Họ
+                                Họ và tên
                             </SuiTypography>
                             <SuiInput
                                 type="text"
                                 placeholder="Họ"
-                                value="Trần"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <SuiTypography variant="h6" fontWeight="regular">
-                                Tên
-                            </SuiTypography>
-                            <SuiInput
-                                type="text"
-                                placeholder="Họ"
-                                value="Long"
+                                value="Trần Long"
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -49,16 +39,6 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="email"
                                 placeholder="Email"
-                                value="longtran4949@gmail.com"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <SuiTypography variant="h6" fontWeight="regular">
-                                Mật khẩu
-                            </SuiTypography>
-                            <SuiInput
-                                type="password"
-                                // placeholder="Email"
                                 value="longtran4949@gmail.com"
                             />
                         </Grid>
@@ -75,44 +55,22 @@ export default function DetailAccountCard() {
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <SuiTypography variant="h6" fontWeight="regular">
+                                Quan hệ
+                            </SuiTypography>
+                            <SuiInput
+                                type="text"
+                                placeholder="relation"
+                                value="Cha"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <SuiTypography variant="h6" fontWeight="regular">
                                 Số điện thoại
                             </SuiTypography>
                             <SuiInput
                                 type="text"
                                 placeholder="phone number"
                                 value="0794485000"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <SuiTypography variant="h6" fontWeight="regular">
-                                Trường
-                            </SuiTypography>
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                // options={top100Films}
-                                // sx={{ width: 300 }}
-                                // value="FPT"
-                                fullWidth
-                                renderInput={(params) => (
-                                    <TextField {...params} />
-                                )}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <SuiTypography variant="h6" fontWeight="regular">
-                                Chuyên ngành
-                            </SuiTypography>
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                // options={top100Films}
-                                // sx={{ width: 300 }}
-                                // value="FPT"
-                                fullWidth
-                                renderInput={(params) => (
-                                    <TextField {...params} />
-                                )}
                             />
                         </Grid>
                         <Grid item xs={12} md={12}>
@@ -126,9 +84,6 @@ export default function DetailAccountCard() {
                             />
                         </Grid>
                     </Grid>
-                    <Box my={3}>
-                        <SuiButton color="dark">Cập nhật</SuiButton>
-                    </Box>
                 </Box>
             </Paper>
         </>

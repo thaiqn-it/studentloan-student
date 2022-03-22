@@ -9,7 +9,7 @@ import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
-import { ButtonGroup, Paper } from '@mui/material'
+import { ButtonGroup, Divider, Paper } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiBox from 'components/SuiBox'
 
@@ -62,7 +62,7 @@ export default function RequestLoanPost() {
                         to="post-info"
                         spy={true}
                         smooth={true}
-                        offset={-50}
+                        offset={-100}
                         duration={500}
                     >
                         <SuiButton
@@ -81,7 +81,7 @@ export default function RequestLoanPost() {
                         to="achievements"
                         spy={true}
                         smooth={true}
-                        offset={-80}
+                        offset={-100}
                         duration={500}
                         // onClick={() => redirect("/request")}
                     >
@@ -91,10 +91,10 @@ export default function RequestLoanPost() {
                     </Link>
                     <Link
                         activeClass="active"
-                        to="test1"
+                        to="personal-information"
                         spy={true}
                         smooth={true}
-                        offset={50}
+                        offset={-100}
                         duration={500}
                         // onClick={() => redirect("/request")}
                     >
@@ -105,11 +105,43 @@ export default function RequestLoanPost() {
                 </ButtonGroup>
             </SuiBox>
             <SuiBox>
-                <Paper elevation={6} sx={{borderRadius: 3}}>
-                    <Box sx={{ width: '100%'}}>
+                <Paper elevation={6} sx={{ borderRadius: 3 }}>
+                    <Box sx={{ width: '100%' }}>
                         <PostInfoPage
                             handleStep={(index) => handleStep(index)}
                         />
+
+                        <ArchievementPage
+                            handleStep={(index) => handleStep(index)}
+                        />
+                        <ConfirmPage />
+                        <Divider />
+
+                        <Box
+                            sx={{
+                                m: 3,
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                            }}
+                        >
+                            <SuiButton
+                                sx={{ mr: 3, mb: 3 }}
+                                color="dark"
+                                variant="outlined"
+                                size="large"
+                                onClick={handleStep(activeStep + 1)}
+                            >
+                                Lưu nháp
+                            </SuiButton>
+                            <SuiButton
+                                color="primary"
+                                size="large"
+                                onClick={handleStep(activeStep + 1)}
+                                sx={{ mb: 3 }}
+                            >
+                                Gửi
+                            </SuiButton>
+                        </Box>
                         {/* <Stepper
                             nonLinear
                             activeStep={activeStep}
@@ -179,3 +211,6 @@ export default function RequestLoanPost() {
         </>
     )
 }
+
+
+

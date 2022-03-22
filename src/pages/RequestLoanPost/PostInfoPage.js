@@ -62,10 +62,20 @@ export default function PostInfoPage(props) {
     return (
         <>
             <Box component="div" sx={{ padding: '3rem 0rem' }} id="post-info">
-                <SuiTypography variant="h4" align="center" fontWeight="regular" color="black">
+                <SuiTypography
+                    variant="h4"
+                    align="center"
+                    fontWeight="regular"
+                    color="black"
+                >
                     Bắt đầu với những thứ đơn giản
                 </SuiTypography>
-                <SuiTypography variant="h6" align="center" color="text" fontWeight="regular">
+                <SuiTypography
+                    variant="h6"
+                    align="center"
+                    color="text"
+                    fontWeight="regular"
+                >
                     Hãy để mọi người biết thông tin của bạn
                 </SuiTypography>
             </Box>
@@ -98,7 +108,7 @@ export default function PostInfoPage(props) {
 
             <Divider />
 
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
@@ -146,7 +156,7 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
@@ -180,7 +190,7 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
@@ -206,61 +216,6 @@ export default function PostInfoPage(props) {
                                 <SuiTypography
                                     variant="h6"
                                     fontWeight="regular"
-                                >
-                                    Số tiền
-                                </SuiTypography>
-                            </Grid>
-                            <Grid item xs="12" md="6">
-                                {/* <TextField  align="right" variant="outlined" fullWidth /> */}
-                                <SuiInput
-                                    onChange={getMoneyText}
-                                    type="number"
-                                    icon={{
-                                        component: 'đ',
-                                        direction: 'right',
-                                    }}
-                                />
-                                <SuiTypography
-                                    variant="button"
-                                    fontWeight="regular"
-                                    color="text"
-                                    name="moneyText"
-                                >
-                                    {moneyText}
-                                </SuiTypography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Container>
-            <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
-                <Grid container spacing={3}>
-                    <Grid item xs="12" md="5">
-                        <SuiTypography
-                            variant="h6"
-                            fontWeight="regular"
-                            textTransform="capitalize"
-                            color="black"
-                        >
-                            Số tiền kỳ vọng
-                        </SuiTypography>
-                        <SuiTypography
-                            variant="button"
-                            fontWeight="regular"
-                            color="text"
-                        >
-                            Nếu bài viết chưa đạt 100% nhưng số tiền kêu gọi
-                            được lớn hơn hoặc bằng số tiền kỳ vọng chúng tôi vẫn
-                            chấp nhận và giải ngân cho bạn
-                        </SuiTypography>
-                    </Grid>
-                    <Grid item xs="12" md="7">
-                        <Grid container spacing={2}>
-                            <Grid item xs="12" md="12">
-                                <SuiTypography
-                                    variant="h6"
-                                    fontWeight="medium"
                                     textTransform="capitalize"
                                 >
                                     Số tiền
@@ -290,7 +245,63 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
+                <Grid container spacing={3}>
+                    <Grid item xs="12" md="5">
+                        <SuiTypography
+                            variant="h6"
+                            fontWeight="regular"
+                            textTransform="capitalize"
+                            color="black"
+                        >
+                            Số tiền kỳ vọng
+                        </SuiTypography>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            color="text"
+                        >
+                            Nếu bài viết chưa đạt 100% nhưng số tiền kêu gọi
+                            được lớn hơn hoặc bằng số tiền kỳ vọng chúng tôi vẫn
+                            chấp nhận và giải ngân cho bạn
+                        </SuiTypography>
+                    </Grid>
+                    <Grid item xs="12" md="7">
+                        <Grid container spacing={2}>
+                            <Grid item xs="12" md="12">
+                                <SuiTypography
+                                    variant="h6"
+                                    fontWeight="regular"
+                                    textTransform="capitalize"
+                                >
+                                    Số tiền
+                                </SuiTypography>
+                            </Grid>
+                            <Grid item xs="12" md="6">
+                                {/* <TextField  align="right" variant="outlined" fullWidth /> */}
+                                <SuiInput
+                                    onChange={getMoneyText}
+                                    type="number"
+                                    icon={{
+                                        component: 'đ',
+                                        direction: 'right',
+                                    }}
+                                />
+                                <SuiTypography
+                                    variant="button"
+                                    fontWeight="regular"
+                                    color="text"
+                                    name="moneyText"
+                                >
+                                    {moneyText}
+                                </SuiTypography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Container>
+            <Divider />
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
@@ -328,7 +339,7 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
@@ -372,7 +383,7 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Container sx={{ padding: '3rem 3rem' }}>
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
                 <Grid container spacing={3}>
                     <Grid item xs="12" md="5">
                         <SuiTypography
@@ -416,57 +427,6 @@ export default function PostInfoPage(props) {
                 </Grid>
             </Container>
             <Divider />
-            <Box height="100vh">
-                <Box
-                    component="div"
-                    sx={{ padding: '3rem 0rem' }}
-                    id="achievements"
-                >
-                    <SuiTypography variant="h4" align="center" color="black" fontWeight="regular">
-                        Hãy thêm thành tích của bạn
-                    </SuiTypography>
-                    <SuiTypography variant="h6" align="center" fontWeight="regular" color="text">
-                        Thành tích sẽ thu hút nhà đầu tư và tạo uy tín của bài
-                        vay của bạn
-                    </SuiTypography>
-                </Box>
-                <Divider />
-                <SuiButton
-                    color="error"
-                    position="relative"
-                    sx={{ float: 'right', mx: 3, zIndex: '99' }}
-                >
-                    Chọn
-                </SuiButton>
-
-                <Container sx={{ padding: '3rem 3rem' }}>
-                    <Grid container spacing={3}>
-                        <Grid item xs="12" md="5">
-                            <SuiTypography
-                                variant="h6"
-                                fontWeight="bold"
-                                textTransform="capitalize"
-                            >
-                                Những thành tích
-                            </SuiTypography>
-                            <SuiTypography
-                                variant="button"
-                                fontWeight="regular"
-                                color="text"
-                            >
-                                Đó có thể là những bằng khen về học thuật, tài năng, ... Hoặc những dự án mà bạn đã làm trong lúc học
-                            </SuiTypography>
-                        </Grid>
-                        <Grid item xs="12" md="7">
-                            <Grid container spacing={4}>
-                                <Grid item xs="12" md="12">
-                                    <AchievementList />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Box>
         </>
     )
 }
