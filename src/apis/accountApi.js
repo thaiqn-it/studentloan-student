@@ -1,7 +1,9 @@
-import { defaultInstance } from ".";
+import { defaultInstance } from '.'
+import { loadToken } from './index'
 
-const getWalletByUserId = (userId) => {
-  return defaultInstance.post("/account", userId);
-};
+const getWalletByUserId = () => {
+    loadToken()
+    return defaultInstance.get(`/account`)
+}
 
-export const accountApi = { getWalletByUserId };
+export const accountApi = { getWalletByUserId }

@@ -7,6 +7,13 @@ import { Link } from 'react-router-dom'
 
 export default function Success(props) {
     const title = 'Success'
+    const params = new URL(document.location).searchParams
+    const paymentId = params.get('paymentId')
+
+    const sendMessage = () => {
+        window.parent.postMessage(paymentId, 'https://studentloanfpt.ddns.net')
+    }
+
     return (
         <>
             <Helmet>

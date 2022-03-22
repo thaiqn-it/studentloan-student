@@ -27,39 +27,57 @@ import Helmet from 'react-helmet'
 function App() {
     return (
         <>
-        <Helmet>
-            <title>Student Loan Platform</title>
-        </Helmet>
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Router>
-                <Switch>
-                    <Route path="/" exact component={LandingPage} />
-                    <Route path="/About" component={''} />
-                    <Route path="/Landing" component={StudentLanding} />
-                    <Route path="/Services" exact component={ResetPassword} />
-                    <Route
-                        path="/authentication/sign-up"
-                        exact
-                        component={SignUp}
-                    />
-                    <Route path="/Dashboard" component={StudentDashboard} />
-                    <Route
-                        path="/authentication/sign-in"
-                        exact
-                        component={Login}
-                    />
-                    <Route
-                        path="/ForgotPassword"
-                        exact
-                        component={ForgotPassword}
-                    />
-                    <Route path="/payment/success" exact component={Success} />
-                    <Route path="/payment/cancel" exact component={Cancel} />
-                </Switch>
-            </Router>
-        </ThemeProvider></>
-        
+            <Helmet>
+                <title>Student Loan Platform</title>
+            </Helmet>
+
+            <AuthProvider>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <Router>
+                        <Switch>
+                            <Route path="/" exact component={LandingPage} />
+                            <Route path="/About" component={''} />
+                            <Route path="/Landing" component={StudentLanding} />
+                            <Route
+                                path="/Services"
+                                exact
+                                component={ResetPassword}
+                            />
+                            <Route
+                                path="/authentication/sign-up"
+                                exact
+                                component={SignUp}
+                            />
+                            <Route
+                                path="/Dashboard"
+                                component={StudentDashboard}
+                            />
+                            <Route
+                                path="/authentication/sign-in"
+                                exact
+                                component={Login}
+                            />
+                            <Route
+                                path="/ForgotPassword"
+                                exact
+                                component={ForgotPassword}
+                            />
+                            <Route
+                                path="/payment/success"
+                                exact
+                                component={Success}
+                            />
+                            <Route
+                                path="/payment/cancel"
+                                exact
+                                component={Cancel}
+                            />
+                        </Switch>
+                    </Router>
+                </ThemeProvider>
+            </AuthProvider>
+        </>
     )
 }
 

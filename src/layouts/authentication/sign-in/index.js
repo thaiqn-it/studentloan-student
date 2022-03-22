@@ -32,8 +32,9 @@ import CoverLayout from 'layouts/authentication/components/CoverLayout'
 
 // Images
 import curved9 from 'assets/images/curved-images/curved-6.jpg'
-import { loginUser } from 'context/userAction'
+import { loginUser } from 'context/userAction.js'
 import { useHistory } from 'react-router-dom'
+import { useAuthDispatch } from 'context/authContext'
 
 function SignIn() {
     const [rememberMe, setRememberMe] = useState(true)
@@ -44,11 +45,12 @@ function SignIn() {
     const [error, setError] = useState(false)
     const errorMessage = 'Tài Khoản Đăng Nhập Hoặc Mật Khẩu Bị Sai'
     const history = useHistory()
-
+    const dispatch = useAuthDispatch()
     const signIn = async (e) => {
         try {
             e.preventDefault()
             setError(false)
+
             const response = await loginUser(dispatch, email, password)
             if (!response.data.id) return setError(errorMessage)
             history.push('/dashboard')
@@ -72,7 +74,7 @@ function SignIn() {
             description="Xin hãy nhập email và mật khẩu để đăng nhập"
             image={curved9}
         >
-            <SuiBox component="form" role="form">
+            <SuiBox component="form" role="form" onSubmit={signIn}>
                 <SuiBox mb={2}>
                     <SuiBox mb={1} ml={0.5}>
                         <SuiTypography
@@ -89,6 +91,7 @@ function SignIn() {
                         error={error}
                         value={email}
                         onChange={handleInputEmail}
+                        onClick={() => setError(false)}
                     />
                 </SuiBox>
                 <SuiBox mb={2}>
@@ -101,12 +104,14 @@ function SignIn() {
                             Mật Khẩu
                         </SuiTypography>
                     </SuiBox>
+
                     <SuiInput
                         type="password"
                         placeholder="Mật Khẩu"
                         error={error}
                         value={password}
                         onChange={handleInputPassword}
+                        onClick={() => setError(false)}
                     />
                     {error && (
                         <SuiTypography
@@ -136,6 +141,7 @@ function SignIn() {
                 <SuiBox mt={4} mb={1}>
                     <SuiButton
                         variant="gradient"
+                        type="submit"
                         color="info"
                         fullWidth
                         onClick={signIn}
