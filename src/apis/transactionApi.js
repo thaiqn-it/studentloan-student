@@ -5,10 +5,20 @@ const getTransactionsByUserId = (userId) => {
 }
 
 const getTransactionByWalletId = (walletId) => {
-    return defaultInstance.get(`/wallet/account/${walletId}`)
+    return defaultInstance.get(`/transaction/account/${walletId}`)
 }
 
+const createTransaction = (data) => {
+    return defaultInstance.post('/transaction', data)
+}
+
+const updateTransaction = (data) => {
+    const { id, ...transaction } = data
+    return defaultInstance.put(`transaction/${id}`, transaction)
+}
 export const transactionApi = {
     getTransactionsByUserId,
     getTransactionByWalletId,
+    createTransaction,
+    updateTransaction,
 }

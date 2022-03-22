@@ -74,7 +74,7 @@ function SignIn() {
             description="Xin hãy nhập email và mật khẩu để đăng nhập"
             image={curved9}
         >
-            <SuiBox component="form" role="form">
+            <SuiBox component="form" role="form" onSubmit={signIn}>
                 <SuiBox mb={2}>
                     <SuiBox mb={1} ml={0.5}>
                         <SuiTypography
@@ -141,6 +141,7 @@ function SignIn() {
                 <SuiBox mt={4} mb={1}>
                     <SuiButton
                         variant="gradient"
+                        type="submit"
                         color="info"
                         fullWidth
                         onClick={signIn}

@@ -137,12 +137,12 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         direct="/dashboard"
                         light={light}
                     />
-                    <DefaultNavbarLink
+                    {/* <DefaultNavbarLink
                         icon="person"
                         name="profile"
                         route="contact"
                         light={light}
-                    />
+                    /> */}
                     <DefaultNavbarLink
                         icon="account_circle"
                         name="sign up"

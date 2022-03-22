@@ -14,112 +14,59 @@ import Invoices from 'layouts/billing/components/Invoices'
 import Transactions from 'layouts/billing/components/Transactions/v2'
 import ReportsBarChart from 'examples/Charts/BarCharts/ReportsBarChart'
 import reportsBarChartData from 'layouts/dashboard/data/reportsBarChartData'
-
+import TransactionDetail from 'components/TransactionDetail'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { useAuthState } from 'context/authContext'
 import { accountApi } from 'apis/accountApi'
 import { transactionApi } from 'apis/transactionApi'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
+import TopUp from 'components/TopUp'
+import Transfer from 'components/Transfer'
 
-const demoData = [
-    {
-        id: 'fakeid1',
-        money: '200000000',
-        date: '2022-3-20',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-    {
-        id: 'fakeid2',
-        money: '200000000',
-        date: '2022-3-20',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-    {
-        id: 'fakeid3',
-        money: '200000000',
-        date: '2022-3-19',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-    {
-        id: 'fakeid4',
-        money: '200000000',
-        date: '2022-3-19',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-    {
-        id: 'fakeid5',
-        money: '200000000',
-        date: '2022-3-18',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-    {
-        id: 'fakeid6',
-        money: '200000000',
-        date: '2022-3-18',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-    {
-        id: 'fakeid7',
-        money: '200000000',
-        date: '2022-3-18',
-        type: 'success',
-        userId: 'userId',
-        targetId: 'targetId',
-        accountId: 'accountId',
-        status: 'SUCCESS',
-    },
-]
+const demoData = []
 
 const Wallet = () => {
     const [wallet, setWallet] = useState({})
     const userObj = useAuthState()
-    const userId = userObj.userId
 
     const initData = async () => {
         try {
+            const userId = userObj.userId
+
             const walletRes = await accountApi.getWalletByUserId(userId)
             const wallet = walletRes.data
+            setWallet(wallet)
             const transactionRes =
                 await transactionApi.getTransactionByWalletId(wallet.id)
             const transactions = transactionRes.data
 
             setTransactions(transactions)
+            setSelectedTransaction(transactions[0].transactions[0])
         } catch (e) {}
     }
 
-    const { chart, items } = reportsBarChartData
+    const getTransactionsByDate = async () => {
+        try {
+            // const transactionRes =
+            //     await transactionApi.getTransactionByWalletId(wallet.id , begin , end)
+            // const transactions = transactionRes.data
+            // console.log(transactions)
+            // setTransactions(transactions)
+        } catch (e) {}
+    }
 
     const [transactions, setTransactions] = useState(demoData)
     const [selectedTransaction, setSelectedTransaction] = useState()
+    const [topUpOpen, setTopUpOpen] = useState(false)
 
-    const handleTransactionClick = (id) => {
-        const transaction = transactions.find((trans) => trans.id === id)
+    const [transfer, setTransfer] = useState(false)
+
+    const handleTransactionClick = (id, date) => {
+        const group = transactions.find((trans) => trans.date === date)
+        const transaction = group.transactions.find((trans) => trans.id === id)
+
         setSelectedTransaction(transaction)
     }
 
@@ -134,20 +81,54 @@ const Wallet = () => {
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6} xl={3}>
                             <MiniStatisticsCard
-                                title={{ text: "today's money" }}
-                                count={wallet?.money}
-                                percentage={{ color: 'success', text: '+55%' }}
+                                title={{ text: 'So Tien Trong Vi' }}
+                                count={`${String(wallet?.money).replace(
+                                    /(\d)(?=(\d{3})+$)/g,
+                                    '$1,'
+                                )} d`}
+                                // percentage={{ color: 'success', text: '+55%' }}
                                 icon={{ color: 'info', component: 'paid' }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} xl={3}>
+                            <Box onClick={() => setTopUpOpen(true)}>
+                                <MiniStatisticsCard
+                                    title={{ text: 'Nap Tien' }}
+                                    // percentage={{ color: 'success', text: '+55%' }}
+                                    icon={{ color: 'info', component: 'paid' }}
+                                />
+                            </Box>
+
+                            <TopUp
+                                open={topUpOpen}
+                                handleClose={() => setTopUpOpen(false)}
+                                reloadData={initData}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} xl={3}>
+                            <Box onClick={() => setTransfer(true)}>
+                                <MiniStatisticsCard
+                                    title={{ text: 'Rut Tien' }}
+                                    // percentage={{ color: 'success', text: '+55%' }}
+                                    icon={{ color: 'info', component: 'paid' }}
+                                />
+                            </Box>
+
+                            <Transfer
+                                open={transfer}
+                                handleClose={() => setTransfer(false)}
+                                reloadData={initData}
+                                accountId={wallet.id}
+                            />
+                        </Grid>
+                        {/* <Grid item xs={12} sm={6} xl={3}>
                             <MiniStatisticsCard
                                 title={{ text: "today's users" }}
                                 count="2,300"
                                 percentage={{ color: 'success', text: '+3%' }}
                                 icon={{ color: 'info', component: 'public' }}
                             />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </SuiBox>
                 {/* <Grid container spacing={3}>
@@ -172,15 +153,17 @@ const Wallet = () => {
             <SuiBox mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={7}>
-                        <Transactions
-                            data={demoData}
-                            handleClick={handleTransactionClick}
-                            selectedTransaction={selectedTransaction}
-                        />
+                        {transactions && (
+                            <Transactions
+                                data={transactions}
+                                handleClick={handleTransactionClick}
+                                selectedTransaction={selectedTransaction}
+                            />
+                        )}
                     </Grid>
                     <Grid item xs={12} md={5}>
                         <Card sx={{ height: '100%' }}>
-                            <SuiBox pt={3} px={2}>
+                            {/* <SuiBox pt={3} px={2}>
                                 <SuiTypography>
                                     Transaction detail
                                 </SuiTypography>
@@ -194,19 +177,25 @@ const Wallet = () => {
                                     }}
                                 >
                                     <SuiTypography>
-                                        {selectedTransaction?.userId}
-                                    </SuiTypography>
-                                    <SuiTypography>
                                         {selectedTransaction?.money}
                                     </SuiTypography>
                                     <SuiTypography>
-                                        {selectedTransaction?.date}
+                                        {selectedTransaction?.status}
+                                    </SuiTypography>
+                                    <SuiTypography>
+                                        {selectedTransaction?.senderName}
+                                    </SuiTypography>
+                                    <SuiTypography>
+                                        {selectedTransaction?.recipientName}
+                                    </SuiTypography>
+                                    <SuiTypography>
+                                        {selectedTransaction?.transactionFee}
                                     </SuiTypography>
                                     <SuiTypography>
                                         {selectedTransaction?.date}
                                     </SuiTypography>
                                     <SuiTypography>
-                                        {selectedTransaction?.date}
+                                        {selectedTransaction?.description}
                                     </SuiTypography>
                                 </Box>
                                 <Box
@@ -242,7 +231,10 @@ const Wallet = () => {
                                         </SuiTypography>
                                     </Box>
                                 </Box>
-                            </SuiBox>
+                            </SuiBox> */}
+                            <TransactionDetail
+                                transaction={selectedTransaction}
+                            />
                         </Card>
                     </Grid>
                     <Grid item xs={12} md={7}>

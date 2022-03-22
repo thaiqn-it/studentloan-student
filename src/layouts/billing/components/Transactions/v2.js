@@ -52,10 +52,11 @@ const Group = ({ transactions, handleClick , selectedTransaction }) => {
                 m={0}
                 sx={{ listStyle: 'none' }}
             >
-                {transactions.transactions.map((transaction) => {
+                {transactions?.transactions.map((transaction) => {
                     return (
                         <>
                             <Transaction
+                                date={transaction.date}
                                 color={
                                     transaction.status === 'SUCCESS'
                                         ? 'success'
@@ -95,28 +96,10 @@ const Group = ({ transactions, handleClick , selectedTransaction }) => {
     )
 }
 
-const groupTransaction = (transactions) => {
-    const groups = transactions.reduce((groups, transaction) => {
-        const date = transaction.date
-        if (!groups[date]) {
-            groups[date] = []
-        }
-        groups[date].push(transaction)
-        return groups
-    }, {})
-    const transationsGroup = Object.keys(groups).map((date) => {
-        return {
-            date,
-            transactions: groups[date],
-        }
-    })
-    return transationsGroup
-}
-
 function Transactions({ handleClick, data , selectedTransaction }) {
     const [range, setRange] = useState([null, null])
-    const [transactions, setTransactions] = useState([])
-    const groupedData = groupTransaction(data)
+   
+
 
     return (
         <Card sx={{ height: '100%' }}>
@@ -155,7 +138,7 @@ function Transactions({ handleClick, data , selectedTransaction }) {
                 </SuiBox>
             </SuiBox>
             <SuiBox pt={3} pb={2} px={2}>
-                {groupedData.map((group) => {
+                {data.map((group) => {
                     return (
                         <>
                             <Group

@@ -28,9 +28,11 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import { Box, CardActionArea } from '@mui/material'
 
 function Transaction({
+    transaction,
     color,
     icon,
     name,
+    date,
     description,
     value,
     handleClick,
@@ -39,7 +41,7 @@ function Transaction({
 }) {
     return (
         <CardActionArea
-            onClick={() => handleClick(id)}
+            onClick={() => handleClick(id, date)}
             sx={{
                 backgroundColor: selected
                     ? 'rgba(232, 232, 232, 0.5)'
@@ -66,13 +68,13 @@ function Transaction({
                         </SuiBox>
                         <SuiBox display="flex" flexDirection="column">
                             <SuiTypography
-                                variant="button"
+                                variant="body2"
                                 fontWeight="medium"
                                 gutterBottom
                             >
                                 {name}
                             </SuiTypography>
-                            <SuiTypography variant="caption" color="text">
+                            <SuiTypography variant="body2" color="text">
                                 {description}
                             </SuiTypography>
                         </SuiBox>
@@ -86,12 +88,15 @@ function Transaction({
                     >
                         <Box sx={{ width: 90 }}>
                             <SuiTypography
-                                variant="button"
-                                color={color}
+                                variant="body2"
+                                color={value >= 0 ? 'success' : 'warning'}
                                 fontWeight="medium"
                                 textGradient
                             >
-                                {value}
+                                {`${String(value).replace(
+                                    /(\d)(?=(\d{3})+$)/g,
+                                    '$1,'
+                                )} d`}
                             </SuiTypography>
                         </Box>
                     </Box>
