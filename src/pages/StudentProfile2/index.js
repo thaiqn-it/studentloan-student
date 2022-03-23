@@ -18,7 +18,12 @@ export default function StudentProfile2() {
     }
     return (
         <>
-            <SuiTypography variant="h4" fontWeight="regular" my={2}>
+            <SuiTypography
+                variant="h4"
+                fontWeight="regular"
+                color="black"
+                my={2}
+            >
                 Thông tin tài khoản
             </SuiTypography>
 
@@ -90,11 +95,15 @@ export default function StudentProfile2() {
                     <DetailAccountCard />
                 </Grid>
             </Grid>
-            <Box>
+            <Box my={5}>
                 <TutorTableCard />
             </Box>
-            <PaperCard />
-            <AchievementCard />
+            <Box my={5}>
+                <PaperCard />
+            </Box>
+            <Box my={5}>
+                <AchievementCard />
+            </Box>
         </>
     )
 }

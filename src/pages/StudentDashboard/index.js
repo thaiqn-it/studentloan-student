@@ -1,4 +1,5 @@
 import routes from 'routes'
+import {extraRoutes} from 'routes'
 import Sidenav from 'examples/Sidenav'
 import Dashboard from 'layouts/dashboard'
 import React, { useEffect, useState, useMemo } from 'react'
@@ -17,12 +18,22 @@ import StudentProfile from 'pages/StudentProfile'
 import ReleaseLogo from '../../assets/release-logo.png'
 
 var currentRoute = [...routes]
+var extraRoute = [...extraRoutes]
 
 const Routes = () => {
     return (
         <Switch>
             <Route path="/" component={StudentProfile} exact />
             {currentRoute.map((route, index) => {
+                return (
+                    <Route
+                        path={route.route}
+                        component={route.component}
+                        key={route.key}
+                    />
+                )
+            })}
+            {extraRoute.map((route, index) => {
                 return (
                     <Route
                         path={route.route}
@@ -68,7 +79,7 @@ const StudentDashboard = () => {
                 onMouseLeave={handleOnMouseLeave}
             />
             <DashboardLayout>
-                <DashboardNavbar />
+                <DashboardNavbar/>
                 <Routes />
             </DashboardLayout>
         </>

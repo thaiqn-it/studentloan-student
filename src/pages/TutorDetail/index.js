@@ -12,7 +12,7 @@ import PaperInformation from './components/PaperInformation'
 export default function TutorDetail() {
     return (
         <>
-            <SuiTypography variant="h4" fontWeight="regular" my={2}>
+            <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
                 Thông tin người giám hộ
             </SuiTypography>
 

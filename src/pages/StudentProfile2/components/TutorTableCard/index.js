@@ -34,7 +34,7 @@ export default function TutorTableCard() {
                 display="flex"
                 sx={{ justifyContent: 'space-between', alignItem: 'center' }}
             >
-                <SuiTypography variant="h4" fontWeight="regular" my={2}>
+                <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
                     Thông tin người giám hộ
                 </SuiTypography>
                 <IconButton aria-label="delete" size="medium" onClick={() => window.location.href='/dashboard/tutordetail'}>

@@ -68,7 +68,7 @@ import RequestLoanPost from 'pages/RequestLoanPost'
 import ViewPost from 'pages/ViewPost'
 import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
-import TutorDetail from "pages/TutorDetail"
+import TutorDetail from 'pages/TutorDetail'
 
 import StudentProfile2 from 'pages/StudentProfile2'
 
@@ -98,15 +98,6 @@ let routes = [
         route: '/report',
         icon: <ContentPasteIcon size="12px" />,
         component: Report,
-        noCollapse: true,
-    },
-    {
-        type: 'collapse',
-        name: 'Yêu cầu vay',
-        key: 'request',
-        route: '/request',
-        icon: <LocalAtmIcon size="12px" />,
-        component: RequestLoanPost,
         noCollapse: true,
     },
     {
@@ -145,46 +136,27 @@ let routes = [
         component: StudentProfile2,
         noCollapse: false,
     },
-    {
-        type: 'collapse',
-        name: 'Chi tiết người giám hộ',
-        key: 'tutordetail',
-        route: '/tutordetail',
-        icon: <SpaceShip size="12px" />,
-        component: TutorDetail,
-        noCollapse: false,
-    },
 ]
 
-export const mainRoutes = [
+const extraRoutes = [
     {
-        route: '/',
-        component: LandingPage,
-        key: 'landing',
+        route: '/tutordetail',
+        component: TutorDetail,
+        key: 'tutordetail',
     },
     {
-        route: '/service',
-        component: LandingPage,
-        key: 'service',
-    },
-    {
-        route: '/dashboard',
-        component: SignUp,
-        key: 'signUp',
-    },
-    {
-        route: '/login',
-        component: LandingPage,
-        key: 'login',
-    },
-    {
-        route: '/forgot-password',
-        component: LandingPage,
-        key: 'forgotPassword',
+        route: '/request/:id',
+        component: RequestLoanPost,
+        key: 'request',
     },
 ]
 
 routes.map((route) => {
     route.route = '/dashboard' + route.route
 })
+
+extraRoutes.map((route) => {
+    route.route = '/dashboard' + route.route
+})
 export default routes
+export { extraRoutes }

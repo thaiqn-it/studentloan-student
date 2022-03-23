@@ -175,6 +175,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <Divider />
       <CreateLoanPost
         onOpen={openCreate}
+        miniSide={miniSidenav}
       />
       <List>{renderRoutes}</List>
       {/* <SuiBox pt={2} my={2} mx={2} mt="auto">
