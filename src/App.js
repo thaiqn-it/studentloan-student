@@ -20,8 +20,8 @@ import LandingPage from './pages/LandingPage2'
 
 import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
-import Success from 'pages/PaymentNotifycation/Success'
-import Cancel from 'pages/PaymentNotifycation/Cancel'
+import Success from 'pages/PaymentNotification/Success'
+import Cancel from 'pages/PaymentNotification/Cancel'
 
 function App() {
     return (
