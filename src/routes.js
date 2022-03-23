@@ -68,29 +68,37 @@ import RequestLoanPost from 'pages/RequestLoanPost'
 import ViewPost from 'pages/ViewPost'
 import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
-import TutorDetail from "pages/TutorDetail"
+import TutorDetail from 'pages/TutorDetail'
 
 import StudentProfile2 from 'pages/StudentProfile2'
 
 let routes = [
     {
         type: 'collapse',
-        name: 'Thông tin',
-        key: 'profile',
-        route: '/profile',
-        icon: <AssignmentIndIcon size="12px" />,
-        component: StudentProfile,
-        noCollapse: true,
+        name: 'Thông tin v2',
+        key: 'profile2',
+        collapse: [
+            {
+                type: 'collapse',
+                name: 'Thông tin',
+                key: 'profile',
+                route: '/profile2/profile',
+                icon: <AssignmentIndIcon size="12px" />,
+                component: StudentProfile,
+                noCollapse: true,
+            },
+            {
+                type: 'collapse',
+                name: 'Ví',
+                key: 'wallet',
+                route: '/profile2/wallet',
+                icon: <AccountBalanceWalletIcon size="12px" />,
+                component: Wallet,
+                noCollapse: true,
+            },
+        ],
     },
-    {
-        type: 'collapse',
-        name: 'Ví',
-        key: 'wallet',
-        route: '/wallet',
-        icon: <AccountBalanceWalletIcon size="12px" />,
-        component: Wallet,
-        noCollapse: true,
-    },
+
     {
         type: 'collapse',
         name: 'Báo cáo',
@@ -185,6 +193,12 @@ export const mainRoutes = [
 ]
 
 routes.map((route) => {
-    route.route = '/dashboard' + route.route
+    if(route.collapse)
+        route.collapse.map(route => route.route = '/dashboard' + route.route)
+    if(route.route)
+        route.route = '/dashboard' + route.route
+    return route
 })
+
+
 export default routes

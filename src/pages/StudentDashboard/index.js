@@ -1,5 +1,5 @@
 import routes from 'routes'
-import Sidenav from 'examples/Sidenav'
+import Sidenav from 'examples/Sidenav/v2'
 import Dashboard from 'layouts/dashboard'
 import React, { useEffect, useState, useMemo } from 'react'
 import {
@@ -18,21 +18,26 @@ import ReleaseLogo from '../../assets/release-logo.png'
 
 var currentRoute = [...routes]
 
+function getRoutes(allRoutes) {
+    const routes = allRoutes.map((route) => {
+        if (route.collapse) return getRoutes(route.collapse)
+        if (route.route)
+            return (
+                <Route
+                    path={route.route}
+                    component={route.component}
+                    key={route.key}
+                />
+            )
+
+        return null
+    })
+    
+    return routes
+}
+
 const Routes = () => {
-    return (
-        <Switch>
-            <Route path="/" component={StudentProfile} exact />
-            {currentRoute.map((route, index) => {
-                return (
-                    <Route
-                        path={route.route}
-                        component={route.component}
-                        key={route.key}
-                    />
-                )
-            })}
-        </Switch>
-    )
+    return <Switch>{getRoutes(currentRoute)}</Switch>
 }
 
 const StudentDashboard = () => {
