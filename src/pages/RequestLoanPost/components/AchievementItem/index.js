@@ -9,7 +9,7 @@ import SuiInput from 'components/SuiInput'
 export default function AchievementItem() {
     return (
         <>
-            <Card sx={{borderRadius:0, bgcolor:"none"}}>
+            <Card sx={{borderRadius:0, bgcolor:"none", padding:1.2, boxShadow:"0 2px 6px 0 rgb(0 0 0 / 17%)"}}>
                 <CardMedia
                     component="img"
                     height="194"
@@ -19,9 +19,7 @@ export default function AchievementItem() {
                 />
                 <CardContent>
                     <SuiTypography variant="body2" color="text">
-                        This impressive paella is a perfect party dish and a fun
-                        meal to cook together with your guests. Add 1 cup of
-                        frozen peas along with the mussels, if you like.
+                        This impressive paella is a perfect party 
                     </SuiTypography>
                 </CardContent>
             </Card>

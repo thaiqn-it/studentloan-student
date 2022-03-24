@@ -7,4 +7,8 @@ const uploadImage = (formData) => {
     })
 }
 
-export const imageApi = { uploadImage }
+const uploadImageWithProg = (formData, options) => {
+    return defaultInstance.post('/image/upload', formData, options)
+}
+
+export const imageApi = { uploadImage, uploadImageWithProg }

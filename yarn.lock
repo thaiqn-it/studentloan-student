@@ -6408,6 +6408,11 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
+lodash@4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
@@ -6689,6 +6694,13 @@ nth-check@^2.0.1:
   integrity sha512-it1vE95zF6dTT9lBsYbxvqh0Soy4SPowchj0UBGj/V6cTPnXXtQOPUbhZ6CmGzAD/rW22LQK6E96pcdJXk4A4w==
   dependencies:
     boolbase "^1.0.0"
+
+number-to-text-vietnamese@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/number-to-text-vietnamese/-/number-to-text-vietnamese-1.0.9.tgz#551f88f5584ec2b67257496e9eb014623eae45da"
+  integrity sha512-6b9E8u7n8Gn/1BrFRjWFU6CUBHhkkKV4/fo7khwN1/BTD9YU/gUzbzFy1nBc3QDfTKqvfdTn6+gFJgne/C2ReQ==
+  dependencies:
+    lodash "4.17.15"
 
 nwsapi@^2.2.0:
   version "2.2.0"

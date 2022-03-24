@@ -320,7 +320,7 @@ export default function CreateLoanPost(props) {
                 //     <CreateIcon />
                 // </SuiButton>
                 <SuiButton
-                    color="dark"
+                    color="primary"
                     startIcon={<CreateIcon />}
                     sx={{ borderRadius: 20, my: 2, mx: 4 }}
                     onClick={handleClickOpen}
@@ -448,6 +448,7 @@ export default function CreateLoanPost(props) {
                                             <SuiInput
                                                 name="interest"
                                                 type="number"
+                                                disabled
                                                 value={interest}
                                                 icon={{
                                                     component: <PercentIcon />,
