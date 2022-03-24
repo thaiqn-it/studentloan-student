@@ -3,6 +3,8 @@ import './DropFileZone.css'
 import uploadImg from '../../assets/cloud-upload-regular-240.png'
 // import { app } from "..//..//utils/Firebase";
 import { LinearProgress, Box, CardMedia } from '@mui/material'
+import { imageApi } from '../../apis/imageApi'
+import SuiProgress from 'components/SuiProgress'
 
 const DropFileInput = (props) => {
     const [progress, setProgress] = useState(0)
@@ -19,87 +21,74 @@ const DropFileInput = (props) => {
     const onFileDrop = (e) => {
         const newFile = e.target.files[0]
         if (newFile) {
-            connectFirebase(newFile)
+            connectUploadCloud(newFile)
         }
-        const localUrl = URL.createObjectURL(newFile)
-        setUrl(localUrl)
-        props.onFileChangeURL(localUrl)
     }
 
-    const connectFirebase = (image) => {
-        const imageName = new Date().getTime() + '-' + image.name
-
-        // const uploadTask = app.storage().ref(`images/${imageName}`).put(image);
-        // uploadTask.on(
-        //   "state_changed",
-        //   (snapshot) => {
-        //     const progress = Math.round(
-        //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        //     );
-        //     setProgress(progress);
-        //   },
-        //   (error) => {
-        //     console.log(error);
-        //   },
-        //   () => {
-        //     app
-        //       .storage()
-        //       .ref("images")
-        //       .child(imageName)
-        //       .getDownloadURL()
-        //       .then((newUrl) => {
-        //         setUrl(newUrl);
-        //         props.onFileChangeURL(newUrl);
-        //       });
-        //   }
-        // );
+    const singleFileOptions = {
+        onUploadProgress: (progressEvent) => {
+            const { loaded, total } = progressEvent
+            const percentage = Math.floor(
+                ((loaded / 1000) * 100) / (total / 1000)
+            )
+            setProgress(percentage - 10)
+        },
     }
 
-    if (progress === 0 || progress === 100) {
-        return (
-            <>
-                {url ? (
-                    <Box>
-                        <label for="file-input">
-                            <CardMedia
-                                component="img"
-                                image={url}
-                                height={300}
-                                sx={{ borderRadius: 1, margin: 0, cursor:"pointer" }}
-                            ></CardMedia>
-                        </label>
-                        <input
-                            type="file"
-                            id="file-input"
-                            onChange={onFileDrop}
-                            hidden
-                        />
-                    </Box>
-                ) : (
-                    <div
-                        ref={wrapperRef}
-                        className="drop-file-input"
-                        onDragEnter={onDragEnter}
-                        onDragLeave={onDragLeave}
-                        onDrop={onDrop}
-                    >
-                        <div className="drop-file-input__label">
-                            <img src={uploadImg} alt="" />
-                            <p>Drag & Drop your files here</p>
-                        </div>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            value=""
-                            onChange={onFileDrop}
-                        />
+    const connectUploadCloud = async (imageFile) => {
+        const formData = new FormData()
+        formData.append('file', imageFile)
+        await imageApi
+            .uploadImageWithProg(formData, singleFileOptions)
+            .then((res) => {
+                setUrl(res.data.url)
+                setProgress(100)
+                props.onFileChangeURL(res.data.url)
+            })
+    }
+    return (
+        <>
+            {progress === 100 ? (
+                <Box>
+                    <label for="file-input">
+                        <CardMedia
+                            component="img"
+                            image={url}
+                            sx={{
+                                borderRadius: 1,
+                                margin: 0,
+                                cursor: 'pointer',
+                                maxHeight: { md: 250, lg: 400 },
+                            }}
+                        ></CardMedia>
+                    </label>
+                    <input
+                        type="file"
+                        id="file-input"
+                        onChange={onFileDrop}
+                        hidden
+                    />
+                </Box>
+            ) : progress === 0 ? (
+                <div
+                    ref={wrapperRef}
+                    className="drop-file-input"
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                >
+                    <div className="drop-file-input__label">
+                        <img src={uploadImg} alt="" />
+                        <p>Drag & Drop your files here</p>
                     </div>
-                )}
-            </>
-        )
-    } else {
-        return (
-            <>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        value=""
+                        onChange={onFileDrop}
+                    />
+                </div>
+            ) : (
                 <Box
                     sx={{
                         display: 'flex',
@@ -110,16 +99,16 @@ const DropFileInput = (props) => {
                     }}
                 >
                     <Box sx={{ width: '100%', mr: 1 }}>
-                        <LinearProgress
+                        <SuiProgress
                             variant="determinate"
                             value={progress}
+                            color="primary"
                         />
                     </Box>
                 </Box>
-            </>
-        )
-        // }
-    }
+            )}
+        </>
+    )
 }
 
 export default DropFileInput

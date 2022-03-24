@@ -20,6 +20,7 @@
     "chroma-js": "2.1.2",
     "compress.js": "^1.2.2",
     "date-fns": "^2.24.0",
+    "number-to-text-vietnamese": "^1.0.9",
     "prop-types": "15.7.2",
     "react": "^17.0.2",
     "react-chartjs-2": "3.0.4",

@@ -18,20 +18,37 @@ import { loanApi } from '../../apis/loanApi'
 const steps = ['Loan information', 'Archievement', 'Confirm information']
 
 export default function RequestLoanPost() {
-    const {id} = useParams()
+    const { id } = useParams()
 
-    const [activeStep, setActiveStep] = React.useState(0)
-    const [completed, setCompleted] = React.useState({})
+    const [activeStep, setActiveStep] = useState(0)
+    const [loan, setLoan] = useState({})
 
     useEffect(() => {
-        console.log(id)
-        // loanApi.getLoanById(id).then((res) => {
-        //     console.log(res)
-        // })
+        loanApi
+            .getLoanById(id)
+            .then((res) => {
+                setLoan(res.data.loan)
+            })
+            .catch((error) => console.log(error))
     }, [])
 
-    const completedSteps = () => {
-        return Object.keys(completed).length
+    const handleOnchange = (e, name, value) => {
+        if(e){
+            e.preventDefault()
+            setLoan({
+                ...loan,
+                [e.target.name]: e.target.value,
+            })
+            console.log(loan)
+        }else{
+            setLoan({
+                ...loan,
+                [name]: value,
+            })
+            console.log(loan)
+
+        }
+     
     }
 
     const handleStep = (step) => () => {
@@ -56,7 +73,11 @@ export default function RequestLoanPost() {
                         duration={500}
                     >
                         <SuiButton
-                            sx={{ borderRadius: 0, color: "#FFFFFF", bgcolor:"#357a38" }}
+                            sx={{
+                                borderRadius: 0,
+                                color: '#FFFFFF',
+                                bgcolor: '#357a38',
+                            }}
                         >
                             Thông tin hồ sơ vay
                         </SuiButton>
@@ -68,9 +89,14 @@ export default function RequestLoanPost() {
                         smooth={true}
                         offset={-100}
                         duration={500}
-                        // onClick={() => redirect("/request")}
                     >
-                        <SuiButton sx={{ borderRadius: 0, color: "#FFFFFF", bgcolor:"#3f51b5" }}>
+                        <SuiButton
+                            sx={{
+                                borderRadius: 0,
+                                color: '#FFFFFF',
+                                bgcolor: '#3f51b5',
+                            }}
+                        >
                             Những thành tích
                         </SuiButton>
                     </Link>
@@ -81,9 +107,14 @@ export default function RequestLoanPost() {
                         smooth={true}
                         offset={-100}
                         duration={500}
-                        // onClick={() => redirect("/request")}
                     >
-                        <SuiButton  sx={{ borderRadius: 0, color: "#FFFFFF", bgcolor:"#f44336" }}>
+                        <SuiButton
+                            sx={{
+                                borderRadius: 0,
+                                color: '#FFFFFF',
+                                bgcolor: '#f44336',
+                            }}
+                        >
                             Thông tin của bạn
                         </SuiButton>
                     </Link>
@@ -93,7 +124,8 @@ export default function RequestLoanPost() {
                 <Paper elevation={6} sx={{ borderRadius: 3 }}>
                     <Box sx={{ width: '100%' }}>
                         <PostInfoPage
-                            handleStep={(index) => handleStep(index)}
+                            loan={loan}
+                            handleChange={handleOnchange}
                         />
 
                         <ArchievementPage
@@ -127,69 +159,6 @@ export default function RequestLoanPost() {
                                 Gửi
                             </SuiButton>
                         </Box>
-                        {/* <Stepper
-                            nonLinear
-                            activeStep={activeStep}
-                            alternativeLabel
-                        >
-                            {steps.map((label, index) => (
-                                <Step key={label} completed={completed[index]}>
-                                    <StepButton onClick={handleStep(index)}>
-                                        {label}
-                                    </StepButton>
-                                </Step>
-                            ))}
-                        </Stepper>
-
-                        {activeStep === 0 ? (
-                            <PostInfoPage
-                                handleStep={(index) => handleStep(index)}
-                            />
-                        ) : null}
-                        {activeStep === 1 ? (
-                            <ArchievementPage
-                                handleStep={(index) => handleStep(index)}
-                            />
-                        ) : null}
-                        {activeStep === 2 ? <ConfirmPage /> : null}
-                        {activeStep === 3 ? <ThankyouPage /> : null}
-
-                        <Container
-                            sx={{ padding: '3rem 3rem', display: 'flex' }}
-                        >
-                            {activeStep === 2 ? (
-                                <>
-                                    <SuiButton
-                                        variant="contained"
-                                        color="error"
-                                        sx={{
-                                            margin: '0 auto',
-                                            display: 'block',
-                                            textTransform: 'none',
-                                            marginRight: '0',
-                                            // backgroundColor: '#f44336',
-                                        }}
-                                        size="large"
-                                    >
-                                        Send form
-                                    </SuiButton>
-                                </>
-                            ) : (
-                                <SuiButton
-                                    color="dark"
-                                    size="large"
-                                    onClick={handleStep(activeStep + 1)}
-                                    sx={{
-                                        margin: '0 auto',
-                                        display: 'block',
-                                        textTransform: 'none',
-                                        marginRight: '0',
-                                    }}
-                                >
-                                    Next
-                                </SuiButton>
-                            )}
-                        </Container> */}
                     </Box>
                 </Paper>
             </SuiBox>

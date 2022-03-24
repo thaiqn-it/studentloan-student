@@ -63,7 +63,7 @@ export default function ViewPost() {
                                                 <Grid item xs="12" md="12">
                                                     <SuiProgress
                                                         value={50}
-                                                        color="dark"
+                                                        color="primary"
                                                     />
                                                 </Grid>
                                                 <Grid
@@ -73,7 +73,7 @@ export default function ViewPost() {
                                                     sx={{ marginTop: '1rem' }}
                                                 >
                                                     <SuiTypography
-                                                        variant="h3"
+                                                        variant="h4"
                                                         color="black"
                                                     >
                                                         100.000 VND

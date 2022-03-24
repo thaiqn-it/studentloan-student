@@ -15,14 +15,41 @@ import SuiButton from 'components/SuiButton'
 import AchievementList from './components/AchievementList'
 import YoutubeEmbed from './../../components/YoutubeEmbed'
 
-import { utilApi } from '../../apis/utilApi'
+import { getText } from 'number-to-text-vietnamese'
 
 export default function PostInfoPage(props) {
+    const { loan, handleChange } = props
+
     const [date, setDate] = useState(new Date())
     const [demandImages, setDemandImages] = useState([])
     const [moneyText, setMoneyText] = useState('')
 
     const [youtubeId, setYoutubeId] = useState('')
+
+    const handleOnchange = (e) => {
+        handleChange(e)
+    }
+
+    const handleDateOnChange = (e) => {
+        e.preventDefault()
+        var realValue = e.target.value
+        if (e.target.name === 'expectedGraduationTime') {
+            var day = new Date(realValue)
+            var day2 = new Date()
+            realValue = diff_months(day, day2)
+        }
+        if (e.target.name === 'postExpireAt') {
+            var day = new Date(realValue).toISOString()
+            realValue = day
+        }
+        handleChange(null, e.target.name, realValue)
+    }
+
+    function diff_months(dt2, dt1) {
+        var diff = (dt2.getTime() - dt1.getTime()) / 1000
+        diff /= 60 * 60 * 24 * 7 * 4
+        return Math.abs(Math.round(diff))
+    }
 
     const onFileChangeURL = (newUrl) => {
         const id = new Date().getTime()
@@ -30,24 +57,17 @@ export default function PostInfoPage(props) {
         setDemandImages((current) => [...current, image])
     }
 
-    const onNext = () => {
-        //save data
-        props.handleStep(1)
-    }
-
     const getMoneyText = (event) => {
         var money = Number(event.target.value)
         if (Math.floor(money) == money) {
-            console.log(event.target.value)
-            utilApi.getMoneyText(money).then((res) => {
-                const data = res.data
-                console.log(data)
-                if (data.success === 'true') {
-                    setMoneyText(data.result)
-                    console.log(data)
-                }
-            })
+            handleChange(event)
+            setMoneyText(getText(money))
         }
+    }
+
+    const getInitialMoneyText = (value) => {
+        var money = Number(value)
+        return getText(money) === 'không' ? null : getText(money)
     }
 
     const onGetYoutubeUrl = (event) => {
@@ -101,7 +121,13 @@ export default function PostInfoPage(props) {
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <SuiInput multiline placeholder="Tiêu đề" />
+                        <SuiInput
+                            multiline
+                            placeholder="Tiêu đề"
+                            value={loan.title}
+                            onChange={handleOnchange}
+                            name="title"
+                        />
                     </Grid>
                 </Grid>
             </Container>
@@ -139,7 +165,11 @@ export default function PostInfoPage(props) {
                                 >
                                     Thời gian ra trường dự kiến
                                 </SuiTypography>
-                                <SuiInput type="month" />
+                                <SuiInput
+                                    type="month"
+                                    onChange={handleDateOnChange}
+                                    name="expectedGraduationTime"
+                                />
                             </Grid>
                             <Grid item xs="12" md="6">
                                 <SuiTypography
@@ -149,7 +179,25 @@ export default function PostInfoPage(props) {
                                 >
                                     Thời gian bài đăng hết hạn
                                 </SuiTypography>
-                                <SuiInput type="date"/>
+                                <SuiInput
+                                    type="date"
+                                    onChange={handleOnchange}
+                                    name="postExpireAt"
+                                />
+                            </Grid>
+                            <Grid item xs="12" md="6">
+                                <SuiTypography
+                                    variant="button"
+                                    fontWeight="regular"
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    Thời gian vay (tháng)
+                                </SuiTypography>
+                                <SuiInput
+                                    type="number"
+                                    onChange={handleOnchange}
+                                    name="duration"
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -185,7 +233,13 @@ export default function PostInfoPage(props) {
                             },
                         }}
                     >
-                        <SuiInput rows={10} multiline placeholder="Mô tả..." />
+                        <SuiInput
+                            rows={10}
+                            multiline
+                            placeholder="Mô tả..."
+                            onChange={handleOnchange}
+                            name="description"
+                        />
                     </Grid>
                 </Grid>
             </Container>
@@ -226,18 +280,22 @@ export default function PostInfoPage(props) {
                                 <SuiInput
                                     onChange={getMoneyText}
                                     type="number"
+                                    name="totalMoney"
+                                    value={loan.totalMoney}
                                     icon={{
                                         component: 'đ',
                                         direction: 'right',
                                     }}
                                 />
+                            </Grid>
+                            <Grid item xs="12" md="12">
                                 <SuiTypography
                                     variant="button"
                                     fontWeight="regular"
                                     color="text"
                                     name="moneyText"
                                 >
-                                    {moneyText}
+                                    {getInitialMoneyText(loan.totalMoney)}
                                 </SuiTypography>
                             </Grid>
                         </Grid>
@@ -282,6 +340,7 @@ export default function PostInfoPage(props) {
                                 <SuiInput
                                     onChange={getMoneyText}
                                     type="number"
+                                    name="expectedMoney"
                                     icon={{
                                         component: 'đ',
                                         direction: 'right',
@@ -293,7 +352,7 @@ export default function PostInfoPage(props) {
                                     color="text"
                                     name="moneyText"
                                 >
-                                    {moneyText}
+                                    {getInitialMoneyText(loan.expectedMoney)}
                                 </SuiTypography>
                             </Grid>
                         </Grid>
@@ -329,6 +388,7 @@ export default function PostInfoPage(props) {
                                     sx={{ marginBottom: 3 }}
                                     placeholder="https://www.youtube.com/watch?v=id"
                                     onChange={onGetYoutubeUrl}
+                                    name="videoUrl"
                                 ></SuiInput>
                                 {youtubeId === '' ? null : (
                                     <YoutubeEmbed embedId={youtubeId} />
@@ -363,7 +423,7 @@ export default function PostInfoPage(props) {
                     <Grid item xs="12" md="7">
                         <Grid container spacing={2}>
                             <Grid item xs="12" md="12">
-                                {demandImages.map((items) => (
+                                {/* {demandImages.map((items) => (
                                     <CardMedia
                                         component="img"
                                         height="300"
@@ -371,12 +431,14 @@ export default function PostInfoPage(props) {
                                         alt={items.url}
                                         key={items.id}
                                     />
-                                ))}
-                                <DropFileInput
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
-                                    }
-                                />
+                                ))} */}
+                                <Box width="100%" display="flex" justifyContent="flex-end" flexDirection="column">
+                                    <DropFileInput
+                                        onFileChangeURL={(url) =>
+                                            onFileChangeURL(url)
+                                        }
+                                    />
+                                </Box>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -407,7 +469,7 @@ export default function PostInfoPage(props) {
                     <Grid item xs="12" md="7">
                         <Grid container spacing={2}>
                             <Grid item xs="12" md="12">
-                                {demandImages.map((items) => (
+                                {/* {demandImages.map((items) => (
                                     <CardMedia
                                         component="img"
                                         height="300"
@@ -415,7 +477,7 @@ export default function PostInfoPage(props) {
                                         alt={items.url}
                                         key={items.id}
                                     />
-                                ))}
+                                ))} */}
                                 <DropFileInput
                                     onFileChangeURL={(url) =>
                                         onFileChangeURL(url)
