@@ -139,7 +139,7 @@ export default function PostInfoPage(props) {
                                 >
                                     Thời gian ra trường dự kiến
                                 </SuiTypography>
-                                <SuiInput type="date" value="2022/04/12" />
+                                <SuiInput type="month" />
                             </Grid>
                             <Grid item xs="12" md="6">
                                 <SuiTypography
@@ -149,7 +149,7 @@ export default function PostInfoPage(props) {
                                 >
                                     Thời gian bài đăng hết hạn
                                 </SuiTypography>
-                                <SuiInput type="date" value="2022/04/12" />
+                                <SuiInput type="date"/>
                             </Grid>
                         </Grid>
                     </Grid>

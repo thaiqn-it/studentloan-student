@@ -9,8 +9,7 @@ import SuiInput from 'components/SuiInput'
 export default function AchievementCard() {
     return (
         <>
-            <Box my={4}>
-                <SuiTypography variant="h4" fontWeight="regular" my={2}>
+                <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
                     Thành tựu đã đạt được
                 </SuiTypography>
                 <Paper elevation={3} sx={{ borderRadius: '10px' }}>
@@ -40,7 +39,6 @@ export default function AchievementCard() {
                         </Grid>
                     </Box>
                 </Paper>
-            </Box>
         </>
     )
 }

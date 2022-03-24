@@ -9,7 +9,7 @@ export default function PaperInformation() {
     return (
         <>
             <Box>
-                <SuiTypography variant="h4" fontWeight="regular" my={2}>
+                <SuiTypography variant="h4" fontWeight="regular" my={2} color="black">
                     Giấy tờ
                 </SuiTypography>
                 <Paper elevation={3} sx={{ borderRadius: '10px' }}>

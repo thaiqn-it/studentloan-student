@@ -110,15 +110,6 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'Yêu cầu vay',
-        key: 'request',
-        route: '/request',
-        icon: <LocalAtmIcon size="12px" />,
-        component: RequestLoanPost,
-        noCollapse: true,
-    },
-    {
-        type: 'collapse',
         name: 'Xem bài',
         key: 'view-post',
         route: '/view-post',
@@ -153,42 +144,18 @@ let routes = [
         component: StudentProfile2,
         noCollapse: false,
     },
-    {
-        type: 'collapse',
-        name: 'Chi tiết người giám hộ',
-        key: 'tutordetail',
-        route: '/tutordetail',
-        icon: <SpaceShip size="12px" />,
-        component: TutorDetail,
-        noCollapse: false,
-    },
 ]
 
-export const mainRoutes = [
+const extraRoutes = [
     {
-        route: '/',
-        component: LandingPage,
-        key: 'landing',
+        route: '/tutordetail',
+        component: TutorDetail,
+        key: 'tutordetail',
     },
     {
-        route: '/service',
-        component: LandingPage,
-        key: 'service',
-    },
-    {
-        route: '/dashboard',
-        component: SignUp,
-        key: 'signUp',
-    },
-    {
-        route: '/login',
-        component: LandingPage,
-        key: 'login',
-    },
-    {
-        route: '/forgot-password',
-        component: LandingPage,
-        key: 'forgotPassword',
+        route: '/request/:id',
+        component: RequestLoanPost,
+        key: 'request',
     },
 ]
 
@@ -200,5 +167,5 @@ routes.map((route) => {
     return route
 })
 
-
 export default routes
+export { extraRoutes }

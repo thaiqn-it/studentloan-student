@@ -1,44 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import PostInfoPage from './PostInfoPage'
 import ArchievementPage from './ArchievementPage'
 import ConfirmPage from './ConfirmPage'
-import ThankyouPage from './ThankyouPage'
 
 import Box from '@mui/material/Box'
-import Stepper from '@mui/material/Stepper'
-import Step from '@mui/material/Step'
-import StepButton from '@mui/material/StepButton'
 import { ButtonGroup, Divider, Paper } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiBox from 'components/SuiBox'
 
 import { Link } from 'react-scroll'
 
+import { useParams } from 'react-router-dom'
+
 import { loanApi } from '../../apis/loanApi'
-import SuiTypography from 'components/SuiTypography'
 
 const steps = ['Loan information', 'Archievement', 'Confirm information']
 
 export default function RequestLoanPost() {
+    const {id} = useParams()
+
     const [activeStep, setActiveStep] = React.useState(0)
     const [completed, setCompleted] = React.useState({})
 
-    const data = {
-        totalMoney: 1000,
-        interest: 20,
-        expectedGraduationDay: 2,
-        expectedGraduationTime: 3,
-        title: 'Test create',
-        description: 'des',
-        duration: 36,
-        loanStartAt: '1900-01-01 00:00:00',
-        loanEndAt: '1900-01-01 00:00:00',
-        postCreatedAt: '1900-01-01 00:00:00',
-        postExpireAt: '1900-01-01 00:00:00',
-        expectedMoney: 200,
-        status: 'DRAFT',
-    }
+    useEffect(() => {
+        console.log(id)
+        // loanApi.getLoanById(id).then((res) => {
+        //     console.log(res)
+        // })
+    }, [])
 
     const completedSteps = () => {
         return Object.keys(completed).length
@@ -66,12 +56,7 @@ export default function RequestLoanPost() {
                         duration={500}
                     >
                         <SuiButton
-                            color="error"
-                            sx={{
-                                borderRadius: 0,
-                                outline: 'none',
-                                boxShadow: 'none',
-                            }}
+                            sx={{ borderRadius: 0, color: "#FFFFFF", bgcolor:"#357a38" }}
                         >
                             Thông tin hồ sơ vay
                         </SuiButton>
@@ -85,7 +70,7 @@ export default function RequestLoanPost() {
                         duration={500}
                         // onClick={() => redirect("/request")}
                     >
-                        <SuiButton color="success" sx={{ borderRadius: 0 }}>
+                        <SuiButton sx={{ borderRadius: 0, color: "#FFFFFF", bgcolor:"#3f51b5" }}>
                             Những thành tích
                         </SuiButton>
                     </Link>
@@ -98,7 +83,7 @@ export default function RequestLoanPost() {
                         duration={500}
                         // onClick={() => redirect("/request")}
                     >
-                        <SuiButton color="info" sx={{ borderRadius: 0 }}>
+                        <SuiButton  sx={{ borderRadius: 0, color: "#FFFFFF", bgcolor:"#f44336" }}>
                             Thông tin của bạn
                         </SuiButton>
                     </Link>
@@ -211,6 +196,3 @@ export default function RequestLoanPost() {
         </>
     )
 }
-
-
-
