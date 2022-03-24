@@ -17,7 +17,6 @@ import StudentProfile from 'pages/StudentProfile'
 import ReleaseLogo from '../../assets/release-logo.png'
 
 var currentRoute = [...routes]
-var extraRoute = [...extraRoutes]
 
 function getRoutes(allRoutes) {
     const routes = allRoutes.map((route) => {
