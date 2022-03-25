@@ -13,6 +13,7 @@ import {
 import SuiInput from 'components/SuiInput'
 import classes from './TopUp.module.css'
 import { transactionApi } from 'apis/transactionApi'
+import { PayPalButton } from 'react-paypal-button-v2'
 
 const source = 'https://studentloanfpt.ddns.net'
 const TopUpModal = ({ open, onClose, url }) => {
@@ -67,6 +68,27 @@ export default function TopUp({ open, handleClose, reloadData }) {
         } catch (e) {}
     }
 
+    const handleTopUpSucces = async (paymentId) => {
+        try {
+            const data = {
+                money,
+                type: 'type',
+                description: '',
+                accountId,
+                recipientId: '',
+                recipientName: '',
+                senderId: '',
+                senderName: '',
+                transactionFee: '',
+                status: '',
+                paypalTransaction: paymentId,
+            }
+            const res = await transactionApi.createTransaction(data)
+            if (!res) throw new Error(res)
+            setModalOpen(false)
+        } catch (e) {}
+    }
+
     return (
         <>
             <TopUpModal
@@ -98,10 +120,32 @@ export default function TopUp({ open, handleClose, reloadData }) {
                 )} */}
                         </Box>
                     </Box>
+                    <PayPalButton
+                        amount="0.01"
+                        onSuccess={(details, data) => {
+                            console.log(details, data)
+                        }}
+                        options={{
+                            clientId:
+                                'AX_lyXzg2GC8Gmc1Bm_XyNhbHuTKyBI1y2fHwiJ9TIjb98scF-hriTxED5CIT-_JPxglh5e7GmLzmiGm',
+                        }}
+                        createOrder={(data, actions) => {
+                            return actions.order.create({
+                              purchase_units: [{
+                                amount: {
+                                  currency_code: "USD",
+                                  value: "0.01"
+                                }
+                              }],
+                              // application_context: {
+                              //   shipping_preference: "NO_SHIPPING" // default is "GET_FROM_FILE"
+                              // }
+                            });
+                          }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Huỷ</Button>
-                    <Button onClick={handleFormSubmit}>Nap</Button>
                 </DialogActions>
             </Dialog>
         </>
