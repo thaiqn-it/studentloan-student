@@ -1,28 +1,84 @@
-import * as React from 'react'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import { Box, CardActionArea, Paper } from '@mui/material'
-import SuiTypography from 'components/SuiTypography'
+import { Box, Divider } from '@mui/material'
 import SuiInput from 'components/SuiInput'
+import SuiButton from 'components/SuiButton'
+import React, { useEffect, useState } from 'react'
 
-export default function AchievementItem() {
+import AddAchievement from '../AddAchievement'
+
+import ImageCard from '../../../../components/ImageCard'
+import EditIcon from '@mui/icons-material/Edit'
+import DropFileInput from 'components/DropFileZone'
+
+export default function AchievementItem(props) {
+    const { id, studentId, description, imageUrl, status, createAt, updateAt } =
+        props
+
+    const [selectedValue, setSelectedValue] = useState(props)
+    const [des, setDes] = useState(description)
+    const [imageChange, setImageChange] = useState(imageUrl)
+
+    const [isDisable, setIsDisable] = useState(true)
+    const [open, setOpen] = useState(false)
+
+    const handleClickOpen = () => {
+        setIsDisable(false)
+        console.log('Trye')
+    }
+
+    const handleChangeDes = (e) => {
+        setDes(e.target.value)
+    }
+
+    const onDelete = (id) => {
+        setImageChange('')
+    }
+
+    const onFileChangeURL = (url, event) => {
+        setImageChange(url)
+    }
+
     return (
         <>
-            <Card sx={{borderRadius:0, bgcolor:"none", padding:1.2, boxShadow:"0 2px 6px 0 rgb(0 0 0 / 17%)"}}>
-                <CardMedia
-                    component="img"
-                    height="194"
-                    image="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80"
-                    alt="Paella dish"
-                    sx={{ borderRadius: 0, margin:0 }}
+            <Box sx={{ marginBottom: 5 }} id={id}>
+                <SuiInput
+                    value={des}
+                    disabled={isDisable}
+                    onChange={handleChangeDes}
+                    icon={{
+                        component: (
+                            <EditIcon
+                                size="small"
+                                sx={{ cursor: 'pointer' }}
+                                onClick={handleClickOpen}
+                            />
+                        ),
+                        direction: 'right',
+                    }}
                 />
-                <CardContent>
-                    <SuiTypography variant="body2" color="text">
-                        This impressive paella is a perfect party 
-                    </SuiTypography>
-                </CardContent>
-            </Card>
+                <Box mt={1} mb={1}>
+                    <DropFileInput
+                        image={imageChange}
+                        update={isDisable}
+                        onDelete={onDelete}
+                        elementName={imageUrl}
+                        elementId={id}
+                        onFileChangeURL={(url, event) =>
+                            onFileChangeURL(url, event)
+                        }
+                    />
+                </Box>
+
+                <Box display="flex" justifyContent="space-between" mb={3}>
+                    {isDisable ? null : (
+                        <>
+                            <SuiButton color="primary">Sửa</SuiButton>
+                            <SuiButton color="error">Xóa</SuiButton>
+                        </>
+                    )}
+                </Box>
+
+                <Divider />
+            </Box>
         </>
     )
 }

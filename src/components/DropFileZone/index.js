@@ -1,12 +1,26 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './DropFileZone.css'
 import uploadImg from '../../assets/cloud-upload-regular-240.png'
 // import { app } from "..//..//utils/Firebase";
-import { LinearProgress, Box, CardMedia } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { imageApi } from '../../apis/imageApi'
 import SuiProgress from 'components/SuiProgress'
 
+import DeleteIcon from '@mui/icons-material/Delete'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
+import ImageModal from 'components/ImageModal'
+
 const DropFileInput = (props) => {
+    const {
+        elementId,
+        elementName,
+        onFileChangeURL,
+        flexEnd,
+        image,
+        onDelete,
+    } = props
+
+    const update = props.update || false
     const [progress, setProgress] = useState(0)
     const [url, setUrl] = useState('')
 
@@ -21,7 +35,7 @@ const DropFileInput = (props) => {
     const onFileDrop = (e) => {
         const newFile = e.target.files[0]
         if (newFile) {
-            connectUploadCloud(newFile)
+            connectUploadCloud(newFile, e)
         }
     }
 
@@ -35,7 +49,8 @@ const DropFileInput = (props) => {
         },
     }
 
-    const connectUploadCloud = async (imageFile) => {
+    const connectUploadCloud = async (imageFile, event) => {
+        setProgress(1)
         const formData = new FormData()
         formData.append('file', imageFile)
         await imageApi
@@ -43,72 +58,177 @@ const DropFileInput = (props) => {
             .then((res) => {
                 setUrl(res.data.url)
                 setProgress(100)
-                props.onFileChangeURL(res.data.url)
+                onFileChangeURL(res.data.url, event)
             })
     }
-    return (
-        <>
-            {progress === 100 ? (
-                <Box>
-                    <label for="file-input">
-                        <CardMedia
+
+    const handleDelete = () => {
+        setUrl('')
+        setProgress(0)
+        onDelete(elementName)
+    }
+
+    if (image !== '' && progress === 0) {
+        return (
+            <>
+                <Box display="flex" justifyContent={flexEnd || 'flex-end'}>
+                    <Box
+                        sx={{
+                            px: 1.2,
+                            pt: 1.2,
+                            pb: update ? 5 : 0,
+                            boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
+                            // width: 'fit-content',
+                        }}
+                    >
+                        <ImageModal
                             component="img"
-                            image={url}
+                            image={image}
                             sx={{
-                                borderRadius: 1,
+                                borderRadius: 0,
                                 margin: 0,
                                 cursor: 'pointer',
-                                maxHeight: { md: 250, lg: 400 },
+                                maxWidth: '100%',
+                                height: 'auto',
                             }}
-                        ></CardMedia>
-                    </label>
-                    <input
-                        type="file"
-                        id="file-input"
-                        onChange={onFileDrop}
-                        hidden
-                    />
-                </Box>
-            ) : progress === 0 ? (
-                <div
-                    ref={wrapperRef}
-                    className="drop-file-input"
-                    onDragEnter={onDragEnter}
-                    onDragLeave={onDragLeave}
-                    onDrop={onDrop}
-                >
-                    <div className="drop-file-input__label">
-                        <img src={uploadImg} alt="" />
-                        <p>Drag & Drop your files here</p>
-                    </div>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        value=""
-                        onChange={onFileDrop}
-                    />
-                </div>
-            ) : (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: '300px',
-                        marginTop: '1rem',
-                        backgroundColor: '#fbfbfa',
-                    }}
-                >
-                    <Box sx={{ width: '100%', mr: 1 }}>
-                        <SuiProgress
-                            variant="determinate"
-                            value={progress}
-                            color="primary"
                         />
+                        {update ? null : (
+                            <>
+                                <IconButton
+                                    aria-label="fileuploan"
+                                    component="span"
+                                    size="medium"
+                                    onClick={handleDelete}
+                                >
+                                    <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                                <label htmlFor={elementId}>
+                                    <input
+                                        type="file"
+                                        id={elementId}
+                                        name={elementName}
+                                        onChange={onFileDrop}
+                                        hidden
+                                    />
+                                    <IconButton
+                                        aria-label="fileuploan"
+                                        component="span"
+                                        size="medium"
+                                    >
+                                        <FileUploadIcon fontSize="inherit" />
+                                    </IconButton>
+                                </label>
+                            </>
+                        )}
                     </Box>
                 </Box>
-            )}
-        </>
-    )
+            </>
+        )
+    } else {
+        return (
+            <>
+                {progress === 100 ? (
+                    <Box display="flex" justifyContent={flexEnd || 'flex-end'}>
+                        <Box
+                            sx={{
+                                px: 1.2,
+                                pt: 1.2,
+                                // pb: 4,
+                                boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
+                                width: 'fit-content',
+                            }}
+                        >
+                            <ImageModal
+                                component="img"
+                                image={image}
+                                sx={{
+                                    borderRadius: 0,
+                                    margin: 0,
+                                    cursor: 'pointer',
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                }}
+                            />
+                            {update ? null : (
+                                <>
+                                    <IconButton
+                                        aria-label="fileuploan"
+                                        component="span"
+                                        size="medium"
+                                        onClick={handleDelete}
+                                    >
+                                        <DeleteIcon fontSize="inherit" />
+                                    </IconButton>
+                                    <label htmlFor={elementId}>
+                                        <input
+                                            type="file"
+                                            id={elementId}
+                                            name={elementName}
+                                            onChange={onFileDrop}
+                                            hidden
+                                        />
+                                        <IconButton
+                                            aria-label="fileuploan"
+                                            component="span"
+                                            size="medium"
+                                        >
+                                            <FileUploadIcon fontSize="inherit" />
+                                        </IconButton>
+                                    </label>
+                                </>
+                            )}
+                        </Box>
+                    </Box>
+                ) : progress === 0 ? (
+                    <div
+                        ref={wrapperRef}
+                        className="drop-file-input"
+                        onDragEnter={onDragEnter}
+                        onDragLeave={onDragLeave}
+                        onDrop={onDrop}
+                    >
+                        <div className="drop-file-input__label">
+                            <img src={uploadImg} alt="" />
+                            <p>Drag & Drop your files here</p>
+                        </div>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            value=""
+                            id={elementId}
+                            name={elementName}
+                            onChange={onFileDrop}
+                        />
+                    </div>
+                ) : (
+                    <Box display="flex" flexDirection="column">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                height: '300px',
+                                marginTop: '1rem',
+                                backgroundColor: '#fbfbfa',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    mr: 1,
+                                }}
+                            >
+                                <SuiProgress
+                                    variant="determinate"
+                                    value={progress}
+                                    color="primary"
+                                />
+                            </Box>
+                        </Box>
+                    </Box>
+                )}
+            </>
+        )
+    }
 }
 
 export default DropFileInput

@@ -3,7 +3,7 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 
-import DragFileZone from '..//..//..//..//components/DropFileZone'
+import DragFileZone from '../../../../components/DropFileZone'
 
 export default function PaperInformation() {
     return (

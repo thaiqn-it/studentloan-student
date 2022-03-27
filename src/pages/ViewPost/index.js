@@ -1,25 +1,10 @@
-import {
-    Container,
-    Typography,
-    Box,
-    Grid,
-    LinearProgress,
-    Divider,
-    List,
-    Paper,
-    TextField,
-    CardMedia,
-} from '@mui/material'
+import { Container, Box, Grid, Divider, Paper } from '@mui/material'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
 import SuiProgress from 'components/SuiProgress'
 import SuiTypography from 'components/SuiTypography'
 import YoutubeEmbed from 'components/YoutubeEmbed'
-import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
-import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import React, { useState } from 'react'
-import CardInvestDetail from '../../components/CardInvestDetail'
-import ImageModal from '../../components/ImageModal'
 import Tab from './components/Tab'
 
 export default function ViewPost() {
@@ -45,7 +30,7 @@ export default function ViewPost() {
                             <Container maxWidth="xxl">
                                 <Box>
                                     <Grid container spacing={4}>
-                                        <Grid item xs={12} md={8}>
+                                        <Grid item xs={12} md={9}>
                                             <YoutubeEmbed
                                                 embedId="y182SJTws8U"
                                                 height="480"
@@ -54,11 +39,12 @@ export default function ViewPost() {
                                                 variant="h6"
                                                 fontWeight="regular"
                                                 color="black"
+                                                align="center"
                                             >
-                                                  T: Vay học phí tháng 4
+                                                T: Vay học phí tháng 4
                                             </SuiTypography>
                                         </Grid>
-                                        <Grid item xs={12} md={4}>
+                                        <Grid item xs={12} md={3}>
                                             <Grid container spacing={1}>
                                                 <Grid item xs="12" md="12">
                                                     <SuiProgress
@@ -76,7 +62,7 @@ export default function ViewPost() {
                                                         variant="h4"
                                                         color="black"
                                                     >
-                                                        100.000 VND
+                                                        100.000.000.000 VND
                                                     </SuiTypography>
                                                     <SuiTypography variant="h6">
                                                         /23.500.000

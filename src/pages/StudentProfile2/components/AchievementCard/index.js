@@ -3,7 +3,7 @@ import React from 'react'
 import { Box, Grid, Paper } from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 
-import DragFileZone from '..//..//..//..//components/DropFileZone'
+import DragFileZone from '../../../../components/DropFileZone'
 import SuiInput from 'components/SuiInput'
 
 export default function AchievementCard() {

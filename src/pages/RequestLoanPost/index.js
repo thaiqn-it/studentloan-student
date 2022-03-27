@@ -14,6 +14,7 @@ import { Link } from 'react-scroll'
 import { useParams } from 'react-router-dom'
 
 import { loanApi } from '../../apis/loanApi'
+import MediaPage from './MediaPage'
 
 const steps = ['Loan information', 'Archievement', 'Confirm information']
 
@@ -21,40 +22,65 @@ export default function RequestLoanPost() {
     const { id } = useParams()
 
     const [activeStep, setActiveStep] = useState(0)
-    const [loan, setLoan] = useState({})
+    const [loan, setLoan] = useState({ LoanMedia: [] })
+    const [loanMedia, setLoanMedia] = useState({})
+    const [achievements, setAchivements] = useState([])
 
     useEffect(() => {
         loanApi
             .getLoanById(id)
             .then((res) => {
                 setLoan(res.data.loan)
+                setLoanMedia(
+                    convertArrayToObject(res.data.loan.LoanMedia, 'type')
+                )
+                setAchivements(res.data.loan.Student.Archievements)
             })
             .catch((error) => console.log(error))
     }, [])
 
+    const convertArrayToObject = (array, key) => {
+        const initialValue = {}
+        return array.reduce((obj, item) => {
+            var newItem = { ...item, currentStatus: 'old' }
+            return {
+                ...obj,
+                [item[key]]: newItem,
+            }
+        }, initialValue)
+    }
+
     const handleOnchange = (e, name, value) => {
-        if(e){
+        if (e) {
             e.preventDefault()
             setLoan({
                 ...loan,
                 [e.target.name]: e.target.value,
             })
-            console.log(loan)
-        }else{
+        } else {
+            var realValue = value
+            if (name === 'LoanMedia') {
+                // var newObject = {...loanMedia.realValue.type,
+                setLoanMedia({
+                    ...loanMedia,
+                    [realValue.type]: realValue,
+                })
+            }
             setLoan({
                 ...loan,
-                [name]: value,
+                [name]: realValue,
             })
-            console.log(loan)
-
         }
-     
     }
 
     const handleStep = (step) => () => {
         if (step <= steps.length + 1) {
             setActiveStep(step)
         }
+    }
+
+    const handleSubmit = () => {
+        console.log(loanMedia)
     }
 
     return (
@@ -128,8 +154,15 @@ export default function RequestLoanPost() {
                             handleChange={handleOnchange}
                         />
 
+                        <MediaPage
+                            loanId={loan.id}
+                            loanMedia={loanMedia}
+                            handleChange={handleOnchange}
+                        />
+
                         <ArchievementPage
-                            handleStep={(index) => handleStep(index)}
+                            achievements={achievements}
+                            handleChange={handleOnchange}
                         />
                         <ConfirmPage />
                         <Divider />
@@ -146,15 +179,14 @@ export default function RequestLoanPost() {
                                 color="dark"
                                 variant="outlined"
                                 size="large"
-                                onClick={handleStep(activeStep + 1)}
                             >
                                 Lưu nháp
                             </SuiButton>
                             <SuiButton
                                 color="primary"
                                 size="large"
-                                onClick={handleStep(activeStep + 1)}
                                 sx={{ mb: 3 }}
+                                onClick={handleSubmit}
                             >
                                 Gửi
                             </SuiButton>

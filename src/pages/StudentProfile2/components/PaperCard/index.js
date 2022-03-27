@@ -3,9 +3,13 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 
-import DragFileZone from '..//..//..//..//components/DropFileZone'
+import DragFileZone from '../../../../components/DropFileZone'
 
 export default function PaperCard() {
+    const onFileChangeURL = (url) => {
+        console.log(url)
+    }
+
     return (
         <>
             <SuiTypography
@@ -75,7 +79,12 @@ export default function PaperCard() {
                                 >
                                     Mặt trước CMND/CCCD
                                 </SuiTypography>
-                                <DragFileZone />
+                                <DragFileZone
+                                    name="frontID"
+                                    onFileChangeURL={(url) =>
+                                        onFileChangeURL(url)
+                                    }
+                                />
                             </Grid>
 
                             <Grid item xs={12} md={6}>

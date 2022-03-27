@@ -1,32 +1,20 @@
 import React, { useState } from 'react'
-import {
-    Container,
-    Typography,
-    Grid,
-    Divider,
-    Box,
-    CardMedia,
-} from '@mui/material'
-import DropFileInput from '../../components/DropFileZone'
+import { Container, Grid, Divider, Box } from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
-import SuiButton from 'components/SuiButton'
-
-import AchievementList from './components/AchievementList'
-import YoutubeEmbed from './../../components/YoutubeEmbed'
 
 import { getText } from 'number-to-text-vietnamese'
+import moment from 'moment'
 
 export default function PostInfoPage(props) {
     const { loan, handleChange } = props
 
-    const [date, setDate] = useState(new Date())
-    const [demandImages, setDemandImages] = useState([])
-    const [moneyText, setMoneyText] = useState('')
-
-    const [youtubeId, setYoutubeId] = useState('')
+    // const [date, setDate] = useState(new Date())
+    // const [demandImages, setDemandImages] = useState([])
+    // const [moneyText, setMoneyText] = useState('')
 
     const handleOnchange = (e) => {
+        e.preventDefault()
         handleChange(e)
     }
 
@@ -51,17 +39,10 @@ export default function PostInfoPage(props) {
         return Math.abs(Math.round(diff))
     }
 
-    const onFileChangeURL = (newUrl) => {
-        const id = new Date().getTime()
-        const image = { description: 'Demand note', url: newUrl, id }
-        setDemandImages((current) => [...current, image])
-    }
-
     const getMoneyText = (event) => {
         var money = Number(event.target.value)
         if (Math.floor(money) == money) {
             handleChange(event)
-            setMoneyText(getText(money))
         }
     }
 
@@ -70,13 +51,15 @@ export default function PostInfoPage(props) {
         return getText(money) === 'không' ? null : getText(money)
     }
 
-    const onGetYoutubeUrl = (event) => {
-        var url = event.target.value
-        var regExp =
-            /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
-        var match = url.match(regExp)
-        var returnUrl = match && match[7].length == 11 ? match[7] : false
-        setYoutubeId(returnUrl)
+
+    function formatExpectGraduateTime(createTime, time){
+        var day = new Date(createTime);
+        var returnDate = new Date(day.setMonth(day.getMonth() + time))
+        return moment(returnDate).format('YYYY-MM')
+    }
+
+    function formatExpireTime(time){
+        return moment(time).format('YYYY-MM-DD')
     }
 
     return (
@@ -110,7 +93,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Tiêu đề
+                            Tiêu đề (*)
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -143,7 +126,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Thông tin vay
+                            Thông tin vay (*)
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -169,6 +152,7 @@ export default function PostInfoPage(props) {
                                     type="month"
                                     onChange={handleDateOnChange}
                                     name="expectedGraduationTime"
+                                    value={formatExpectGraduateTime(loan.postCreatedAt, loan.expectedGraduationTime)}
                                 />
                             </Grid>
                             <Grid item xs="12" md="6">
@@ -183,6 +167,7 @@ export default function PostInfoPage(props) {
                                     type="date"
                                     onChange={handleOnchange}
                                     name="postExpireAt"
+                                    value={formatExpireTime(loan.postExpireAt)}
                                 />
                             </Grid>
                             <Grid item xs="12" md="6">
@@ -197,6 +182,7 @@ export default function PostInfoPage(props) {
                                     type="number"
                                     onChange={handleOnchange}
                                     name="duration"
+                                    value={loan.duration}
                                 />
                             </Grid>
                         </Grid>
@@ -213,7 +199,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Mô tả
+                            Mô tả (*)
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -253,7 +239,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Số tiền kêu gọi
+                            Số tiền kêu gọi (*)
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -276,7 +262,6 @@ export default function PostInfoPage(props) {
                                 </SuiTypography>
                             </Grid>
                             <Grid item xs="12" md="6">
-                                {/* <TextField  align="right" variant="outlined" fullWidth /> */}
                                 <SuiInput
                                     onChange={getMoneyText}
                                     type="number"
@@ -294,6 +279,7 @@ export default function PostInfoPage(props) {
                                     fontWeight="regular"
                                     color="text"
                                     name="moneyText"
+                                    textTransform="capitalize"
                                 >
                                     {getInitialMoneyText(loan.totalMoney)}
                                 </SuiTypography>
@@ -312,7 +298,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Số tiền kỳ vọng
+                            Số tiền kỳ vọng (*)
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -346,143 +332,17 @@ export default function PostInfoPage(props) {
                                         direction: 'right',
                                     }}
                                 />
+                            </Grid>
+                            <Grid item xs="12" md="12">
                                 <SuiTypography
                                     variant="button"
                                     fontWeight="regular"
                                     color="text"
                                     name="moneyText"
+                                    textTransform="capitalize"
                                 >
                                     {getInitialMoneyText(loan.expectedMoney)}
                                 </SuiTypography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Container>
-            <Divider />
-            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
-                <Grid container spacing={3}>
-                    <Grid item xs="12" md="5">
-                        <SuiTypography
-                            variant="h6"
-                            fontWeight="regular"
-                            textTransform="capitalize"
-                            color="black"
-                        >
-                            Video giới thiệu
-                        </SuiTypography>
-                        <SuiTypography
-                            variant="button"
-                            fontWeight="regular"
-                            color="text"
-                        >
-                            Bạn có thể tạo youtube video giới thiệu về hoàn cảnh
-                            hiện tại và giới thiệu về những bằng cấp bạn đã đạt
-                            được
-                        </SuiTypography>
-                    </Grid>
-                    <Grid item xs="12" md="7">
-                        <Grid container spacing={2}>
-                            <Grid item xs="12" md="12">
-                                <SuiInput
-                                    sx={{ marginBottom: 3 }}
-                                    placeholder="https://www.youtube.com/watch?v=id"
-                                    onChange={onGetYoutubeUrl}
-                                    name="videoUrl"
-                                ></SuiInput>
-                                {youtubeId === '' ? null : (
-                                    <YoutubeEmbed embedId={youtubeId} />
-                                )}
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Container>
-            <Divider />
-            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
-                <Grid container spacing={3}>
-                    <Grid item xs="12" md="5">
-                        <SuiTypography
-                            variant="h6"
-                            fontWeight="regular"
-                            textTransform="capitalize"
-                            color="black"
-                        >
-                            Giấy báo học phí
-                        </SuiTypography>
-                        <SuiTypography
-                            variant="button"
-                            fontWeight="regular"
-                            color="text"
-                        >
-                            Chúng tôi cần giấy báo học phí như là bằng chứng cho
-                            hồ sơ vay, điều này sẽ liên quan đến việc hồ sơ vay
-                            của bạn có được duyệt hay không
-                        </SuiTypography>
-                    </Grid>
-                    <Grid item xs="12" md="7">
-                        <Grid container spacing={2}>
-                            <Grid item xs="12" md="12">
-                                {/* {demandImages.map((items) => (
-                                    <CardMedia
-                                        component="img"
-                                        height="300"
-                                        image={items.url}
-                                        alt={items.url}
-                                        key={items.id}
-                                    />
-                                ))} */}
-                                <Box width="100%" display="flex" justifyContent="flex-end" flexDirection="column">
-                                    <DropFileInput
-                                        onFileChangeURL={(url) =>
-                                            onFileChangeURL(url)
-                                        }
-                                    />
-                                </Box>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Container>
-            <Divider />
-            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
-                <Grid container spacing={3}>
-                    <Grid item xs="12" md="5">
-                        <SuiTypography
-                            variant="h6"
-                            fontWeight="regular"
-                            textTransform="capitalize"
-                            color="black"
-                        >
-                            Giấy xác nhận sinh viên
-                        </SuiTypography>
-                        <SuiTypography
-                            variant="button"
-                            fontWeight="regular"
-                            color="text"
-                        >
-                            Giấy xác nhận sinh viên sẽ giúp hệ thống chắc chắn
-                            bạn đúng là sinh viên của trường đại học và tăng
-                            thêm uy tín với nhà đầu tư
-                        </SuiTypography>
-                    </Grid>
-                    <Grid item xs="12" md="7">
-                        <Grid container spacing={2}>
-                            <Grid item xs="12" md="12">
-                                {/* {demandImages.map((items) => (
-                                    <CardMedia
-                                        component="img"
-                                        height="300"
-                                        image={items.url}
-                                        alt={items.url}
-                                        key={items.id}
-                                    />
-                                ))} */}
-                                <DropFileInput
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
-                                    }
-                                />
                             </Grid>
                         </Grid>
                     </Grid>

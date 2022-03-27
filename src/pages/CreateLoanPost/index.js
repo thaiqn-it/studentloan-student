@@ -159,8 +159,9 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 
 import CreateIcon from '@mui/icons-material/Create'
-
 import PercentIcon from '@mui/icons-material/Percent'
+
+import { getText } from 'number-to-text-vietnamese'
 
 import { loanApi } from '../../apis/loanApi'
 import { systemConfigApi } from '../../apis/systemConfigApi'
@@ -208,6 +209,7 @@ export default function CreateLoanPost(props) {
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [interest, setInterest] = useState()
+    const [moneyText, setMoneyText] = useState("")
     // const [miniSideNav, setMiniSideNav] = useState(miniSide)
 
     const data = {
@@ -278,18 +280,27 @@ export default function CreateLoanPost(props) {
         return flag
     }
 
+    const getMoneyText = (event) => {
+        var money = Number(event.target.value)
+        if (Math.floor(money) == money) {
+            setMoneyText(getText(money))
+            handleOnchange(event)
+        }
+    }
+
     const handleClickOpen = () => {
         getInterest()
         setOpen(true)
+        setLoading(false)
     }
 
     function getInterest() {
         systemConfigApi.getInterest().then((res) => {
             setUserData({
                 ...userData,
-                interest: res.data.value,
+                interest: res.data.interest,
             })
-            setInterest(res.data.value)
+            setInterest(res.data.interest)
         })
     }
 
@@ -408,8 +419,19 @@ export default function CreateLoanPost(props) {
                                                     component: 'đ',
                                                     direction: 'right',
                                                 }}
-                                                onChange={handleOnchange}
+                                                onChange={getMoneyText}
                                             />
+                                        </Grid>
+                                        <Grid item xs="12" md="12">
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="regular"
+                                                color="text"
+                                                name="moneyText"
+                                                textTransform="capitalize"
+                                            >
+                                                {moneyText}
+                                            </SuiTypography>
                                         </Grid>
                                         <Grid item xs={12} md={6}>
                                             <SuiTypography

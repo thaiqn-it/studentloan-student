@@ -258,7 +258,7 @@ export default function ConfirmPage() {
                                 textTransform="capitalize"
                                 color="black"
                             >
-                                Thông tin cá nhân
+                                Thông tin cá nhân (*)
                             </SuiTypography>
                             <SuiTypography
                                 variant="button"

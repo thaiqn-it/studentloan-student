@@ -1,4 +1,5 @@
 import routes from 'routes'
+import {extraRoutes} from "routes"
 import Sidenav from 'examples/Sidenav/v2'
 import Dashboard from 'layouts/dashboard'
 import React, { useEffect, useState, useMemo } from 'react'
@@ -17,6 +18,9 @@ import StudentProfile from 'pages/StudentProfile'
 import ReleaseLogo from '../../assets/release-logo.png'
 
 var currentRoute = [...routes]
+var extraRoute = [...extraRoutes]
+
+var mergeRoute = currentRoute.concat(extraRoute)
 
 function getRoutes(allRoutes) {
     const routes = allRoutes.map((route) => {
@@ -32,12 +36,13 @@ function getRoutes(allRoutes) {
 
         return null
     })
+
     
     return routes
 }
 
 const Routes = () => {
-    return <Switch>{getRoutes(currentRoute)}</Switch>
+    return <Switch>{getRoutes(mergeRoute)}</Switch>
 }
 
 const StudentDashboard = () => {

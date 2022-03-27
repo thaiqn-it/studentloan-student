@@ -167,5 +167,9 @@ routes.map((route) => {
     return route
 })
 
+extraRoutes.map((route) => {
+    route.route = '/dashboard' + route.route
+})
+
 export default routes
 export { extraRoutes }
