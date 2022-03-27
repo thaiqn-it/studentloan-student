@@ -304,6 +304,16 @@ export default function CreateLoanPost(props) {
         })
     }
 
+    function getInterest() {
+        systemConfigApi.getInterest().then((res) => {
+            setUserData({
+                ...userData,
+                interest: res.data.value,
+            })
+            setInterest(res.data.value)
+        })
+    }
+
     const handleClose = () => {
         setOpen(false)
     }
