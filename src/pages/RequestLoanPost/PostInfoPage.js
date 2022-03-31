@@ -225,6 +225,7 @@ export default function PostInfoPage(props) {
                             placeholder="Mô tả..."
                             onChange={handleOnchange}
                             name="description"
+                            value={loan.description}
                         />
                     </Grid>
                 </Grid>
@@ -322,11 +323,11 @@ export default function PostInfoPage(props) {
                                 </SuiTypography>
                             </Grid>
                             <Grid item xs="12" md="6">
-                                {/* <TextField  align="right" variant="outlined" fullWidth /> */}
                                 <SuiInput
                                     onChange={getMoneyText}
                                     type="number"
                                     name="expectedMoney"
+                                    value={loan.expectedMoney}
                                     icon={{
                                         component: 'đ',
                                         direction: 'right',

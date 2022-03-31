@@ -1,23 +1,47 @@
 import { Container, Box, Grid, Divider, Paper } from '@mui/material'
+import ImageCard from 'components/ImageCard'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
+import SuiInput from 'components/SuiInput'
 import SuiProgress from 'components/SuiProgress'
 import SuiTypography from 'components/SuiTypography'
 import YoutubeEmbed from 'components/YoutubeEmbed'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Tab from './components/Tab'
+import ContractPage from './ContractPage'
+import PaymentPlanPage from './PaymentPlanPage'
+
+import { useParams } from 'react-router-dom'
+import { loanApi } from '../../apis/loanApi'
+import { fCurrency } from 'utils/formatNumber'
+import { fCurrencyNoVND } from 'utils/formatNumber'
+import { fToNowNumber } from 'utils/formatTime'
 
 export default function ViewPost() {
+    const { id } = useParams()
     const [currentTab, setCurrentTab] = useState('one')
+    const [loan, setLoan] = useState({})
 
-    const investor = {
-        avatar: 'https://pdp.edu.vn/wp-content/uploads/2021/01/hinh-anh-girl-xinh-toc-ngan-de-thuong.jpg',
-        name: 'Ha Nguyen',
-        money: '200.000',
-    }
+    useEffect(() => {
+        loanApi
+            .getLoanById(id)
+            .then((res) => {
+                setLoan(res.data.loan)
+            })
+            .catch((error) => console.log(error))
+    })
 
     const onChangeTab = (tab) => {
         setCurrentTab(tab)
+        console.log(loan.Student.Archievements)
+    }
+
+    function initiateYoutubeVideo(url) {
+        var regExp =
+            /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
+        var match = url.match(regExp)
+        var id = match && match[7].length == 11 ? match[7] : false
+        return id
     }
 
     return (
@@ -36,12 +60,12 @@ export default function ViewPost() {
                                                 height="480"
                                             />
                                             <SuiTypography
-                                                variant="h6"
+                                                variant="h5"
                                                 fontWeight="regular"
                                                 color="black"
                                                 align="center"
                                             >
-                                                T: Vay học phí tháng 4
+                                                T: {loan.title}
                                             </SuiTypography>
                                         </Grid>
                                         <Grid item xs={12} md={3}>
@@ -62,10 +86,15 @@ export default function ViewPost() {
                                                         variant="h4"
                                                         color="black"
                                                     >
-                                                        100.000.000.000 VND
+                                                        {fCurrency(
+                                                            loan.AccumulatedMoney
+                                                        )}
                                                     </SuiTypography>
                                                     <SuiTypography variant="h6">
-                                                        /23.500.000
+                                                        /
+                                                        {fCurrencyNoVND(
+                                                            loan.totalMoney
+                                                        )}
                                                     </SuiTypography>
                                                 </Grid>
                                                 <Grid
@@ -78,7 +107,7 @@ export default function ViewPost() {
                                                         variant="h3"
                                                         color="text"
                                                     >
-                                                        0
+                                                        {loan.InvestorCount}
                                                     </SuiTypography>
                                                     <SuiTypography
                                                         variant="h6"
@@ -98,7 +127,9 @@ export default function ViewPost() {
                                                         variant="h3"
                                                         color="text"
                                                     >
-                                                        60
+                                                        {fToNowNumber(
+                                                            loan.postExpireAt
+                                                        )}
                                                     </SuiTypography>
                                                     <SuiTypography
                                                         variant="h6"
@@ -112,10 +143,11 @@ export default function ViewPost() {
                                                     <SuiButton
                                                         color="primary"
                                                         fullWidth
+                                                        href={`/dashboard/request/${id}`}
                                                         sx={{
                                                             marginTop: {
                                                                 xs: 0,
-                                                                lg: 19,
+                                                                lg: 20,
                                                             },
                                                         }}
                                                     >
@@ -127,11 +159,82 @@ export default function ViewPost() {
                                     </Grid>
                                 </Box>
 
-                                <Divider sx={{ margin: '20px 0px' }} />
+                                <Divider sx={{ my: 5 }} />
+
+                                <Box mb={3}>
+                                    <SuiTypography color="black">
+                                        Mô tả{' '}
+                                    </SuiTypography>
+                                    <SuiInput
+                                        rows={10}
+                                        multiline
+                                        placeholder="Mô tả..."
+                                        name="description"
+                                        value={loan.description}
+                                        disabled
+                                    />
+                                </Box>
+                                <Divider sx={{ my: 5 }} />
+                                <Box mb={5}>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12} md={6}>
+                                            <SuiTypography color="black" mb={1}>
+                                                Giấy báo học phí
+                                            </SuiTypography>
+                                            <ImageCard image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <SuiTypography color="black" mb={1}>
+                                                Giấy xác nhận sinh viên
+                                            </SuiTypography>
+                                            <ImageCard image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                                <Divider sx={{ my: 5 }} />
+                                <Box mb={5}>
+                                    <SuiTypography color="black" mb={1}>
+                                        Những thành tựu
+                                    </SuiTypography>
+                                    <Grid container spacing={3}>
+                                        {loan?.Student?.Archievements.map(
+                                            (item) => (
+                                                <Grid item xs={12} md={6}>
+                                                    <SuiInput
+                                                        value={item.description}
+                                                        disabled
+                                                    />
+                                                    <ImageCard
+                                                        mt={1}
+                                                        image={item.imageUrl}
+                                                    />
+                                                </Grid>
+                                            )
+                                        )}
+
+                                        {/* <Grid item xs={12} md={6}>
+                                            <SuiInput
+                                                value="Toán thành phố"
+                                                disabled
+                                            />
+                                            <ImageCard mt={1}  image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <SuiInput
+                                                value="Toán thành phố"
+                                                disabled
+                                            />
+                                            <ImageCard mt={1}  image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
+                                        </Grid> */}
+                                    </Grid>
+                                </Box>
                             </Container>
                         </SuiBox>
                     </SuiBox>
                 ) : null}
+                {currentTab === 'two' ? <ContractPage /> : null}
+                {currentTab === 'three' ? <PaymentPlanPage /> : null}
             </Paper>
         </>
     )

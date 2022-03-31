@@ -108,15 +108,15 @@ let routes = [
         component: Report,
         noCollapse: true,
     },
-    {
-        type: 'collapse',
-        name: 'Xem bài',
-        key: 'view-post',
-        route: '/view-post',
-        icon: <ListIcon size="12px" />,
-        component: ViewPost,
-        noCollapse: true,
-    },
+    // {
+    //     type: 'collapse',
+    //     name: 'Xem bài',
+    //     key: 'view-post',
+    //     route: '/view-post',
+    //     icon: <ListIcon size="12px" />,
+    //     component: ViewPost,
+    //     noCollapse: true,
+    // },
     {
         type: 'collapse',
         name: 'Xác Thực',
@@ -156,6 +156,11 @@ const extraRoutes = [
         route: '/request/:id',
         component: RequestLoanPost,
         key: 'request',
+    },
+    {
+        route: '/view-post/:id',
+        component: ViewPost,
+        key: 'view-post',
     },
 ]
 

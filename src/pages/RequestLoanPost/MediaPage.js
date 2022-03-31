@@ -69,6 +69,7 @@ export default function MediaPage(props) {
             }
             setDemandNote(newDemand)
             handleChange(null, 'LoanMedia', newDemand)
+            console.log("demand")
         } else {
             var newStudetCert = studentCert
             if (studentCert.currentStatus === 'new') {
@@ -81,7 +82,7 @@ export default function MediaPage(props) {
                     status: 'active',
                 }
             }
-            setDemandNote(newStudetCert)
+            setStudentCert(newStudetCert)
             handleChange(null, 'LoanMedia', newStudetCert)
         }
     }

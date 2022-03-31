@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import './DropFileZone.css'
 import uploadImg from '../../assets/cloud-upload-regular-240.png'
 // import { app } from "..//..//utils/Firebase";
-import { Box, IconButton } from '@mui/material'
+import { Box, IconButton, Link } from '@mui/material'
 import { imageApi } from '../../apis/imageApi'
 import SuiProgress from 'components/SuiProgress'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import ImageModal from 'components/ImageModal'
+import SuiTypography from 'components/SuiTypography'
+// import { Link } from 'react-router-dom'
 
 const DropFileInput = (props) => {
     const {
@@ -20,7 +22,6 @@ const DropFileInput = (props) => {
         onDelete,
     } = props
 
-    const update = props.update || false
     const [progress, setProgress] = useState(0)
     const [url, setUrl] = useState('')
 
@@ -59,6 +60,7 @@ const DropFileInput = (props) => {
                 setUrl(res.data.url)
                 setProgress(100)
                 onFileChangeURL(res.data.url, event)
+                setProgress(0)
             })
     }
 
@@ -76,50 +78,61 @@ const DropFileInput = (props) => {
                         sx={{
                             px: 1.2,
                             pt: 1.2,
-                            pb: update ? 5 : 0,
                             boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
+                            width: '100%',
                             // width: 'fit-content',
                         }}
                     >
-                        <ImageModal
-                            component="img"
-                            image={image}
-                            sx={{
-                                borderRadius: 0,
-                                margin: 0,
-                                cursor: 'pointer',
-                                maxWidth: '100%',
-                                height: 'auto',
-                            }}
-                        />
-                        {update ? null : (
-                            <>
+                        {image.indexOf('.pdf') !== -1 ? (
+                            <iframe
+                                src={image}
+                                style={{
+                                    width: '100%',
+                                    height: '360px',
+                                    border: 'none',
+                                }}
+                            ></iframe>
+                        ) : (
+                            <ImageModal
+                                component="img"
+                                image={image}
+                                sx={{
+                                    borderRadius: 0,
+                                    margin: 0,
+                                    cursor: 'pointer',
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                }}
+                            />
+                        )}
+
+                        <>
+                            <IconButton
+                                aria-label="fileuploan"
+                                component="span"
+                                size="medium"
+                                onClick={handleDelete}
+                            >
+                                <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                            <label htmlFor={elementId}>
+                                <input
+                                    type="file"
+                                    accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
+                                    id={elementId}
+                                    name={elementName}
+                                    onChange={onFileDrop}
+                                    hidden
+                                />
                                 <IconButton
                                     aria-label="fileuploan"
                                     component="span"
                                     size="medium"
-                                    onClick={handleDelete}
                                 >
-                                    <DeleteIcon fontSize="inherit" />
+                                    <FileUploadIcon fontSize="inherit" />
                                 </IconButton>
-                                <label htmlFor={elementId}>
-                                    <input
-                                        type="file"
-                                        id={elementId}
-                                        name={elementName}
-                                        onChange={onFileDrop}
-                                        hidden
-                                    />
-                                    <IconButton
-                                        aria-label="fileuploan"
-                                        component="span"
-                                        size="medium"
-                                    >
-                                        <FileUploadIcon fontSize="inherit" />
-                                    </IconButton>
-                                </label>
-                            </>
-                        )}
+                            </label>
+                        </>
                     </Box>
                 </Box>
             </>
@@ -138,45 +151,55 @@ const DropFileInput = (props) => {
                                 width: 'fit-content',
                             }}
                         >
-                            <ImageModal
-                                component="img"
-                                image={image}
-                                sx={{
-                                    borderRadius: 0,
-                                    margin: 0,
-                                    cursor: 'pointer',
-                                    maxWidth: '100%',
-                                    height: 'auto',
-                                }}
-                            />
-                            {update ? null : (
-                                <>
+                            {image.indexOf('.pdf') !== -1 ? (
+                                <iframe
+                                    src={image}
+                                    style={{
+                                        width: '100%',
+                                        height: '360px',
+                                        border: 'none',
+                                    }}
+                                ></iframe>
+                            ) : (
+                                <ImageModal
+                                    component="img"
+                                    image={image}
+                                    sx={{
+                                        borderRadius: 0,
+                                        margin: 0,
+                                        cursor: 'pointer',
+                                        maxWidth: '100%',
+                                        height: 'auto',
+                                    }}
+                                />
+                            )}
+                            <>
+                                <IconButton
+                                    aria-label="fileuploan"
+                                    component="span"
+                                    size="medium"
+                                    onClick={handleDelete}
+                                >
+                                    <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                                <label htmlFor={elementId}>
+                                    <input
+                                        type="file"
+                                        accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
+                                        id={elementId}
+                                        name={elementName}
+                                        onChange={onFileDrop}
+                                        hidden
+                                    />
                                     <IconButton
                                         aria-label="fileuploan"
                                         component="span"
                                         size="medium"
-                                        onClick={handleDelete}
                                     >
-                                        <DeleteIcon fontSize="inherit" />
+                                        <FileUploadIcon fontSize="inherit" />
                                     </IconButton>
-                                    <label htmlFor={elementId}>
-                                        <input
-                                            type="file"
-                                            id={elementId}
-                                            name={elementName}
-                                            onChange={onFileDrop}
-                                            hidden
-                                        />
-                                        <IconButton
-                                            aria-label="fileuploan"
-                                            component="span"
-                                            size="medium"
-                                        >
-                                            <FileUploadIcon fontSize="inherit" />
-                                        </IconButton>
-                                    </label>
-                                </>
-                            )}
+                                </label>
+                            </>
                         </Box>
                     </Box>
                 ) : progress === 0 ? (
@@ -193,7 +216,7 @@ const DropFileInput = (props) => {
                         </div>
                         <input
                             type="file"
-                            accept="image/*"
+                            accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
                             value=""
                             id={elementId}
                             name={elementName}

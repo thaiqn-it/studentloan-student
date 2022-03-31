@@ -3,7 +3,7 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 
-import DragFileZone from '../../../../components/DropFileZone'
+import DropFileZone from '../../../../components/DropFileZone'
 
 export default function PaperCard() {
     const onFileChangeURL = (url) => {
@@ -79,7 +79,8 @@ export default function PaperCard() {
                                 >
                                     Mặt trước CMND/CCCD
                                 </SuiTypography>
-                                <DragFileZone
+                                <DropFileZone
+                                image=""
                                     name="frontID"
                                     onFileChangeURL={(url) =>
                                         onFileChangeURL(url)
@@ -95,7 +96,7 @@ export default function PaperCard() {
                                 >
                                     Mặt sau CMND/CCCD
                                 </SuiTypography>
-                                <DragFileZone />
+                                <DropFileZone image=""/>
                             </Grid>
                         </Grid>
                     </Box>
@@ -128,7 +129,7 @@ export default function PaperCard() {
                                 >
                                     Mặt trước thẻ sinh viên
                                 </SuiTypography>
-                                <DragFileZone />
+                                <DropFileZone image=""/>
                             </Grid>
 
                             <Grid item xs={12} md={6}>
@@ -139,7 +140,7 @@ export default function PaperCard() {
                                 >
                                     Mặt sau thẻ sinh viên
                                 </SuiTypography>
-                                <DragFileZone />
+                                <DropFileZone image="" />
                             </Grid>
                         </Grid>
                     </Box>

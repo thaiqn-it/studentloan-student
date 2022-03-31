@@ -8,4 +8,8 @@ const getLoanById = (id) => {
   return defaultInstance.get(`/loan/${id}`);
 };
 
-export const loanApi = { createLoanPost, getLoanById };
+const getLoanStudent = ()=>{
+  return defaultInstance.get(`/loan/student`);
+}
+
+export const loanApi = { createLoanPost, getLoanById, getLoanStudent };

@@ -3,7 +3,7 @@ import React from 'react'
 import { Box, Grid, Paper } from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 
-import DragFileZone from '../../../../components/DropFileZone'
+import DropFileZone from '../../../../components/DropFileZone'
 import SuiInput from 'components/SuiInput'
 
 export default function AchievementCard() {
@@ -25,7 +25,7 @@ export default function AchievementCard() {
                                     value="Đây là giải thưởng học sinh giỏi toán thành phố 2017"
                                     sx={{marginBottom:"10px"}}
                                 />
-                                <DragFileZone />
+                                <DropFileZone image=""/>
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <SuiInput
@@ -34,7 +34,7 @@ export default function AchievementCard() {
                                     value="Đây là giải thưởng học sinh giỏi toán thành phố 2017"
                                     sx={{marginBottom:"10px"}}
                                 />
-                                <DragFileZone />
+                                <DropFileZone image=""/>
                             </Grid>
                         </Grid>
                     </Box>

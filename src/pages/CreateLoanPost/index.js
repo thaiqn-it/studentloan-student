@@ -230,7 +230,6 @@ export default function CreateLoanPost(props) {
             .createLoanPost(userData)
             .then((res) => {
                 setLoading(true)
-                console.log(res)
                 let path = `/dashboard/request/${res.data.id}`
                 history.push(path)
                 setOpen(false)
@@ -256,15 +255,12 @@ export default function CreateLoanPost(props) {
         }
         if (e.target.name === 'postExpireAt') {
             var day = new Date(realValue).toISOString()
-            console.log(day)
             realValue = day
         }
         setUserData({
             ...userData,
             [e.target.name]: realValue,
         })
-
-        console.log(userData)
     }
 
     const verifyData = () => {
@@ -304,16 +300,6 @@ export default function CreateLoanPost(props) {
         })
     }
 
-    function getInterest() {
-        systemConfigApi.getInterest().then((res) => {
-            setUserData({
-                ...userData,
-                interest: res.data.value,
-            })
-            setInterest(res.data.value)
-        })
-    }
-
     const handleClose = () => {
         setOpen(false)
     }
@@ -323,11 +309,12 @@ export default function CreateLoanPost(props) {
             {miniSide ? (
                 <IconButton
                     color="white"
+                    variant="gradient"
                     sx={{
                         borderRadius: 20,
                         my: 2,
                         mx: 4,
-                        backgroundColor: '#344767',
+                        backgroundColor: '#028858',
                     }}
                     onClick={handleClickOpen}
                 >

@@ -3,7 +3,7 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 
-import DragFileZone from '../../../../components/DropFileZone'
+import DropFileZone from '../../../../components/DropFileZone'
 
 export default function PaperInformation() {
     return (
@@ -75,7 +75,7 @@ export default function PaperInformation() {
                                     >
                                         Mặt trước CMND/CCCD
                                     </SuiTypography>
-                                    <DragFileZone />
+                                    <DropFileZone image=""/>
                                 </Grid>
 
                                 <Grid item xs={12} md={6}>
@@ -86,7 +86,7 @@ export default function PaperInformation() {
                                     >
                                         Mặt sau CMND/CCCD
                                     </SuiTypography>
-                                    <DragFileZone />
+                                    <DropFileZone image=""/>
                                 </Grid>
                             </Grid>
                         </Box>

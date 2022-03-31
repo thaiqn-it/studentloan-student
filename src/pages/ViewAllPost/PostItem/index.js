@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
@@ -13,64 +13,83 @@ import SuiProgress from 'components/SuiProgress'
 import { Link } from 'react-router-dom'
 import { Divider, Grid } from '@mui/material'
 
-export default function PostItem() {
+import { fCurrency, fCurrencyNoVND, fProgress } from '..//..//..//utils/formatNumber'
+import { fDate, fToNowNumber } from '..//..//..//utils/formatTime'
+
+export default function PostItem(props) {
+    const { loan } = props
+
+    function renderStatus() {
+        var status = 'Đạt'
+        var color = "primary"
+        var statusType = loan.LoanHistories[0].type
+        if (loan) {
+            if (statusType === 'DRAFT') {
+                status = 'Đang chờ duyệt'
+                color = "warning"
+            }
+        }
+
+        return (
+            <SuiButton
+                color={color}
+                size="small"
+                sx={{
+                    pointerEvents: 'none',
+                    float: 'right',
+                    borderRadius: '0',
+                }}
+            >
+                {status}
+            </SuiButton>
+        )
+    }
+
     return (
         <Card
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                // backgroundColor: 'none',
-                // boxShadow: "6",
-                borderRadius: '1',
-                border: '0.1rem solid #DCDEDD',
+                borderRadius: '0',
                 maxHeight: '40rem',
-                // overflow: 'visible',
             }}
         >
-            <SuiBox position="relative">
+            <SuiBox position="relative" sx={{ width: '100%' }}>
                 <CardMedia
-                    src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+                    src="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg"
                     component="img"
                     sx={{
-                        // maxWidth: '100%',
                         margin: 0,
                         height: '10rem',
                         width: '100%',
                         borderRadius: '0',
+                        position: 'absolute',
                     }}
                 />
+                {/* <SuiButton
+                    color="warning"
+                    size="small"
+                    sx={{
+                        pointerEvents: 'none',
+                        float: 'right',
+                        borderRadius: '0',
+                    }}
+                >
+                    Đang chờ duyệt
+                </SuiButton> */}
+                {renderStatus()}
             </SuiBox>
 
-            <SuiBox pt={1} px={0.5} padding={2}>
-                {/* <SuiBox display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="medium"
-                        textTransform="none"
-                        textGradient
-                    >
-                        Ngày tạo: 24/12/2021
-                    </SuiTypography>
-
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="medium"
-                        textTransform="none"
-                        textGradient
-                    >
-                        Ngày hết hạn: 24/6/2022
-                    </SuiTypography>
-                </SuiBox> */}
-
+            <SuiBox p={2} sx={{ border: '0.1rem solid #DCDEDD' }} mt="7rem">
                 <SuiBox mb={1}>
                     <SuiTypography
                         component={Link}
-                        // to={action.route}
+                        to={`/dashboard/view-post/${loan.id}`}
                         variant="h5"
                         textTransform="capitalize"
                         fontWeight="regular"
                     >
-                        Vay học phí cho 9 kỳ
+                        {loan.title}
                     </SuiTypography>
                 </SuiBox>
                 <SuiBox mb={2} lineHeight={0}>
@@ -79,8 +98,7 @@ export default function PostItem() {
                         fontWeight="regular"
                         color="text"
                     >
-                        Tôi đang là sinh viên đai học FPT, tôi đang cần xin vay
-                        để đóng học phí từ kỳ 1 đến kỳ 9
+                        {loan.description}
                     </SuiTypography>
                 </SuiBox>
 
@@ -93,22 +111,9 @@ export default function PostItem() {
                         Số tiền vay:
                     </SuiTypography>
                     <SuiTypography variant="button" textTransform="none">
-                        245.700.000 VND
+                        {fCurrency(loan.totalMoney)}
                     </SuiTypography>
                 </SuiBox>
-
-                {/* <SuiBox mb={1} display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Ngày tạo:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        24/12/2021
-                    </SuiTypography>
-                </SuiBox> */}
 
                 <SuiBox display="flex" justifyContent="space-between">
                     <SuiTypography
@@ -119,39 +124,40 @@ export default function PostItem() {
                         Ngày hết hạn:
                     </SuiTypography>
                     <SuiTypography variant="button" textTransform="none">
-                        24/6/2022
+                        {fDate(loan.postExpireAt)}
                     </SuiTypography>
                 </SuiBox>
 
-                <SuiProgress value={50} label color="primary" />
+                <SuiProgress value={fProgress(loan.AccumulatedMoney, loan.totalMoney)} label color="primary" />
 
                 <SuiBox mt={3}>
                     <Grid container>
                         <Grid item xs={4} md={4}>
                             <SuiTypography variant="h5" textTransform="none">
-                                122.850.000
+                                {fCurrencyNoVND(loan.AccumulatedMoney)}
                             </SuiTypography>
                             <SuiTypography
                                 variant="button"
                                 textTransform="none"
                                 color="text"
+                                sx={{ float: 'left' }}
                             >
-                                Số tiền kêu gọi
+                                Số tiền đã đầu tư
                             </SuiTypography>
                         </Grid>
                         <Grid item xs={4} md={4}>
                             <SuiTypography
                                 variant="h5"
                                 textTransform="none"
-                                align="center"
+                                align="right"
                             >
-                                55
+                                {loan.InvestorCount}
                             </SuiTypography>
                             <SuiTypography
                                 variant="button"
                                 textTransform="none"
                                 color="text"
-                                align="center"
+                                sx={{ float: 'right' }}
                             >
                                 Người đầu tư
                             </SuiTypography>
@@ -160,44 +166,21 @@ export default function PostItem() {
                             <SuiTypography
                                 variant="h5"
                                 textTransform="none"
-                                align="center"
+                                align="right"
                             >
-                                180
+                                {fToNowNumber(loan.postExpireAt)}
                             </SuiTypography>
                             <SuiTypography
                                 variant="button"
                                 textTransform="none"
                                 color="text"
-                                align="center"
+                                sx={{ float: 'right' }}
                             >
                                 Số ngày còn lại
                             </SuiTypography>
                         </Grid>
                     </Grid>
-                    {/* <SuiTypography
-                        variant="h6"
-                        textTransform="capitalize"
-                        align="right"
-                    >
-                        122.850.000 VND
-                    </SuiTypography> */}
                 </SuiBox>
-
-                {/* <SuiBox
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <SuiButton
-                        component={Link}
-                        to="/dashboard/view-post"
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                    >
-                        Xem
-                    </SuiButton>
-                </SuiBox> */}
             </SuiBox>
         </Card>
     )

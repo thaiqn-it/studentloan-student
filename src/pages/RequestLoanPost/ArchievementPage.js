@@ -1,15 +1,57 @@
 import { Box, Container, Divider, Grid } from '@mui/material'
+import DropFileInput from 'components/DropFileZone'
 import SuiButton from 'components/SuiButton'
+import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React, { useEffect, useState } from 'react'
 import AchievementItem from './components/AchievementItem'
-import AddAchievement from './components/AddAchievement'
+import AddAchievement from './components/UpdateAchievement'
 
 export default function ArchievementPage(props) {
-    const { achievements, handleChange } = props
+    const { achievements, studentId, handleChange } = props
+    const [url, setUrl] = useState('')
+    const [title, setTitle] = useState('')
 
-    const handleOnChange = (e) => {
-        handleChange(e)
+    const [choseValue, setChoseValue] = useState({})
+    const [open, setOpen] = useState(false)
+
+    const onDelete = (id) => {
+        setUrl('')
+    }
+
+    const onFileChangeURL = (url, event) => {
+        setUrl(url)
+    }
+
+    const handleChangeTitle = (e) => {
+        setTitle(e.target.value)
+    }
+
+    const handleCreateAchieve = () => {
+        if (url !== '' && title !== '') {
+            var achieveItem = {
+                studentId: studentId,
+                imageUrl: url,
+                status: 'active',
+                description: title,
+            }
+            setUrl('')
+            setTitle('')
+            handleChange(achieveItem)
+        }
+    }
+
+    const onClickItem = (item) => {
+        setChoseValue(item)
+        setOpen(true)
+    }
+
+    const handleCloseAchieve = () => {
+        setOpen(false)
+    }
+
+    const handleUpdateAchieve = (newItem) => {
+        handleChange(newItem)
     }
     return (
         <>
@@ -62,10 +104,43 @@ export default function ArchievementPage(props) {
                         <Grid container spacing={4}>
                             <Grid item xs="12" md="12">
                                 {achievements.map((item) => {
-                                    return AchievementItem(item)
+                                    return (
+                                        <AchievementItem
+                                            item={item}
+                                            onClickItem={onClickItem}
+                                        />
+                                    )
                                 })}
-                                
-                           
+
+                                <AddAchievement
+                                    open={open}
+                                    onClose={handleCloseAchieve}
+                                    choseValue={choseValue}
+                                    handleUpdateAchieve={handleUpdateAchieve}
+                                />
+
+                                <Box>
+                                    <SuiInput
+                                        placeholder="Tiêu đề"
+                                        onChange={handleChangeTitle}
+                                        value={title}
+                                    />
+                                    <Box my={1}>
+                                        <DropFileInput
+                                            image={url}
+                                            elementName="achievement"
+                                            elementId="achievement"
+                                            onDelete={onDelete}
+                                            onFileChangeURL={onFileChangeURL}
+                                        />
+                                    </Box>
+                                    <SuiButton
+                                        color="primary"
+                                        onClick={handleCreateAchieve}
+                                    >
+                                        Tạo
+                                    </SuiButton>
+                                </Box>
                             </Grid>
                         </Grid>
                     </Grid>

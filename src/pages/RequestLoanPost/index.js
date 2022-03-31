@@ -25,6 +25,7 @@ export default function RequestLoanPost() {
     const [loan, setLoan] = useState({ LoanMedia: [] })
     const [loanMedia, setLoanMedia] = useState({})
     const [achievements, setAchivements] = useState([])
+    const [studentInfo, setStudentInfo] = useState({})
 
     useEffect(() => {
         loanApi
@@ -35,6 +36,7 @@ export default function RequestLoanPost() {
                     convertArrayToObject(res.data.loan.LoanMedia, 'type')
                 )
                 setAchivements(res.data.loan.Student.Archievements)
+                setStudentInfo(res.data.loan.Student)
             })
             .catch((error) => console.log(error))
     }, [])
@@ -71,6 +73,12 @@ export default function RequestLoanPost() {
                 [name]: realValue,
             })
         }
+
+        console.log(studentInfo)
+    }
+
+    const handleOnchangeAchievement = (value) => {
+        setAchivements([...achievements, value])
     }
 
     const handleStep = (step) => () => {
@@ -80,7 +88,7 @@ export default function RequestLoanPost() {
     }
 
     const handleSubmit = () => {
-        console.log(loanMedia)
+        // console.log(loanMedia)
     }
 
     return (
@@ -101,9 +109,11 @@ export default function RequestLoanPost() {
                         <SuiButton
                             sx={{
                                 borderRadius: 0,
-                                color: '#FFFFFF',
-                                bgcolor: '#357a38',
+                                // color: '#FFFFFF',
+                                // bgcolor: '#357a38',
                             }}
+                            color="primary"
+                            variant="gradient"
                         >
                             Thông tin hồ sơ vay
                         </SuiButton>
@@ -119,9 +129,11 @@ export default function RequestLoanPost() {
                         <SuiButton
                             sx={{
                                 borderRadius: 0,
-                                color: '#FFFFFF',
-                                bgcolor: '#3f51b5',
+                                // color: '#FFFFFF',
+                                // bgcolor: '#3f51b5',
                             }}
+                            color="info"
+                            variant="gradient"
                         >
                             Những thành tích
                         </SuiButton>
@@ -137,9 +149,11 @@ export default function RequestLoanPost() {
                         <SuiButton
                             sx={{
                                 borderRadius: 0,
-                                color: '#FFFFFF',
-                                bgcolor: '#f44336',
+                                // color: '#FFFFFF',
+                                // bgcolor: '#f44336',
                             }}
+                            color="error"
+                            variant="gradient"
                         >
                             Thông tin của bạn
                         </SuiButton>
@@ -161,10 +175,13 @@ export default function RequestLoanPost() {
                         />
 
                         <ArchievementPage
+                            studentId={studentInfo.id}
                             achievements={achievements}
-                            handleChange={handleOnchange}
+                            handleChange={handleOnchangeAchievement}
                         />
-                        <ConfirmPage />
+                        <ConfirmPage
+                            studentInfo={studentInfo}
+                        />
                         <Divider />
 
                         <Box
