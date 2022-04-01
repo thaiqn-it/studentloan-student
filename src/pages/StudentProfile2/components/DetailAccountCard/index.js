@@ -10,8 +10,10 @@ import {
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
 import SuiButton from 'components/SuiButton'
+import { fDisplayDate } from 'utils/formatTime'
 
-export default function DetailAccountCard() {
+export default function DetailAccountCard(props) {
+    const {studentInfo} = props
     return (
         <>
             <Paper elevation={3} sx={{borderRadius:"10px"}}>
@@ -29,7 +31,7 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="text"
                                 placeholder="Họ"
-                                value="Trần"
+                                value={studentInfo?.User?.firstName}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -39,7 +41,7 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="text"
                                 placeholder="Họ"
-                                value="Long"
+                                value={studentInfo?.User?.lastName}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -49,7 +51,7 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="email"
                                 placeholder="Email"
-                                value="longtran4949@gmail.com"
+                                value={studentInfo?.User?.email}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -59,7 +61,7 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="password"
                                 // placeholder="Email"
-                                value="longtran4949@gmail.com"
+                                value="password"
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -68,7 +70,7 @@ export default function DetailAccountCard() {
                             </SuiTypography>
                             <SuiInput
                                 type="date"
-                                value="12/12/2022"
+                                value={fDisplayDate(studentInfo?.birthDate)}
                                 // onChange={handleInputState}
                                 // name={name}
                             />
@@ -80,7 +82,7 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="text"
                                 placeholder="phone number"
-                                value="0794485000"
+                                value={studentInfo?.User?.phoneNumber}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -93,6 +95,7 @@ export default function DetailAccountCard() {
                                 // options={top100Films}
                                 // sx={{ width: 300 }}
                                 // value="FPT"
+                                disabled={true}
                                 fullWidth
                                 renderInput={(params) => (
                                     <TextField {...params} />
@@ -109,6 +112,7 @@ export default function DetailAccountCard() {
                                 // options={top100Films}
                                 // sx={{ width: 300 }}
                                 // value="FPT"
+                                disabled={true}
                                 fullWidth
                                 renderInput={(params) => (
                                     <TextField {...params} />
@@ -122,13 +126,10 @@ export default function DetailAccountCard() {
                             <SuiInput
                                 type="text"
                                 // placeholder="Email"
-                                value="4/4 Song Hàng , Phường Trung Mỹ Tây"
+                                value={studentInfo?.address}
                             />
                         </Grid>
                     </Grid>
-                    <Box my={3}>
-                        <SuiButton color="dark">Cập nhật</SuiButton>
-                    </Box>
                 </Box>
             </Paper>
         </>

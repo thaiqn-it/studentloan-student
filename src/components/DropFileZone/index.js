@@ -9,7 +9,6 @@ import SuiProgress from 'components/SuiProgress'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
 import ImageModal from 'components/ImageModal'
-import SuiTypography from 'components/SuiTypography'
 // import { Link } from 'react-router-dom'
 
 const DropFileInput = (props) => {
@@ -18,7 +17,7 @@ const DropFileInput = (props) => {
         elementName,
         onFileChangeURL,
         flexEnd,
-        image,
+        image="",
         onDelete,
     } = props
 
@@ -79,8 +78,8 @@ const DropFileInput = (props) => {
                             px: 1.2,
                             pt: 1.2,
                             boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
-                            width: '100%',
-                            // width: 'fit-content',
+                            // width: '100%',
+                            width: 'fit-content',
                         }}
                     >
                         {image.indexOf('.pdf') !== -1 ? (

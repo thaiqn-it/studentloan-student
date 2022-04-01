@@ -148,7 +148,7 @@ let routes = [
 
 const extraRoutes = [
     {
-        route: '/tutordetail',
+        route: '/tutordetail/:id',
         component: TutorDetail,
         key: 'tutordetail',
     },

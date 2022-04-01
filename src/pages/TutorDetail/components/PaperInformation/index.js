@@ -3,13 +3,21 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 
+import { fDisplayDate } from 'utils/formatTime'
+
 import DropFileZone from '../../../../components/DropFileZone'
 
-export default function PaperInformation() {
+export default function PaperInformation(props) {
+    const { tutor } = props
     return (
         <>
             <Box>
-                <SuiTypography variant="h4" fontWeight="regular" my={2} color="black">
+                <SuiTypography
+                    variant="h4"
+                    fontWeight="regular"
+                    my={2}
+                    color="black"
+                >
                     Giấy tờ
                 </SuiTypography>
                 <Paper elevation={3} sx={{ borderRadius: '10px' }}>
@@ -35,8 +43,8 @@ export default function PaperInformation() {
                                             </SuiTypography>
                                             <SuiInput
                                                 type="text"
-                                                // placeholder="Email"
-                                                value="0791111475812"
+                                                placeholder="Số CMND"
+                                                value={tutor?.citizenId}
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={4}>
@@ -48,8 +56,10 @@ export default function PaperInformation() {
                                             </SuiTypography>
                                             <SuiInput
                                                 type="date"
-                                                // placeholder="Email"
-                                                value="2002-07-22"
+                                                placeholder="Ngày cấp"
+                                                value={fDisplayDate(
+                                                    tutor?.citizenCardCreatedDate
+                                                )}
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={4}>
@@ -61,8 +71,10 @@ export default function PaperInformation() {
                                             </SuiTypography>
                                             <SuiInput
                                                 type="text"
-                                                // placeholder="Email"
-                                                value="TP Hồ Chí Minh"
+                                                placeholder="Nơi cấp"
+                                                value={
+                                                    tutor?.citizenCardCreatedPlace
+                                                }
                                             />
                                         </Grid>
                                     </Grid>
@@ -75,7 +87,13 @@ export default function PaperInformation() {
                                     >
                                         Mặt trước CMND/CCCD
                                     </SuiTypography>
-                                    <DropFileZone image=""/>
+                                    <DropFileZone
+                                        image={
+                                            tutor?.frontCitizenCardImageUrl
+                                                ? tutor.frontCitizenCardImageUrl
+                                                : ''
+                                        }
+                                    />
                                 </Grid>
 
                                 <Grid item xs={12} md={6}>
@@ -86,7 +104,13 @@ export default function PaperInformation() {
                                     >
                                         Mặt sau CMND/CCCD
                                     </SuiTypography>
-                                    <DropFileZone image=""/>
+                                    <DropFileZone
+                                        image={
+                                            tutor?.backCitizenCardImageUrl
+                                                ? tutor.backCitizenCardImageUrl
+                                                : ''
+                                        }
+                                    />
                                 </Grid>
                             </Grid>
                         </Box>

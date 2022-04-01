@@ -9,9 +9,10 @@ import {
 } from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
-import SuiButton from 'components/SuiButton'
+import {fDisplayDate} from "utils/formatTime"
 
-export default function DetailInformation() {
+export default function DetailInformation(props) {
+    const {tutor} = props
     return (
         <>
             <Paper elevation={3} sx={{borderRadius:"10px"}}>
@@ -28,8 +29,8 @@ export default function DetailInformation() {
                             </SuiTypography>
                             <SuiInput
                                 type="text"
-                                placeholder="Họ"
-                                value="Trần Long"
+                                placeholder="Họ và tên"
+                                value={tutor?.name}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -39,7 +40,7 @@ export default function DetailInformation() {
                             <SuiInput
                                 type="email"
                                 placeholder="Email"
-                                value="longtran4949@gmail.com"
+                                value={tutor?.email}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -48,7 +49,7 @@ export default function DetailInformation() {
                             </SuiTypography>
                             <SuiInput
                                 type="date"
-                                value="12/12/2022"
+                                value={fDisplayDate(tutor?.birthDay)}
                                 // onChange={handleInputState}
                                 // name={name}
                             />
@@ -59,8 +60,8 @@ export default function DetailInformation() {
                             </SuiTypography>
                             <SuiInput
                                 type="text"
-                                placeholder="relation"
-                                value="Cha"
+                                placeholder="Quan hệ"
+                                value={tutor?.relation}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -69,8 +70,8 @@ export default function DetailInformation() {
                             </SuiTypography>
                             <SuiInput
                                 type="text"
-                                placeholder="phone number"
-                                value="0794485000"
+                                placeholder="Số điện thoại"
+                                value={tutor?.phone}
                             />
                         </Grid>
                         <Grid item xs={12} md={12}>
@@ -79,8 +80,8 @@ export default function DetailInformation() {
                             </SuiTypography>
                             <SuiInput
                                 type="text"
-                                // placeholder="Email"
-                                value="4/4 Song Hàng , Phường Trung Mỹ Tây"
+                                placeholder="Địa chỉ"
+                                value={tutor?.address}
                             />
                         </Grid>
                     </Grid>

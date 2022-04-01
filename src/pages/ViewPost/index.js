@@ -33,15 +33,15 @@ export default function ViewPost() {
 
     const onChangeTab = (tab) => {
         setCurrentTab(tab)
-        console.log(loan.Student.Archievements)
+        console.log(loan.LoanMedia)
     }
 
-    function initiateYoutubeVideo(url) {
+    const initiateYoutubeVideo = (url) => {
         var regExp =
             /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
         var match = url.match(regExp)
-        var id = match && match[7].length == 11 ? match[7] : false
-        return id
+        var returnUrl = match && match[7].length == 11 ? match[7] : false
+        return returnUrl
     }
 
     return (
@@ -55,10 +55,37 @@ export default function ViewPost() {
                                 <Box>
                                     <Grid container spacing={4}>
                                         <Grid item xs={12} md={9}>
-                                            <YoutubeEmbed
-                                                embedId="y182SJTws8U"
-                                                height="480"
-                                            />
+                                            {/* {loan?.LoanMedia?.filter(
+                                                (item) => (item.type = 'VIDEO')
+                                            ).length
+                                                ? loan.LoanMedia.filter(
+                                                      (item) =>
+                                                          (item.type = 'VIDEO')
+                                                  ).map((item) => (
+                                                      <YoutubeEmbed
+                                                          embedId={initiateYoutubeVideo(
+                                                              item.imageUrl
+                                                          )}
+                                                          height="480"
+                                                      />
+                                                  ))
+                                                : null} */}
+                                            {loan?.LoanMedia?.filter(
+                                                (item) => item.type === 'VIDEO'
+                                            ).length
+                                                ? loan?.LoanMedia?.filter(
+                                                      (item) =>
+                                                          item.type === 'VIDEO'
+                                                  ).map((item) => (
+                                                      <YoutubeEmbed
+                                                          embedId={initiateYoutubeVideo(
+                                                              item.imageUrl
+                                                          )}
+                                                          height="480"
+                                                      />
+                                                  ))
+                                                : null}
+
                                             <SuiTypography
                                                 variant="h5"
                                                 fontWeight="regular"
@@ -163,7 +190,7 @@ export default function ViewPost() {
 
                                 <Box mb={3}>
                                     <SuiTypography color="black">
-                                        Mô tả{' '}
+                                        Mô tả
                                     </SuiTypography>
                                     <SuiInput
                                         rows={10}
@@ -177,18 +204,28 @@ export default function ViewPost() {
                                 <Divider sx={{ my: 5 }} />
                                 <Box mb={5}>
                                     <Grid container spacing={3}>
-                                        <Grid item xs={12} md={6}>
-                                            <SuiTypography color="black" mb={1}>
-                                                Giấy báo học phí
-                                            </SuiTypography>
-                                            <ImageCard image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
-                                        </Grid>
-                                        <Grid item xs={12} md={6}>
+                                        {loan?.LoanMedia?.filter(
+                                            (item) => item.type !== 'VIDEO'
+                                        ).map((item) => (
+                                            <Grid item xs={12} md={6}>
+                                                <SuiTypography
+                                                    color="black"
+                                                    mb={1}
+                                                >
+                                                    {item.description}
+                                                </SuiTypography>
+                                                <ImageCard
+                                                    image={item.imageUrl}
+                                                />
+                                            </Grid>
+                                        ))}
+
+                                        {/* <Grid item xs={12} md={6}>
                                             <SuiTypography color="black" mb={1}>
                                                 Giấy xác nhận sinh viên
                                             </SuiTypography>
                                             <ImageCard image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
                                 </Box>
                                 <Divider sx={{ my: 5 }} />
@@ -211,22 +248,6 @@ export default function ViewPost() {
                                                 </Grid>
                                             )
                                         )}
-
-                                        {/* <Grid item xs={12} md={6}>
-                                            <SuiInput
-                                                value="Toán thành phố"
-                                                disabled
-                                            />
-                                            <ImageCard mt={1}  image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
-                                        </Grid>
-
-                                        <Grid item xs={12} md={6}>
-                                            <SuiInput
-                                                value="Toán thành phố"
-                                                disabled
-                                            />
-                                            <ImageCard mt={1}  image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
-                                        </Grid> */}
                                     </Grid>
                                 </Box>
                             </Container>

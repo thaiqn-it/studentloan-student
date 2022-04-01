@@ -40,3 +40,11 @@ function diff_months(dt2, dt1) {
     diff /= 60 * 60 * 24 * 7 * 4
     return Math.abs(Math.round(diff))
 }
+
+export function fDisplayDate(date) {
+    var returnDate = ''
+    if (date) {
+        returnDate = format(new Date(date), 'yyyy-MM-dd')
+    }
+    return returnDate
+}

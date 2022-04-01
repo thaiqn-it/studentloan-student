@@ -1,18 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SuiTypography from 'components/SuiTypography'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiButton from 'components/SuiButton'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
-import { Box, Divider, Grid, Paper } from '@mui/material'
+import { Box, Divider, Grid, Paper, Tooltip } from '@mui/material'
 
 import DetailInformation from './components/DetailInformation'
 import PaperInformation from './components/PaperInformation'
+import { useParams } from 'react-router-dom'
+import { tutorApi } from 'apis/tutorApi'
 
 export default function TutorDetail() {
+    const [loading, setLoading] = useState(false)
+    const [tutor, setTutor] = useState()
+    const { id } = useParams()
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = async () => {
+        setLoading(true)
+        await tutorApi
+            .getTutorById(id)
+            .then((res) => {
+                console.log(res.data)
+                setTutor(res.data)
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+            })
+    }
+
     return (
         <>
-            <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
+            <SuiTypography
+                variant="h4"
+                fontWeight="regular"
+                color="black"
+                my={2}
+            >
                 Thông tin người giám hộ
             </SuiTypography>
 
@@ -27,30 +56,43 @@ export default function TutorDetail() {
                                 alignItems="center"
                                 justifyContent="space-between"
                             >
-                                <SuiAvatar
-                                    sx={{ cursor: 'pointer' }}
-                                    alt="Student"
-                                    bgColor="light"
-                                    src="https://ath2.unileverservices.com/wp-content/uploads/sites/4/2020/02/IG-annvmariv-1024x1016.jpg"
-                                    // onClick={onclickAvatar}
-                                    size="xxl"
+                                <input
+                                    type="file"
+                                    hidden
+                                    id="raised-button-file"
                                 />
+                                <label htmlFor="raised-button-file">
+                                    <Tooltip title="Click to change" placement="left-start">
+                                        <SuiAvatar
+                                            component="span"
+                                            sx={{ cursor: 'pointer' }}
+                                            alt="Tutor"
+                                            bgColor="dark"
+                                            // variant="rounded"
+                                            src={tutor?.portraitUrl}
+                                            // onClick={onclickAvatar}
+                                            size="xxl"
+                                        />
+                                    </Tooltip>
+                                </label>
                                 <SuiTypography
                                     variant="h4"
                                     fontWeight="regular"
                                 >
-                                    Trần Long
+                                    {tutor?.name}
                                 </SuiTypography>
                             </Box>
                         </Box>
                     </Paper>
                 </Grid>
                 <Grid item md={8}>
-                    <DetailInformation />
+                    <DetailInformation tutor={tutor} />
                 </Grid>
             </Grid>
-            <PaperInformation />
-            <Box my={3} sx={{ float: 'right' }}>
+            <Box my={5}>
+                <PaperInformation tutor={tutor} />
+            </Box>
+            <Box mb={3} sx={{ float: 'right' }}>
                 <SuiButton color="primary">Cập nhật</SuiButton>
             </Box>
         </>

@@ -13,8 +13,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SuiTypography from 'components/SuiTypography'
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein }
+function createData(name, birthDate, phoneNumber, address, relation) {
+    return { name, birthDate, phoneNumber, address, relation }
 }
 
 const rows = [
@@ -27,7 +27,9 @@ const rows = [
     ),
 ]
 
-export default function TutorTableCard() {
+export default function TutorTableCard(props) {
+    const {tutorInfo} = props
+
     return (
         <>
             <Box
@@ -37,7 +39,7 @@ export default function TutorTableCard() {
                 <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
                     Thông tin người giám hộ
                 </SuiTypography>
-                <IconButton aria-label="delete" size="medium" onClick={() => window.location.href='/dashboard/tutordetail'}>
+                <IconButton aria-label="delete" size="medium" href="/dashboard/tutordetail/new">
                     <AddCircleIcon fontSize="medium" color="black" /> <SuiTypography variant="button" color="black">Thêm thông tin người giám hộ</SuiTypography>
                 </IconButton>
             </Box>
@@ -56,7 +58,7 @@ export default function TutorTableCard() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
+                                {tutorInfo?.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{
@@ -69,14 +71,15 @@ export default function TutorTableCard() {
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
-                                        <TableCell>{row.calories}</TableCell>
-                                        <TableCell>{row.fat}</TableCell>
-                                        <TableCell>{row.carbs}</TableCell>
-                                        <TableCell>{row.protein}</TableCell>
+                                        <TableCell>{row.birthday}</TableCell>
+                                        <TableCell>{row.phone}</TableCell>
+                                        <TableCell>{row.address}</TableCell>
+                                        <TableCell>{row.relation}</TableCell>
                                         <TableCell align="center">
                                             <IconButton
                                                 aria-label="delete"
                                                 size="small"
+                                                href={`/dashboard/tutordetail/${row.id}`}
                                             >
                                                 <EditIcon fontSize="small" />
                                             </IconButton>

@@ -1,8 +1,8 @@
-import { Box, Divider, Grid, Paper } from '@mui/material'
+import { Avatar, Box, Divider, Grid, Paper } from '@mui/material'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import DetailAccountCard from './components/DetailAccountCard'
 import PaperCard from './components/PaperCard'
@@ -11,8 +11,32 @@ import AchievementCard from './components/AchievementCard'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import TutorTableCard from './components/TutorTableCard'
+import { studentApi } from 'apis/studentApi'
 
 export default function StudentProfile2() {
+    const [loading, setLoading] = useState(true)
+    const [studentInfo, setStudentInfo] = useState(null)
+    const [tutorInfo, setTutorInfo] = useState(null)
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = async () => {
+        setLoading(true)
+        await studentApi
+            .getStudentProfile()
+            .then((res) => {
+                console.log(res.data)
+                setStudentInfo(res.data.student)
+                setTutorInfo(res.data.tutor)
+                setLoading(false)
+            })
+            .catch((err) => {
+                console.log(err)
+                setLoading(false)
+            })
+    }
+
     const onclickAvatar = () => {
         console.log('hih')
     }
@@ -39,18 +63,22 @@ export default function StudentProfile2() {
                                 justifyContent="space-between"
                             >
                                 <SuiAvatar
-                                    sx={{ cursor: 'pointer' }}
+                                    sx={{ cursor: 'pointer', objectFit: "fill" }}
                                     alt="Student"
-                                    bgColor="light"
-                                    src="https://ath2.unileverservices.com/wp-content/uploads/sites/4/2020/02/IG-annvmariv-1024x1016.jpg"
+                                    bgColor="dark"
+                                    variant="rounded"
+                                    src={studentInfo?.User?.profileUrl}
                                     onClick={onclickAvatar}
                                     size="xxl"
                                 />
+                                <Avatar src={studentInfo?.User?.profileUrl} variant="rounded" size="large"/>
                                 <SuiTypography
                                     variant="h4"
                                     fontWeight="regular"
                                 >
-                                    Trần Long
+                                    {studentInfo?.User?.firstName +
+                                        ' ' +
+                                        studentInfo?.User?.lastName}
                                 </SuiTypography>
                                 <SuiButton color="error" size="small">
                                     Chưa xác thực
@@ -92,17 +120,21 @@ export default function StudentProfile2() {
                     </Paper>
                 </Grid>
                 <Grid item md={8}>
-                    <DetailAccountCard />
+                    <DetailAccountCard studentInfo={studentInfo} />
                 </Grid>
             </Grid>
             <Box my={5}>
-                <TutorTableCard />
+                <TutorTableCard tutorInfo={tutorInfo} />
             </Box>
             <Box my={5}>
-                <PaperCard />
+                <PaperCard studentInfo={studentInfo} />
             </Box>
             <Box my={5}>
-                <AchievementCard />
+                <AchievementCard studentInfo={studentInfo} />
+            </Box>
+
+            <Box mb={3} sx={{ float: 'right' }}>
+                <SuiButton color="primary">Cập nhật</SuiButton>
             </Box>
         </>
     )

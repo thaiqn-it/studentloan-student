@@ -3,9 +3,12 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 
+import { fDisplayDate } from 'utils/formatTime'
+
 import DropFileZone from '../../../../components/DropFileZone'
 
-export default function PaperCard() {
+export default function PaperCard(props) {
+    const { studentInfo } = props
     const onFileChangeURL = (url) => {
         console.log(url)
     }
@@ -39,8 +42,8 @@ export default function PaperCard() {
                                         </SuiTypography>
                                         <SuiInput
                                             type="text"
-                                            // placeholder="Email"
-                                            value="0791111475812"
+                                            placeholder="Số CMND"
+                                            value={studentInfo?.citizenId}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -53,7 +56,9 @@ export default function PaperCard() {
                                         <SuiInput
                                             type="date"
                                             // placeholder="Email"
-                                            value="2002-07-22"
+                                            value={fDisplayDate(
+                                                studentInfo?.citizenCardCreatedDate
+                                            )}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -65,8 +70,10 @@ export default function PaperCard() {
                                         </SuiTypography>
                                         <SuiInput
                                             type="text"
-                                            // placeholder="Email"
-                                            value="TP Hồ Chí Minh"
+                                            placeholder="Nơi cấp"
+                                            value={
+                                                studentInfo?.citizenCardCreatedPlace
+                                            }
                                         />
                                     </Grid>
                                 </Grid>
@@ -80,8 +87,14 @@ export default function PaperCard() {
                                     Mặt trước CMND/CCCD
                                 </SuiTypography>
                                 <DropFileZone
-                                image=""
-                                    name="frontID"
+                                    image={
+                                        studentInfo?.frontCitizenCardImageUrl
+                                            ? studentInfo.frontCitizenCardImageUrl
+                                            : ''
+                                    }
+                                    // image="https://cdn.pixabay.com/photo/2020/06/01/22/23/eye-5248678__340.jpg"
+                                    flexEnd="flex-start"
+                                    id="frontID"
                                     onFileChangeURL={(url) =>
                                         onFileChangeURL(url)
                                     }
@@ -96,7 +109,16 @@ export default function PaperCard() {
                                 >
                                     Mặt sau CMND/CCCD
                                 </SuiTypography>
-                                <DropFileZone image=""/>
+                                <DropFileZone
+                                    image={
+                                        studentInfo?.backCitizenCardImageUrl
+                                            ? studentInfo.backCitizenCardImageUrl
+                                            : ''
+                                    }
+                                    onFileChangeURL={(url) =>
+                                        onFileChangeURL(url)
+                                    }
+                                />
                             </Grid>
                         </Grid>
                     </Box>
@@ -116,8 +138,8 @@ export default function PaperCard() {
                                     </SuiTypography>
                                     <SuiInput
                                         type="text"
-                                        // placeholder="Email"
-                                        value="0791111475812"
+                                        placeholder="Mã sinh viên"
+                                        value={studentInfo?.studentCardId}
                                     />
                                 </Grid>
                             </Grid>
@@ -129,7 +151,16 @@ export default function PaperCard() {
                                 >
                                     Mặt trước thẻ sinh viên
                                 </SuiTypography>
-                                <DropFileZone image=""/>
+                                <DropFileZone
+                                    image={
+                                        studentInfo?.frontStudentCardImageUrl
+                                            ? studentInfo.frontStudentCardImageUrl
+                                            : ''
+                                    }
+                                    onFileChangeURL={(url) =>
+                                        onFileChangeURL(url)
+                                    }
+                                />
                             </Grid>
 
                             <Grid item xs={12} md={6}>
@@ -140,7 +171,16 @@ export default function PaperCard() {
                                 >
                                     Mặt sau thẻ sinh viên
                                 </SuiTypography>
-                                <DropFileZone image="" />
+                                <DropFileZone
+                                    image={
+                                        studentInfo?.backStudentCardImageUrl
+                                            ? studentInfo.backStudentCardImageUrl
+                                            : ''
+                                    }
+                                    onFileChangeURL={(url) =>
+                                        onFileChangeURL(url)
+                                    }
+                                />
                             </Grid>
                         </Grid>
                     </Box>
