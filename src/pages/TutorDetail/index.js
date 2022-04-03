@@ -106,9 +106,7 @@ export default function TutorDetail() {
                     </Box>
                 </>
             ) : (
-                <Box mt="50%">
-                    <NotFound title="Không tìm thấy người giám hộ" />
-                </Box>
+                <NotFound title="Không tìm thấy người giám hộ" />
             )}
         </>
     )

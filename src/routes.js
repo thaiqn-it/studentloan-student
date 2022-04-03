@@ -95,18 +95,25 @@ const extraRoutes = [
         route: '/viewpost/:id',
         component: ViewPost,
         key: 'viewpost',
-    }, {
+    },
+    {
         route: '/*',
         component: NotFound,
-        key: 'viewpost',
+        key: 'notfound',
     },
+    // {
+    //     route: '/',
+    //     component: Report, // for dashboard
+    //     key: 'report',
+    // },
 ]
 
 routes.map((route) => {
-    if(route.collapse)
-        route.collapse.map(route => route.route = '/dashboard' + route.route)
-    if(route.route)
-        route.route = '/dashboard' + route.route
+    if (route.collapse)
+        route.collapse.map(
+            (route) => (route.route = '/dashboard' + route.route)
+        )
+    if (route.route) route.route = '/dashboard' + route.route
     return route
 })
 
