@@ -9,10 +9,15 @@ export default function ViewAllPost() {
     const [listLoan, setListLoan] = useState([])
 
     useEffect(() => {
-        loanApi.getLoanStudent().then(res =>{
+        fetchData()
+    }, [])
+
+    const fetchData = async () => {
+        await loanApi.getLoanStudent().then((res) => {
             setListLoan(res.data)
         })
-    }, [listLoan])
+    }
+
     return (
         <Grid container spacing={4}>
             {/* <Grid item xs={12} md={6} lg={4}>
@@ -29,7 +34,7 @@ export default function ViewAllPost() {
             </Grid> */}
             {listLoan.map((item) => (
                 <Grid item xs={12} md={6} lg={4}>
-                    <PostItem loan={item}/>
+                    <PostItem loan={item} />
                 </Grid>
             ))}
         </Grid>

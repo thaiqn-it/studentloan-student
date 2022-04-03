@@ -17,7 +17,7 @@ const DropFileInput = (props) => {
         elementName,
         onFileChangeURL,
         flexEnd,
-        image="",
+        image = '',
         onDelete,
     } = props
 
@@ -33,7 +33,8 @@ const DropFileInput = (props) => {
     const onDrop = () => wrapperRef.current.classList.remove('dragover')
 
     const onFileDrop = (e) => {
-        const newFile = e.target.files[0]
+        const newFile = e.target.files
+
         if (newFile) {
             connectUploadCloud(newFile, e)
         }
@@ -52,13 +53,18 @@ const DropFileInput = (props) => {
     const connectUploadCloud = async (imageFile, event) => {
         setProgress(1)
         const formData = new FormData()
-        formData.append('file', imageFile)
+        for (let i = 0; i < imageFile.length; i++) {
+            formData.append(`file`, imageFile[i])
+        }
         await imageApi
             .uploadImageWithProg(formData, singleFileOptions)
             .then((res) => {
                 setUrl(res.data.url)
                 setProgress(100)
                 onFileChangeURL(res.data.url, event)
+                setProgress(0)
+            })
+            .catch((err) => {
                 setProgress(0)
             })
     }
@@ -80,6 +86,7 @@ const DropFileInput = (props) => {
                             boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
                             // width: '100%',
                             width: 'fit-content',
+                            width: '100%',
                         }}
                     >
                         {image.indexOf('.pdf') !== -1 ? (
@@ -117,7 +124,7 @@ const DropFileInput = (props) => {
                             <label htmlFor={elementId}>
                                 <input
                                     type="file"
-                                    accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
+                                    accept="image/jpeg,image/png,application/pdf"
                                     id={elementId}
                                     name={elementName}
                                     onChange={onFileDrop}
@@ -184,7 +191,7 @@ const DropFileInput = (props) => {
                                 <label htmlFor={elementId}>
                                     <input
                                         type="file"
-                                        accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
+                                        accept="image/jpeg,image/png,application/pdf"
                                         id={elementId}
                                         name={elementName}
                                         onChange={onFileDrop}
@@ -215,8 +222,7 @@ const DropFileInput = (props) => {
                         </div>
                         <input
                             type="file"
-                            accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps"
-                            value=""
+                            accept="image/jpeg,image/png,application/pdf"
                             id={elementId}
                             name={elementName}
                             onChange={onFileDrop}

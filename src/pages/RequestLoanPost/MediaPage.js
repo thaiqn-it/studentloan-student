@@ -5,6 +5,7 @@ import SuiInput from 'components/SuiInput'
 
 import DropFileInput from '../../components/DropFileZone'
 import YoutubeEmbed from './../../components/YoutubeEmbed'
+import { validVideoId } from 'utils/youtube'
 
 export default function MediaPage(props) {
     const { loanId, loanMedia, handleChange } = props
@@ -69,7 +70,7 @@ export default function MediaPage(props) {
             }
             setDemandNote(newDemand)
             handleChange(null, 'LoanMedia', newDemand)
-            console.log("demand")
+            console.log('demand')
         } else {
             var newStudetCert = studentCert
             if (studentCert.currentStatus === 'new') {
@@ -89,31 +90,25 @@ export default function MediaPage(props) {
 
     const onGetYoutubeUrl = (event) => {
         var url = event.target.value
-        initiateYoutubeVideo(url)
-        var loandMediaId = ''
-        if (loanMedia.VIDEO) {
-            loandMediaId = loanMedia.VIDEO.id
-        }
-        var videoMedia = {
-            ...sampleLoanMedia,
-            loanId: loanId,
-            id: loandMediaId,
-            description: 'youtube-video',
-            imageUrl: url,
-            type: 'VIDEO',
-            status: 'active',
-            currentStatus: 'new',
-        }
+        if (true) {
+            var loandMediaId = ''
+            if (loanMedia.VIDEO) {
+                loandMediaId = loanMedia.VIDEO.id
+            }
+            var videoMedia = {
+                ...sampleLoanMedia,
+                loanId: loanId,
+                id: loandMediaId,
+                description: 'youtube-video',
+                imageUrl: url,
+                type: 'VIDEO',
+                status: 'active',
+                currentStatus: 'new',
+            }
 
-        handleChange(null, 'LoanMedia', videoMedia)
-    }
-
-    const initiateYoutubeVideo = (url) => {
-        var regExp =
-            /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
-        var match = url.match(regExp)
-        var returnUrl = match && match[7].length == 11 ? match[7] : false
-        setVideoId(returnUrl)
+            handleChange(null, 'LoanMedia', videoMedia)
+        } else {
+        }
     }
 
     const onDelete = (id) => {
@@ -142,7 +137,7 @@ export default function MediaPage(props) {
         if (loanMedia) {
             if (loanMedia.VIDEO) {
                 setYoutubeVideo(loanMedia.VIDEO)
-                initiateYoutubeVideo(loanMedia.VIDEO.imageUrl)
+                // initiateYoutubeVideo(loanMedia.VIDEO.imageUrl)
             }
             if (loanMedia.DEMANDNOTE) {
                 setDemandNote(loanMedia.DEMANDNOTE)
@@ -186,9 +181,11 @@ export default function MediaPage(props) {
                                     name="videoUrl"
                                     value={youtubeVideo.imageUrl}
                                 ></SuiInput>
-                                {videoId === '' ? null : (
-                                    <YoutubeEmbed embedId={videoId} />
-                                )}
+                                {youtubeVideo?.imageUrl ? (
+                                    <YoutubeEmbed
+                                        url={youtubeVideo?.imageUrl}
+                                    />
+                                ) : null}
                             </Grid>
                         </Grid>
                     </Grid>

@@ -7,8 +7,8 @@ import React, { useEffect, useState } from 'react'
 
 export default function UpdateAchievement(props) {
     const { onClose, open, choseValue, handleUpdateAchieve } = props
-    const [description, setDescription] = useState(choseValue.description)
-    const [url, setUrl] = useState(choseValue.imageUrl)
+    const [description, setDescription] = useState(choseValue.description || "")
+    const [url, setUrl] = useState(choseValue.imageUrl || "" )
 
     useEffect(() => {
         if (choseValue) {
@@ -63,7 +63,8 @@ export default function UpdateAchievement(props) {
                             onFileChangeURL={onFileChangeURL}
                         />
                     </Box>
-                    <Box display="flex" justifyContent="space-between">
+                    {
+                        choseValue ? ( <Box display="flex" justifyContent="space-between">
                         <SuiButton
                             color="error"
                             onClick={()=>handleUpdate('inactive')}
@@ -74,7 +75,13 @@ export default function UpdateAchievement(props) {
                         <SuiButton color="primary" onClick={()=>handleUpdate("update")}>
                             Sửa
                         </SuiButton>
-                    </Box>
+                    </Box>):( <Box display="flex" justifyContent="space-between">
+                        <SuiButton color="primary" onClick={()=>handleUpdate("create")}>
+                            Tạo
+                        </SuiButton>
+                    </Box>)
+                    }
+                   
                 </Box>
             </Dialog>
         </>

@@ -71,7 +71,6 @@ export default function StudentProfile2() {
                                     onClick={onclickAvatar}
                                     size="xxl"
                                 />
-                                <Avatar src={studentInfo?.User?.profileUrl} variant="rounded" size="large"/>
                                 <SuiTypography
                                     variant="h4"
                                     fontWeight="regular"

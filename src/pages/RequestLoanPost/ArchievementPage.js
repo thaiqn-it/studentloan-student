@@ -5,7 +5,7 @@ import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 import React, { useEffect, useState } from 'react'
 import AchievementItem from './components/AchievementItem'
-import AddAchievement from './components/UpdateAchievement'
+import UpdateAchievement from './components/UpdateAchievement'
 
 export default function ArchievementPage(props) {
     const { achievements, studentId, handleChange } = props
@@ -112,7 +112,7 @@ export default function ArchievementPage(props) {
                                     )
                                 })}
 
-                                <AddAchievement
+                                <UpdateAchievement
                                     open={open}
                                     onClose={handleCloseAchieve}
                                     choseValue={choseValue}

@@ -7,6 +7,7 @@ const defaultInstance = axios.create({
     Authorization: `Bearer ${getJWToken()}`,
   }
 });
+
 export const loadToken = () => {
   const token = getJWToken();
   defaultInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;

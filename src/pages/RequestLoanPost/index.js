@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom'
 
 import { loanApi } from '../../apis/loanApi'
 import MediaPage from './MediaPage'
+import NotFound from 'pages/NotFound'
 
 const steps = ['Loan information', 'Archievement', 'Confirm information']
 
@@ -27,6 +28,8 @@ export default function RequestLoanPost() {
     const [achievements, setAchivements] = useState([])
     const [studentInfo, setStudentInfo] = useState({})
 
+    const [isFound, setIsFound] = useState(true)
+
     useEffect(() => {
         loanApi
             .getLoanById(id)
@@ -38,7 +41,9 @@ export default function RequestLoanPost() {
                 setAchivements(res.data.loan.Student.Archievements)
                 setStudentInfo(res.data.loan.Student)
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                setIsFound(false)
+            })
     }, [])
 
     const convertArrayToObject = (array, key) => {
@@ -93,124 +98,130 @@ export default function RequestLoanPost() {
 
     return (
         <>
-            <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0 }}>
-                <ButtonGroup
-                    variant="contained"
-                    aria-label="outlined primary button group"
-                >
-                    <Link
-                        activeClass="active"
-                        to="post-info"
-                        spy={true}
-                        smooth={true}
-                        offset={-100}
-                        duration={500}
-                    >
-                        <SuiButton
-                            sx={{
-                                borderRadius: 0,
-                                // color: '#FFFFFF',
-                                // bgcolor: '#357a38',
-                            }}
-                            color="primary"
-                            variant="gradient"
+            {isFound ? (
+                <>
+                    <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0 }}>
+                        <ButtonGroup
+                            variant="contained"
+                            aria-label="outlined primary button group"
                         >
-                            Thông tin hồ sơ vay
-                        </SuiButton>
-                    </Link>
-                    <Link
-                        activeClass="active"
-                        to="achievements"
-                        spy={true}
-                        smooth={true}
-                        offset={-100}
-                        duration={500}
-                    >
-                        <SuiButton
-                            sx={{
-                                borderRadius: 0,
-                                // color: '#FFFFFF',
-                                // bgcolor: '#3f51b5',
-                            }}
-                            color="info"
-                            variant="gradient"
-                        >
-                            Những thành tích
-                        </SuiButton>
-                    </Link>
-                    <Link
-                        activeClass="active"
-                        to="personal-information"
-                        spy={true}
-                        smooth={true}
-                        offset={-100}
-                        duration={500}
-                    >
-                        <SuiButton
-                            sx={{
-                                borderRadius: 0,
-                                // color: '#FFFFFF',
-                                // bgcolor: '#f44336',
-                            }}
-                            color="error"
-                            variant="gradient"
-                        >
-                            Thông tin của bạn
-                        </SuiButton>
-                    </Link>
-                </ButtonGroup>
-            </SuiBox>
-            <SuiBox>
-                <Paper elevation={6} sx={{ borderRadius: 3 }}>
-                    <Box sx={{ width: '100%' }}>
-                        <PostInfoPage
-                            loan={loan}
-                            handleChange={handleOnchange}
-                        />
-
-                        <MediaPage
-                            loanId={loan.id}
-                            loanMedia={loanMedia}
-                            handleChange={handleOnchange}
-                        />
-
-                        <ArchievementPage
-                            studentId={studentInfo.id}
-                            achievements={achievements}
-                            handleChange={handleOnchangeAchievement}
-                        />
-                        <ConfirmPage
-                            studentInfo={studentInfo}
-                        />
-                        <Divider />
-
-                        <Box
-                            sx={{
-                                m: 3,
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                            }}
-                        >
-                            <SuiButton
-                                sx={{ mr: 3, mb: 3 }}
-                                color="dark"
-                                variant="outlined"
-                                size="large"
+                            <Link
+                                activeClass="active"
+                                to="post-info"
+                                spy={true}
+                                smooth={true}
+                                offset={-100}
+                                duration={500}
                             >
-                                Lưu nháp
-                            </SuiButton>
-                            <SuiButton
-                                color="primary"
-                                size="large"
-                                sx={{ mb: 3 }}
-                                onClick={handleSubmit}
+                                <SuiButton
+                                    sx={{
+                                        borderRadius: 0,
+                                        // color: '#FFFFFF',
+                                        // bgcolor: '#357a38',
+                                    }}
+                                    color="primary"
+                                    variant="gradient"
+                                >
+                                    Thông tin hồ sơ vay
+                                </SuiButton>
+                            </Link>
+                            <Link
+                                activeClass="active"
+                                to="achievements"
+                                spy={true}
+                                smooth={true}
+                                offset={-100}
+                                duration={500}
                             >
-                                Gửi
-                            </SuiButton>
-                        </Box>
-                    </Box>
-                </Paper>
-            </SuiBox>
+                                <SuiButton
+                                    sx={{
+                                        borderRadius: 0,
+                                        // color: '#FFFFFF',
+                                        // bgcolor: '#3f51b5',
+                                    }}
+                                    color="info"
+                                    variant="gradient"
+                                >
+                                    Những thành tích
+                                </SuiButton>
+                            </Link>
+                            <Link
+                                activeClass="active"
+                                to="personal-information"
+                                spy={true}
+                                smooth={true}
+                                offset={-100}
+                                duration={500}
+                            >
+                                <SuiButton
+                                    sx={{
+                                        borderRadius: 0,
+                                        // color: '#FFFFFF',
+                                        // bgcolor: '#f44336',
+                                    }}
+                                    color="error"
+                                    variant="gradient"
+                                >
+                                    Thông tin của bạn
+                                </SuiButton>
+                            </Link>
+                        </ButtonGroup>
+                    </SuiBox>
+                    <SuiBox>
+                        <Paper elevation={6} sx={{ borderRadius: 3 }}>
+                            <Box sx={{ width: '100%' }}>
+                                <PostInfoPage
+                                    loan={loan}
+                                    handleChange={handleOnchange}
+                                />
+
+                                <MediaPage
+                                    loanId={loan.id}
+                                    loanMedia={loanMedia}
+                                    handleChange={handleOnchange}
+                                />
+
+                                <ArchievementPage
+                                    studentId={studentInfo.id}
+                                    achievements={achievements}
+                                    handleChange={handleOnchangeAchievement}
+                                />
+                                <ConfirmPage studentInfo={studentInfo} />
+                                <Divider />
+
+                                <Box
+                                    sx={{
+                                        m: 3,
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                    }}
+                                >
+                                    <SuiButton
+                                        sx={{ mr: 3, mb: 3 }}
+                                        color="dark"
+                                        variant="outlined"
+                                        size="large"
+                                    >
+                                        Lưu nháp
+                                    </SuiButton>
+                                    <SuiButton
+                                        color="primary"
+                                        size="large"
+                                        sx={{ mb: 3 }}
+                                        onClick={handleSubmit}
+                                    >
+                                        Gửi
+                                    </SuiButton>
+                                </Box>
+                            </Box>
+                        </Paper>
+                    </SuiBox>
+                </>
+            ) : (
+                <Box mt="50%">
+                    <NotFound title="Không tìm thấy hồ sơ" />
+                </Box>
+            )}
         </>
     )
 }

@@ -10,13 +10,11 @@ import theme from './assets/theme'
 
 import StudentLanding from './pages/StudentLanding'
 import ForgotPassword from './pages/ForgotPassword/'
-
 import Login from './layouts/authentication/sign-in'
 import SignUp from './layouts/authentication/sign-up'
-
 import ResetPassword from './pages/ResetPassword'
-
 import LandingPage from './pages/LandingPage2'
+import NotFound from "./pages/NotFound"
 
 import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
@@ -63,6 +61,11 @@ function App() {
                             path="/payment/cancel"
                             exact
                             component={Cancel}
+                        />
+                        <Route
+                            path="*"
+                            exact
+                            component={NotFound}
                         />
                     </Switch>
                 </Router>

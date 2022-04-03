@@ -117,9 +117,9 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     {/* <Avatar alt="StudentLoan" src={ReleaseLogo} /> */}
                     <CardMedia component="img" image={ReleaseLogo} height={25} sx={{ margin: "0", objectFit: "contain"}}/>
                     <SuiTypography
-                        variant="h5"
+                        variant="h6"
                         fontWeight="bold"
-                        color={light ? 'white' : 'dark'}
+                        color={light ? 'white' : 'black'}
                         ml={2}
                     >
                         {title}
