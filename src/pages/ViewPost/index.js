@@ -22,6 +22,8 @@ import { fCurrency } from 'utils/formatNumber'
 import { fCurrencyNoVND } from 'utils/formatNumber'
 import { fToNowNumber } from 'utils/formatTime'
 import { getThumbnail } from 'utils/youtube'
+import InvestorPage from './InvestorPage'
+import ReportPage from './ReportPage'
 
 export default function ViewPost() {
     const { id } = useParams()
@@ -216,7 +218,10 @@ export default function ViewPost() {
 
                                         <Divider sx={{ my: 5 }} />
                                         <Box mb={3}>
-                                            <TimelineList title="Trạng thái">
+                                            <SuiTypography color="black">
+                                                Trạng thái
+                                            </SuiTypography>
+                                            <TimelineList title="">
                                                 <TimelineItem
                                                     color="success"
                                                     icon="notifications"
@@ -249,6 +254,7 @@ export default function ViewPost() {
                                                 />
                                             </TimelineList>
                                         </Box>
+                                        <Divider sx={{ my: 5 }} />
                                         <Box mb={3}>
                                             <SuiTypography color="black">
                                                 Mô tả
@@ -327,7 +333,9 @@ export default function ViewPost() {
                             </SuiBox>
                         ) : null}
                         {currentTab === 'two' ? <ContractPage /> : null}
-                        {currentTab === 'three' ? <PaymentPlanPage /> : null}
+                        {currentTab === 'three' ? <InvestorPage /> : null}
+                        {currentTab === 'four' ? <ReportPage /> : null}
+                        {currentTab === 'five' ? <PaymentPlanPage /> : null}
                     </Paper>
                 </>
             ) : (

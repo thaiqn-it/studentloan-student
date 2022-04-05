@@ -10,7 +10,7 @@ export default function NotFound(props) {
     const { title } = props
     return (
         <>
-            <Box sx={{ mt: '50%' }}>
+            <Box sx={{ mt: { md: '50%', xs: '100%' } }}>
                 <Box
                     sx={{
                         position: 'absolute',

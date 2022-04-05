@@ -1,17 +1,38 @@
-import * as React from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
-import { Container, ThemeProvider, Typography, Avatar, Divider } from '@mui/material'
+import {
+    Container,
+    ThemeProvider,
+    Typography,
+    Avatar,
+    Divider,
+} from '@mui/material'
 import theme from '../../../../theme'
 
-import Contract from '..//..//..//..//assets/contract.png'
-import Plan2 from "..//..//..//..//assets/plan2.png"
-import Writing from "..//..//..//..//assets/writing.png"
-
+import Essay from '..//..//..//..//assets/essay.png'
+import Plan2 from '..//..//..//..//assets/plan2.png'
+import Writing from '..//..//..//..//assets/writing.png'
+import Backer from '..//..//..//..//assets/backer.png'
+import Flag from '..//..//..//..//assets/flag.png'
+import { useState, useEffect } from 'react'
 
 export default function TabInfo(props) {
     const { currentTab, onChangeTab } = props
+
+    const [isModbile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth < 720) {
+                setIsMobile(true)
+            } else {
+                setIsMobile(false)
+            }
+        }
+
+        window.addEventListener('resize', handleResize)
+    }, [])
 
     const handleChange = (event, newValue) => {
         onChangeTab(newValue)
@@ -20,15 +41,17 @@ export default function TabInfo(props) {
     return (
         <ThemeProvider theme={theme}>
             <Box sx={{ width: '100%' }}>
-             
                 <Tabs
                     value={currentTab}
                     onChange={handleChange}
                     // textColor="#028858"
                     // variant="fullWidth"
                     // indicatorColor="primary"
-                    centered
-                    aria-label="loan application atb"
+                    centered={!isModbile}
+                    variant={isModbile ? 'scrollable' : 'standard'}
+                    scrollButtons={isModbile}
+                    allowScrollButtonsMobile={isModbile}
+                    aria-label="loan application tab"
                     TabIndicatorProps={{ style: { background: '#344767' } }}
                 >
                     <Tab
@@ -42,7 +65,10 @@ export default function TabInfo(props) {
                             />
                         }
                         label={
-                            <Typography sx={{ color: '#344767' }} fontWeight="regular">
+                            <Typography
+                                sx={{ color: '#344767' }}
+                                fontWeight="regular"
+                            >
                                 Thông tin hồ sơ vay
                             </Typography>
                         }
@@ -53,13 +79,16 @@ export default function TabInfo(props) {
                         icon={
                             <Avatar
                                 alt="test avatar"
-                                src={Contract}
+                                src={Essay}
                                 variant="rounded"
                                 sx={{ width: 30, height: 30 }}
                             />
                         }
                         label={
-                            <Typography sx={{ color: '#344767' }} fontWeight="regular">
+                            <Typography
+                                sx={{ color: '#344767' }}
+                                fontWeight="regular"
+                            >
                                 Hợp đồng
                             </Typography>
                         }
@@ -70,29 +99,63 @@ export default function TabInfo(props) {
                         icon={
                             <Avatar
                                 alt="test avatar"
+                                src={Backer}
+                                variant="rounded"
+                                sx={{ width: 30, height: 30 }}
+                            />
+                        }
+                        label={
+                            <Typography
+                                sx={{ color: '#344767' }}
+                                fontWeight="regular"
+                            >
+                                Nhà đầu tư
+                            </Typography>
+                        }
+                        sx={{ textTransform: 'none' }}
+                    />
+                    <Tab
+                        value="four"
+                        icon={
+                            <Avatar
+                                alt="test avatar"
+                                src={Flag}
+                                variant="rounded"
+                                sx={{ width: 30, height: 30 }}
+                            />
+                        }
+                        label={
+                            <Typography
+                                sx={{ color: '#344767' }}
+                                fontWeight="regular"
+                            >
+                                Báo cáo
+                            </Typography>
+                        }
+                        sx={{ textTransform: 'none' }}
+                    />
+                    <Tab
+                        value="five"
+                        icon={
+                            <Avatar
+                                alt="test avatar"
                                 src={Plan2}
                                 variant="rounded"
                                 sx={{ width: 30, height: 30 }}
                             />
                         }
                         label={
-                            <Typography sx={{ color: '#344767' }} fontWeight="regular">
+                            <Typography
+                                sx={{ color: '#344767' }}
+                                fontWeight="regular"
+                            >
                                 Kế hoạch trả
                             </Typography>
                         }
                         sx={{ textTransform: 'none' }}
                     />
-                    {/* <Tab
-                        value="four"
-                        label={
-                            <Typography sx={{ color: '#344767' }} fontWeight="regular">
-                                Báo cáo
-                            </Typography>
-                        }
-                        sx={{ textTransform: 'none' }}
-                    /> */}
                 </Tabs>
-                   <Divider/>
+                <Divider />
             </Box>
         </ThemeProvider>
     )
