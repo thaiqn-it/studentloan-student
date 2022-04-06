@@ -236,7 +236,6 @@ export default function CreateLoanPost(props) {
             })
             .catch((e) => {
                 setLoading(false)
-                console.log(e)
             })
     }
     function diff_months(dt2, dt1) {
@@ -310,8 +309,9 @@ export default function CreateLoanPost(props) {
                 <IconButton
                     color="white"
                     variant="gradient"
+
                     sx={{
-                        borderRadius: 20,
+                        borderRadius: 3,
                         my: 2,
                         mx: 4,
                         backgroundColor: '#028858',
@@ -330,7 +330,7 @@ export default function CreateLoanPost(props) {
                 <SuiButton
                     color="primary"
                     startIcon={<CreateIcon />}
-                    sx={{ borderRadius: 20, my: 2, mx: 4 }}
+                    sx={{ my: 2, mx: 4 }}
                     onClick={handleClickOpen}
                     disableFocusRipple
                 >
@@ -355,7 +355,7 @@ export default function CreateLoanPost(props) {
                                     variant="h3"
                                     component="div"
                                     fontWeight="medium"
-                                    color="primary"
+                                    color="black"
                                     align="center"
                                 >
                                     Hồ sơ vay
@@ -401,7 +401,7 @@ export default function CreateLoanPost(props) {
                                         Chọn số tiền bạn muốn vay và thời hạn
                                         vay
                                     </SuiTypography>
-                                    <Grid container spacing={3}>
+                                    <Grid container spacing={1}>
                                         <Grid item xs={12} md={12}>
                                             <SuiTypography
                                                 variant="h6"
@@ -500,7 +500,7 @@ export default function CreateLoanPost(props) {
                                     </SuiTypography>
                                     <SuiButton
                                         size="large"
-                                        color="black"
+                                        color="primary"
                                         sx={{
                                             marginTop: 1,
                                             float: 'right',

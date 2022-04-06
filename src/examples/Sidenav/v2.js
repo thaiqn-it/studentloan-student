@@ -249,7 +249,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                             component="img"
                             src={brand}
                             alt="Soft UI Logo"
-                            width="2rem"
+                            width="3rem"
                         />
                     )}
                     <SuiBox
@@ -260,7 +260,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                             component="h6"
                             variant="button"
                             fontWeight="bold"
-                            color="primary"
+                            color="black"
                         >
                             {brandName}
                         </SuiTypography>

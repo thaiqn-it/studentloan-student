@@ -7,7 +7,7 @@ import SuiProgress from 'components/SuiProgress'
 import SuiTypography from 'components/SuiTypography'
 import YoutubeEmbed from 'components/YoutubeEmbed'
 import React, { useEffect, useState } from 'react'
-import Tab from './components/Tab'
+import TabInfo from './components/TabInfo'
 import ContractPage from './ContractPage'
 import PaymentPlanPage from './PaymentPlanPage'
 import NotFound from 'pages/NotFound'
@@ -15,6 +15,15 @@ import NotFound from 'pages/NotFound'
 // Soft UI Dashboard React examples
 import TimelineList from 'examples/Timeline/TimelineList'
 import TimelineItem from 'examples/Timeline/TimelineItem'
+
+// import DraftsIcon from '@mui/icons-material/Drafts'
+// import DeleteIcon from '@mui/icons-material/Delete'
+// import AccessTimeIcon from '@mui/icons-material/AccessTime'
+// import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn'
+// import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
+// import CancelIcon from '@mui/icons-material/Cancel'
+// import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled'
+// import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 import { useParams } from 'react-router-dom'
 import { loanApi } from '../../apis/loanApi'
@@ -24,6 +33,7 @@ import { fToNowNumber } from 'utils/formatTime'
 import { getThumbnail } from 'utils/youtube'
 import InvestorPage from './InvestorPage'
 import ReportPage from './ReportPage'
+import { fProgress } from 'utils/formatNumber'
 
 export default function ViewPost() {
     const { id } = useParams()
@@ -45,15 +55,14 @@ export default function ViewPost() {
 
     const onChangeTab = (tab) => {
         setCurrentTab(tab)
-        console.log(loan.LoanHistories)
     }
 
     return (
         <>
             {isFound ? (
                 <>
-                    <Paper>
-                        <Tab
+                    <Paper sx={{ boxShadow: 0 }}>
+                        <TabInfo
                             onChangeTab={onChangeTab}
                             currentTab={currentTab}
                         />
@@ -113,7 +122,11 @@ export default function ViewPost() {
                                                             md="12"
                                                         >
                                                             <SuiProgress
-                                                                value={50}
+                                                                value={fProgress(
+                                                                    loan.AccumulatedMoney,
+                                                                    loan.totalMoney
+                                                                )}
+                                                                label
                                                                 color="primary"
                                                             />
                                                         </Grid>
@@ -204,7 +217,7 @@ export default function ViewPost() {
                                                                 sx={{
                                                                     marginTop: {
                                                                         xs: 0,
-                                                                        lg: 20,
+                                                                        lg: 16,
                                                                     },
                                                                 }}
                                                             >
@@ -223,33 +236,72 @@ export default function ViewPost() {
                                             </SuiTypography>
                                             <TimelineList title="">
                                                 <TimelineItem
-                                                    color="success"
-                                                    icon="notifications"
-                                                    title="$2400 Design changes"
+                                                    color="dark"
+                                                    icon="drafts"
+                                                    title="Hồ sơ đang ở dạng nháp"
                                                     dateTime="22 DEC 7:20 PM"
                                                     description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['design']}
+                                                    badges={['DRAFT']}
                                                 />
                                                 <TimelineItem
                                                     color="error"
-                                                    icon="inventory_2"
+                                                    icon="delete"
                                                     title="New order #1832412"
                                                     dateTime="21 DEC 11 PM"
                                                     description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
                                                     badges={[
-                                                        'order',
-                                                        '#1832412',
+                                                        'DELETED',
                                                     ]}
                                                 />
                                                 <TimelineItem
-                                                    icon="shopping_cart"
+                                                    color="warning"
+                                                    icon="access_time"
                                                     title="Server payments for April"
                                                     dateTime="21 DEC 9:34 PM"
                                                     description={null}
                                                     badges={[
-                                                        'server',
-                                                        'payments',
+                                                        'WAITING',
                                                     ]}
+                                                />
+                                                <TimelineItem
+                                                    color="secondary"
+                                                    icon="do_disturb_on"
+                                                    title="$2400 Design changes"
+                                                    dateTime="22 DEC 7:20 PM"
+                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                                    badges={['REJECTED']}
+                                                />
+                                                <TimelineItem
+                                                    color="primary"
+                                                    icon="monetization_on"
+                                                    title="$2400 Design changes"
+                                                    dateTime="22 DEC 7:20 PM"
+                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                                    badges={['FUNDING']}
+                                                />
+                                                <TimelineItem
+                                                    color="error"
+                                                    icon="cancel"
+                                                    title="$2400 Design changes"
+                                                    dateTime="22 DEC 7:20 PM"
+                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                                    badges={['FAIL']}
+                                                />
+                                                <TimelineItem
+                                                    color="info"
+                                                    icon="play_circle_filled"
+                                                    title="$2400 Design changes"
+                                                    dateTime="22 DEC 7:20 PM"
+                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                                    badges={['ONGOING']}
+                                                />
+                                                <TimelineItem
+                                                    color="success"
+                                                    icon="check_circle"
+                                                    title="$2400 Design changes"
+                                                    dateTime="22 DEC 7:20 PM"
+                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                                    badges={['FINISH']}
                                                     lastItem
                                                 />
                                             </TimelineList>
@@ -332,8 +384,16 @@ export default function ViewPost() {
                                 </SuiBox>
                             </SuiBox>
                         ) : null}
-                        {currentTab === 'two' ? <ContractPage /> : null}
-                        {currentTab === 'three' ? <InvestorPage /> : null}
+                        {currentTab === 'two' ? (
+                            <ContractPage contractInfo={loan.Contracts} />
+                        ) : null}
+                        {currentTab === 'three' ? (
+                            <InvestorPage
+                                investments={loan.Investments}
+                                currentMoney={loan.AccumulatedMoney}
+                                investors={loan.InvestorCount}
+                            />
+                        ) : null}
                         {currentTab === 'four' ? <ReportPage /> : null}
                         {currentTab === 'five' ? <PaymentPlanPage /> : null}
                     </Paper>

@@ -28,7 +28,7 @@ export default function RequestLoanPost() {
     const [achievements, setAchivements] = useState([])
     const [studentInfo, setStudentInfo] = useState({})
 
-    const [isFound, setIsFound] = useState(true)
+    const [isFound, setIsFound] = useState(false)
 
     useEffect(() => {
         loanApi
@@ -38,8 +38,9 @@ export default function RequestLoanPost() {
                 setLoanMedia(
                     convertArrayToObject(res.data.loan.LoanMedia, 'type')
                 )
-                setAchivements(res.data.loan.Student.Archievements)
-                setStudentInfo(res.data.loan.Student)
+                setAchivements(res.data.loan?.Student?.Archievements)
+                setStudentInfo(res.data.loan?.Student)
+                setIsFound(true)
             })
             .catch((error) => {
                 setIsFound(false)
@@ -181,11 +182,11 @@ export default function RequestLoanPost() {
                                     handleChange={handleOnchange}
                                 />
 
-                                <ArchievementPage
+                                {/* <ArchievementPage
                                     studentId={studentInfo.id}
                                     achievements={achievements}
                                     handleChange={handleOnchangeAchievement}
-                                />
+                                /> */}
                                 <ConfirmPage studentInfo={studentInfo} />
                                 <Divider />
 

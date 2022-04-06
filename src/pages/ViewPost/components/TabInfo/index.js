@@ -13,8 +13,8 @@ import theme from '../../../../theme'
 import Essay from '..//..//..//..//assets/essay.png'
 import Plan2 from '..//..//..//..//assets/plan2.png'
 import Writing from '..//..//..//..//assets/writing.png'
-import Backer from '..//..//..//..//assets/backer.png'
 import Flag from '..//..//..//..//assets/flag.png'
+import Group from '..//..//..//..//assets/group-chat.png'
 import { useState, useEffect } from 'react'
 
 export default function TabInfo(props) {
@@ -40,7 +40,7 @@ export default function TabInfo(props) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ width: '100%' }}>
+            <Box sx={{ width: '100%'}}>
                 <Tabs
                     value={currentTab}
                     onChange={handleChange}
@@ -99,7 +99,7 @@ export default function TabInfo(props) {
                         icon={
                             <Avatar
                                 alt="test avatar"
-                                src={Backer}
+                                src={Group}
                                 variant="rounded"
                                 sx={{ width: 30, height: 30 }}
                             />

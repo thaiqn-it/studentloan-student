@@ -14,7 +14,7 @@ import classes from './LandingPage.module.css'
 import Navbar from './Navbar'
 // import Navbar from "..//..//examples/Navbars/DefaultNavbar";
 
-import landing from "../../assets/undraw_collaborating_re_l43g.svg"
+import landing from '../../assets/undraw_collaborating_re_l43g.svg'
 
 function valuetext(value) {
     return `${value}..000`
@@ -42,7 +42,8 @@ export default function LandingPage() {
     return (
         <>
             <Box className={classes.welcome}>
-                <Navbar title="Student Loan Platform" />
+                    <Navbar title="StudentLoanPlatform" />
+
                 <Container maxWidth="xl">
                     <Box padding="10% 20px 0 20px">
                         <Grid container>
@@ -61,8 +62,8 @@ export default function LandingPage() {
                                     marginBottom="20px"
                                     color="black"
                                 >
-                                    Student Loan sẽ giúp bạn kêu gọi
-                                    một khoản vay
+                                    Student Loan sẽ giúp bạn kêu gọi một khoản
+                                    vay
                                 </SuiTypography>
                                 <SuiTypography
                                     variant="h6"
@@ -87,7 +88,7 @@ export default function LandingPage() {
                                         height: 'auto',
                                         maxWidth: '90%',
                                         margin: '0px',
-                                        mt:5,
+                                        mt: 5,
                                         float: 'right',
                                         '@media (max-width: 786px)': {
                                             float: 'none',
@@ -115,7 +116,11 @@ export default function LandingPage() {
                 }}
             >
                 <Container textAlign="center" maxWidth="xl">
-                    <SuiTypography variant="h2" fontWeight="medium"  color="black">
+                    <SuiTypography
+                        variant="h2"
+                        fontWeight="medium"
+                        color="black"
+                    >
                         Get started with your first installment plan
                     </SuiTypography>
                     <SuiTypography

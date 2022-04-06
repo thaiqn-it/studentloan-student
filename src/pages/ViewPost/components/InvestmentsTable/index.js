@@ -1,12 +1,12 @@
 import SuiBox from 'components/SuiBox'
-import Table from 'examples/Tables/Table'
 import SuiTypography from 'components/SuiTypography'
-import Card from '@mui/material/Card'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiBadge from 'components/SuiBadge'
 
-// Images
-import team2 from 'assets/images/team-2.jpg'
+import { fInvestPercent, fCurrencyNoVND } from 'utils/formatNumber'
+import { Card } from '@mui/material'
+import Table from 'examples/Tables/Table'
+import { fDateTime,fDateTimeSuffix } from 'utils/formatTime'
 
 function Author({ image, name, email }) {
     return (
@@ -18,9 +18,9 @@ function Author({ image, name, email }) {
                 <SuiTypography variant="button" fontWeight="medium">
                     {name}
                 </SuiTypography>
-                <SuiTypography variant="caption" color="secondary">
+                {/* <SuiTypography variant="caption" color="secondary">
                     {email}
-                </SuiTypography>
+                </SuiTypography> */}
             </SuiBox>
         </SuiBox>
     )
@@ -39,67 +39,76 @@ function Function({ job, org }) {
     )
 }
 
-export default function InvestorTable() {
+export default function InvestorTable(props) {
+    const { data, currecurrentMoney } = props
+
     const columns = [
         { name: 'investor', align: 'left' },
-        { name: 'funding', align: 'left' },
+        { name: 'amount', align: 'left' },
         { name: 'status', align: 'center' },
-        { name: 'employed', align: 'center' },
-        { name: 'action', align: 'center' },
+        { name: 'date', align: 'left' },
+        // { name: 'action', align: 'center' },
     ]
 
-    const rows = [
-        {
+    const rows = data.map((item) => {
+        var obj = {
             investor: (
                 <Author
-                    image={team2}
-                    name="John Michael"
-                    email="john@creative-tim.com"
+                    image={item?.Investor?.User?.profileUrl}
+                    name={item?.Investor?.User?.firstName + " " + item?.Investor?.User?.lastName}
+                    // email="john@creative-tim.com"
                 />
             ),
-            funding: <Function job="Manager" org="Organization" />,
+            amount: (
+                <Function
+                    job={fCurrencyNoVND(item?.total)}
+                    org={fInvestPercent(item?.total, currecurrentMoney) + '%'}
+                />
+            ),
             status: (
                 <SuiBadge
                     variant="gradient"
-                    badgeContent="online"
-                    color="success"
+                    badgeContent={item?.status}
+                    color="warning"
                     size="xs"
                     container
                 />
             ),
-            employed: (
+            date: (
                 <SuiTypography
                     variant="caption"
                     color="secondary"
                     fontWeight="medium"
                 >
-                    23/04/18
+                    {fDateTimeSuffix(item?.createdAt)}
                 </SuiTypography>
             ),
-            action: (
-                <SuiTypography
-                    component="a"
-                    href="#"
-                    variant="caption"
-                    color="secondary"
-                    fontWeight="medium"
-                >
-                    Edit
-                </SuiTypography>
-            ),
-        },
-    ]
+            // action: (
+            //     <SuiTypography
+            //         component="a"
+            //         href="#"
+            //         variant="caption"
+            //         color="secondary"
+            //         fontWeight="medium"
+            //     >
+            //         view
+            //     </SuiTypography>
+            // ),
+        }
+
+        return obj
+    })
 
     return (
         <>
-            <Card>
+            <Card sx={{ borderRadius: 0 }}>
                 <SuiBox
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
-                    p={3}
+                    p={2}
                 >
-                    <SuiTypography variant="h6">Authors table</SuiTypography>
+                    <SuiTypography variant="h5">Khoản đầu tư</SuiTypography>
                 </SuiBox>
                 <SuiBox
                     sx={{

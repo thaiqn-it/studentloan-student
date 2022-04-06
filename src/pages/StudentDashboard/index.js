@@ -15,7 +15,7 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 import StudentProfile from 'pages/StudentProfile'
 
-import ReleaseLogo from '../../assets/release-logo.png'
+import ReleaseLogo from '../../assets/newLogo.png'
 
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]
@@ -71,7 +71,7 @@ const StudentDashboard = () => {
         <>
             <Sidenav
                 color={sidenavColor}
-                brandName="Student Loan Platform"
+                brandName="StudentLoanPlatform"
                 brand={ReleaseLogo}
                 routes={currentRoute}
                 onMouseEnter={handleOnMouseEnter}
