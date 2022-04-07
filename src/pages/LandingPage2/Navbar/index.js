@@ -38,7 +38,6 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 import breakpoints from 'assets/theme/base/breakpoints'
 
 import ReleaseLogo from '../../../assets/newLogo.png'
-import { CardMedia } from '@mui/material'
 
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
@@ -121,12 +120,12 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         display="flex"
                         alignItems="center"
                     >
-                        <CardMedia
+                        <SuiBox
                             component="img"
-                            image={ReleaseLogo}
-                            height={60}
-                            width={60}
-                            sx={{ margin: '0', objectFit: 'contain', mt:1 }}
+                            src={ReleaseLogo}
+                            height={30}
+                            width={30}
+                            sx={{ margin: '0', objectFit: 'contain', my:2 }}
                         />
                         <SuiTypography
                             variant="h6"

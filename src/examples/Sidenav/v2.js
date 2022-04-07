@@ -249,7 +249,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                             component="img"
                             src={brand}
                             alt="Soft UI Logo"
-                            width="3rem"
+                            width="2rem"
                         />
                     )}
                     <SuiBox

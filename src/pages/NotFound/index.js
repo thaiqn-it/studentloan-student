@@ -3,11 +3,12 @@ import SuiTypography from 'components/SuiTypography'
 
 import NotFoundImage from '../../assets/undraw_page_not_found_re_e9o6.svg'
 import { Box, Link } from '@mui/material'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
-export default function NotFound(props) {
+export default function NotFound() {
     const history = useHistory()
-    const { title } = props
+    const location = useLocation()
+    const content = location.state?.content || null
     return (
         <>
             <Box sx={{ mt: { md: '50%', xs: '100%' } }}>
@@ -39,14 +40,14 @@ export default function NotFound(props) {
                         color="black"
                         mt={5}
                     >
-                        {title || 'Page Not Found'}
+                        {content || 'Page Not Found'}
                     </SuiTypography>
                     <Box sx={{ textAlign: 'center', mt: 5 }}>
-                        {title ? (
+                        {content ? (
                             <Link
                                 underline="hover"
                                 onClick={() => {
-                                    history.goBack()
+                                    history.go(-2)
                                 }}
                                 sx={{ cursor: 'pointer' }}
                             >

@@ -62,6 +62,11 @@ function App() {
                             exact
                             component={Cancel}
                         />
+                         <Route
+                            path="/404"
+                            exact
+                            component={NotFound}
+                        />
                         <Route
                             path="*"
                             exact

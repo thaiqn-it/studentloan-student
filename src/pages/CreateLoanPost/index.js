@@ -140,7 +140,6 @@
 
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Dialog from '@mui/material/Dialog'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
@@ -151,8 +150,7 @@ import {
     Container,
     Divider,
     Grid,
-    Paper,
-    CircularProgress,
+    Dialog,
 } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
@@ -161,43 +159,25 @@ import SuiTypography from 'components/SuiTypography'
 import CreateIcon from '@mui/icons-material/Create'
 import PercentIcon from '@mui/icons-material/Percent'
 
+
 import { getText } from 'number-to-text-vietnamese'
 
 import { loanApi } from '../../apis/loanApi'
 import { systemConfigApi } from '../../apis/systemConfigApi'
 
-function CircularIndeterminate() {
-    return (
-        <Box sx={{ display: 'flex' }} height="100vh" position="relative">
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    margin: 0,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    animation: 'zoom-in-zoom-out 2s ease-out infinite',
-                    ' @keyframes zoom-in-zoom-out': {
-                        '0% ': {
-                            transform: 'scale(1, 1)',
-                        },
-                        '50%': {
-                            transform: 'scale(1.5, 1.5)',
-                        },
-                        '100%': {
-                            transform: 'scale(1, 1)',
-                        },
-                    },
-                }}
-            >
-                <CircularProgress sx={{ marginTop: 2 }} />
-            </Box>
-        </Box>
-    )
-}
+// function CircularIndeterminate() {
+//     return (
+//         <Backdrop open>
+//             <Box
+//                 sx={{ display: 'flex' }}
+//                 height="50vh"
+//                 position="relative"
+//                 component="img"
+//                 src={Loading}
+//             />
+//         </Backdrop>
+//     )
+// }
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -209,7 +189,7 @@ export default function CreateLoanPost(props) {
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
     const [interest, setInterest] = useState()
-    const [moneyText, setMoneyText] = useState("")
+    const [moneyText, setMoneyText] = useState('')
     // const [miniSideNav, setMiniSideNav] = useState(miniSide)
 
     const data = {
@@ -225,7 +205,6 @@ export default function CreateLoanPost(props) {
 
     const createLoan = async () => {
         setLoading(true)
-        console.log(loading)
         await loanApi
             .createLoanPost(userData)
             .then((res) => {
@@ -309,7 +288,6 @@ export default function CreateLoanPost(props) {
                 <IconButton
                     color="white"
                     variant="gradient"
-
                     sx={{
                         borderRadius: 3,
                         my: 2,
@@ -321,12 +299,6 @@ export default function CreateLoanPost(props) {
                     <CreateIcon fontSize="small" />
                 </IconButton>
             ) : (
-                // <SuiButton
-                //     sx={{ borderRadius: 20, my: 2, mx: 4 }}
-                //     onClick={handleClickOpen}
-                // >
-                //     <CreateIcon />
-                // </SuiButton>
                 <SuiButton
                     color="primary"
                     startIcon={<CreateIcon />}
@@ -344,176 +316,172 @@ export default function CreateLoanPost(props) {
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >
-                {loading ? (
-                    <CircularIndeterminate />
-                ) : (
-                    <>
-                        <AppBar sx={{ position: 'relative' }}>
-                            <Toolbar>
+                <>
+                    <AppBar sx={{ position: 'relative' }}>
+                        <Toolbar>
+                            <SuiTypography
+                                sx={{ ml: 2, flex: 1 }}
+                                variant="h3"
+                                component="div"
+                                fontWeight="medium"
+                                color="black"
+                                align="center"
+                            >
+                                Hồ sơ vay
+                            </SuiTypography>
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleClose}
+                                aria-label="close"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </Toolbar>
+                    </AppBar>
+                    <Divider sx={{ borderBottomWidth: 1, my: 1 }} />
+                    <Box>
+                        <SuiButton
+                            disable
+                            sx={{ borderRadius: 0 }}
+                            color="warning"
+                        >
+                            Draft
+                        </SuiButton>
+                        <Container maxWidth="sm">
+                            <Box sx={{ paddingTop: '10%' }}>
                                 <SuiTypography
-                                    sx={{ ml: 2, flex: 1 }}
-                                    variant="h3"
-                                    component="div"
-                                    fontWeight="medium"
+                                    variant="h4"
+                                    fontWeight="regular"
                                     color="black"
                                     align="center"
+                                    mb={5}
                                 >
-                                    Hồ sơ vay
+                                    Hãy điền những thông tin bên dưới để tạo một
+                                    hồ sơ vay
                                 </SuiTypography>
-                                <IconButton
-                                    edge="start"
-                                    color="inherit"
-                                    onClick={handleClose}
-                                    aria-label="close"
+                                <SuiTypography
+                                    variant="h5"
+                                    fontWeight="regular"
+                                    color="text"
+                                    align="center"
+                                    mb={3}
                                 >
-                                    <CloseIcon />
-                                </IconButton>
-                            </Toolbar>
-                        </AppBar>
-                        <Divider sx={{ borderBottomWidth: 1, my: 1 }} />
-                        <Box>
-                            <SuiButton
-                                disable
-                                sx={{ borderRadius: 0 }}
-                                color="warning"
-                            >
-                                Draft
-                            </SuiButton>
-                            <Container maxWidth="sm">
-                                <Box sx={{ paddingTop: '10%' }}>
-                                    <SuiTypography
-                                        variant="h4"
-                                        fontWeight="regular"
-                                        color="black"
-                                        align="center"
-                                        mb={5}
-                                    >
-                                        Hãy điền những thông tin bên dưới để tạo
-                                        một hồ sơ vay
-                                    </SuiTypography>
-                                    <SuiTypography
-                                        variant="h5"
-                                        fontWeight="regular"
-                                        color="text"
-                                        align="center"
-                                        mb={3}
-                                    >
-                                        Chọn số tiền bạn muốn vay và thời hạn
-                                        vay
-                                    </SuiTypography>
-                                    <Grid container spacing={1}>
-                                        <Grid item xs={12} md={12}>
-                                            <SuiTypography
-                                                variant="h6"
-                                                fontWeight="regular"
-                                            >
-                                                Số tiền
-                                            </SuiTypography>
-                                            <SuiInput
-                                                name="totalMoney"
-                                                type="number"
-                                                icon={{
-                                                    component: 'đ',
-                                                    direction: 'right',
-                                                }}
-                                                onChange={getMoneyText}
-                                            />
-                                        </Grid>
-                                        <Grid item xs="12" md="12">
-                                            <SuiTypography
-                                                variant="button"
-                                                fontWeight="regular"
-                                                color="text"
-                                                name="moneyText"
-                                                textTransform="capitalize"
-                                            >
-                                                {moneyText}
-                                            </SuiTypography>
-                                        </Grid>
-                                        <Grid item xs={12} md={6}>
-                                            <SuiTypography
-                                                variant="h6"
-                                                fontWeight="regular"
-                                            >
-                                                Thời gian ra trường dự kiến
-                                            </SuiTypography>
-                                            <SuiInput
-                                                name="expectedGraduationTime"
-                                                type="month"
-                                                onChange={handleOnchange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} md={6}>
-                                            <SuiTypography
-                                                variant="h6"
-                                                fontWeight="regular"
-                                            >
-                                                Thời hạn vay (tháng)
-                                            </SuiTypography>
-                                            <SuiInput
-                                                name="duration"
-                                                type="number"
-                                                onChange={handleOnchange}
-                                            />
-                                        </Grid>
-
-                                        <Grid item xs={12} md={6}>
-                                            <SuiTypography
-                                                variant="h6"
-                                                fontWeight="regular"
-                                            >
-                                                Lãi suất
-                                            </SuiTypography>
-                                            <SuiInput
-                                                name="interest"
-                                                type="number"
-                                                disabled
-                                                value={interest}
-                                                icon={{
-                                                    component: <PercentIcon />,
-                                                    direction: 'right',
-                                                }}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} md={6}>
-                                            <SuiTypography
-                                                variant="h6"
-                                                fontWeight="regular"
-                                            >
-                                                Thời gian hồ sơ hết hạn
-                                            </SuiTypography>
-                                            <SuiInput
-                                                name="postExpireAt"
-                                                type="date"
-                                                onChange={handleOnchange}
-                                            />
-                                        </Grid>
+                                    Chọn số tiền bạn muốn vay và thời hạn vay
+                                </SuiTypography>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} md={12}>
+                                        <SuiTypography
+                                            variant="h6"
+                                            fontWeight="regular"
+                                        >
+                                            Số tiền
+                                        </SuiTypography>
+                                        <SuiInput
+                                            name="totalMoney"
+                                            type="number"
+                                            icon={{
+                                                component: 'đ',
+                                                direction: 'right',
+                                            }}
+                                            onChange={getMoneyText}
+                                        />
                                     </Grid>
-                                    <Divider
-                                        sx={{
-                                            borderBottomWidth: 1,
-                                            mt: 10,
-                                        }}
-                                    />
-                                    <SuiTypography variant="button">
-                                        Chào mừng bạn trở lại !
-                                    </SuiTypography>
-                                    <SuiButton
-                                        size="large"
-                                        color="primary"
-                                        sx={{
-                                            marginTop: 1,
-                                            float: 'right',
-                                        }}
-                                        onClick={createLoan}
-                                    >
-                                        Tạo
-                                    </SuiButton>
-                                </Box>
-                            </Container>
-                        </Box>
-                    </>
-                )}
+                                    <Grid item xs="12" md="12">
+                                        <SuiTypography
+                                            variant="button"
+                                            fontWeight="regular"
+                                            color="text"
+                                            name="moneyText"
+                                            textTransform="capitalize"
+                                        >
+                                            {moneyText}
+                                        </SuiTypography>
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <SuiTypography
+                                            variant="h6"
+                                            fontWeight="regular"
+                                        >
+                                            Thời gian ra trường dự kiến
+                                        </SuiTypography>
+                                        <SuiInput
+                                            name="expectedGraduationTime"
+                                            type="month"
+                                            onChange={handleOnchange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <SuiTypography
+                                            variant="h6"
+                                            fontWeight="regular"
+                                        >
+                                            Thời hạn vay (tháng)
+                                        </SuiTypography>
+                                        <SuiInput
+                                            name="duration"
+                                            type="number"
+                                            onChange={handleOnchange}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} md={6}>
+                                        <SuiTypography
+                                            variant="h6"
+                                            fontWeight="regular"
+                                        >
+                                            Lãi suất
+                                        </SuiTypography>
+                                        <SuiInput
+                                            name="interest"
+                                            type="number"
+                                            disabled
+                                            value={interest}
+                                            icon={{
+                                                component: <PercentIcon />,
+                                                direction: 'right',
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <SuiTypography
+                                            variant="h6"
+                                            fontWeight="regular"
+                                        >
+                                            Thời gian hồ sơ hết hạn
+                                        </SuiTypography>
+                                        <SuiInput
+                                            name="postExpireAt"
+                                            type="date"
+                                            onChange={handleOnchange}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Divider
+                                    sx={{
+                                        borderBottomWidth: 1,
+                                        mt: 10,
+                                    }}
+                                />
+                                <SuiTypography variant="button">
+                                    Chào mừng bạn trở lại !
+                                </SuiTypography>
+                                <SuiButton
+                                    size="large"
+                                    color="primary"
+                                    sx={{
+                                        marginTop: 1,
+                                        float: 'right',
+                                    }}
+                                    onClick={createLoan}
+                                >
+                                    Tạo
+                                </SuiButton>
+                            </Box>
+                        </Container>
+                    </Box>
+                    {loading ? <Loading /> : null}
+                </>
             </Dialog>
         </div>
     )

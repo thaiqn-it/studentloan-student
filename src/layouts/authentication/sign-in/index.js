@@ -70,6 +70,7 @@ function SignIn() {
 
     return (
         <CoverLayout
+        color="dark"
             title="Đăng Nhập"
             description="Xin hãy nhập email và mật khẩu để đăng nhập"
             image={curved9}
@@ -140,9 +141,8 @@ function SignIn() {
                 </SuiBox>
                 <SuiBox mt={4} mb={1}>
                     <SuiButton
-                        variant="gradient"
                         type="submit"
-                        color="info"
+                        color="primary"
                         fullWidth
                         onClick={signIn}
                     >
@@ -160,9 +160,8 @@ function SignIn() {
                             component={Link}
                             to="/authentication/sign-up"
                             variant="button"
-                            color="info"
+                            color="primary"
                             fontWeight="medium"
-                            textGradient
                         >
                             Đăng kí
                         </SuiTypography>

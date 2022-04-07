@@ -11,24 +11,24 @@ import SuiBox from 'components/SuiBox'
 
 import { Link } from 'react-scroll'
 
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import { loanApi } from '../../apis/loanApi'
 import MediaPage from './MediaPage'
 import NotFound from 'pages/NotFound'
 
+
 const steps = ['Loan information', 'Archievement', 'Confirm information']
 
 export default function RequestLoanPost() {
     const { id } = useParams()
+    const history = useHistory()
 
     const [activeStep, setActiveStep] = useState(0)
     const [loan, setLoan] = useState({ LoanMedia: [] })
     const [loanMedia, setLoanMedia] = useState({})
     const [achievements, setAchivements] = useState([])
     const [studentInfo, setStudentInfo] = useState({})
-
-    const [isFound, setIsFound] = useState(false)
 
     useEffect(() => {
         loanApi
@@ -40,10 +40,12 @@ export default function RequestLoanPost() {
                 )
                 setAchivements(res.data.loan?.Student?.Archievements)
                 setStudentInfo(res.data.loan?.Student)
-                setIsFound(true)
             })
             .catch((error) => {
-                setIsFound(false)
+                history.push({
+                    pathname: '/dashboard/404',
+                    state: { content: 'Không tìm thấy hồ sơ' },
+                })
             })
     }, [])
 
@@ -79,8 +81,6 @@ export default function RequestLoanPost() {
                 [name]: realValue,
             })
         }
-
-        console.log(studentInfo)
     }
 
     const handleOnchangeAchievement = (value) => {
@@ -99,8 +99,6 @@ export default function RequestLoanPost() {
 
     return (
         <>
-            {isFound ? (
-                <>
                     <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0 }}>
                         <ButtonGroup
                             variant="contained"
@@ -182,11 +180,11 @@ export default function RequestLoanPost() {
                                     handleChange={handleOnchange}
                                 />
 
-                                {/* <ArchievementPage
+                                <ArchievementPage
                                     studentId={studentInfo.id}
                                     achievements={achievements}
                                     handleChange={handleOnchangeAchievement}
-                                /> */}
+                                />
                                 <ConfirmPage studentInfo={studentInfo} />
                                 <Divider />
 
@@ -218,11 +216,5 @@ export default function RequestLoanPost() {
                         </Paper>
                     </SuiBox>
                 </>
-            ) : (
-                <Box mt="50%">
-                    <NotFound title="Không tìm thấy hồ sơ" />
-                </Box>
-            )}
-        </>
     )
 }

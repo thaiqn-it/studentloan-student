@@ -97,6 +97,11 @@ const extraRoutes = [
         key: 'viewpost',
     },
     {
+        route: '/404',
+        component: NotFound,
+        key: 'notfound',
+    },
+    {
         route: '/*',
         component: NotFound,
         key: 'notfound',

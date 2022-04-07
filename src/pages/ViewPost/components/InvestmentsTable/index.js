@@ -4,9 +4,9 @@ import SuiAvatar from 'components/SuiAvatar'
 import SuiBadge from 'components/SuiBadge'
 
 import { fInvestPercent, fCurrencyNoVND } from 'utils/formatNumber'
-import { Card } from '@mui/material'
+import { Card, Link } from '@mui/material'
 import Table from 'examples/Tables/Table'
-import { fDateTime,fDateTimeSuffix } from 'utils/formatTime'
+import { fDateTime, fDateTimeSuffix } from 'utils/formatTime'
 
 function Author({ image, name, email }) {
     return (
@@ -39,6 +39,13 @@ function Function({ job, org }) {
     )
 }
 
+function getFileName(url) {
+    var splittedArr = url.split("/");
+    var name = splittedArr[splittedArr.length - 1];
+    // var fileName = name.substring(name.indexOf("-") + 1, name.length);
+    return name;
+  }
+
 export default function InvestorTable(props) {
     const { data, currecurrentMoney } = props
 
@@ -47,6 +54,7 @@ export default function InvestorTable(props) {
         { name: 'amount', align: 'left' },
         { name: 'status', align: 'center' },
         { name: 'date', align: 'left' },
+        { name: 'contract', align: 'left' },
         // { name: 'action', align: 'center' },
     ]
 
@@ -55,7 +63,11 @@ export default function InvestorTable(props) {
             investor: (
                 <Author
                     image={item?.Investor?.User?.profileUrl}
-                    name={item?.Investor?.User?.firstName + " " + item?.Investor?.User?.lastName}
+                    name={
+                        item?.Investor?.User?.firstName +
+                        ' ' +
+                        item?.Investor?.User?.lastName
+                    }
                     // email="john@creative-tim.com"
                 />
             ),
@@ -83,17 +95,26 @@ export default function InvestorTable(props) {
                     {fDateTimeSuffix(item?.createdAt)}
                 </SuiTypography>
             ),
-            // action: (
-            //     <SuiTypography
-            //         component="a"
-            //         href="#"
-            //         variant="caption"
-            //         color="secondary"
-            //         fontWeight="medium"
-            //     >
-            //         view
-            //     </SuiTypography>
-            // ),
+            contract: (
+                // <SuiTypography
+                //     component="a"
+                //     href="#"
+                //     variant="caption"
+                //     color="secondary"
+                //     fontWeight="medium"
+                // >
+                //     view
+                // </SuiTypography>
+                <Link
+                    href="https://res.cloudinary.com/larrytran/image/upload/v1648997077/pdf/hmq3b48dybfpn1mvfqsa.pdf"
+                    underline="hover"
+                    color="black"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {getFileName("https://res.cloudinary.com/larrytran/image/upload/v1648997077/pdf/hmq3b48dybfpn1mvfqsa.pdf")}
+                </Link>
+            ),
         }
 
         return obj

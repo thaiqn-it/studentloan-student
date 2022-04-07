@@ -13,9 +13,8 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import Wallet from 'pages/Wallet'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import StudentProfile from 'pages/StudentProfile'
 
-import ReleaseLogo from '../../assets/newLogo.png'
+import ReleaseLogo from '../../assets/newLogo3.png'
 
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]

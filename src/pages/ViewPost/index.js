@@ -12,18 +12,8 @@ import ContractPage from './ContractPage'
 import PaymentPlanPage from './PaymentPlanPage'
 import NotFound from 'pages/NotFound'
 
-// Soft UI Dashboard React examples
 import TimelineList from 'examples/Timeline/TimelineList'
 import TimelineItem from 'examples/Timeline/TimelineItem'
-
-// import DraftsIcon from '@mui/icons-material/Drafts'
-// import DeleteIcon from '@mui/icons-material/Delete'
-// import AccessTimeIcon from '@mui/icons-material/AccessTime'
-// import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn'
-// import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
-// import CancelIcon from '@mui/icons-material/Cancel'
-// import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled'
-// import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 import { useParams } from 'react-router-dom'
 import { loanApi } from '../../apis/loanApi'
@@ -34,22 +24,28 @@ import { getThumbnail } from 'utils/youtube'
 import InvestorPage from './InvestorPage'
 import ReportPage from './ReportPage'
 import { fProgress } from 'utils/formatNumber'
+import { setDocTitle } from 'utils/dynamicDocTitle'
+
+import { useHistory } from 'react-router-dom'
 
 export default function ViewPost() {
     const { id } = useParams()
+    const history = useHistory()
     const [currentTab, setCurrentTab] = useState('one')
     const [loan, setLoan] = useState({})
-
-    const [isFound, setIsFound] = useState(true)
 
     useEffect(() => {
         loanApi
             .getLoanById(id)
             .then((res) => {
                 setLoan(res.data.loan)
+                setDocTitle(res.data.loan.title)
             })
             .catch((error) => {
-                setIsFound(false)
+                history.push({
+                    pathname: '/dashboard/404',
+                    state: { content: 'Không tìm thấy hồ sơ' },
+                })
             })
     }, [])
 
@@ -59,348 +55,302 @@ export default function ViewPost() {
 
     return (
         <>
-            {isFound ? (
-                <>
-                    <Paper sx={{ boxShadow: 0 }}>
-                        <TabInfo
-                            onChangeTab={onChangeTab}
-                            currentTab={currentTab}
-                        />
-                        {currentTab === 'one' ? (
-                            <SuiBox py={5}>
-                                <SuiBox mb={3}>
-                                    <Container maxWidth="xxl">
-                                        <Box>
-                                            <Grid container spacing={4}>
-                                                <Grid item xs={12} md={9}>
-                                                    {loan?.LoanMedia?.filter(
-                                                        (item) =>
-                                                            item.type ===
-                                                            'VIDEO'
-                                                    ).length ? (
-                                                        loan?.LoanMedia?.filter(
-                                                            (item) =>
-                                                                item.type ===
-                                                                'VIDEO'
-                                                        ).map((item) => (
-                                                            <YoutubeEmbed
-                                                                url={
-                                                                    item.imageUrl
-                                                                }
-                                                                height="480"
-                                                            />
-                                                        ))
-                                                    ) : (
-                                                        <CardMedia
-                                                            sx={{
-                                                                maxWidth:
-                                                                    '100%',
-                                                                height: '100%',
-                                                                margin: 0,
-                                                            }}
-                                                            component="img"
-                                                            image={getThumbnail(
-                                                                null
-                                                            )}
-                                                        />
-                                                    )}
+            <Paper sx={{ boxShadow: 0 }}>
+                <TabInfo onChangeTab={onChangeTab} currentTab={currentTab} />
+                {currentTab === 'one' ? (
+                    <SuiBox py={5}>
+                        <SuiBox mb={3}>
+                            <Container maxWidth="xxl">
+                                <Box>
+                                    <Grid container spacing={4}>
+                                        <Grid item xs={12} md={9}>
+                                            {loan?.LoanMedia?.filter(
+                                                (item) => item.type === 'VIDEO'
+                                            ).length ? (
+                                                loan?.LoanMedia?.filter(
+                                                    (item) =>
+                                                        item.type === 'VIDEO'
+                                                ).map((item) => (
+                                                    <YoutubeEmbed
+                                                        url={item.imageUrl}
+                                                        height="480"
+                                                    />
+                                                ))
+                                            ) : (
+                                                <CardMedia
+                                                    sx={{
+                                                        maxWidth: '100%',
+                                                        height: '100%',
+                                                        margin: 0,
+                                                    }}
+                                                    component="img"
+                                                    image={getThumbnail(null)}
+                                                />
+                                            )}
 
+                                            <SuiTypography
+                                                variant="h5"
+                                                fontWeight="regular"
+                                                color="black"
+                                                align="center"
+                                            >
+                                                T: {loan.title}
+                                            </SuiTypography>
+                                        </Grid>
+                                        <Grid item xs={12} md={3}>
+                                            <Grid container spacing={1}>
+                                                <Grid item xs="12" md="12">
+                                                    <SuiProgress
+                                                        value={fProgress(
+                                                            loan.AccumulatedMoney,
+                                                            loan.totalMoney
+                                                        )}
+                                                        label
+                                                        color="primary"
+                                                    />
+                                                </Grid>
+                                                <Grid
+                                                    item
+                                                    xs="12"
+                                                    md="12"
+                                                    sx={{
+                                                        marginTop: '1rem',
+                                                    }}
+                                                >
                                                     <SuiTypography
-                                                        variant="h5"
-                                                        fontWeight="regular"
+                                                        variant="h4"
                                                         color="black"
-                                                        align="center"
                                                     >
-                                                        T: {loan.title}
+                                                        {fCurrency(
+                                                            loan.AccumulatedMoney
+                                                        )}
+                                                    </SuiTypography>
+                                                    <SuiTypography variant="h6">
+                                                        /
+                                                        {fCurrencyNoVND(
+                                                            loan.totalMoney
+                                                        )}
                                                     </SuiTypography>
                                                 </Grid>
-                                                <Grid item xs={12} md={3}>
-                                                    <Grid container spacing={1}>
-                                                        <Grid
-                                                            item
-                                                            xs="12"
-                                                            md="12"
-                                                        >
-                                                            <SuiProgress
-                                                                value={fProgress(
-                                                                    loan.AccumulatedMoney,
-                                                                    loan.totalMoney
-                                                                )}
-                                                                label
-                                                                color="primary"
-                                                            />
-                                                        </Grid>
-                                                        <Grid
-                                                            item
-                                                            xs="12"
-                                                            md="12"
-                                                            sx={{
-                                                                marginTop:
-                                                                    '1rem',
-                                                            }}
-                                                        >
-                                                            <SuiTypography
-                                                                variant="h4"
-                                                                color="black"
-                                                            >
-                                                                {fCurrency(
-                                                                    loan.AccumulatedMoney
-                                                                )}
-                                                            </SuiTypography>
-                                                            <SuiTypography variant="h6">
-                                                                /
-                                                                {fCurrencyNoVND(
-                                                                    loan.totalMoney
-                                                                )}
-                                                            </SuiTypography>
-                                                        </Grid>
-                                                        <Grid
-                                                            item
-                                                            xs="6"
-                                                            md="12"
-                                                            sx={{
-                                                                marginTop:
-                                                                    '1rem',
-                                                            }}
-                                                        >
-                                                            <SuiTypography
-                                                                variant="h3"
-                                                                color="text"
-                                                            >
-                                                                {
-                                                                    loan.InvestorCount
-                                                                }
-                                                            </SuiTypography>
-                                                            <SuiTypography
-                                                                variant="h6"
-                                                                color="text"
-                                                                fontWeight="regular"
-                                                            >
-                                                                nhà đầu tư
-                                                            </SuiTypography>
-                                                        </Grid>
-                                                        <Grid
-                                                            item
-                                                            xs="6"
-                                                            md="12"
-                                                            sx={{
-                                                                marginTop:
-                                                                    '1rem',
-                                                            }}
-                                                        >
-                                                            <SuiTypography
-                                                                variant="h3"
-                                                                color="text"
-                                                            >
-                                                                {fToNowNumber(
-                                                                    loan.postExpireAt
-                                                                )}
-                                                            </SuiTypography>
-                                                            <SuiTypography
-                                                                variant="h6"
-                                                                color="text"
-                                                                fontWeight="regular"
-                                                            >
-                                                                ngày trước khi
-                                                                hết hạn
-                                                            </SuiTypography>
-                                                        </Grid>
-                                                        <Grid
-                                                            item
-                                                            xs="12"
-                                                            md="12"
-                                                        >
-                                                            <SuiButton
-                                                                color="primary"
-                                                                fullWidth
-                                                                href={`/dashboard/request/${id}`}
-                                                                sx={{
-                                                                    marginTop: {
-                                                                        xs: 0,
-                                                                        lg: 16,
-                                                                    },
-                                                                }}
-                                                            >
-                                                                Chỉnh sửa
-                                                            </SuiButton>
-                                                        </Grid>
-                                                    </Grid>
+                                                <Grid
+                                                    item
+                                                    xs="6"
+                                                    md="12"
+                                                    sx={{
+                                                        marginTop: '1rem',
+                                                    }}
+                                                >
+                                                    <SuiTypography
+                                                        variant="h3"
+                                                        color="text"
+                                                    >
+                                                        {loan.InvestorCount}
+                                                    </SuiTypography>
+                                                    <SuiTypography
+                                                        variant="h6"
+                                                        color="text"
+                                                        fontWeight="regular"
+                                                    >
+                                                        nhà đầu tư
+                                                    </SuiTypography>
+                                                </Grid>
+                                                <Grid
+                                                    item
+                                                    xs="6"
+                                                    md="12"
+                                                    sx={{
+                                                        marginTop: '1rem',
+                                                    }}
+                                                >
+                                                    <SuiTypography
+                                                        variant="h3"
+                                                        color="text"
+                                                    >
+                                                        {fToNowNumber(
+                                                            loan.postExpireAt
+                                                        )}
+                                                    </SuiTypography>
+                                                    <SuiTypography
+                                                        variant="h6"
+                                                        color="text"
+                                                        fontWeight="regular"
+                                                    >
+                                                        ngày trước khi hết hạn
+                                                    </SuiTypography>
+                                                </Grid>
+                                                <Grid item xs="12" md="12">
+                                                    <SuiButton
+                                                        color="primary"
+                                                        fullWidth
+                                                        href={`/dashboard/request/${id}`}
+                                                        sx={{
+                                                            marginTop: {
+                                                                xs: 0,
+                                                                lg: 16,
+                                                            },
+                                                        }}
+                                                    >
+                                                        Chỉnh sửa
+                                                    </SuiButton>
                                                 </Grid>
                                             </Grid>
-                                        </Box>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
 
-                                        <Divider sx={{ my: 5 }} />
-                                        <Box mb={3}>
-                                            <SuiTypography color="black">
-                                                Trạng thái
-                                            </SuiTypography>
-                                            <TimelineList title="">
-                                                <TimelineItem
-                                                    color="dark"
-                                                    icon="drafts"
-                                                    title="Hồ sơ đang ở dạng nháp"
-                                                    dateTime="22 DEC 7:20 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['DRAFT']}
+                                <Divider sx={{ my: 5 }} />
+                                <Box mb={3}>
+                                    <SuiTypography color="black">
+                                        Trạng thái
+                                    </SuiTypography>
+                                    <TimelineList title="">
+                                        <TimelineItem
+                                            color="dark"
+                                            icon="drafts"
+                                            title="Hồ sơ đang ở dạng nháp"
+                                            dateTime="22 DEC 7:20 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['DRAFT']}
+                                        />
+                                        <TimelineItem
+                                            color="error"
+                                            icon="delete"
+                                            title="New order #1832412"
+                                            dateTime="21 DEC 11 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['DELETED']}
+                                        />
+                                        <TimelineItem
+                                            color="warning"
+                                            icon="access_time"
+                                            title="Server payments for April"
+                                            dateTime="21 DEC 9:34 PM"
+                                            description={null}
+                                            badges={['WAITING']}
+                                        />
+                                        <TimelineItem
+                                            color="secondary"
+                                            icon="do_disturb_on"
+                                            title="$2400 Design changes"
+                                            dateTime="22 DEC 7:20 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['REJECTED']}
+                                        />
+                                        <TimelineItem
+                                            color="primary"
+                                            icon="monetization_on"
+                                            title="$2400 Design changes"
+                                            dateTime="22 DEC 7:20 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['FUNDING']}
+                                        />
+                                        <TimelineItem
+                                            color="error"
+                                            icon="cancel"
+                                            title="$2400 Design changes"
+                                            dateTime="22 DEC 7:20 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['FAIL']}
+                                        />
+                                        <TimelineItem
+                                            color="info"
+                                            icon="play_circle_filled"
+                                            title="$2400 Design changes"
+                                            dateTime="22 DEC 7:20 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['ONGOING']}
+                                        />
+                                        <TimelineItem
+                                            color="success"
+                                            icon="check_circle"
+                                            title="$2400 Design changes"
+                                            dateTime="22 DEC 7:20 PM"
+                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
+                                            badges={['FINISH']}
+                                            lastItem
+                                        />
+                                    </TimelineList>
+                                </Box>
+                                <Divider sx={{ my: 5 }} />
+                                <Box mb={3}>
+                                    <SuiTypography color="black">
+                                        Mô tả
+                                    </SuiTypography>
+                                    <SuiInput
+                                        rows={10}
+                                        multiline
+                                        placeholder="Mô tả..."
+                                        name="description"
+                                        value={loan.description}
+                                        disabled
+                                    />
+                                </Box>
+                                <Divider sx={{ my: 5 }} />
+                                <Box mb={5}>
+                                    <Grid container spacing={3}>
+                                        {loan?.LoanMedia?.filter(
+                                            (item) => item.type !== 'VIDEO'
+                                        ).map((item) => (
+                                            <Grid item xs={12} md={6}>
+                                                <SuiTypography
+                                                    color="black"
+                                                    mb={1}
+                                                >
+                                                    {item.description}
+                                                </SuiTypography>
+                                                <ImageCard
+                                                    image={item.imageUrl}
                                                 />
-                                                <TimelineItem
-                                                    color="error"
-                                                    icon="delete"
-                                                    title="New order #1832412"
-                                                    dateTime="21 DEC 11 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={[
-                                                        'DELETED',
-                                                    ]}
-                                                />
-                                                <TimelineItem
-                                                    color="warning"
-                                                    icon="access_time"
-                                                    title="Server payments for April"
-                                                    dateTime="21 DEC 9:34 PM"
-                                                    description={null}
-                                                    badges={[
-                                                        'WAITING',
-                                                    ]}
-                                                />
-                                                <TimelineItem
-                                                    color="secondary"
-                                                    icon="do_disturb_on"
-                                                    title="$2400 Design changes"
-                                                    dateTime="22 DEC 7:20 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['REJECTED']}
-                                                />
-                                                <TimelineItem
-                                                    color="primary"
-                                                    icon="monetization_on"
-                                                    title="$2400 Design changes"
-                                                    dateTime="22 DEC 7:20 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['FUNDING']}
-                                                />
-                                                <TimelineItem
-                                                    color="error"
-                                                    icon="cancel"
-                                                    title="$2400 Design changes"
-                                                    dateTime="22 DEC 7:20 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['FAIL']}
-                                                />
-                                                <TimelineItem
-                                                    color="info"
-                                                    icon="play_circle_filled"
-                                                    title="$2400 Design changes"
-                                                    dateTime="22 DEC 7:20 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['ONGOING']}
-                                                />
-                                                <TimelineItem
-                                                    color="success"
-                                                    icon="check_circle"
-                                                    title="$2400 Design changes"
-                                                    dateTime="22 DEC 7:20 PM"
-                                                    description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                                    badges={['FINISH']}
-                                                    lastItem
-                                                />
-                                            </TimelineList>
-                                        </Box>
-                                        <Divider sx={{ my: 5 }} />
-                                        <Box mb={3}>
-                                            <SuiTypography color="black">
-                                                Mô tả
-                                            </SuiTypography>
-                                            <SuiInput
-                                                rows={10}
-                                                multiline
-                                                placeholder="Mô tả..."
-                                                name="description"
-                                                value={loan.description}
-                                                disabled
-                                            />
-                                        </Box>
-                                        <Divider sx={{ my: 5 }} />
-                                        <Box mb={5}>
-                                            <Grid container spacing={3}>
-                                                {loan?.LoanMedia?.filter(
-                                                    (item) =>
-                                                        item.type !== 'VIDEO'
-                                                ).map((item) => (
-                                                    <Grid item xs={12} md={6}>
-                                                        <SuiTypography
-                                                            color="black"
-                                                            mb={1}
-                                                        >
-                                                            {item.description}
-                                                        </SuiTypography>
-                                                        <ImageCard
-                                                            image={
-                                                                item.imageUrl
-                                                            }
-                                                        />
-                                                    </Grid>
-                                                ))}
+                                            </Grid>
+                                        ))}
 
-                                                {/* <Grid item xs={12} md={6}>
+                                        {/* <Grid item xs={12} md={6}>
                                             <SuiTypography color="black" mb={1}>
                                                 Giấy xác nhận sinh viên
                                             </SuiTypography>
                                             <ImageCard image="https://res.cloudinary.com/larrytran/image/upload/v1648212014/image/fy9zzzjipvyznttejuhr.jpg" />
                                         </Grid> */}
-                                            </Grid>
-                                        </Box>
-                                        <Divider sx={{ my: 5 }} />
-                                        <Box mb={5}>
-                                            <SuiTypography color="black" mb={1}>
-                                                Những thành tựu
-                                            </SuiTypography>
-                                            <Grid container spacing={3}>
-                                                {loan?.Student?.Archievements.map(
-                                                    (item) => (
-                                                        <Grid
-                                                            item
-                                                            xs={12}
-                                                            md={6}
-                                                        >
-                                                            <SuiInput
-                                                                value={
-                                                                    item.description
-                                                                }
-                                                                disabled
-                                                            />
-                                                            <ImageCard
-                                                                mt={1}
-                                                                image={
-                                                                    item.imageUrl
-                                                                }
-                                                            />
-                                                        </Grid>
-                                                    )
-                                                )}
-                                            </Grid>
-                                        </Box>
-                                    </Container>
-                                </SuiBox>
-                            </SuiBox>
-                        ) : null}
-                        {currentTab === 'two' ? (
-                            <ContractPage contractInfo={loan.Contracts} />
-                        ) : null}
-                        {currentTab === 'three' ? (
-                            <InvestorPage
-                                investments={loan.Investments}
-                                currentMoney={loan.AccumulatedMoney}
-                                investors={loan.InvestorCount}
-                            />
-                        ) : null}
-                        {currentTab === 'four' ? <ReportPage /> : null}
-                        {currentTab === 'five' ? <PaymentPlanPage /> : null}
-                    </Paper>
-                </>
-            ) : (
-                <NotFound title="Không tìm thấy hồ sơ" />
-            )}
+                                    </Grid>
+                                </Box>
+                                <Divider sx={{ my: 5 }} />
+                                <Box mb={5}>
+                                    <SuiTypography color="black" mb={1}>
+                                        Những thành tựu
+                                    </SuiTypography>
+                                    <Grid container spacing={3}>
+                                        {loan?.Student?.Archievements.map(
+                                            (item) => (
+                                                <Grid item xs={12} md={6}>
+                                                    <SuiInput
+                                                        value={item.description}
+                                                        disabled
+                                                    />
+                                                    <ImageCard
+                                                        mt={1}
+                                                        image={item.imageUrl}
+                                                    />
+                                                </Grid>
+                                            )
+                                        )}
+                                    </Grid>
+                                </Box>
+                            </Container>
+                        </SuiBox>
+                    </SuiBox>
+                ) : null}
+                {currentTab === 'two' ? (
+                    <ContractPage contractInfo={loan.Contracts} />
+                ) : null}
+                {currentTab === 'three' ? (
+                    <InvestorPage
+                        investments={loan.Investments}
+                        currentMoney={loan.AccumulatedMoney}
+                        investors={loan.InvestorCount}
+                    />
+                ) : null}
+                {currentTab === 'four' ? <ReportPage /> : null}
+                {currentTab === 'five' ? <PaymentPlanPage /> : null}
+            </Paper>
         </>
     )
 }
