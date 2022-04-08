@@ -6,7 +6,7 @@ import SpaceShip from 'examples/Icons/SpaceShip'
 import StudentProfile from 'pages/StudentProfile'
 import Wallet from 'pages/Wallet'
 import Report from 'pages/Report'
-import RequestLoanPost from 'pages/RequestLoanPost'
+import EditLoanPost from 'pages/EditLoanPost'
 import ViewPost from 'pages/ViewPost'
 import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
@@ -64,7 +64,7 @@ let routes = [
         type: 'collapse',
         name: 'Xem tất cả hồ sơ vay',
         key: 'viewall',
-        route: '/viewall',
+        route: '/loan/all',
         icon: <SpaceShip size="12px" />,
         component: ViewAllPost,
         noCollapse: true,
@@ -82,19 +82,19 @@ let routes = [
 
 const extraRoutes = [
     {
-        route: '/tutordetail/:id',
+        route: '/nguoi-giam-ho/:id',
         component: TutorDetail,
         key: 'tutordetail',
     },
     {
-        route: '/request/:id',
-        component: RequestLoanPost,
-        key: 'request',
+        route: '/loan/edit/:id',
+        component: EditLoanPost,
+        key: 'edit',
     },
     {
-        route: '/viewpost/:id',
+        route: '/loan/view/:id',
         component: ViewPost,
-        key: 'viewpost',
+        key: 'view',
     },
     {
         route: '/404',

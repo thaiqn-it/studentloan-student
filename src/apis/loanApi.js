@@ -1,15 +1,19 @@
-import { defaultInstance } from ".";
+import { defaultInstance } from '.'
 
 const createLoanPost = (data) => {
-  return defaultInstance.post("/loan", data);
-};
-
-const getLoanById = (id) => {
-  return defaultInstance.get(`/loan/${id}`);
-};
-
-const getLoanStudent = ()=>{
-  return defaultInstance.get(`/loan/student`);
+    return defaultInstance.post('/loan', data)
 }
 
-export const loanApi = { createLoanPost, getLoanById, getLoanStudent };
+const getLoanById = (id, type) => {
+    return defaultInstance.get(`/loan/student/${id}`, {
+        params: {
+            type,
+        },
+    })
+}
+
+const getLoanStudent = () => {
+    return defaultInstance.get(`/loan/student`)
+}
+
+export const loanApi = { createLoanPost, getLoanById, getLoanStudent }

@@ -27,21 +27,26 @@ import { fProgress } from 'utils/formatNumber'
 import { setDocTitle } from 'utils/dynamicDocTitle'
 
 import { useHistory } from 'react-router-dom'
+import Loading from 'components/Loading'
 
 export default function ViewPost() {
     const { id } = useParams()
     const history = useHistory()
-    const [currentTab, setCurrentTab] = useState('one')
+    const [isLoading, setIsLoading] = useState(false)
+    const [currentTab, setCurrentTab] = useState('1')
     const [loan, setLoan] = useState({})
 
     useEffect(() => {
+        setIsLoading(true)
         loanApi
             .getLoanById(id)
             .then((res) => {
-                setLoan(res.data.loan)
+                setLoan(res.data.loan, 'view')
                 setDocTitle(res.data.loan.title)
+                setIsLoading(false)
             })
             .catch((error) => {
+                setIsLoading(false)
                 history.push({
                     pathname: '/dashboard/404',
                     state: { content: 'Không tìm thấy hồ sơ' },
@@ -57,7 +62,8 @@ export default function ViewPost() {
         <>
             <Paper sx={{ boxShadow: 0 }}>
                 <TabInfo onChangeTab={onChangeTab} currentTab={currentTab} />
-                {currentTab === 'one' ? (
+                {isLoading ? <Loading /> : null}
+                {currentTab === '1' ? (
                     <SuiBox py={5}>
                         <SuiBox mb={3}>
                             <Container maxWidth="xxl">
@@ -182,7 +188,7 @@ export default function ViewPost() {
                                                     <SuiButton
                                                         color="primary"
                                                         fullWidth
-                                                        href={`/dashboard/request/${id}`}
+                                                        href={`/dashboard/loan/edit/${id}`}
                                                         sx={{
                                                             marginTop: {
                                                                 xs: 0,
@@ -213,7 +219,7 @@ export default function ViewPost() {
                                             badges={['DRAFT']}
                                         />
                                         <TimelineItem
-                                            color="error"
+                                            color="secondary"
                                             icon="delete"
                                             title="New order #1832412"
                                             dateTime="21 DEC 11 PM"
@@ -229,7 +235,7 @@ export default function ViewPost() {
                                             badges={['WAITING']}
                                         />
                                         <TimelineItem
-                                            color="secondary"
+                                            color="error"
                                             icon="do_disturb_on"
                                             title="$2400 Design changes"
                                             dateTime="22 DEC 7:20 PM"
@@ -338,18 +344,18 @@ export default function ViewPost() {
                         </SuiBox>
                     </SuiBox>
                 ) : null}
-                {currentTab === 'two' ? (
+                {/* {currentTab === '2' ? (
                     <ContractPage contractInfo={loan.Contracts} />
-                ) : null}
-                {currentTab === 'three' ? (
+                ) : null} */}
+                {currentTab === '2' ? (
                     <InvestorPage
                         investments={loan.Investments}
                         currentMoney={loan.AccumulatedMoney}
                         investors={loan.InvestorCount}
                     />
                 ) : null}
-                {currentTab === 'four' ? <ReportPage /> : null}
-                {currentTab === 'five' ? <PaymentPlanPage /> : null}
+                {currentTab === '3' ? <ReportPage /> : null}
+                {currentTab === '4' ? <PaymentPlanPage /> : null}
             </Paper>
         </>
     )

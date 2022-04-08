@@ -145,20 +145,15 @@ import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Slide from '@mui/material/Slide'
-import {
-    Box,
-    Container,
-    Divider,
-    Grid,
-    Dialog,
-} from '@mui/material'
+import { Box, Container, Divider, Grid, Dialog } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 
+import Loading from 'components/Loading'
+
 import CreateIcon from '@mui/icons-material/Create'
 import PercentIcon from '@mui/icons-material/Percent'
-
 
 import { getText } from 'number-to-text-vietnamese'
 
@@ -204,19 +199,32 @@ export default function CreateLoanPost(props) {
     const [userData, setUserData] = useState(data)
 
     const createLoan = async () => {
-        setLoading(true)
-        await loanApi
-            .createLoanPost(userData)
-            .then((res) => {
-                setLoading(true)
-                let path = `/dashboard/request/${res.data.id}`
-                history.push(path)
-                setOpen(false)
-            })
-            .catch((e) => {
-                setLoading(false)
-            })
+        if (isNullish(userData)) {
+            setLoading(true)
+            await loanApi
+                .createLoanPost(userData)
+                .then((res) => {
+                    let path = `/dashboard/request/${res.data.id}`
+                    history.push(path)
+                    setOpen(false)
+                })
+                .catch((e) => {
+                    setLoading(false)
+                })
+        }
     }
+
+    const isNullish = (obj) => {
+        var flag = true
+        Object.values(obj).map((value) => {
+            if (value === '') {
+                flag = false
+            }
+        })
+
+        return flag
+    }
+
     function diff_months(dt2, dt1) {
         var diff = (dt2.getTime() - dt1.getTime()) / 1000
         diff /= 60 * 60 * 24 * 7 * 4
@@ -239,19 +247,6 @@ export default function CreateLoanPost(props) {
             ...userData,
             [e.target.name]: realValue,
         })
-    }
-
-    const verifyData = () => {
-        var flag = false
-        if (
-            data.money != null &&
-            data.duration != null &&
-            data.graduateTime != null
-        ) {
-            flag = true
-        }
-
-        return flag
     }
 
     const getMoneyText = (event) => {
@@ -279,6 +274,7 @@ export default function CreateLoanPost(props) {
     }
 
     const handleClose = () => {
+        setUserData(data)
         setOpen(false)
     }
 

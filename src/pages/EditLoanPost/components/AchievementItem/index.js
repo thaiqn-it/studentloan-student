@@ -1,13 +1,9 @@
 import { Box, Divider } from '@mui/material'
 import SuiInput from 'components/SuiInput'
-import SuiButton from 'components/SuiButton'
-import React, { useEffect, useState } from 'react'
-
-import AddAchievement from '../UpdateAchievement'
+import React from 'react'
 
 import ImageCard from '../../../../components/ImageCard'
 import EditIcon from '@mui/icons-material/Edit'
-import DropFileInput from 'components/DropFileZone'
 
 export default function AchievementItem(props) {
     var {item, onClickItem} = props

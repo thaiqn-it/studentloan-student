@@ -70,7 +70,7 @@ const StudentDashboard = () => {
         <>
             <Sidenav
                 color={sidenavColor}
-                brandName="StudentLoanPlatform"
+                brandName="StudentLoan"
                 brand={ReleaseLogo}
                 routes={currentRoute}
                 onMouseEnter={handleOnMouseEnter}

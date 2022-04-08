@@ -14,6 +14,8 @@ import SuiInput from 'components/SuiInput'
 import SuiButton from 'components/SuiButton'
 import { fDate } from 'utils/formatTime'
 
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+
 export default function ConfirmPage(props) {
     const { studentInfo } = props
 
@@ -126,7 +128,9 @@ export default function ConfirmPage(props) {
                                     </SuiTypography>
                                     <SuiInput
                                         type="date"
-                                        value={fDate(studentInfo?.User?.birthDate)}
+                                        value={fDate(
+                                            studentInfo?.User?.birthDate
+                                        )}
                                         disabled
                                     />
                                 </Grid>
@@ -155,7 +159,10 @@ export default function ConfirmPage(props) {
                                         type="text"
                                         placeholder="Trường đại học"
                                         disabled
-                                        value={studentInfo?.SchoolMajor?.School?.name}
+                                        value={
+                                            studentInfo?.SchoolMajor?.School
+                                                ?.name
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={6}>
@@ -169,7 +176,10 @@ export default function ConfirmPage(props) {
                                         type="text"
                                         placeholder="Chuyên ngành"
                                         disabled
-                                        value={studentInfo?.SchoolMajor?.Major?.name}
+                                        value={
+                                            studentInfo?.SchoolMajor?.Major
+                                                ?.name
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12} md={12}>
@@ -189,8 +199,10 @@ export default function ConfirmPage(props) {
                             </Grid>
                             <SuiButton
                                 color="dark"
-                                sx={{ float: 'right', my: 3 }}
+                                sx={{ float: 'right', mt: 3 }}
                                 href={`/dashboard/profile2`}
+                                endIcon={<ArrowForwardIosIcon />}
+                                variant='text'
                             >
                                 Cập nhật thông tin
                             </SuiButton>

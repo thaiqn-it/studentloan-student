@@ -44,9 +44,6 @@ export default function TabInfo(props) {
                 <Tabs
                     value={currentTab}
                     onChange={handleChange}
-                    // textColor="#028858"
-                    // variant="fullWidth"
-                    // indicatorColor="primary"
                     centered={!isModbile}
                     variant={isModbile ? 'scrollable' : 'standard'}
                     scrollButtons={isModbile}
@@ -55,7 +52,7 @@ export default function TabInfo(props) {
                     TabIndicatorProps={{ style: { background: '#344767' } }}
                 >
                     <Tab
-                        value="one"
+                        value="1"
                         icon={
                             <Avatar
                                 alt="test avatar"
@@ -74,7 +71,7 @@ export default function TabInfo(props) {
                         }
                         sx={{ textTransform: 'none' }}
                     />
-                    <Tab
+                    {/* <Tab
                         value="two"
                         icon={
                             <Avatar
@@ -93,9 +90,9 @@ export default function TabInfo(props) {
                             </Typography>
                         }
                         sx={{ textTransform: 'none' }}
-                    />
+                    /> */}
                     <Tab
-                        value="three"
+                        value="2"
                         icon={
                             <Avatar
                                 alt="test avatar"
@@ -115,7 +112,7 @@ export default function TabInfo(props) {
                         sx={{ textTransform: 'none' }}
                     />
                     <Tab
-                        value="four"
+                        value="3"
                         icon={
                             <Avatar
                                 alt="test avatar"
@@ -135,7 +132,7 @@ export default function TabInfo(props) {
                         sx={{ textTransform: 'none' }}
                     />
                     <Tab
-                        value="five"
+                        value="4"
                         icon={
                             <Avatar
                                 alt="test avatar"

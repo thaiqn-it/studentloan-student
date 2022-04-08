@@ -39,7 +39,7 @@ export default function TutorTableCard(props) {
                 <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
                     Thông tin người giám hộ
                 </SuiTypography>
-                <IconButton aria-label="delete" size="medium" href="/dashboard/tutordetail/new">
+                <IconButton aria-label="delete" size="medium" href="/dashboard/tutor/new">
                     <AddCircleIcon fontSize="medium" color="black" /> <SuiTypography variant="button" color="black">Thêm thông tin người giám hộ</SuiTypography>
                 </IconButton>
             </Box>
@@ -79,7 +79,7 @@ export default function TutorTableCard(props) {
                                             <IconButton
                                                 aria-label="delete"
                                                 size="small"
-                                                href={`/dashboard/tutordetail/${row.id}`}
+                                                href={`/dashboard/tutor/${row.id}`}
                                             >
                                                 <EditIcon fontSize="small" />
                                             </IconButton>

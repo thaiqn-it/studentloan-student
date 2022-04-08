@@ -12,8 +12,9 @@ import {
     ThemeProvider,
 } from '@mui/material'
 import DropFileInput from '../../components/DropFileZone'
-import theme from 'theme'
 import SuiButton from 'components/SuiButton'
+import SuiInput from 'components/SuiInput'
+import SuiTypography from 'components/SuiTypography'
 
 export default function ReportPage() {
     const [url, setUrl] = useState('')
@@ -40,45 +41,35 @@ export default function ReportPage() {
     return (
         <>
             {/* <ThemeProvider theme={theme}> */}
-                <Box component="div" sx={{ padding: '3rem 0rem' }}>
-                    <Typography variant="h5" align="center">
-                        Báo cáo tình hình học tập / làm việc
-                    </Typography>
-                    <Typography variant="h6" align="center">
-                        Hãy tạo niềm tin cho nhà đầu tư rằng bạn có khả năng chi
-                        trả khoản vay
-                    </Typography>
-                </Box>
-
+            {/* <Box component="div" sx={{ padding: '3rem 0rem' }}>
+                <Typography variant="h5" align="center">
+                    Báo cáo tình hình học tập / làm việc
+                </Typography>
+                <Typography variant="h6" align="center">
+                    Hãy tạo niềm tin cho nhà đầu tư rằng bạn có khả năng chi trả
+                    khoản vay
+                </Typography>
+            </Box> */}
+            <Box sx={{ margin: '50px 0px' }}>
                 <Container maxWidth="xl">
-                    <Divider sx={{ margin: '50px 0px' }} />
                     <Grid container spacing={3}>
                         <Grid item xs="12" md="5">
-                            <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={top100Films}
-                                sx={{ width: 300, marginBottom: 2 }}
-                                renderInput={(params) => (
-                                    <TextField {...params} label="Semster" />
-                                )}
-                            />
-                            <Typography
-                                variant="h5"
-                                sx={{ fontSize: '1.3rem' }}
-                            >
-                                Chọn kỳ học
-                            </Typography>
-                            <Typography
+                            <SuiTypography
                                 variant="h6"
-                                sx={{
-                                    fontSize: '1.1rem',
-                                    paddingRight: '2rem',
-                                }}
+                                fontWeight="regular"
+                                textTransform="capitalize"
+                                color="black"
                             >
-                                {/* We need mark report as an evidence for your loan. This will help
-                investor catch you abilitty up */}
-                            </Typography>
+                                Báo cáo (*)
+                            </SuiTypography>
+                            <SuiTypography
+                                variant="button"
+                                fontWeight="regular"
+                                color="text"
+                            >
+                                Bạn cần cung cấp tình hình học tập/ làm việc
+                                hiện tại cho hệ thống
+                            </SuiTypography>
                         </Grid>
                         <Grid
                             item
@@ -92,24 +83,33 @@ export default function ReportPage() {
                         >
                             <Grid container spacing={2}>
                                 <Grid item xs="12" md="12">
-                                    {url ? (
-                                        <CardMedia
-                                            component="img"
-                                            height="300"
-                                            image={url}
-                                            alt={url}
+                                    <Box>
+                                        <SuiInput
+                                            placeholder="Tiêu đề"
+                                            // onChange={handleChangeTitle}
+                                            // value={title}
                                         />
-                                    ) : null}
-                                    <DropFileInput
-                                        onFileChangeURL={(url) =>
-                                            onFileChangeURL(url)
-                                        }
-                                    />
+                                        <Box my={1}>
+                                            <DropFileInput
+                                            // image={url}
+                                            // elementName="achievement"
+                                            // elementId="achievement"
+                                            // onDelete={onDelete}
+                                            // onFileChangeURL={onFileChangeURL}
+                                            />
+                                        </Box>
+                                        <SuiButton
+                                            color="primary"
+                                            // onClick={handleCreateAchieve}
+                                        >
+                                            Thêm
+                                        </SuiButton>
+                                    </Box>
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Divider sx={{ margin: '50px 0px' }} />
+                    {/* <Divider sx={{ margin: '50px 0px' }} />
                     <SuiButton
                         variant="contained"
                         color="secondary"
@@ -123,8 +123,9 @@ export default function ReportPage() {
                         size="large"
                     >
                         Send
-                    </SuiButton>
+                    </SuiButton> */}
                 </Container>
+            </Box>
             {/* </ThemeProvider> */}
         </>
     )

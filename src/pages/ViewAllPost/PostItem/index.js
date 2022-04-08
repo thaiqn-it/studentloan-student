@@ -47,7 +47,7 @@ export default function PostItem(props) {
     }
 
     return (
-        <Link href={`/dashboard/viewpost/${loan.id}`}>
+        <Link href={`/dashboard/loan/view/${loan.id}`}>
             <Card
                 sx={{
                     display: 'flex',
@@ -71,14 +71,14 @@ export default function PostItem(props) {
                     {renderStatus()}
                 </SuiBox>
 
-                <SuiBox p={2} sx={{ border: '0.1rem solid #DCDEDD' }} mt="7rem">
+                <SuiBox p={2} sx={{ border: '0.1rem solid #DCDEDD' }} mt="7.5rem">
                     <SuiBox mb={1}>
                         <SuiTypography
                             variant="h5"
                             textTransform="capitalize"
                             fontWeight="regular"
                         >
-                            {loan.title}
+                            {loan.title ? loan.title : "Chưa điền tiêu đề"}
                         </SuiTypography>
                     </SuiBox>
                     <SuiBox mb={2} lineHeight={0}>
@@ -87,7 +87,7 @@ export default function PostItem(props) {
                             fontWeight="regular"
                             color="text"
                         >
-                            {loan.description}
+                            {loan.description ? loan.description : "Chưa điền nội dung"}
                         </SuiTypography>
                     </SuiBox>
 

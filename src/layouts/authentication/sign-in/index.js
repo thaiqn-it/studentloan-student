@@ -36,6 +36,8 @@ import { loginUser } from 'context/userAction.js'
 import { useHistory } from 'react-router-dom'
 import { useAuthDispatch } from 'context/authContext'
 
+import LoginImage from "assets/loginImage.svg"
+
 function SignIn() {
     const [rememberMe, setRememberMe] = useState(true)
 
@@ -73,7 +75,7 @@ function SignIn() {
         color="dark"
             title="Đăng Nhập"
             description="Xin hãy nhập email và mật khẩu để đăng nhập"
-            image={curved9}
+            image={LoginImage}
         >
             <SuiBox component="form" role="form" onSubmit={signIn}>
                 <SuiBox mb={2}>

@@ -73,8 +73,10 @@ export default {
     },
 
     error: {
-        main: '#ea0606',
-        focus: '#c70505',
+        // main: '#ea0606',
+        // focus: '#c70505',
+        main:"#f44336",
+        focus: "#ba000d"
     },
 
     light: {

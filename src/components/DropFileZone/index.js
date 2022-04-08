@@ -22,7 +22,6 @@ const DropFileInput = (props) => {
     } = props
 
     const [progress, setProgress] = useState(0)
-    const [url, setUrl] = useState('')
 
     const wrapperRef = useRef(null)
 
@@ -86,7 +85,7 @@ const DropFileInput = (props) => {
                             boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
                             // width: '100%',
                             width: 'fit-content',
-                            width: '100%',
+                            // width: '100%',
                         }}
                     >
                         {image.indexOf('.pdf') !== -1 ? (

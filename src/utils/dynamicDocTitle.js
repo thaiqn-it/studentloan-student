@@ -1,3 +1,3 @@
 export function setDocTitle(title) {
-    return document.title = title
+    return document.title = title || "StudentLoan"
   }

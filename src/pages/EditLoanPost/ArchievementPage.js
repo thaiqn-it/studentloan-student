@@ -103,7 +103,7 @@ export default function ArchievementPage(props) {
                     <Grid item xs="12" md="7">
                         <Grid container spacing={4}>
                             <Grid item xs="12" md="12">
-                                {achievements.map((item) => {
+                                {achievements?.map((item) => {
                                     return (
                                         <AchievementItem
                                             item={item}
@@ -138,7 +138,7 @@ export default function ArchievementPage(props) {
                                         color="primary"
                                         onClick={handleCreateAchieve}
                                     >
-                                        Tạo
+                                        Thêm
                                     </SuiButton>
                                 </Box>
                             </Grid>
