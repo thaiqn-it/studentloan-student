@@ -55,7 +55,7 @@ function SignIn() {
 
             const response = await loginUser(dispatch, email, password)
             if (!response.data.id) return setError(errorMessage)
-            history.push('/dashboard')
+            history.push('/trang-chu')
         } catch (err) {
             //handle Login
             setError(true)

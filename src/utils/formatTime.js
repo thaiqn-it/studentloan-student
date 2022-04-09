@@ -48,3 +48,8 @@ export function fDisplayDate(date) {
     }
     return returnDate
 }
+
+export function fGetCurrentMonth() {
+    var returnMonth = format(new Date(), 'YYYY-MM')
+    return returnMonth
+}

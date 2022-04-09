@@ -41,21 +41,11 @@ let routes = [
             },
         ],
     },
-
-    {
-        type: 'collapse',
-        name: 'Báo cáo',
-        key: 'report',
-        route: '/report',
-        icon: <ContentPasteIcon size="12px" />,
-        component: Report,
-        noCollapse: true,
-    },
     {
         type: 'collapse',
         name: 'Xác Thực',
-        key: 'verify',
-        route: '/verify',
+        key: 'xac-thuc',
+        route: '/xac-thuc',
         icon: <KeyIcon size="12px" />,
         component: Verify,
         noCollapse: true,
@@ -63,8 +53,8 @@ let routes = [
     {
         type: 'collapse',
         name: 'Xem tất cả hồ sơ vay',
-        key: 'viewall',
-        route: '/loan/all',
+        key: 'tat-ca',
+        route: '/ho-so/tat-ca',
         icon: <SpaceShip size="12px" />,
         component: ViewAllPost,
         noCollapse: true,
@@ -72,8 +62,8 @@ let routes = [
     {
         type: 'collapse',
         name: 'Thông tin',
-        key: 'profile2',
-        route: '/profile2',
+        key: 'thong-tin',
+        route: '/thong-tin',
         icon: <SpaceShip size="12px" />,
         component: StudentProfile2,
         noCollapse: false,
@@ -84,17 +74,17 @@ const extraRoutes = [
     {
         route: '/nguoi-giam-ho/:id',
         component: TutorDetail,
-        key: 'tutordetail',
+        key: 'nguoi-giam-ho',
     },
     {
-        route: '/loan/edit/:id',
+        route: '/ho-so/chinh-sua/:id',
         component: EditLoanPost,
-        key: 'edit',
+        key: 'chinh-sua',
     },
     {
-        route: '/loan/view/:id',
+        route: '/ho-so/xem/:id',
         component: ViewPost,
-        key: 'view',
+        key: 'xem',
     },
     {
         route: '/404',
@@ -116,14 +106,14 @@ const extraRoutes = [
 routes.map((route) => {
     if (route.collapse)
         route.collapse.map(
-            (route) => (route.route = '/dashboard' + route.route)
+            (route) => (route.route = '/trang-chu' + route.route)
         )
-    if (route.route) route.route = '/dashboard' + route.route
+    if (route.route) route.route = '/trang-chu' + route.route
     return route
 })
 
 extraRoutes.map((route) => {
-    route.route = '/dashboard' + route.route
+    route.route = '/trang-chu' + route.route
 })
 
 export default routes

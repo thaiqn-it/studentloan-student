@@ -10,7 +10,6 @@ import {
 } from 'context'
 
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import Wallet from 'pages/Wallet'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 

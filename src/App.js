@@ -41,7 +41,7 @@ function App() {
                             exact
                             component={SignUp}
                         />
-                        <Route path="/Dashboard" component={StudentDashboard} />
+                        <Route path="/trang-chu" component={StudentDashboard} />
                         <Route
                             path="/authentication/sign-in"
                             exact

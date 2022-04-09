@@ -187,7 +187,7 @@ export default function ViewPost() {
                                                     <SuiButton
                                                         color="primary"
                                                         fullWidth
-                                                        href={`/dashboard/loan/edit/${id}`}
+                                                        href={`/trang-chu/ho-so/chinh-sua/${id}`}
                                                         sx={{
                                                             marginTop: {
                                                                 xs: 0,

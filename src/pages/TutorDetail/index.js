@@ -21,7 +21,7 @@ export default function TutorDetail() {
     }, [])
 
     const fetchData = async () => {
-        if (id != 'new') {
+        if (id != 'tao') {
             setLoading(true)
             await tutorApi
                 .getTutorById(id)
@@ -32,7 +32,7 @@ export default function TutorDetail() {
                 .catch((err) => {
                     setLoading(false)
                     history.push({
-                        pathname: '/dashboard/404',
+                        pathname: '/trang-chu/404',
                         state: { content: 'Không tìm thấy người giám hộ' },
                     })
                 })

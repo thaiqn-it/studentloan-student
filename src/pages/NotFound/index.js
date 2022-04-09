@@ -54,7 +54,7 @@ export default function NotFound() {
                                 Quay lại
                             </Link>
                         ) : (
-                            <Link href="/dashboard" underline="hover">
+                            <Link href="/trang-chu" underline="hover">
                                 Trang chủ
                             </Link>
                         )}

@@ -40,7 +40,7 @@ export default function PostItem(props) {
     }
 
     return (
-        <Link href={`/dashboard/loan/view/${loan.id}`}>
+        <Link href={`/trang-chu/ho-so/xem/${loan.id}`}>
             <Card
                 sx={{
                     display: 'flex',
