@@ -8,9 +8,7 @@ import SuiTypography from 'components/SuiTypography'
 import YoutubeEmbed from 'components/YoutubeEmbed'
 import React, { useEffect, useState } from 'react'
 import TabInfo from './components/TabInfo'
-import ContractPage from './ContractPage'
 import PaymentPlanPage from './PaymentPlanPage'
-import NotFound from 'pages/NotFound'
 
 import TimelineList from 'examples/Timeline/TimelineList'
 import TimelineItem from 'examples/Timeline/TimelineItem'
@@ -28,6 +26,7 @@ import { setDocTitle } from 'utils/dynamicDocTitle'
 
 import { useHistory } from 'react-router-dom'
 import Loading from 'components/Loading'
+import { renderStatus } from 'utils/renderStatus'
 
 export default function ViewPost() {
     const { id } = useParams()

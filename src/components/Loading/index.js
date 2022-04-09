@@ -6,7 +6,10 @@ import LoadingLogo from '..//..//assets/loading.svg'
 export default function Loading() {
     return (
         <>
-            <Backdrop open sx={{ background: 'rgba(0, 0, 0, 0.03)' }}>
+            <Backdrop
+                open
+                sx={{ background: 'rgba(0, 0, 0, 0.03)', zIndex: '9999' }}
+            >
                 <Box
                     sx={{ display: 'flex' }}
                     height="50vh"

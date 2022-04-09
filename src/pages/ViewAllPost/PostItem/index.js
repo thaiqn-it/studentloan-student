@@ -16,24 +16,17 @@ import {
 } from '..//..//..//utils/formatNumber'
 import { fDate, fToNowNumber } from '..//..//..//utils/formatTime'
 import { getThumbnail } from 'utils/youtube'
+import { renderStatus } from 'utils/renderStatus'
 
 export default function PostItem(props) {
     const { loan } = props
 
-    function renderStatus() {
-        var status = 'Đạt'
-        var color = 'primary'
-        var statusType = loan.LoanHistories[0].type
-        if (loan) {
-            if (statusType === 'DRAFT') {
-                status = 'Đang chờ duyệt'
-                color = 'warning'
-            }
-        }
+    function status() {
+        var statusObject = renderStatus(loan.LoanHistories[0].type)
 
         return (
             <SuiButton
-                color={color}
+                color={statusObject.color}
                 size="small"
                 sx={{
                     pointerEvents: 'none',
@@ -41,7 +34,7 @@ export default function PostItem(props) {
                     borderRadius: '0',
                 }}
             >
-                {status}
+                {statusObject.status}
             </SuiButton>
         )
     }
@@ -68,17 +61,21 @@ export default function PostItem(props) {
                             position: 'absolute',
                         }}
                     />
-                    {renderStatus()}
+                    {status()}
                 </SuiBox>
 
-                <SuiBox p={2} sx={{ border: '0.1rem solid #DCDEDD' }} mt="7.5rem">
+                <SuiBox
+                    p={2}
+                    sx={{ border: '0.1rem solid #DCDEDD' }}
+                    mt="7.5rem"
+                >
                     <SuiBox mb={1}>
                         <SuiTypography
                             variant="h5"
                             textTransform="capitalize"
                             fontWeight="regular"
                         >
-                            {loan.title ? loan.title : "Chưa điền tiêu đề"}
+                            {loan.title ? loan.title : 'Chưa điền tiêu đề'}
                         </SuiTypography>
                     </SuiBox>
                     <SuiBox mb={2} lineHeight={0}>
@@ -87,7 +84,9 @@ export default function PostItem(props) {
                             fontWeight="regular"
                             color="text"
                         >
-                            {loan.description ? loan.description : "Chưa điền nội dung"}
+                            {loan.description
+                                ? loan.description
+                                : 'Chưa điền nội dung'}
                         </SuiTypography>
                     </SuiBox>
 
@@ -136,6 +135,7 @@ export default function PostItem(props) {
                                 <SuiTypography
                                     variant="h5"
                                     textTransform="none"
+                                    color="primary"
                                 >
                                     {fCurrencyNoVND(loan.AccumulatedMoney)}
                                 </SuiTypography>

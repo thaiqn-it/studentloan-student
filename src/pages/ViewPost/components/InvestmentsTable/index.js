@@ -42,8 +42,8 @@ function Function({ job, org }) {
 function getFileName(url) {
     var splittedArr = url.split("/");
     var name = splittedArr[splittedArr.length - 1];
-    // var fileName = name.substring(name.indexOf("-") + 1, name.length);
-    return name;
+    var fileName = name.substring(name.indexOf("-") + 1, name.length);
+    return fileName;
   }
 
 export default function InvestorTable(props) {

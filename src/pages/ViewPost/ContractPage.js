@@ -12,6 +12,11 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { useParams } from 'react-router-dom'
 import { fDate } from 'utils/formatTime'
 
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
+
+var zip = JSZip()
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
 export default function ContractPage(props) {
     // const { id } = useParams()
@@ -25,18 +30,28 @@ export default function ContractPage(props) {
     const onDownload = async () => {
         await imageApi
             .downloadFileURL(
-                contractInfo[0]?.contractNote
+                'https://res.cloudinary.com/larrytran/image/upload/v1648997077/pdf/hmq3b48dybfpn1mvfqsa.pdf'
             )
             .then((response) => {
-                const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                )
-                const link = document.createElement('a')
-                link.href = url
-                link.setAttribute('download', `hopdong-${contractInfo[0]?.id}.pdf`) //or any other extension
-                document.body.appendChild(link)
-                link.click()
-                document.body.removeChild(link)
+                // const url = window.URL.createObjectURL(
+                //     new Blob([response.data])
+                // )
+
+                const blob = new Blob([response.data])
+
+                zip.file('hopdong.pdf', blob, {
+                    binary: true,
+                })
+
+                zip.generateAsync({ type: "blob" }).then(function(blobi) {
+                    saveAs(blobi, "test_archive.zip");
+                  });
+                // const link = document.createElement('a')
+                // link.href = url
+                // link.setAttribute('download', `hopdong-${contractInfo[0]?.id}.pdf`) //or any other extension
+                // document.body.appendChild(link)
+                // link.click()
+                // document.body.removeChild(link)
             })
     }
     return (
