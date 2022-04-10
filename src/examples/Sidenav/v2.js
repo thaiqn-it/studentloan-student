@@ -51,6 +51,14 @@ const checkActive = (arr, collapseName) => {
     if (active) return true
     return false
 }
+
+const checkMainActive = (collapseName, key) => {
+    if (collapseName === '') return true
+    if (collapseName === key) return true
+
+    return false
+}
+
 const CollapseRoute = ({
     name,
     icon,
@@ -67,6 +75,11 @@ const CollapseRoute = ({
     const handleCollapseClick = (e) => {
         setOpen(true)
     }
+
+    useEffect(() => {
+        if (!checkActive(collapse, collapseName)) return setOpen(false)
+        setOpen(true)
+    }, [collapseName])
 
     return (
         <>
@@ -137,17 +150,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
     // Render all the routes from the routes.js (All the visible items on the Sidenav)
     const renderRoutes = routes.map(
-        ({
-            type,
-            name,
-            icon,
-            title,
-            noCollapse,
-            key,
-            route,
-            href,
-            collapse,
-        }) => {
+        (
+            { type, name, icon, title, noCollapse, key, route, href, collapse },
+            index
+        ) => {
             let returnValue
 
             if (type === 'collapse') {
@@ -187,7 +193,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                                 key={key}
                                 name={name}
                                 icon={icon}
-                                active={key === collapseName}
+                                active={
+                                    index === 0
+                                        ? checkMainActive(collapseName, key)
+                                        : key === collapseName
+                                }
                                 noCollapse={noCollapse}
                             />
                         </NavLink>

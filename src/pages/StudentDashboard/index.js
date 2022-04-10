@@ -19,9 +19,26 @@ import ReleaseLogo from '../../assets/release-logo.png'
 var currentRoute = [...routes]
 
 function getRoutes(allRoutes) {
-    const routes = allRoutes.map((route) => {
+    const routes = allRoutes.map((route, index) => {
+        // if (index === 0) {
+        //     return (
+        //         <>
+        //             <Route
+        //                 path="/"
+        //                 exact
+        //                 component={route.component}
+        //                 key={route.key}
+        //             />
+        //             <Route
+        //                 path={route.route}
+        //                 component={route.component}
+        //                 key={route.key}
+        //             />
+        //         </>
+        //     )
+        // }
         if (route.collapse) return getRoutes(route.collapse)
-        if (route.route)
+        if (route.route) {
             return (
                 <Route
                     path={route.route}
@@ -29,10 +46,11 @@ function getRoutes(allRoutes) {
                     key={route.key}
                 />
             )
+        }
 
         return null
     })
-    
+
     return routes
 }
 

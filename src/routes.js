@@ -71,8 +71,19 @@ import Verify from 'pages/Verify'
 import TutorDetail from 'pages/TutorDetail'
 
 import StudentProfile2 from 'pages/StudentProfile2'
+import Main from 'pages/Main'
+import Payment from 'pages/Payment'
 
 let routes = [
+    {
+        type: 'collapse',
+        name: 'Trang chính',
+        key: 'main',
+        route: '/main',
+        icon: <ContentPasteIcon size="12px" />,
+        component: Main,
+        noCollapse: true,
+    },
     {
         type: 'collapse',
         name: 'Thông tin v2',
@@ -97,6 +108,15 @@ let routes = [
                 noCollapse: true,
             },
         ],
+    },
+    {
+        type: 'collapse',
+        name: 'Trả nợ',
+        key: 'payment',
+        route: '/payment',
+        icon: <ContentPasteIcon size="12px" />,
+        component: Payment,
+        noCollapse: true,
     },
 
     {
@@ -164,41 +184,13 @@ let routes = [
     },
 ]
 
-export const mainRoutes = [
-    {
-        route: '/',
-        component: LandingPage,
-        key: 'landing',
-    },
-    {
-        route: '/service',
-        component: LandingPage,
-        key: 'service',
-    },
-    {
-        route: '/dashboard',
-        component: SignUp,
-        key: 'signUp',
-    },
-    {
-        route: '/login',
-        component: LandingPage,
-        key: 'login',
-    },
-    {
-        route: '/forgot-password',
-        component: LandingPage,
-        key: 'forgotPassword',
-    },
-]
-
 routes.map((route) => {
-    if(route.collapse)
-        route.collapse.map(route => route.route = '/dashboard' + route.route)
-    if(route.route)
-        route.route = '/dashboard' + route.route
+    if (route.collapse)
+        route.collapse.map(
+            (route) => (route.route = '/dashboard' + route.route)
+        )
+    if (route.route) route.route = '/dashboard' + route.route
     return route
 })
-
 
 export default routes
