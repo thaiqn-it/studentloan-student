@@ -14,7 +14,7 @@ import Login from './layouts/authentication/sign-in'
 import SignUp from './layouts/authentication/sign-up'
 import ResetPassword from './pages/ResetPassword'
 import LandingPage from './pages/LandingPage2'
-import NotFound from "./pages/NotFound"
+import NotFound from './pages/NotFound'
 
 import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
@@ -30,7 +30,7 @@ function App() {
 
     onMessageListener()
         .then((payload) => {
-            console.log("have payload" , payload)
+            console.log('have payload', payload)
         })
         .catch((err) => {
             console.log(err)
@@ -76,16 +76,8 @@ function App() {
                             exact
                             component={Cancel}
                         />
-                         <Route
-                            path="/404"
-                            exact
-                            component={NotFound}
-                        />
-                        <Route
-                            path="*"
-                            exact
-                            component={NotFound}
-                        />
+                        <Route path="/404" exact component={NotFound} />
+                        <Route path="*" exact component={NotFound} />
                     </Switch>
                 </Router>
             </ThemeProvider>

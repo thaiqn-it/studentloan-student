@@ -14,8 +14,10 @@ import TutorDetail from 'pages/TutorDetail'
 
 import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
-import Payment from 'pages/Payment'
 import NotFound from 'pages/NotFound'
+import LocalAtmIcon from '@mui/icons-material/LocalAtm'
+
+import ListIcon from '@mui/icons-material/List'
 
 let routes = [
     {
@@ -52,15 +54,6 @@ let routes = [
             },
         ],
     },
-    {
-        type: 'collapse',
-        name: 'Trả nợ',
-        key: 'payment',
-        route: '/payment',
-        icon: <ContentPasteIcon size="12px" />,
-        component: Payment,
-        noCollapse: true,
-    },
 
     {
         type: 'collapse',
@@ -71,15 +64,15 @@ let routes = [
         component: Report,
         noCollapse: true,
     },
-    {
-        type: 'collapse',
-        name: 'Yêu cầu vay',
-        key: 'request',
-        route: '/request',
-        icon: <LocalAtmIcon size="12px" />,
-        component: RequestLoanPost,
-        noCollapse: true,
-    },
+    // {
+    //     type: 'collapse',
+    //     name: 'Yêu cầu vay',
+    //     key: 'request',
+    //     route: '/request',
+    //     icon: <LocalAtmIcon size="12px" />,
+    //     component: RequestLoanPost,
+    //     noCollapse: true,
+    // },
     {
         type: 'collapse',
         name: 'Xem bài',
