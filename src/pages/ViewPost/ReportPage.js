@@ -1,55 +1,30 @@
 import React, { useState } from 'react'
-import {
-    Container,
-    Typography,
-    Grid,
-    Divider,
-    Box,
-    TextField,
-    CardMedia,
-    Autocomplete,
-    Button,
-    ThemeProvider,
-} from '@mui/material'
+import { Container, Grid, Box } from '@mui/material'
 import DropFileInput from '../../components/DropFileZone'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
 
-export default function ReportPage() {
+export default function ReportPage(props) {
+    const { reportMedia, loanId } = props
     const [url, setUrl] = useState('')
 
-    const top100Films = [
-        { label: '1' },
-        { label: '2' },
-        { label: '3' },
-        { label: '4' },
-        { label: '5' },
-        { label: '6' },
-        { label: '7' },
-        { label: '8' },
-        { label: '9' },
-    ]
+    const data = {
+        loanId: loanId,
+        description: '',
+        imageUrl: '',
+        type: 'REPORT',
+        status: 'isActive',
+    }
+
+    const [report, setReport] = useState(null)
 
     const onFileChangeURL = (newUrl) => {
-        const id = new Date().getTime()
-        const image = { description: 'Demand note', url: newUrl, id }
-        // setDemandImages((current) => [...current, image]);
         setUrl(newUrl)
     }
 
     return (
         <>
-            {/* <ThemeProvider theme={theme}> */}
-            {/* <Box component="div" sx={{ padding: '3rem 0rem' }}>
-                <Typography variant="h5" align="center">
-                    Báo cáo tình hình học tập / làm việc
-                </Typography>
-                <Typography variant="h6" align="center">
-                    Hãy tạo niềm tin cho nhà đầu tư rằng bạn có khả năng chi trả
-                    khoản vay
-                </Typography>
-            </Box> */}
             <Box sx={{ margin: '50px 0px' }}>
                 <Container maxWidth="xl">
                     <Grid container spacing={3}>
@@ -91,11 +66,11 @@ export default function ReportPage() {
                                         />
                                         <Box my={1}>
                                             <DropFileInput
-                                            // image={url}
-                                            // elementName="achievement"
-                                            // elementId="achievement"
+                                            image={url}
+                                            elementName="imageUrl"
+                                            elementId="imageUrl"
                                             // onDelete={onDelete}
-                                            // onFileChangeURL={onFileChangeURL}
+                                            onFileChangeURL={onFileChangeURL}
                                             />
                                         </Box>
                                         <SuiButton

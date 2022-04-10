@@ -7,7 +7,7 @@ import DropFileZone from '../../../../components/DropFileZone'
 import SuiInput from 'components/SuiInput'
 
 export default function AchievementCard(props) {
-    const { studentInfo } = props
+    const { achievements } = props
     const [achievement, setAchievement] = useState({
         description: null, imageUrl: null
     });
@@ -28,7 +28,7 @@ export default function AchievementCard(props) {
                         Chú thích
                     </SuiTypography>
                     <Grid container spacing={4}>
-                        {studentInfo?.Archievements.map((item) => (
+                        {achievements?.map((item) => (
                             <Grid item xs={12} md={6}>
                                 <SuiInput
                                     type="text"

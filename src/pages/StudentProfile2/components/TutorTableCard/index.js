@@ -12,20 +12,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SuiTypography from 'components/SuiTypography'
-
-function createData(name, birthDate, phoneNumber, address, relation) {
-    return { name, birthDate, phoneNumber, address, relation }
-}
-
-const rows = [
-    createData(
-        'Nguyễn Văn A',
-        '02/05/1970',
-        '0794485000',
-        '123 Song Hành, Trung Mỹ Tay, Quận 12 123 Song Hành, Trung Mỹ Tay, Quận 12 123 Song Hành, Trung Mỹ Tay, Quận 12',
-        'Cha'
-    ),
-]
+import { fDisplayDate } from 'utils/formatTime'
 
 export default function TutorTableCard(props) {
     const {tutorInfo} = props
@@ -60,7 +47,7 @@ export default function TutorTableCard(props) {
                             <TableBody>
                                 {tutorInfo?.map((row) => (
                                     <TableRow
-                                        key={row.name}
+                                        key={row.id}
                                         sx={{
                                             '&:last-child td, &:last-child th':
                                                 {
@@ -71,7 +58,7 @@ export default function TutorTableCard(props) {
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
-                                        <TableCell>{row.birthday}</TableCell>
+                                        <TableCell>{fDisplayDate(row.birthday)}</TableCell>
                                         <TableCell>{row.phone}</TableCell>
                                         <TableCell>{row.address}</TableCell>
                                         <TableCell>{row.relation}</TableCell>
@@ -79,7 +66,7 @@ export default function TutorTableCard(props) {
                                             <IconButton
                                                 aria-label="delete"
                                                 size="small"
-                                                href={`/dashboard/tutor/${row.id}`}
+                                                href={`/trang-chu/nguoi-giam-ho/${row.id}`}
                                             >
                                                 <EditIcon fontSize="small" />
                                             </IconButton>

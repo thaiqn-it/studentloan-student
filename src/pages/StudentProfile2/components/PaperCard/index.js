@@ -8,9 +8,13 @@ import { fDisplayDate } from 'utils/formatTime'
 import DropFileZone from '../../../../components/DropFileZone'
 
 export default function PaperCard(props) {
-    const { studentInfo } = props
-    const onFileChangeURL = (url) => {
-        console.log(url)
+    const { studentInfo, onChangeStudent } = props
+    const onFileChangeURL = (url, e) => {
+        onChangeStudent(null,e.target.name, url)
+    }
+
+    const onChange = (e) => {
+        onChangeStudent(e)
     }
 
     return (
@@ -41,9 +45,11 @@ export default function PaperCard(props) {
                                             Số CMND/CCCD
                                         </SuiTypography>
                                         <SuiInput
-                                            type="text"
+                                            type="number"
                                             placeholder="Số CMND"
-                                            value={studentInfo?.citizenId}
+                                            value={studentInfo?.citizenId || ""}
+                                            name="citizenId"
+                                            onChange={onChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -55,10 +61,12 @@ export default function PaperCard(props) {
                                         </SuiTypography>
                                         <SuiInput
                                             type="date"
-                                            // placeholder="Email"
+                                            placeholder="Ngày cấp"
                                             value={fDisplayDate(
                                                 studentInfo?.citizenCardCreatedDate
-                                            )}
+                                            )|| ""}
+                                            name="citizenCardCreatedDate"
+                                            onChange={onChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -72,8 +80,10 @@ export default function PaperCard(props) {
                                             type="text"
                                             placeholder="Nơi cấp"
                                             value={
-                                                studentInfo?.citizenCardCreatedPlace
+                                                studentInfo?.citizenCardCreatedPlace || ""
                                             }
+                                            name="citizenCardCreatedPlace"
+                                            onChange={onChange}
                                         />
                                     </Grid>
                                 </Grid>
@@ -92,11 +102,11 @@ export default function PaperCard(props) {
                                             ? studentInfo.frontCitizenCardImageUrl
                                             : ''
                                     }
-                                    // image="https://cdn.pixabay.com/photo/2020/06/01/22/23/eye-5248678__340.jpg"
                                     flexEnd="flex-start"
-                                    id="frontID"
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    elementId="frontCitizenCardImageUrl"
+                                    elementName="frontCitizenCardImageUrl"
+                                    onFileChangeURL={(url,e) =>
+                                        onFileChangeURL(url,e)
                                     }
                                 />
                             </Grid>
@@ -115,8 +125,11 @@ export default function PaperCard(props) {
                                             ? studentInfo.backCitizenCardImageUrl
                                             : ''
                                     }
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    flexEnd="flex-start"
+                                    elementId="backCitizenCardImageUrl"
+                                    elementName="backCitizenCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
                                 />
                             </Grid>
@@ -137,9 +150,11 @@ export default function PaperCard(props) {
                                         Mã sinh viên
                                     </SuiTypography>
                                     <SuiInput
-                                        type="text"
+                                        type="number"
                                         placeholder="Mã sinh viên"
-                                        value={studentInfo?.studentCardId}
+                                        value={studentInfo?.studentCardId || ""}
+                                        name="studentCardId"
+                                        onChange={onChange}
                                     />
                                 </Grid>
                             </Grid>
@@ -157,8 +172,11 @@ export default function PaperCard(props) {
                                             ? studentInfo.frontStudentCardImageUrl
                                             : ''
                                     }
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    flexEnd="flex-start"
+                                    elementId="frontStudentCardImageUrl"
+                                    elementName="frontStudentCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
                                 />
                             </Grid>
@@ -177,8 +195,11 @@ export default function PaperCard(props) {
                                             ? studentInfo.backStudentCardImageUrl
                                             : ''
                                     }
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    flexEnd="flex-start"
+                                    elementId="backStudentCardImageUrl"
+                                    elementName="backStudentCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
                                 />
                             </Grid>

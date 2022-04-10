@@ -27,6 +27,7 @@ import { setDocTitle } from 'utils/dynamicDocTitle'
 import { useHistory } from 'react-router-dom'
 import Loading from 'components/Loading'
 import { renderStatus } from 'utils/renderStatus'
+import { fDateTime } from 'utils/formatTime'
 
 export default function ViewPost() {
     const { id } = useParams()
@@ -34,20 +35,25 @@ export default function ViewPost() {
     const [isLoading, setIsLoading] = useState(false)
     const [currentTab, setCurrentTab] = useState('1')
     const [loan, setLoan] = useState({})
+    const [loanHistories, setLoanHistories] = useState(null)
 
     useEffect(() => {
         setIsLoading(true)
         loanApi
-            .getLoanById(id)
+            .getLoanById(id, 'view')
             .then((res) => {
-                setLoan(res.data.loan, 'view')
-                setDocTitle(res.data.loan.title)
+                setLoan(res.data.loan)
+                setDocTitle(
+                    res.data.loan.title + '-StudentLoan' ||
+                        'Xem hồ sơ-StudentLoan'
+                )
+                setLoanHistories(res.data.loan.LoanHistories)
                 setIsLoading(false)
             })
             .catch((error) => {
                 setIsLoading(false)
                 history.push({
-                    pathname: '/dashboard/404',
+                    pathname: '/trang-chu/404',
                     state: { content: 'Không tìm thấy hồ sơ' },
                 })
             })
@@ -55,6 +61,23 @@ export default function ViewPost() {
 
     const onChangeTab = (tab) => {
         setCurrentTab(tab)
+    }
+
+    const renderStatusTimeline = (item, index) => {
+        var objectStatus = renderStatus(item.type)
+        var isLastItem = index === loanHistories.length - 1
+        return (
+            <TimelineItem
+                key={index}
+                color={objectStatus.color}
+                icon={objectStatus.icon}
+                title={objectStatus.message}
+                dateTime={fDateTime(item.updatedAt)}
+                description={item.description}
+                badges={[item.type]}
+                lastItem={isLastItem}
+            />
+        )
     }
 
     return (
@@ -209,7 +232,10 @@ export default function ViewPost() {
                                         Trạng thái
                                     </SuiTypography>
                                     <TimelineList title="">
-                                        <TimelineItem
+                                        {loanHistories?.map((item, index) =>
+                                            renderStatusTimeline(item, index)
+                                        )}
+                                        {/* <TimelineItem
                                             color="dark"
                                             icon="drafts"
                                             title="Hồ sơ đang ở dạng nháp"
@@ -230,7 +256,7 @@ export default function ViewPost() {
                                             icon="access_time"
                                             title="Server payments for April"
                                             dateTime="21 DEC 9:34 PM"
-                                            description={null}
+                                        description={null}
                                             badges={['WAITING']}
                                         />
                                         <TimelineItem
@@ -273,7 +299,7 @@ export default function ViewPost() {
                                             description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
                                             badges={['FINISH']}
                                             lastItem
-                                        />
+                                        /> */}
                                     </TimelineList>
                                 </Box>
                                 <Divider sx={{ my: 5 }} />

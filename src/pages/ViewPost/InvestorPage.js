@@ -12,10 +12,16 @@ import Loading from 'components/Loading'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { imageApi } from 'apis/imageApi'
+import SnackbarMessage from 'components/SnackbarMessage'
 
 export default function InvestorPage(props) {
     const { investments, currentMoney, investors } = props
     const [isLoading, setIsLoading] = useState(false)
+    const [isOpenSnack, setIsOpenSnack] = useState(false)
+    const [snack, setSnack] = useState({
+        message: 'Không hợp lệ',
+        color: 'error',
+    })
 
     // useEffect(() => {
     //     console.log('hihi')
@@ -29,39 +35,52 @@ export default function InvestorPage(props) {
     }
 
     const downloadAllContract = () => {
-        setIsLoading(true)
-        var zip = JSZip()
-        var urls = [
-            'https://res.cloudinary.com/larrytran/image/upload/v1649403365/file/1649403288746-hmq3b48dybfpn1mvfqsa.pdf',
-            'https://res.cloudinary.com/larrytran/image/upload/v1649056391/file/1649056316704-HOMEWORK_-_LESSON_13.pdf',
-            'https://res.cloudinary.com/larrytran/image/upload/v1649056390/file/1649056316812-sample.pdf',
-        ]
-        var requests = urls.map((item) => {
-            return imageApi.downloadFileURL(item)
-        })
-        Promise.all(requests)
-            .then((responses) => {
-                responses.map((item) => {
-                    const blob = new Blob([item.data])
-                    zip.file(getFileName(item.config.url), blob, {
-                        binary: true,
+        if (investments.Contracts) {
+            setIsLoading(true)
+            var zip = JSZip()
+            var urls = [
+                'https://res.cloudinary.com/larrytran/image/upload/v1649403365/file/1649403288746-hmq3b48dybfpn1mvfqsa.pdf',
+                'https://res.cloudinary.com/larrytran/image/upload/v1649056391/file/1649056316704-HOMEWORK_-_LESSON_13.pdf',
+                'https://res.cloudinary.com/larrytran/image/upload/v1649056390/file/1649056316812-sample.pdf',
+            ]
+            var requests = urls.map((item) => {
+                return imageApi.downloadFileURL(item)
+            })
+            Promise.all(requests)
+                .then((responses) => {
+                    responses.map((item) => {
+                        const blob = new Blob([item.data])
+                        zip.file(getFileName(item.config.url), blob, {
+                            binary: true,
+                        })
                     })
-                })
 
-                zip.generateAsync({ type: 'blob' }).then(function (blob) {
-                    saveAs(blob, 'test_archive.zip')
+                    zip.generateAsync({ type: 'blob' }).then(function (blob) {
+                        saveAs(blob, 'hop-dong.zip')
+                    })
+                    setIsLoading(false)
                 })
-                setIsLoading(false)
-            })
-            .catch((err) => {
-                setIsLoading(false)
-                console.log(err)
-            })
+                .catch((err) => {
+                    setIsLoading(false)
+                    console.log(err)
+                })
+        } else {
+            setIsOpenSnack(true)
+        }
+    }
+
+    const onClickClose = () => {
+        setIsOpenSnack(false)
     }
 
     return (
         <>
             {isLoading ? <Loading /> : null}
+            <SnackbarMessage
+                open={isOpenSnack}
+                onClickClose={onClickClose}
+                snack={snack}
+            />
             <Box pb={3} pl={3} sx={{ background: '#f7f5f2' }}>
                 <Box display="flex" justifyContent="flex-end">
                     <SuiButton

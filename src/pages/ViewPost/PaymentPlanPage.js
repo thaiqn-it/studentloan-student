@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, Container } from '@mui/material'
 import TimelineList from 'examples/Timeline/TimelineList'
 import TimelineItem from 'examples/Timeline/TimelineItem'
 import SuiTypography from 'components/SuiTypography'
@@ -65,7 +65,9 @@ export default function PaymentPlanPage() {
     return (
         <>
             <Box mb={3} p={3}>
+                <Container maxWidth="sm">
                 <TimelineList title="">{itemStatue('ONGOING')}</TimelineList>
+                </Container>
             </Box>
         </>
     )

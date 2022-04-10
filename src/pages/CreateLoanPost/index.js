@@ -36,6 +36,8 @@ export default function CreateLoanPost(props) {
     const data = {
         totalMoney: '',
         interest: '',
+        fixedMoney:"",
+        penaltyFee:"",
         expectedGraduationTime: '',
         duration: '',
         postExpireAt: '',
@@ -93,6 +95,7 @@ export default function CreateLoanPost(props) {
             ...userData,
             [e.target.name]: realValue,
         })
+        console.log(userData)
     }
 
     const getMoneyText = (event) => {
@@ -111,10 +114,12 @@ export default function CreateLoanPost(props) {
     }
 
     function getInterest() {
-        systemConfigApi.getInterest().then((res) => {
+        systemConfigApi.getFee().then((res) => {
             setUserData({
                 ...userData,
                 interest: res.data.interest,
+                fixedMoney: res.data.fixedMoney,
+                penaltyFee: res.data.penaltyFee,
             })
             setInterest(res.data.interest)
         })
