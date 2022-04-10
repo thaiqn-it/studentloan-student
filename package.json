@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@devexpress/dx-react-core": "^3.0.2",
+    "@devexpress/dx-react-scheduler": "^3.0.2",
+    "@devexpress/dx-react-scheduler-material-ui": "^3.0.2",
     "@emotion/cache": "11.4.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
@@ -20,6 +23,8 @@
     "chroma-js": "2.1.2",
     "compress.js": "^1.2.2",
     "date-fns": "^2.24.0",
+    "firebase": "^9.6.10",
+    "money": "^0.2.0",
     "prop-types": "15.7.2",
     "react": "^17.0.2",
     "react-chartjs-2": "3.0.4",
@@ -46,7 +51,6 @@
     "lint": "eslint . --ext .js  ",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://forum.vdevs.net",
   "browserslist": {
     "production": [
       ">0.2%",
