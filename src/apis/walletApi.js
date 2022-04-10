@@ -3,7 +3,7 @@ import { loadToken } from './index'
 
 const getWalletByUserId = () => {
     loadToken()
-    return defaultInstance.get(`/account`)
+    return defaultInstance.get(`/wallet`)
 }
 
-export const accountApi = { getWalletByUserId }
+export const walletApi = { getWalletByUserId }

@@ -12,6 +12,7 @@ import {
 
 import classes from './Transfer.module.css'
 import SuiInput from 'components/SuiInput'
+import { transactionApi } from 'apis/transactionApi'
 
 const transfer = async (email, amount) => {
     try {
@@ -19,7 +20,7 @@ const transfer = async (email, amount) => {
     } catch (e) {}
 }
 
-export default function Transfer({ open, handleClose, accountId , reloadData}) {
+export default function Transfer({ open, handleClose, walletId, reloadData }) {
     const title = 'Rut Tien'
 
     const [money, setMoney] = useState()
@@ -30,14 +31,31 @@ export default function Transfer({ open, handleClose, accountId , reloadData}) {
         try {
             const res = await paypalApi.transfer({
                 email: email,
-                amount: money,
-                accountId: accountId,
+                money: money,
+                accountId: walletId,
             })
+
+            const data = {
+                money,
+                type: 'type',
+                description: 'Rút tiền sang ví paypal',
+                walletId,
+                recipientId: null,
+                recipientName: 'Ví của tôi',
+                senderId: '',
+                senderName: 'Paypal',
+                transactionFee: '',
+                status: 'SUCCESS',
+                paypalTransaction: res.data.payoutId,
+            }
+            const transactionRes = await transactionApi.createTransaction(data)
+            handleClose()
             reloadData()
             if (!res) throw new Error()
             // const transaction = aw
-            
-        } catch (e) {}
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -88,7 +106,7 @@ export default function Transfer({ open, handleClose, accountId , reloadData}) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Huỷ</Button>
-                    <Button onClick={handleFormSubmit}>Cặp Nhật</Button>
+                    <Button onClick={handleFormSubmit}>Rút tiền</Button>
                 </DialogActions>
             </Dialog>
         </>

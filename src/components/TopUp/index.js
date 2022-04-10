@@ -15,6 +15,8 @@ import classes from './TopUp.module.css'
 import { transactionApi } from 'apis/transactionApi'
 import { PayPalButton } from 'react-paypal-button-v2'
 
+import { exchangeCurrency } from 'utils/concurencyExchange'
+
 const source = 'https://studentloanfpt.ddns.net'
 const TopUpModal = ({ open, onClose, url }) => {
     useEffect(() => {
@@ -31,9 +33,10 @@ const TopUpModal = ({ open, onClose, url }) => {
     )
 }
 
-export default function TopUp({ open, handleClose, reloadData }) {
+export default function TopUp({ open, handleClose, reloadData, walletId }) {
     const title = 'Rut Tien'
     const [money, setMoney] = useState()
+    const [usd, setUsd] = useState()
     const [modalOpen, setModalOpen] = useState(false)
     const [transaction, setTransaction] = useState()
     const [url, setUrl] = useState()
@@ -61,34 +64,46 @@ export default function TopUp({ open, handleClose, reloadData }) {
 
     const handleModalClose = async (paymentId) => {
         try {
-            const data = { ...transaction, paypalTransaction: paymentId }
-            const res = await transactionApi.updateTransaction(data)
-            if (!res) throw new Error(res)
+            // const data = { ...transaction, paypalTransaction: paymentId }
+            // const res = await transactionApi.updateTransaction(data)
+            // if (!res) throw new Error(res)
             setModalOpen(false)
         } catch (e) {}
     }
 
-    const handleTopUpSucces = async (paymentId) => {
+    const handleTopUpSuccess = async (paymentId) => {
         try {
+            console.log(paymentId)
             const data = {
                 money,
                 type: 'type',
-                description: '',
-                accountId,
-                recipientId: '',
-                recipientName: '',
+                description: 'Nạp tiền từ paypal',
+                walletId,
+                recipientId: null,
+                recipientName: 'Ví của tôi',
                 senderId: '',
-                senderName: '',
+                senderName: 'Paypal',
                 transactionFee: '',
-                status: '',
+                status: 'SUCCESS',
                 paypalTransaction: paymentId,
             }
             const res = await transactionApi.createTransaction(data)
             if (!res) throw new Error(res)
             setModalOpen(false)
-        } catch (e) {}
+            handleClose()
+            reloadData()
+        } catch (e) {
+            console.log(e)
+        }
     }
 
+    const handleMoneyChange = (e) => {
+        setMoney(e.target.value)
+    }
+
+    useEffect(() => {
+        setUsd(exchangeCurrency(money).toFixed(2))
+    }, [money])
     return (
         <>
             <TopUpModal
@@ -105,12 +120,12 @@ export default function TopUp({ open, handleClose, reloadData }) {
                                 variant="caption"
                                 className={classes.title}
                             >
-                                So tien
+                                Số tiền
                             </Typography>
+
                             <SuiInput
-                                type={'number'}
                                 value={money}
-                                onChange={(e) => setMoney(e.target.value)}
+                                onChange={handleMoneyChange}
                                 name={'money'}
                             />
                             {/* {error && (
@@ -120,10 +135,10 @@ export default function TopUp({ open, handleClose, reloadData }) {
                 )} */}
                         </Box>
                     </Box>
+
                     <PayPalButton
-                        amount="0.01"
                         onSuccess={(details, data) => {
-                            console.log(details, data)
+                            handleTopUpSuccess(details.id)
                         }}
                         options={{
                             clientId:
@@ -131,17 +146,19 @@ export default function TopUp({ open, handleClose, reloadData }) {
                         }}
                         createOrder={(data, actions) => {
                             return actions.order.create({
-                              purchase_units: [{
-                                amount: {
-                                  currency_code: "USD",
-                                  value: "0.01"
-                                }
-                              }],
-                              // application_context: {
-                              //   shipping_preference: "NO_SHIPPING" // default is "GET_FROM_FILE"
-                              // }
-                            });
-                          }}
+                                purchase_units: [
+                                    {
+                                        amount: {
+                                            currency_code: 'USD',
+                                            value: usd,
+                                        },
+                                    },
+                                ],
+                                // application_context: {
+                                //   shipping_preference: "NO_SHIPPING" // default is "GET_FROM_FILE"
+                                // }
+                            })
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>

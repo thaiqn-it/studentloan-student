@@ -31,7 +31,7 @@ import DateRangePicker from '@mui/lab/DateRangePicker'
 import { Box, TextField } from '@mui/material'
 import SuiInput from 'components/SuiInput'
 
-const Group = ({ transactions, handleClick , selectedTransaction }) => {
+const Group = ({ transactions, handleClick, selectedTransaction }) => {
     return (
         <>
             <SuiBox mb={2}>
@@ -52,7 +52,7 @@ const Group = ({ transactions, handleClick , selectedTransaction }) => {
                 m={0}
                 sx={{ listStyle: 'none' }}
             >
-                {transactions?.transactions.map((transaction) => {
+                {transactions?.transaction.map((transaction) => {
                     return (
                         <>
                             <Transaction
@@ -72,7 +72,9 @@ const Group = ({ transactions, handleClick , selectedTransaction }) => {
                                 value={transaction.money}
                                 handleClick={handleClick}
                                 id={transaction.id}
-                                selected={selectedTransaction?.id === transaction.id}
+                                selected={
+                                    selectedTransaction?.id === transaction.id
+                                }
                             />
                         </>
                     )
@@ -96,10 +98,8 @@ const Group = ({ transactions, handleClick , selectedTransaction }) => {
     )
 }
 
-function Transactions({ handleClick, data , selectedTransaction }) {
+function Transactions({ handleClick, data, selectedTransaction }) {
     const [range, setRange] = useState([null, null])
-   
-
 
     return (
         <Card sx={{ height: '100%' }}>
@@ -115,7 +115,7 @@ function Transactions({ handleClick, data , selectedTransaction }) {
                     fontWeight="medium"
                     textTransform="capitalize"
                 >
-                    Your Transaction&apos;s
+                    Các giao dịch của bạn
                 </SuiTypography>
                 <SuiBox display="flex" alignItems="flex-start">
                     <LocalizationProvider dateAdapter={AdapterDateFns}>

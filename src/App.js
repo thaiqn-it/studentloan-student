@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './App.css'
 
@@ -22,8 +22,22 @@ import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
 import Success from 'pages/PaymentNotification/Success'
 import Cancel from 'pages/PaymentNotification/Cancel'
+import { getFirebaseToken, onMessageListener } from './firebase'
 
 function App() {
+    const [token, setToken] = useState()
+    useEffect(() => {
+        getFirebaseToken(setToken)
+    }, [])
+
+    onMessageListener()
+        .then((payload) => {
+            console.log("have payload" , payload)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
     return (
         <AuthProvider>
             <ThemeProvider theme={theme}>
