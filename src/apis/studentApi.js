@@ -8,4 +8,8 @@ const updateStudentInfo = ({ studentId, ...data }) => {
   return defaultInstance.put(`/student/${studentId}`, data);
 };
 
-export const studentApi = { getStudentByUserId, updateStudentInfo };
+const getStudentProfile = () => {
+  return defaultInstance.get(`/student/profile`);
+}
+
+export const studentApi = { getStudentByUserId, updateStudentInfo, getStudentProfile };

@@ -43,7 +43,7 @@ export default function ImageModal(props) {
                     <Box
                         component="img"
                         src={props.image}
-                        borderRadius="10px"
+                        borderRadius={1}
                         maxWidth="1200px"
                         // sx={style}
                         sx={{

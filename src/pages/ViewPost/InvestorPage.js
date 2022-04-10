@@ -1,0 +1,104 @@
+import React, { useEffect, useState } from 'react'
+import InvestorTable from './components/InvestmentsTable'
+import MiniStatisticsCard from 'examples/Cards/StatisticsCards/MiniStatisticsCard'
+import { Box, Grid } from '@mui/material'
+import { fCurrency } from 'utils/formatNumber'
+import SuiButton from 'components/SuiButton'
+
+import DownloadIcon from '@mui/icons-material/Download'
+
+import Loading from 'components/Loading'
+
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
+import { imageApi } from 'apis/imageApi'
+
+export default function InvestorPage(props) {
+    const { investments, currentMoney, investors } = props
+    const [isLoading, setIsLoading] = useState(false)
+
+    // useEffect(() => {
+    //     console.log('hihi')
+    // }, [])
+
+    function getFileName(url) {
+        var splittedArr = url.split('/')
+        var name = splittedArr[splittedArr.length - 1]
+        var fileName = name.substring(name.indexOf('-') + 1, name.length)
+        return fileName
+    }
+
+    const downloadAllContract = () => {
+        setIsLoading(true)
+        var zip = JSZip()
+        var urls = [
+            'https://res.cloudinary.com/larrytran/image/upload/v1649403365/file/1649403288746-hmq3b48dybfpn1mvfqsa.pdf',
+            'https://res.cloudinary.com/larrytran/image/upload/v1649056391/file/1649056316704-HOMEWORK_-_LESSON_13.pdf',
+            'https://res.cloudinary.com/larrytran/image/upload/v1649056390/file/1649056316812-sample.pdf',
+        ]
+        var requests = urls.map((item) => {
+            return imageApi.downloadFileURL(item)
+        })
+        Promise.all(requests)
+            .then((responses) => {
+                responses.map((item) => {
+                    const blob = new Blob([item.data])
+                    zip.file(getFileName(item.config.url), blob, {
+                        binary: true,
+                    })
+                })
+
+                zip.generateAsync({ type: 'blob' }).then(function (blob) {
+                    saveAs(blob, 'test_archive.zip')
+                })
+                setIsLoading(false)
+            })
+            .catch((err) => {
+                setIsLoading(false)
+                console.log(err)
+            })
+    }
+
+    return (
+        <>
+            {isLoading ? <Loading /> : null}
+            <Box pb={3} pl={3} sx={{ background: '#f7f5f2' }}>
+                <Box display="flex" justifyContent="flex-end">
+                    <SuiButton
+                        startIcon={<DownloadIcon />}
+                        onClick={downloadAllContract}
+                        variant="contained"
+                        color="primary"
+                        sx={{ borderRadius: 0 }}
+                    >
+                        Tải tất cả hợp đồng
+                    </SuiButton>
+                </Box>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={3}>
+                        <MiniStatisticsCard
+                            title={{ text: 'Số tiền đang kêu gọi' }}
+                            count={fCurrency(currentMoney)}
+                            // percentage={{ color: 'success', text: '+55%' }}
+                            icon={{ color: 'info', component: 'paid' }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={3}>
+                        <MiniStatisticsCard
+                            title={{ text: 'Nhà đầu tư' }}
+                            count={investors + ' thành viên'}
+                            // percentage={{ color: 'success', text: '+55%' }}
+                            icon={{ color: 'success', component: 'people' }}
+                        />
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box mb={3}>
+                <InvestorTable
+                    data={investments}
+                    currecurrentMoney={currentMoney}
+                />
+            </Box>
+        </>
+    )
+}

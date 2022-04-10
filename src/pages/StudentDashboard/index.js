@@ -1,4 +1,5 @@
 import routes from 'routes'
+import {extraRoutes} from "routes"
 import Sidenav from 'examples/Sidenav/v2'
 import Dashboard from 'layouts/dashboard'
 import React, { useEffect, useState, useMemo } from 'react'
@@ -9,14 +10,15 @@ import {
 } from 'context'
 
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import Wallet from 'pages/Wallet'
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
-import StudentProfile from 'pages/StudentProfile'
 
-import ReleaseLogo from '../../assets/release-logo.png'
+import ReleaseLogo from '../../assets/newLogo3.png'
 
 var currentRoute = [...routes]
+var extraRoute = [...extraRoutes]
+
+var mergeRoute = currentRoute.concat(extraRoute)
 
 function getRoutes(allRoutes) {
     const routes = allRoutes.map((route) => {
@@ -32,12 +34,13 @@ function getRoutes(allRoutes) {
 
         return null
     })
+
     
     return routes
 }
 
 const Routes = () => {
-    return <Switch>{getRoutes(currentRoute)}</Switch>
+    return <Switch>{getRoutes(mergeRoute)}</Switch>
 }
 
 const StudentDashboard = () => {
@@ -66,14 +69,14 @@ const StudentDashboard = () => {
         <>
             <Sidenav
                 color={sidenavColor}
-                brandName="Student Loan Platform"
+                brandName="StudentLoan"
                 brand={ReleaseLogo}
                 routes={currentRoute}
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
             />
             <DashboardLayout>
-                <DashboardNavbar />
+                <DashboardNavbar/>
                 <Routes />
             </DashboardLayout>
         </>
