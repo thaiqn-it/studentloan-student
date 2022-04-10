@@ -2,203 +2,190 @@ import React from 'react'
 
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
-import LinearProgress from '@mui/material/LinearProgress'
 
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
 import SuiButton from 'components/SuiButton'
-import SuiAvatar from 'components/SuiAvatar'
 import SuiProgress from 'components/SuiProgress'
+import { Grid, Link } from '@mui/material'
 
-import { Link } from 'react-router-dom'
-import { Divider, Grid } from '@mui/material'
+import {
+    fCurrency,
+    fCurrencyNoVND,
+    fProgress,
+} from '..//..//..//utils/formatNumber'
+import { fDate, fToNowNumber } from '..//..//..//utils/formatTime'
+import { getThumbnail } from 'utils/youtube'
+import { renderStatus } from 'utils/renderStatus'
 
-export default function PostItem() {
+export default function PostItem(props) {
+    const { loan } = props
+
+    function status() {
+        var statusObject = renderStatus(loan.LoanHistories[0].type)
+
+        return (
+            <SuiButton
+                color={statusObject.color}
+                size="small"
+                sx={{
+                    pointerEvents: 'none',
+                    float: 'right',
+                    borderRadius: '0',
+                }}
+            >
+                {statusObject.status}
+            </SuiButton>
+        )
+    }
+
     return (
-        <Card
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                // backgroundColor: 'none',
-                // boxShadow: "6",
-                borderRadius: '1',
-                border: '0.1rem solid #DCDEDD',
-                maxHeight: '40rem',
-                // overflow: 'visible',
-            }}
-        >
-            <SuiBox position="relative">
-                <CardMedia
-                    src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-                    component="img"
-                    sx={{
-                        // maxWidth: '100%',
-                        margin: 0,
-                        height: '10rem',
-                        width: '100%',
-                        borderRadius: '0',
-                    }}
-                />
-            </SuiBox>
-
-            <SuiBox pt={1} px={0.5} padding={2}>
-                {/* <SuiBox display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="medium"
-                        textTransform="none"
-                        textGradient
-                    >
-                        Ngày tạo: 24/12/2021
-                    </SuiTypography>
-
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="medium"
-                        textTransform="none"
-                        textGradient
-                    >
-                        Ngày hết hạn: 24/6/2022
-                    </SuiTypography>
-                </SuiBox> */}
-
-                <SuiBox mb={1}>
-                    <SuiTypography
-                        component={Link}
-                        // to={action.route}
-                        variant="h5"
-                        textTransform="capitalize"
-                        fontWeight="regular"
-                    >
-                        Vay học phí cho 9 kỳ
-                    </SuiTypography>
-                </SuiBox>
-                <SuiBox mb={2} lineHeight={0}>
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        color="text"
-                    >
-                        Tôi đang là sinh viên đai học FPT, tôi đang cần xin vay
-                        để đóng học phí từ kỳ 1 đến kỳ 9
-                    </SuiTypography>
+        <Link href={`/trang-chu/ho-so/xem/${loan.id}`}>
+            <Card
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: '0',
+                    maxHeight: '40rem',
+                }}
+            >
+                <SuiBox position="relative" sx={{ width: '100%' }}>
+                    <CardMedia
+                        src={getThumbnail(loan?.LoanMedia[0]?.imageUrl)}
+                        component="img"
+                        sx={{
+                            margin: 0,
+                            height: '10rem',
+                            width: '100%',
+                            borderRadius: '0',
+                            position: 'absolute',
+                        }}
+                    />
+                    {status()}
                 </SuiBox>
 
-                <SuiBox mb={1} display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Số tiền vay:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        245.700.000 VND
-                    </SuiTypography>
-                </SuiBox>
-
-                {/* <SuiBox mb={1} display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Ngày tạo:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        24/12/2021
-                    </SuiTypography>
-                </SuiBox> */}
-
-                <SuiBox display="flex" justifyContent="space-between">
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        textTransform="none"
-                    >
-                        Ngày hết hạn:
-                    </SuiTypography>
-                    <SuiTypography variant="button" textTransform="none">
-                        24/6/2022
-                    </SuiTypography>
-                </SuiBox>
-
-                <SuiProgress value={50} label color="primary" />
-
-                <SuiBox mt={3}>
-                    <Grid container>
-                        <Grid item xs={4} md={4}>
-                            <SuiTypography variant="h5" textTransform="none">
-                                122.850.000
-                            </SuiTypography>
-                            <SuiTypography
-                                variant="button"
-                                textTransform="none"
-                                color="text"
-                            >
-                                Số tiền kêu gọi
-                            </SuiTypography>
-                        </Grid>
-                        <Grid item xs={4} md={4}>
-                            <SuiTypography
-                                variant="h5"
-                                textTransform="none"
-                                align="center"
-                            >
-                                55
-                            </SuiTypography>
-                            <SuiTypography
-                                variant="button"
-                                textTransform="none"
-                                color="text"
-                                align="center"
-                            >
-                                Người đầu tư
-                            </SuiTypography>
-                        </Grid>
-                        <Grid item xs={4} md={4}>
-                            <SuiTypography
-                                variant="h5"
-                                textTransform="none"
-                                align="center"
-                            >
-                                180
-                            </SuiTypography>
-                            <SuiTypography
-                                variant="button"
-                                textTransform="none"
-                                color="text"
-                                align="center"
-                            >
-                                Số ngày còn lại
-                            </SuiTypography>
-                        </Grid>
-                    </Grid>
-                    {/* <SuiTypography
-                        variant="h6"
-                        textTransform="capitalize"
-                        align="right"
-                    >
-                        122.850.000 VND
-                    </SuiTypography> */}
-                </SuiBox>
-
-                {/* <SuiBox
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
+                <SuiBox
+                    p={2}
+                    sx={{ border: '0.1rem solid #DCDEDD' }}
+                    mt="7.5rem"
                 >
-                    <SuiButton
-                        component={Link}
-                        to="/dashboard/view-post"
-                        variant="outlined"
-                        size="small"
-                        color="primary"
+                    <SuiBox mb={1}>
+                        <SuiTypography
+                            variant="h5"
+                            textTransform="capitalize"
+                            fontWeight="regular"
+                        >
+                            {loan.title ? loan.title : 'Chưa điền tiêu đề'}
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiBox mb={2} lineHeight={0}>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            color="text"
+                        >
+                            {loan.description
+                                ? loan.description
+                                : 'Chưa điền nội dung'}
+                        </SuiTypography>
+                    </SuiBox>
+
+                    <SuiBox
+                        mb={1}
+                        display="flex"
+                        justifyContent="space-between"
                     >
-                        Xem
-                    </SuiButton>
-                </SuiBox> */}
-            </SuiBox>
-        </Card>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            textTransform="none"
+                        >
+                            Số tiền vay:
+                        </SuiTypography>
+                        <SuiTypography variant="button" textTransform="none">
+                            {fCurrency(loan.totalMoney)}
+                        </SuiTypography>
+                    </SuiBox>
+
+                    <SuiBox display="flex" justifyContent="space-between">
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            textTransform="none"
+                        >
+                            Ngày hết hạn:
+                        </SuiTypography>
+                        <SuiTypography variant="button" textTransform="none">
+                            {fDate(loan.postExpireAt)}
+                        </SuiTypography>
+                    </SuiBox>
+
+                    <SuiProgress
+                        value={fProgress(
+                            loan.AccumulatedMoney,
+                            loan.totalMoney
+                        )}
+                        label
+                        color="primary"
+                    />
+
+                    <SuiBox mt={3}>
+                        <Grid container>
+                            <Grid item xs={4} md={4}>
+                                <SuiTypography
+                                    variant="h5"
+                                    textTransform="none"
+                                    color="primary"
+                                >
+                                    {fCurrencyNoVND(loan.AccumulatedMoney)}
+                                </SuiTypography>
+                                <SuiTypography
+                                    variant="button"
+                                    textTransform="none"
+                                    color="text"
+                                    sx={{ float: 'left' }}
+                                >
+                                    Số tiền đã đầu tư
+                                </SuiTypography>
+                            </Grid>
+                            <Grid item xs={4} md={4}>
+                                <SuiTypography
+                                    variant="h5"
+                                    textTransform="none"
+                                    align="right"
+                                >
+                                    {loan.InvestorCount}
+                                </SuiTypography>
+                                <SuiTypography
+                                    variant="button"
+                                    textTransform="none"
+                                    color="text"
+                                    sx={{ float: 'right' }}
+                                >
+                                    Người đầu tư
+                                </SuiTypography>
+                            </Grid>
+                            <Grid item xs={4} md={4}>
+                                <SuiTypography
+                                    variant="h5"
+                                    textTransform="none"
+                                    align="right"
+                                >
+                                    {fToNowNumber(loan.postExpireAt)}
+                                </SuiTypography>
+                                <SuiTypography
+                                    variant="button"
+                                    textTransform="none"
+                                    color="text"
+                                    sx={{ float: 'right' }}
+                                >
+                                    Số ngày còn lại
+                                </SuiTypography>
+                            </Grid>
+                        </Grid>
+                    </SuiBox>
+                </SuiBox>
+            </Card>
+        </Link>
     )
 }

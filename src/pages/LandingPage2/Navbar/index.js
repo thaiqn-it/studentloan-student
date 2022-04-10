@@ -37,8 +37,7 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 // Soft UI Dashboard PRO React base styles
 import breakpoints from 'assets/theme/base/breakpoints'
 
-import ReleaseLogo from '../../../assets/release-logo.png'
-import { CardMedia } from '@mui/material'
+import ReleaseLogo from '../../../assets/newLogo.png'
 
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
@@ -74,22 +73,23 @@ function DefaultNavbar({ transparent, light, action, title }) {
     }, [])
 
     return (
-        <Container>
+        <Container maxWidth="lg">
             <SuiBox
-                py={1.5}
+                // py={1.5}
                 px={{
                     xs: transparent ? 4 : 5,
                     sm: transparent ? 2 : 5,
                     lg: transparent ? 0 : 5,
                 }}
-                my={2}
-                mx={3}
-                width="calc(100% - 48px)"
-                borderRadius="section"
+                // my={2}
+                // mx={3}
+                // width="calc(100% - 48px)"
+                width="100%"
+                // borderRadius="section"
                 shadow={transparent ? 'none' : 'md'}
                 color={light ? 'white' : 'dark'}
                 display="flex"
-                justifyContent="space-between"
+                justifyContent="space-around"
                 alignItems="center"
                 position="fixed"
                 left={0}
@@ -107,97 +107,113 @@ function DefaultNavbar({ transparent, light, action, title }) {
                 })}
             >
                 <SuiBox
-                    component={Link}
-                    to="/"
-                    py={transparent ? 1.5 : 0.75}
-                    lineHeight={1}
+                    width="80%"
                     display="flex"
+                    justifyContent="space-between"
                     alignItems="center"
                 >
-                    {/* <Avatar alt="StudentLoan" src={ReleaseLogo} /> */}
-                    <CardMedia component="img" image={ReleaseLogo} height={25} sx={{ margin: "0", objectFit: "contain"}}/>
-                    <SuiTypography
-                        variant="h5"
-                        fontWeight="bold"
-                        color={light ? 'white' : 'dark'}
-                        ml={2}
+                    <SuiBox
+                        component={Link}
+                        to="/"
+                        // py={transparent ? 1.5 : 0.75}
+                        lineHeight={1}
+                        display="flex"
+                        alignItems="center"
                     >
-                        {title}
-                    </SuiTypography>
-                </SuiBox>
-                <SuiBox
-                    color="inherit"
-                    display={{ xs: 'none', lg: 'flex' }}
-                    m={0}
-                    p={0}
-                >
-                    <DefaultNavbarLink
-                        icon="donut_large"
-                        name="dashboard"
-                        direct="/dashboard"
-                        light={light}
-                    />
-                    {/* <DefaultNavbarLink
+                        <SuiBox
+                            component="img"
+                            src={ReleaseLogo}
+                            height={30}
+                            width={30}
+                            sx={{ margin: '0', objectFit: 'contain', my:2 }}
+                        />
+                        <SuiTypography
+                            variant="h6"
+                            fontWeight="bold"
+                            color={light ? 'white' : 'black'}
+                            ml={2}
+                        >
+                            {title}
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiBox
+                        color="inherit"
+                        display={{ xs: 'none', lg: 'flex' }}
+                        m={0}
+                        p={0}
+                    >
+                        <DefaultNavbarLink
+                            icon="donut_large"
+                            name="dashboard"
+                            direct="/dashboard"
+                            light={light}
+                        />
+                        {/* <DefaultNavbarLink
                         icon="person"
                         name="profile"
                         route="contact"
                         light={light}
                     /> */}
-                    <DefaultNavbarLink
-                        icon="account_circle"
-                        name="sign up"
-                        route="/authentication/sign-up"
-                        light={light}
-                    />
-                    <DefaultNavbarLink
-                        icon="key"
-                        name="sign in"
-                        route="/authentication/sign-in"
-                        light={light}
-                    />
-                </SuiBox>
-                {action &&
-                    (action.type === 'internal' ? (
-                        <SuiBox display={{ xs: 'none', lg: 'inline-block' }}>
-                            <SuiButton
-                                component={Link}
-                                to={action.route}
-                                variant="gradient"
-                                color={action.color ? action.color : 'info'}
-                                size="small"
-                                circular
+                        <DefaultNavbarLink
+                            icon="account_circle"
+                            name="sign up"
+                            route="/authentication/sign-up"
+                            light={light}
+                        />
+                        <DefaultNavbarLink
+                            icon="key"
+                            name="sign in"
+                            route="/authentication/sign-in"
+                            light={light}
+                        />
+                    </SuiBox>
+                    {action &&
+                        (action.type === 'internal' ? (
+                            <SuiBox
+                                display={{ xs: 'none', lg: 'inline-block' }}
                             >
-                                {action.label}
-                            </SuiButton>
-                        </SuiBox>
-                    ) : (
-                        <SuiBox display={{ xs: 'none', lg: 'inline-block' }}>
-                            <SuiButton
-                                component="a"
-                                href={action.route}
-                                target="_blank"
-                                rel="noreferrer"
-                                variant="gradient"
-                                color={action.color ? action.color : 'info'}
-                                size="small"
-                                circular
+                                <SuiButton
+                                    component={Link}
+                                    to={action.route}
+                                    variant="gradient"
+                                    color={action.color ? action.color : 'info'}
+                                    size="small"
+                                    circular
+                                >
+                                    {action.label}
+                                </SuiButton>
+                            </SuiBox>
+                        ) : (
+                            <SuiBox
+                                display={{ xs: 'none', lg: 'inline-block' }}
                             >
-                                {action.label}
-                            </SuiButton>
-                        </SuiBox>
-                    ))}
-                <SuiBox
-                    display={{ xs: 'inline-block', lg: 'none' }}
-                    lineHeight={0}
-                    py={1.5}
-                    pl={1.5}
-                    color="inherit"
-                    sx={{ cursor: 'pointer' }}
-                    onClick={openMobileNavbar}
-                >
-                    <Icon fontSize="default">
-                        {mobileNavbar ? 'close' : 'menu'}
-                    </Icon>
+                                <SuiButton
+                                    component="a"
+                                    href={action.route}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="gradient"
+                                    color={action.color ? action.color : 'info'}
+                                    size="small"
+                                    circular
+                                >
+                                    {action.label}
+                                </SuiButton>
+                            </SuiBox>
+                        ))}
+                    <SuiBox
+                        display={{ xs: 'inline-block', lg: 'none' }}
+                        lineHeight={0}
+                        py={1.5}
+                        pl={1.5}
+                        color="inherit"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={openMobileNavbar}
+                    >
+                        <Icon fontSize="default">
+                            {mobileNavbar ? 'close' : 'menu'}
+                        </Icon>
+                    </SuiBox>
                 </SuiBox>
             </SuiBox>
             {mobileView && (

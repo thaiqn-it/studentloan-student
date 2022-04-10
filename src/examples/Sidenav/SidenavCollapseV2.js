@@ -52,10 +52,14 @@ function SidenavCollapse({
 }) {
     const [controller] = useSoftUIController()
     const { miniSidenav, transparentSidenav } = controller
- 
+
     return (
         <>
-            <ListItem component="li" sx={{pl : isChild ? 4 : 0}} onClick={onClick}>
+            <ListItem
+                component="li"
+                sx={{ pl: isChild ? 4 : 0 }}
+                onClick={onClick}
+            >
                 <SuiBox
                     {...rest}
                     sx={(theme) =>

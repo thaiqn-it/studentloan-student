@@ -269,7 +269,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                         <SuiTypography
                             component="h6"
                             variant="button"
-                            fontWeight="medium"
+                            fontWeight="bold"
+                            color="black"
                         >
                             {brandName}
                         </SuiTypography>
@@ -277,7 +278,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                 </SuiBox>
             </SuiBox>
             <Divider />
-            <CreateLoanPost onOpen={openCreate} />
+            <CreateLoanPost onOpen={openCreate} miniSide={miniSidenav} />
             <List>{renderRoutes}</List>
             {/* <SuiBox pt={2} my={2} mx={2} mt="auto">
         <SidenavCard />
