@@ -44,7 +44,7 @@ export default function TransactionDetail({ transaction }) {
                             {`${String(transaction?.money).replace(
                                 /(\d)(?=(\d{3})+$)/g,
                                 '$1,'
-                            )} d`}
+                            )} đ`}
                         </SuiTypography>
 
                         <SuiTypography variant="subtitle2">
