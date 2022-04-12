@@ -12,4 +12,8 @@ const getTutorById = (id) => {
     return defaultInstance.get(`/tutor/${id}`)
 }
 
-export const tutorApi = { createTutor, getTutorById, updateTutor }
+const deleteTutor = (id, data) => {
+    return defaultInstance.delete(`/tutor/${id}`)
+}
+
+export const tutorApi = { createTutor, getTutorById, updateTutor, deleteTutor }

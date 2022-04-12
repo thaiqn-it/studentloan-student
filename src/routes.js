@@ -18,6 +18,7 @@ import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
 
 import ListIcon from '@mui/icons-material/List'
+import Repayment from 'pages/Repayment'
 
 let routes = [
     {
@@ -112,6 +113,11 @@ let routes = [
 ]
 
 const extraRoutes = [
+    {
+        route: '/thanh-toan/:id',
+        component: Repayment,
+        key: 'thanh-toan',
+    },
     {
         route: '/nguoi-giam-ho/:id',
         component: TutorDetail,

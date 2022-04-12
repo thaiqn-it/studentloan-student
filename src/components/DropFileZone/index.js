@@ -259,7 +259,7 @@ const DropFileInput = (props) => {
                                 }}
                             >
                                 <SuiProgress
-                                    variant="determinate"
+                                    variant="contained"
                                     value={progress}
                                     color="primary"
                                 />

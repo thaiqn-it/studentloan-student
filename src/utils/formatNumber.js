@@ -1,4 +1,7 @@
 export function fCurrency(text) {
+    if(!text){
+        text = 0
+    }
     return Number(text).toLocaleString('it-IT', {
         style: 'currency',
         currency: 'VND',

@@ -4,8 +4,8 @@ const getStudentByUserId = (userId) => {
   return defaultInstance.post(`/student/${userId}`);
 };
 
-const updateStudentInfo = ({ studentId, ...data }) => {
-  return defaultInstance.put(`/student/${studentId}`, data);
+const updateStudentInfo = ({ id, ...data }, userType) => {
+  return defaultInstance.put(`/student/profile/${id}`, {studentInfo: data, userType});
 };
 
 const getStudentProfile = () => {

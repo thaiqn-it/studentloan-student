@@ -1,5 +1,4 @@
-import { Avatar, Badge, Box, Divider, Grid, Paper } from '@mui/material'
-import SuiAvatar from 'components/SuiAvatar'
+import { Avatar, Badge, Box, Grid, Paper } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
 import React, { useEffect, useState } from 'react'
@@ -7,15 +6,19 @@ import React, { useEffect, useState } from 'react'
 import DetailAccountCard from './components/DetailAccountCard'
 import PaperCard from './components/PaperCard'
 import AchievementCard from './components/AchievementCard'
-
-import CheckIcon from '@mui/icons-material/Check'
-import CloseIcon from '@mui/icons-material/Close'
 import TutorTableCard from './components/TutorTableCard'
-import { studentApi } from 'apis/studentApi'
-import Loading from 'components/Loading'
 
+import { studentApi } from 'apis/studentApi'
+import { userApi } from 'apis/userApi'
+import { schoolMajorApi } from 'apis/schoolMajorApi'
+
+import Loading from 'components/Loading'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { imageApi } from 'apis/imageApi'
+
+import { renderUserStatus } from 'utils/renderStatus'
+import { isNullish } from 'utils/isNullish'
+import { USER_STATUS } from 'utils/enum'
 
 export default function StudentProfile2() {
     const [loading, setLoading] = useState(true)
@@ -23,10 +26,18 @@ export default function StudentProfile2() {
     const [tutorInfo, setTutorInfo] = useState(null)
     const [achievements, setAchievements] = useState(null)
     const [userInfo, setUserInfo] = useState(null)
+    const [schoolMajor, setSchoolMajor] = useState(null)
+
+    const [oldUserInfo, setOldUserInfo] = useState(null)
+    const [oldStudentInfo, setOldStudentInfo] = useState(null)
+
+    const [schoolAndMajor, setSchoolAndMajor] = useState(null)
+
+    const [isChange, setIsChange] = useState(null)
 
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [isChange])
 
     const fetchData = async () => {
         setLoading(true)
@@ -35,12 +46,17 @@ export default function StudentProfile2() {
             .then((res) => {
                 const { Archievements, User, SchoolMajor, ...student } =
                     res.data.student
-                const tutor = res.data.tutor
+                const tutors = res.data.tutors
+                const achievements = res.data.achievements
+                console.log(res.data)
 
                 setStudentInfo(student)
-                setTutorInfo(tutor)
-                setAchievements(Archievements)
+                setOldStudentInfo(student)
+                setTutorInfo(tutors)
+                setAchievements(achievements)
                 setUserInfo(User)
+                setOldUserInfo(User)
+                setSchoolMajor(SchoolMajor)
                 setLoading(false)
             })
             .catch((err) => {
@@ -100,23 +116,137 @@ export default function StudentProfile2() {
                 [name]: value,
             })
         }
-
     }
 
-    const onChangeStudent = (e, name, value)=>{
+    const onChangeStudent = (e, name, value) => {
+        var tempName = null
+        var tempValue = null
         if (e) {
             e.preventDefault
-            setStudentInfo({
-                ...studentInfo,
-                [e.target.name]: e.target.value,
-            })
+            tempName = e.target.name
+            tempValue = e.target.value
         } else {
-            setStudentInfo({
-                ...studentInfo,
-                [name]: value,
-            })
+            tempName = name
+            tempValue = value
         }
+        if (tempValue === '') {
+            tempValue = null
+        }
+        setStudentInfo({
+            ...studentInfo,
+            [tempName]: tempValue,
+        })
     }
+
+    const onChangeSchoolMajor = (name, value) => {
+        setSchoolAndMajor({ ...schoolAndMajor, [name]: value })
+    }
+
+    const renderStatusButton = () => {
+        var objectStatus = renderUserStatus(userInfo?.status)
+
+        return (
+            <>
+                <SuiButton
+                    color={objectStatus.color}
+                    size="small"
+                    sx={{
+                        pointerEvents: 'none',
+                    }}
+                >
+                    {objectStatus.message}
+                </SuiButton>
+                {userInfo?.status === 'BAN' ? (
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="space-between"
+                    >
+                        <SuiTypography variant="button">Lý do:</SuiTypography>
+                        <SuiTypography variant="button" fontWeight="light">
+                            {userInfo?.reason}
+                        </SuiTypography>
+                    </Box>
+                ) : null}
+            </>
+        )
+    }
+
+    const renderActionButton = () => {
+        var status = userInfo?.status
+        return (
+            <>
+                <Box mb={3} sx={{ float: 'right' }}>
+                    {status === USER_STATUS.UNVERIFIED ? (
+                        <SuiButton
+                            color="info"
+                            onClick={handleVerify}
+                            size="large"
+                            variant="outlined"
+                            sx={{ mr: 3 }}
+                        >
+                            Xác thực
+                        </SuiButton>
+                    ) : null}
+                    {status === USER_STATUS.VERIFIED ||
+                    status === USER_STATUS.PENDING ? (
+                        <SuiButton
+                            color="primary"
+                            onClick={handleUpdate}
+                            size="large"
+                        >
+                            Cập nhật
+                        </SuiButton>
+                    ) : null}
+                </Box>
+            </>
+        )
+    }
+
+    const deleteTutor = () => {
+        setIsChange(Date.now())
+    }
+
+    const onChangeAchievement = () => {
+        setIsChange(Date.now())
+    }
+
+    const handleVerify = () => {
+        if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
+            schoolMajorApi
+                .getBySchoolAndMajorId(
+                    schoolAndMajor?.majorId,
+                    schoolAndMajor?.schoolId
+                )
+                .then((res) => {
+                    var schoolMajor = res.data
+                    var temp = { ...studentInfo }
+                    if (schoolMajor) {
+                        temp = { ...temp, schoolMajorId: schoolMajor.id }
+                    }
+                    studentApi
+                        .updateStudentInfo(temp, { status: 'PENDING' })
+                        .then((res) => {
+                            console.log(res)
+                            setIsChange(Date.now())
+                        })
+                        .catch((err) => {})
+                })
+        }
+        if (JSON.stringify(oldUserInfo) !== JSON.stringify(userInfo)) {
+            const { id, ...restData } = userInfo
+            userApi
+                .updateUser(restData)
+                .then((res) => {
+                    console.log(res)
+                    setIsChange(Date.now())
+                })
+                .catch((err) => {})
+        }
+
+    }
+
+    const handleUpdate = () => {}
 
     return (
         <>
@@ -180,14 +310,11 @@ export default function StudentProfile2() {
                                 <SuiTypography
                                     variant="h4"
                                     fontWeight="regular"
+                                    sx={{ mb: 1 }}
                                 >
-                                    {userInfo?.firstName}
-                                    {" "}
-                                    {userInfo?.lastName}
+                                    {userInfo?.firstName} {userInfo?.lastName}
                                 </SuiTypography>
-                                <SuiButton color="error" size="small">
-                                    Chưa xác thực
-                                </SuiButton>
+                                {renderStatusButton()}
                             </Box>
                             {/* <Divider sx={{ my: 3 }} />
                             <Box>
@@ -226,25 +353,33 @@ export default function StudentProfile2() {
                 </Grid>
                 <Grid item md={8}>
                     <DetailAccountCard
+                        schoolMajor={schoolMajor}
                         studentInfo={studentInfo}
                         userInfo={userInfo}
                         onChangeUser={onChangeUser}
+                        onChangeSchoolMajor={onChangeSchoolMajor}
                     />
                 </Grid>
             </Grid>
             <Box my={5}>
-                <TutorTableCard tutorInfo={tutorInfo} />
+                <TutorTableCard
+                    tutorInfo={tutorInfo}
+                    deleteTutor={deleteTutor}
+                />
             </Box>
             <Box my={5}>
-                <PaperCard studentInfo={studentInfo} onChangeStudent={onChangeStudent}/>
+                <PaperCard
+                    studentInfo={studentInfo}
+                    onChangeStudent={onChangeStudent}
+                />
             </Box>
             <Box my={5}>
-                <AchievementCard achievements={achievements} />
+                <AchievementCard
+                    achievements={achievements}
+                    onChangeAchievement={onChangeAchievement}
+                />
             </Box>
-
-            <Box mb={3} sx={{ float: 'right' }}>
-                <SuiButton color="primary">Cập nhật</SuiButton>
-            </Box>
+            {renderActionButton()}
         </>
     )
 }

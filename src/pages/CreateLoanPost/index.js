@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
 import Slide from '@mui/material/Slide'
 import { Box, Container, Divider, Grid, Dialog } from '@mui/material'
 import SuiButton from 'components/SuiButton'
@@ -14,11 +13,15 @@ import Loading from 'components/Loading'
 
 import CreateIcon from '@mui/icons-material/Create'
 import PercentIcon from '@mui/icons-material/Percent'
+import CloseIcon from '@mui/icons-material/Close'
 
 import { getText } from 'number-to-text-vietnamese'
 
 import { loanApi } from '../../apis/loanApi'
 import { systemConfigApi } from '../../apis/systemConfigApi'
+import { userApi } from 'apis/userApi'
+import SnackbarMessage from 'components/SnackbarMessage'
+import { isNullish } from 'utils/isNullish'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -29,15 +32,21 @@ export default function CreateLoanPost(props) {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
+    const [openSnack, setOpenSnack] = useState(false)
     const [interest, setInterest] = useState()
     const [moneyText, setMoneyText] = useState('')
-    // const [miniSideNav, setMiniSideNav] = useState(miniSide)
+    const [actionSnack, setActionSnack] = useState(null)
+
+    const [snack, setSnack] = useState({
+        message: 'Xác thực',
+        color: 'error',
+    })
 
     const data = {
         totalMoney: '',
         interest: '',
-        fixedMoney:"",
-        penaltyFee:"",
+        fixedMoney: '',
+        penaltyFee: '',
         expectedGraduationTime: '',
         duration: '',
         postExpireAt: '',
@@ -45,6 +54,10 @@ export default function CreateLoanPost(props) {
     }
 
     const [userData, setUserData] = useState(data)
+
+    const onClickClose = () => {
+        setOpenSnack(false)
+    }
 
     const createLoan = async () => {
         if (isNullish(userData)) {
@@ -60,17 +73,6 @@ export default function CreateLoanPost(props) {
                     setLoading(false)
                 })
         }
-    }
-
-    const isNullish = (obj) => {
-        var flag = true
-        Object.values(obj).map((value) => {
-            if (value === '') {
-                flag = false
-            }
-        })
-
-        return flag
     }
 
     function diff_months(dt2, dt1) {
@@ -95,7 +97,6 @@ export default function CreateLoanPost(props) {
             ...userData,
             [e.target.name]: realValue,
         })
-        console.log(userData)
     }
 
     const getMoneyText = (event) => {
@@ -103,17 +104,30 @@ export default function CreateLoanPost(props) {
         if (Math.floor(money) == money) {
             setMoneyText(getText(money))
             handleOnchange(event)
-            // console.log(fCurrencyNoVND(money * 1000))
         }
     }
 
     const handleClickOpen = () => {
         getInterest()
-        setOpen(true)
-        setLoading(false)
+
+        userApi
+            .getStudentProfile()
+            .then((res) => {
+                if (res.data.status === 'VERIFIED') {
+                    setOpen(true)
+                } else if (res.data.status === "BAN") {
+                    setActionSnack(ban)
+                    setOpenSnack(true)
+                }else{
+                    setActionSnack(action)
+                    setOpenSnack(true)
+                }
+                setLoading(false)
+            })
+            .catch((err) => {})
     }
 
-    function getInterest() {
+    const getInterest = () => {
         systemConfigApi.getFee().then((res) => {
             setUserData({
                 ...userData,
@@ -127,8 +141,60 @@ export default function CreateLoanPost(props) {
 
     const handleClose = () => {
         setUserData(data)
-        setMoneyText("")
+        setMoneyText('')
         setOpen(false)
+    }
+
+    const action = {
+        go: (
+            <React.Fragment>
+                <Box>
+                    <SuiButton
+                        color="white"
+                        size="small"
+                        variant="text"
+                        href="/trang-chu/thong-tin"
+                    >
+                        Xác thực thông tin
+                    </SuiButton>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={onClickClose}
+                    >
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </Box>
+            </React.Fragment>
+        ),
+        message: null,
+    }
+
+    const ban = {
+        go:  (
+            <React.Fragment>
+                <Box>
+                    <SuiButton
+                        color="white"
+                        size="small"
+                        variant="text"
+                        href="/trang-chu/thong-tin"
+                    >
+                        Tài khoản bị chặn
+                    </SuiButton>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={onClickClose}
+                    >
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </Box>
+            </React.Fragment>
+        ),
+        message: null,
     }
 
     return (
@@ -158,7 +224,11 @@ export default function CreateLoanPost(props) {
                     Tạo hồ sơ vay
                 </SuiButton>
             )}
-
+            <SnackbarMessage
+                open={openSnack}
+                action={actionSnack}
+                onClickClose={onClickClose}
+            />
             <Dialog
                 fullScreen
                 open={open}

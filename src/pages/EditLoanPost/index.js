@@ -115,6 +115,7 @@ export default function EditLoanPost() {
 
     const handleSave = () => {
         setIsLoading(true)
+        console.log(loanMedia)
         loanApi
             .updateLoanPost(id, 'DRAFT', {loan, loanHistory})
             .then((res) => {

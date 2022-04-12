@@ -11,12 +11,18 @@ import { useHistory } from 'react-router-dom'
 
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { imageApi } from 'apis/imageApi'
+import { renderTutorStatus } from 'utils/renderStatus'
+import Loading from 'components/Loading'
+import ComfirmDelete from 'components/ComfirmDelete'
 
 export default function TutorDetail() {
     const [loading, setLoading] = useState(false)
     const [tutor, setTutor] = useState()
     const { id } = useParams()
     const history = useHistory()
+
+    const [openComfirm, setOpenConfirm] = useState(false)
+    const [deleteValue, setDeleteValue] = useState(null)
 
     useEffect(() => {
         fetchData()
@@ -93,13 +99,12 @@ export default function TutorDetail() {
                 [name]: value,
             })
         }
-        console.log(e.target.value)
+
         console.log(tutor)
     }
 
     const handleSubmit = () => {
-        console.log("edit")
-
+        var statusTutor = { ...tutor, status: '' }
         if (id === 'tao') {
             tutorApi
                 .createTutor(tutor)
@@ -108,14 +113,56 @@ export default function TutorDetail() {
                 })
                 .catch((err) => {})
         } else {
-            tutorApi.updateTutor(id, tutor).then(res=>{
+            tutorApi.updateTutor(id, tutor).then((res) => {
                 history.push(`/trang-chu/thong-tin/`)
             })
         }
     }
 
+    const renderStatusButton = () => {
+        var objectStatus = renderTutorStatus(tutor?.status)
+
+        return (
+            <>
+                {tutor?.status ? (
+                    <SuiButton
+                        color={objectStatus.color}
+                        size="small"
+                        sx={{
+                            pointerEvents: 'none',
+                        }}
+                    >
+                        {objectStatus.message}
+                    </SuiButton>
+                ) : null}
+            </>
+        )
+    }
+
+    const handleOpenDelete = (id) => {
+        setDeleteValue(id)
+        setOpenConfirm(true)
+    }
+
+    const handleDelete = () => {
+        tutorApi
+            .deleteTutor(id)
+            .then((res) => {
+                setOpenConfirm(false)
+                history.push(`/trang-chu/thong-tin/`)
+            })
+            .catch((err) => {
+                setOpenConfirm(false)
+            })
+    }
+
+    const handleClose = () => {
+        setOpenConfirm(false)
+    }
+
     return (
         <>
+            {loading ? <Loading /> : null}
             <SuiTypography
                 variant="h4"
                 fontWeight="regular"
@@ -175,9 +222,11 @@ export default function TutorDetail() {
                                 <SuiTypography
                                     variant="h4"
                                     fontWeight="regular"
+                                    sx={{ mb: 1 }}
                                 >
                                     {tutor?.name}
                                 </SuiTypography>
+                                {renderStatusButton()}
                             </Box>
                         </Box>
                     </Paper>
@@ -195,7 +244,25 @@ export default function TutorDetail() {
                     onChangeTutorInfo={onChangeTutorInfo}
                 />
             </Box>
-            <Box mb={3} sx={{ float: 'right' }}>
+
+            <Box mb={3} display="flex" justifyContent="space-between">
+                {id === 'tao' ? null : (
+                    <>
+                        <SuiButton
+                            color="error"
+                            onClick={handleOpenDelete}
+                            size="large"
+                        >
+                            Xóa
+                        </SuiButton>
+                        <ComfirmDelete
+                            open={openComfirm}
+                            handleClose={handleClose}
+                            title="người giám hộ"
+                            handleDelete={handleDelete}
+                        />
+                    </>
+                )}
                 <SuiButton color="primary" onClick={handleSubmit} size="large">
                     {id === 'tao' ? 'Tạo' : 'Cập nhật'}
                 </SuiButton>

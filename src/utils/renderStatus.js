@@ -1,67 +1,127 @@
-import { LOAN_STATUS_MESSAGE } from './enum'
+import {
+    LOAN_STATUS_MESSAGE,
+    USER_STATUS,
+    LOAN_STATUS,
+    USER_STATUS_MESSAGE,
+    TUTOR_STATUS_MESSAGE,
+} from './enum'
 
 export function renderStatus(status) {
     var statusObject = {
         status: 'Nháp',
         color: 'dark',
         message: '',
-        icon: "drafts",
+        icon: 'drafts',
     }
 
     switch (status) {
-        case 'DRAFT':
+        case LOAN_STATUS.DRAFT:
             statusObject.color = 'dark'
             statusObject.status = 'Nháp'
             statusObject.message = LOAN_STATUS_MESSAGE.DRAFT
-            statusObject.icon = "drafts"
+            statusObject.icon = 'drafts'
             break
-        case 'DELETED':
+        case LOAN_STATUS.DELETED:
             statusObject.color = 'secondary'
             statusObject.status = 'Đã xóa'
             statusObject.message = LOAN_STATUS_MESSAGE.DELETED
-            statusObject.icon = "delete"
+            statusObject.icon = 'delete'
             break
-        case 'WAITING':
+        case LOAN_STATUS.WAITING:
             statusObject.color = 'warning'
             statusObject.status = 'Đang chờ duyệt'
             statusObject.message = LOAN_STATUS_MESSAGE.WAITING
-            statusObject.icon = "access_time"
+            statusObject.icon = 'access_time'
             break
-        case 'REJECTED':
+        case LOAN_STATUS.REJECTED:
             statusObject.color = 'error'
             statusObject.status = 'Bị từ chối'
             statusObject.message = LOAN_STATUS_MESSAGE.REJECTED
-            statusObject.icon = "do_disturb_on"
+            statusObject.icon = 'do_disturb_on'
             break
-        case 'FUNDING':
+        case LOAN_STATUS.FUNDING:
             statusObject.color = 'primary'
             statusObject.status = 'Đang kêu gọi'
             statusObject.message = LOAN_STATUS_MESSAGE.FUNDING
-            statusObject.icon = "monetization_on"
+            statusObject.icon = 'monetization_on'
             break
-        case 'FAIL':
+        case LOAN_STATUS.FAIL:
             statusObject.color = 'error'
             statusObject.status = 'Kêu gọi thất bại'
             statusObject.message = LOAN_STATUS_MESSAGE.FAIL
-            statusObject.icon = "cancel"
+            statusObject.icon = 'cancel'
             break
-        case 'ONGOING':
+        case LOAN_STATUS_MESSAGE.ONGOING:
             statusObject.color = 'info'
             statusObject.status = 'Đang thanh toán nợ'
             statusObject.message = LOAN_STATUS_MESSAGE.ONGOING
-            statusObject.icon = "play_circle_filled"
+            statusObject.icon = 'play_circle_filled'
             break
-        case 'FINISH':
+        case LOAN_STATUS.FINISH:
             statusObject.color = 'success'
             statusObject.status = 'Thành công'
             statusObject.message = LOAN_STATUS_MESSAGE.FINISH
-            statusObject.icon = "check_circle"
+            statusObject.icon = 'check_circle'
             break
-        case 'INCOMPLETE':
+        case LOAN_STATUS.INCOMPLETE:
             statusObject.color = 'error'
             statusObject.status = 'Không thể trả'
             statusObject.message = LOAN_STATUS_MESSAGE.INCOMPLETE
-             statusObject.icon = "do_disturb_on"
+            statusObject.icon = 'do_disturb_on'
+            break
+    }
+    return statusObject
+}
+
+export function renderUserStatus(status) {
+    var statusObject = {
+        status: 'Chưa xác thực',
+        color: 'error',
+        message: '',
+    }
+
+    switch (status) {
+        case USER_STATUS.VERIFIED:
+            statusObject.color = 'primary'
+            statusObject.status = USER_STATUS_MESSAGE.VERIFIED
+            statusObject.message = USER_STATUS_MESSAGE.VERIFIED
+            break
+        case USER_STATUS.UNVERIFIED:
+            statusObject.color = 'info'
+            statusObject.status = USER_STATUS_MESSAGE.UNVERIFIED
+            statusObject.message = USER_STATUS_MESSAGE.UNVERIFIED
+            break
+        case USER_STATUS.PENDING:
+            statusObject.color = 'warning'
+            statusObject.status = USER_STATUS_MESSAGE.PENDING
+            statusObject.message = USER_STATUS_MESSAGE.PENDING
+            break
+        case USER_STATUS.BAN:
+            statusObject.color = 'error'
+            statusObject.status = USER_STATUS_MESSAGE.BAN
+            statusObject.message = USER_STATUS_MESSAGE.BAN
+            break
+    }
+    return statusObject
+}
+
+export function renderTutorStatus(status) {
+    var statusObject = {
+        status: 'Chưa xác thực',
+        color: 'error',
+        message: '',
+    }
+
+    switch (status) {
+        case USER_STATUS.VERIFIED:
+            statusObject.color = 'primary'
+            statusObject.status = TUTOR_STATUS_MESSAGE.VERIFIED
+            statusObject.message = TUTOR_STATUS_MESSAGE.VERIFIED
+            break
+        case USER_STATUS.UNVERIFIED:
+            statusObject.color = 'error'
+            statusObject.status = TUTOR_STATUS_MESSAGE.UNVERIFIED
+            statusObject.message = TUTOR_STATUS_MESSAGE.UNVERIFIED
             break
     }
     return statusObject

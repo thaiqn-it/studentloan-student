@@ -1,7 +1,7 @@
 import { defaultInstance } from '.'
 
-const getAllMajor = () => {
-    return defaultInstance.get(`/major`)
+const getBySchoolId = (id) => {
+    return defaultInstance.get(`/major/school/${id}`)
 }
 
-export const majorApi = { getAllMajor,  }
+export const majorApi = { getBySchoolId,  }

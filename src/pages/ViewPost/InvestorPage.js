@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 import InvestorTable from './components/InvestmentsTable'
 import MiniStatisticsCard from 'examples/Cards/StatisticsCards/MiniStatisticsCard'
 import { Box, Grid } from '@mui/material'
@@ -13,19 +15,35 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { imageApi } from 'apis/imageApi'
 import SnackbarMessage from 'components/SnackbarMessage'
+import { investmentApi } from 'apis/investmentApi'
 
 export default function InvestorPage(props) {
-    const { investments, currentMoney, investors } = props
+    const { id } = useParams()
+    const [currentMoney, setCurrentMoney] = useState(0)
+    const [investments, setInvestments] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const [isOpenSnack, setIsOpenSnack] = useState(false)
     const [snack, setSnack] = useState({
-        message: 'Không hợp lệ',
+        message: 'Không thể tải hợp đồng',
         color: 'error',
     })
 
-    // useEffect(() => {
-    //     console.log('hihi')
-    // }, [])
+    useEffect(() => {
+        investmentApi
+            .getInvestmentByLoanId(id)
+            .then((res) => {
+                var invest = res.data
+                if (res.data.length != 0) {
+                    setInvestments(invest)
+                    var sum = 0
+                    invest.map((item) => {
+                        sum += item.total
+                    })
+                    setCurrentMoney(sum)
+                }
+            })
+            .catch((err) => {})
+    }, [])
 
     function getFileName(url) {
         var splittedArr = url.split('/')
@@ -35,16 +53,16 @@ export default function InvestorPage(props) {
     }
 
     const downloadAllContract = () => {
-        if (investments.Contracts) {
+        if (investments) {
             setIsLoading(true)
             var zip = JSZip()
-            var urls = [
-                'https://res.cloudinary.com/larrytran/image/upload/v1649403365/file/1649403288746-hmq3b48dybfpn1mvfqsa.pdf',
-                'https://res.cloudinary.com/larrytran/image/upload/v1649056391/file/1649056316704-HOMEWORK_-_LESSON_13.pdf',
-                'https://res.cloudinary.com/larrytran/image/upload/v1649056390/file/1649056316812-sample.pdf',
-            ]
-            var requests = urls.map((item) => {
-                return imageApi.downloadFileURL(item)
+            // var urls = [
+            //     'https://res.cloudinary.com/larrytran/image/upload/v1649403365/file/1649403288746-hmq3b48dybfpn1mvfqsa.pdf',
+            //     'https://res.cloudinary.com/larrytran/image/upload/v1649056391/file/1649056316704-HOMEWORK_-_LESSON_13.pdf',
+            //     'https://res.cloudinary.com/larrytran/image/upload/v1649056390/file/1649056316812-sample.pdf',
+            // ]
+            var requests = investments.map((item) => {
+                return imageApi.downloadFileURL(item?.Contract?.contractUrl)
             })
             Promise.all(requests)
                 .then((responses) => {
@@ -105,7 +123,7 @@ export default function InvestorPage(props) {
                     <Grid item xs={12} md={3}>
                         <MiniStatisticsCard
                             title={{ text: 'Nhà đầu tư' }}
-                            count={investors + ' thành viên'}
+                            count={investments?.length + ' thành viên'}
                             // percentage={{ color: 'success', text: '+55%' }}
                             icon={{ color: 'success', component: 'people' }}
                         />
@@ -113,10 +131,7 @@ export default function InvestorPage(props) {
                 </Grid>
             </Box>
             <Box mb={3}>
-                <InvestorTable
-                    data={investments}
-                    currecurrentMoney={currentMoney}
-                />
+                <InvestorTable data={investments} currecurrentMoney={20000} />
             </Box>
         </>
     )

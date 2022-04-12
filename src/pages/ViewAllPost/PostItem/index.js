@@ -83,6 +83,12 @@ export default function PostItem(props) {
                             variant="button"
                             fontWeight="regular"
                             color="text"
+                            sx={{
+                                display: '-webkit-box',
+                                overflow: 'hidden',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: 1,
+                            }}
                         >
                             {loan.description
                                 ? loan.description

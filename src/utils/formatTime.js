@@ -15,23 +15,27 @@ export function fDate(date) {
 }
 
 export function fDateTime(date) {
-    return format(new Date(date), 'dd MM yyyy HH:mm')
+    return format(new Date(date), 'dd/MM/yyyy HH:mm')
 }
 
 export function fDateTimeSuffix(date) {
-    return format(new Date(date), 'dd/MM/yyyy hh:mm p')
+    if (date) {
+        return format(new Date(date), 'dd/MM/yyyy hh:mm p')
+    } else {
+        return ''
+    }
 }
 
 export function fToNow(date) {
     return formatDistanceToNow(new Date(date), {
         addSuffix: false,
-        locale: "vi-VN"
+        locale: 'vi-VN',
     })
 }
 
-export function fDateToNow(date){
+export function fDateToNow(date) {
     return formatDistanceToNowStrict(new Date(date), {
-        unit: "day",
+        unit: 'day',
         addSuffix: false,
     })
 }
@@ -40,7 +44,7 @@ export function fToNowNumber(date) {
     var day = new Date(date)
     var day2 = new Date()
     // var realValue = diff_months(day, day2)
-    return Math.floor((day-day2)/(24*3600*1000) + 1)
+    return Math.floor((day - day2) / (24 * 3600 * 1000) + 1)
 }
 
 // function diff_months(dt2, dt1) {
@@ -59,5 +63,5 @@ export function fDisplayDate(date) {
 
 export function fGetCurrentMonth() {
     var returnMonth = format(new Date(), 'YYYY-MM')
-    return "2022-02"
+    return '2022-02'
 }
