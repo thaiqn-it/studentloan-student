@@ -1,15 +1,24 @@
-import { defaultInstance } from ".";
+import { defaultInstance } from '.'
 
 const getStudentByUserId = (userId) => {
-  return defaultInstance.post(`/student/${userId}`);
-};
-
-const updateStudentInfo = ({ studentId, ...data }) => {
-  return defaultInstance.put(`/student/${studentId}`, data);
-};
-
-const getStudentProfile = () => {
-  return defaultInstance.get(`/student/profile`);
+    return defaultInstance.post(`/student/${userId}`)
 }
 
-export const studentApi = { getStudentByUserId, updateStudentInfo, getStudentProfile };
+const updateStudentInfo = ({ studentId, ...data }) => {
+    return defaultInstance.put(`/student/${studentId}`, data)
+}
+
+const getStudentProfile = () => {
+    return defaultInstance.get(`/student/profile`)
+}
+
+const createNewStudent = (data) => {
+    return defaultInstance.post('/student', data)
+}
+
+export const studentApi = {
+    getStudentByUserId,
+    updateStudentInfo,
+    getStudentProfile,
+    createNewStudent,
+}
