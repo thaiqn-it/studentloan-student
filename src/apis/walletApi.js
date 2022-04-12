@@ -6,4 +6,9 @@ const getWalletByUserId = () => {
     return defaultInstance.get(`/wallet`)
 }
 
-export const walletApi = { getWalletByUserId }
+const updateWalletById = (id, money) => {
+    loadToken()
+    return defaultInstance.put(`/wallet/${id}`, { money: money })
+}
+
+export const walletApi = { getWalletByUserId, updateWalletById }

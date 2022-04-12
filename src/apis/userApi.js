@@ -8,7 +8,7 @@ const login = (email, password) => {
 }
 
 const signUp = (data) => {
-    return defaultInstance.post('user', data)
+    return defaultInstance.post('/user', data)
 }
 
 const getUserById = (id) => {

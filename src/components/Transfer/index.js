@@ -13,15 +13,11 @@ import {
 import classes from './Transfer.module.css'
 import SuiInput from 'components/SuiInput'
 import { transactionApi } from 'apis/transactionApi'
+import { walletApi } from 'apis/walletApi'
 
-const transfer = async (email, amount) => {
-    try {
-        const res = await paypalApi.transfer({ email: email, amount: amount })
-    } catch (e) {}
-}
 
 export default function Transfer({ open, handleClose, walletId, reloadData }) {
-    const title = 'Rut Tien'
+    const title = 'Rút tiền'
 
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
@@ -49,6 +45,10 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                 paypalTransaction: res.data.payoutId,
             }
             const transactionRes = await transactionApi.createTransaction(data)
+            const walletRes = await walletApi.updateWalletById(
+                walletId,
+                -1 * money
+            )
             handleClose()
             reloadData()
             if (!res) throw new Error()

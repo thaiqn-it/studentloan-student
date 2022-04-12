@@ -16,6 +16,7 @@ import { transactionApi } from 'apis/transactionApi'
 import { PayPalButton } from 'react-paypal-button-v2'
 
 import { exchangeCurrency } from 'utils/concurencyExchange'
+import { walletApi } from 'apis/walletApi'
 
 const source = 'https://studentloanfpt.ddns.net'
 const TopUpModal = ({ open, onClose, url }) => {
@@ -73,7 +74,6 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
 
     const handleTopUpSuccess = async (paymentId) => {
         try {
-            console.log(paymentId)
             const data = {
                 money,
                 type: 'type',
@@ -88,7 +88,13 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
                 paypalTransaction: paymentId,
             }
             const res = await transactionApi.createTransaction(data)
-            if (!res) throw new Error(res)
+            console.log(res)
+            const walletUpdateRes = await walletApi.updateWalletById(
+                walletId,
+                money
+            )
+            console.log(walletUpdateRes)
+            if (!(res && walletUpdateRes)) throw new Error(res)
             setModalOpen(false)
             handleClose()
             reloadData()
@@ -101,8 +107,15 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
         setMoney(e.target.value)
     }
 
+    const exchange = async (money) => {
+        const value = await exchangeCurrency(money).then((x) =>
+            setUsd(x.toFixed(2))
+        )
+        return value
+    }
+
     useEffect(() => {
-        setUsd(exchangeCurrency(money).toFixed(2))
+        exchange(money)
     }, [money])
     return (
         <>
