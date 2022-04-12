@@ -82,7 +82,7 @@ function Transaction({
                     <Box
                         sx={{
                             display: 'flex',
-
+                            textAlign: 'right',
                             gap: '30px',
                         }}
                     >
@@ -96,7 +96,7 @@ function Transaction({
                                 {`${String(value).replace(
                                     /(\d)(?=(\d{3})+$)/g,
                                     '$1,'
-                                )} d`}
+                                )} đ`}
                             </SuiTypography>
                         </Box>
                     </Box>

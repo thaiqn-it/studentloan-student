@@ -21,7 +21,7 @@ export default function TransactionDetail({ transaction }) {
                         {/* <ContentPasteIcon /> */}
 
                         <SuiTypography variant="body2">
-                            Ma Giao Dich
+                            Mã giao dịch
                         </SuiTypography>
 
                         <SuiTypography variant="body2">
@@ -44,7 +44,7 @@ export default function TransactionDetail({ transaction }) {
                             {`${String(transaction?.money).replace(
                                 /(\d)(?=(\d{3})+$)/g,
                                 '$1,'
-                            )} d`}
+                            )} đ`}
                         </SuiTypography>
 
                         <SuiTypography variant="subtitle2">
@@ -80,14 +80,14 @@ export default function TransactionDetail({ transaction }) {
                             >
                                 <ContentPasteIcon />
                                 <SuiTypography variant="body2">
-                                    Phi giao dich
+                                    Phí giao dịch
                                 </SuiTypography>
                             </Box>
                             <SuiTypography color="error">
                                 {`${String(transaction?.transactionFee).replace(
                                     /(.)(?=(\d{3})+$)/g,
                                     '$1,'
-                                )} d`}
+                                )} đ`}
                             </SuiTypography>
                         </Box>
                         <Box
@@ -109,7 +109,7 @@ export default function TransactionDetail({ transaction }) {
                                 <ContentPasteIcon />
 
                                 <SuiTypography variant="body2">
-                                    Trang thai
+                                    Trạng thái
                                 </SuiTypography>
                             </Box>
 
@@ -142,7 +142,7 @@ export default function TransactionDetail({ transaction }) {
                                 {' '}
                                 <ContentPasteIcon />
                                 <SuiTypography variant="body2">
-                                    Nguon tien{' '}
+                                    Nguồn tiền
                                 </SuiTypography>
                             </Box>
 
@@ -169,7 +169,7 @@ export default function TransactionDetail({ transaction }) {
                                 <ContentPasteIcon />
 
                                 <SuiTypography variant="body2">
-                                    Nguoi Nhan
+                                    Người nhận
                                 </SuiTypography>
                             </Box>
 
@@ -177,7 +177,7 @@ export default function TransactionDetail({ transaction }) {
                                 {transaction?.recipientName}
                             </SuiTypography>
                         </Box>
-                        <SuiTypography>Noi dung giao dich</SuiTypography>
+                        <SuiTypography>Nội dung giao dịch</SuiTypography>
                         <Box sx={{ paddingLeft: '15px', marginTop: '5px' }}>
                             <SuiTypography variant="h5">
                                 {transaction?.description}

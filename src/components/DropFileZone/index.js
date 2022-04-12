@@ -1,97 +1,261 @@
-import React, { useRef, useState } from "react";
-import "./DropFileZone.css";
-import uploadImg from "../../assets/cloud-upload-regular-240.png";
+import React, { useEffect, useRef, useState } from 'react'
+import './DropFileZone.css'
+import uploadImg from '../../assets/cloud-upload-regular-240.png'
 // import { app } from "..//..//utils/Firebase";
-import { LinearProgress, Box } from "@mui/material";
+import { Box, IconButton, Link } from '@mui/material'
+import { imageApi } from '../../apis/imageApi'
+import SuiProgress from 'components/SuiProgress'
+
+import DeleteIcon from '@mui/icons-material/Delete'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
+import ImageModal from 'components/ImageModal'
+// import { Link } from 'react-router-dom'
 
 const DropFileInput = (props) => {
-  const [progress, setProgress] = useState(0);
-  const [url, setUrl] = useState("");
+    const {
+        elementId,
+        elementName,
+        onFileChangeURL,
+        flexEnd,
+        image = '',
+        onDelete,
+    } = props
 
-  const wrapperRef = useRef(null);
+    const [progress, setProgress] = useState(0)
 
-  const onDragEnter = () => wrapperRef.current.classList.add("dragover");
+    const wrapperRef = useRef(null)
 
-  const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
+    const onDragEnter = () => wrapperRef.current.classList.add('dragover')
 
-  const onDrop = () => wrapperRef.current.classList.remove("dragover");
+    const onDragLeave = () => wrapperRef.current.classList.remove('dragover')
 
-  const onFileDrop = (e) => {
-    const newFile = e.target.files[0];
-    if (newFile) {
-      connectFirebase(newFile);
+    const onDrop = () => wrapperRef.current.classList.remove('dragover')
+
+    const onFileDrop = (e) => {
+        const newFile = e.target.files
+
+        if (newFile) {
+            connectUploadCloud(newFile, e)
+        }
     }
-    const url = URL.createObjectURL(newFile);
-    props.onFileChangeURL(url);
-  };
 
-  const connectFirebase = (image) => {
-    const imageName = new Date().getTime() + "-" + image.name;
+    const singleFileOptions = {
+        onUploadProgress: (progressEvent) => {
+            const { loaded, total } = progressEvent
+            const percentage = Math.floor(
+                ((loaded / 1000) * 100) / (total / 1000)
+            )
+            setProgress(percentage - 10)
+        },
+    }
 
-    // const uploadTask = app.storage().ref(`images/${imageName}`).put(image);
-    // uploadTask.on(
-    //   "state_changed",
-    //   (snapshot) => {
-    //     const progress = Math.round(
-    //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //     );
-    //     setProgress(progress);
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   },
-    //   () => {
-    //     app
-    //       .storage()
-    //       .ref("images")
-    //       .child(imageName)
-    //       .getDownloadURL()
-    //       .then((newUrl) => {
-    //         setUrl(newUrl);
-    //         props.onFileChangeURL(newUrl);
-    //       });
-    //   }
-    // );
-  };
+    const connectUploadCloud = async (imageFile, event) => {
+        setProgress(1)
+        const formData = new FormData()
+        for (let i = 0; i < imageFile.length; i++) {
+            formData.append(`file`, imageFile[i])
+        }
+        await imageApi
+            .uploadImageWithProg(formData, singleFileOptions)
+            .then((res) => {
+                setUrl(res.data.url)
+                setProgress(100)
+                onFileChangeURL(res.data.url, event)
+                setProgress(0)
+            })
+            .catch((err) => {
+                setProgress(0)
+            })
+    }
 
-  if (progress === 0 || progress === 100) {
-    return (
-      <>
-        <div
-          ref={wrapperRef}
-          className="drop-file-input"
-          onDragEnter={onDragEnter}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-        >
-          <div className="drop-file-input__label">
-            <img src={uploadImg} alt="" />
-            <p>Drag & Drop your files here</p>
-          </div>
-          <input type="file" value="" onChange={onFileDrop} />
-        </div>
-      </>
-    );
-  } else {
-      return (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              height: "300px",
-              marginTop: "1rem",
-              backgroundColor: "#fbfbfa",
-            }}
-          >
-            <Box sx={{ width: "100%", mr: 1 }}>
-              <LinearProgress variant="determinate" value={progress} />
-            </Box>
-          </Box>
-        </>
-      );
-    // }
-  }
-};
+    const handleDelete = () => {
+        setUrl('')
+        setProgress(0)
+        onDelete(elementName)
+    }
 
-export default DropFileInput;
+    if (image !== '' && progress === 0) {
+        return (
+            <>
+                <Box display="flex" justifyContent={flexEnd || 'flex-end'}>
+                    <Box
+                        sx={{
+                            px: 1.2,
+                            pt: 1.2,
+                            boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
+                            // width: '100%',
+                            width: 'fit-content',
+                            // width: '100%',
+                        }}
+                    >
+                        {image.indexOf('.pdf') !== -1 ? (
+                            <iframe
+                                src={image}
+                                style={{
+                                    width: '100%',
+                                    height: '360px',
+                                    border: 'none',
+                                }}
+                            ></iframe>
+                        ) : (
+                            <ImageModal
+                                component="img"
+                                image={image}
+                                sx={{
+                                    borderRadius: 0,
+                                    margin: 0,
+                                    cursor: 'pointer',
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                }}
+                            />
+                        )}
+
+                        <>
+                            <IconButton
+                                aria-label="fileuploan"
+                                component="span"
+                                size="medium"
+                                onClick={handleDelete}
+                            >
+                                <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                            <label htmlFor={elementId}>
+                                <input
+                                    type="file"
+                                    accept="image/jpeg,image/png,application/pdf"
+                                    id={elementId}
+                                    name={elementName}
+                                    onChange={onFileDrop}
+                                    hidden
+                                />
+                                <IconButton
+                                    aria-label="fileuploan"
+                                    component="span"
+                                    size="medium"
+                                >
+                                    <FileUploadIcon fontSize="inherit" />
+                                </IconButton>
+                            </label>
+                        </>
+                    </Box>
+                </Box>
+            </>
+        )
+    } else {
+        return (
+            <>
+                {progress === 100 ? (
+                    <Box display="flex" justifyContent={flexEnd || 'flex-end'}>
+                        <Box
+                            sx={{
+                                px: 1.2,
+                                pt: 1.2,
+                                // pb: 4,
+                                boxShadow: '0 2px 6px 0 rgb(0 0 0 / 17%)',
+                                width: 'fit-content',
+                            }}
+                        >
+                            {image.indexOf('.pdf') !== -1 ? (
+                                <iframe
+                                    src={image}
+                                    style={{
+                                        width: '100%',
+                                        height: '360px',
+                                        border: 'none',
+                                    }}
+                                ></iframe>
+                            ) : (
+                                <ImageModal
+                                    component="img"
+                                    image={image}
+                                    sx={{
+                                        borderRadius: 0,
+                                        margin: 0,
+                                        cursor: 'pointer',
+                                        maxWidth: '100%',
+                                        height: 'auto',
+                                    }}
+                                />
+                            )}
+                            <>
+                                <IconButton
+                                    aria-label="fileuploan"
+                                    component="span"
+                                    size="medium"
+                                    onClick={handleDelete}
+                                >
+                                    <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                                <label htmlFor={elementId}>
+                                    <input
+                                        type="file"
+                                        accept="image/jpeg,image/png,application/pdf"
+                                        id={elementId}
+                                        name={elementName}
+                                        onChange={onFileDrop}
+                                        hidden
+                                    />
+                                    <IconButton
+                                        aria-label="fileuploan"
+                                        component="span"
+                                        size="medium"
+                                    >
+                                        <FileUploadIcon fontSize="inherit" />
+                                    </IconButton>
+                                </label>
+                            </>
+                        </Box>
+                    </Box>
+                ) : progress === 0 ? (
+                    <div
+                        ref={wrapperRef}
+                        className="drop-file-input"
+                        onDragEnter={onDragEnter}
+                        onDragLeave={onDragLeave}
+                        onDrop={onDrop}
+                    >
+                        <div className="drop-file-input__label">
+                            <img src={uploadImg} alt="" />
+                            <p>Drag & Drop your files here</p>
+                        </div>
+                        <input
+                            type="file"
+                            accept="image/jpeg,image/png,application/pdf"
+                            id={elementId}
+                            name={elementName}
+                            onChange={onFileDrop}
+                        />
+                    </div>
+                ) : (
+                    <Box display="flex" flexDirection="column">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                height: '300px',
+                                marginTop: '1rem',
+                                backgroundColor: '#fbfbfa',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    mr: 1,
+                                }}
+                            >
+                                <SuiProgress
+                                    variant="determinate"
+                                    value={progress}
+                                    color="primary"
+                                />
+                            </Box>
+                        </Box>
+                    </Box>
+                )}
+            </>
+        )
+    }
+}
+
+export default DropFileInput

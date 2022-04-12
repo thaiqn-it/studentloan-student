@@ -19,32 +19,39 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { useAuthState } from 'context/authContext'
-import { accountApi } from 'apis/accountApi'
+import { walletApi } from 'apis/walletApi'
 import { transactionApi } from 'apis/transactionApi'
 import { useEffect } from 'react'
 import TopUp from 'components/TopUp'
 import Transfer from 'components/Transfer'
 
-const demoData = []
-
 const Wallet = () => {
     const [wallet, setWallet] = useState({})
+
     const userObj = useAuthState()
+    // const [transactions, setTransactions] = useState()
+    const [transactionsList, setTransactionsList] = useState()
+    const [selectedTransaction, setSelectedTransaction] = useState()
+    const [topUpOpen, setTopUpOpen] = useState(false)
+
+    const [transfer, setTransfer] = useState(false)
 
     const initData = async () => {
         try {
             const userId = userObj.userId
 
-            const walletRes = await accountApi.getWalletByUserId(userId)
+            const walletRes = await walletApi.getWalletByUserId(userId)
             const wallet = walletRes.data
             setWallet(wallet)
             const transactionRes =
                 await transactionApi.getTransactionByWalletId(wallet.id)
-            const transactions = transactionRes.data
+            const trans = transactionRes.data
 
-            setTransactions(transactions)
-            setSelectedTransaction(transactions[0].transactions[0])
-        } catch (e) {}
+            setTransactionsList(trans)
+            setSelectedTransaction(trans[0].transaction[0])
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     const getTransactionsByDate = async () => {
@@ -57,15 +64,15 @@ const Wallet = () => {
         } catch (e) {}
     }
 
-    const [transactions, setTransactions] = useState(demoData)
-    const [selectedTransaction, setSelectedTransaction] = useState()
-    const [topUpOpen, setTopUpOpen] = useState(false)
-
-    const [transfer, setTransfer] = useState(false)
+    const formattedBalance = `${String(wallet?.money).replace(
+        /(\d)(?=(\d{3})+$)/g,
+        '$1,'
+    )} đ`
 
     const handleTransactionClick = (id, date) => {
-        const group = transactions.find((trans) => trans.date === date)
-        const transaction = group.transactions.find((trans) => trans.id === id)
+        const group = transactionsList.find((trans) => trans.date === date)
+
+        const transaction = group.transaction.find((trans) => trans.id === id)
 
         setSelectedTransaction(transaction)
     }
@@ -80,20 +87,40 @@ const Wallet = () => {
                 <SuiBox mb={3} sx={{ marginTop: '20px' }}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6} xl={3}>
-                            <MiniStatisticsCard
-                                title={{ text: 'So Tien Trong Vi' }}
-                                count={`${String(wallet?.money).replace(
-                                    /(\d)(?=(\d{3})+$)/g,
-                                    '$1,'
-                                )} d`}
-                                // percentage={{ color: 'success', text: '+55%' }}
-                                icon={{ color: 'info', component: 'paid' }}
-                            />
+                            <Card>
+                                <SuiBox variant="gradient">
+                                    <SuiBox p={2}>
+                                        <Grid container alignItems="center">
+                                            <Grid item xs={8}>
+                                                <SuiBox ml={0} lineHeight={1}>
+                                                    <SuiTypography
+                                                        variant="button"
+                                                        color={'text'}
+                                                        opacity={1}
+                                                        textTransform="capitalize"
+                                                    >
+                                                        Số tiền trong ví
+                                                    </SuiTypography>
+                                                    <Box>
+                                                        <SuiTypography
+                                                            variant="h5"
+                                                            fontWeight="bold"
+                                                            color={'dark'}
+                                                        >
+                                                            {formattedBalance}
+                                                        </SuiTypography>
+                                                    </Box>
+                                                </SuiBox>
+                                            </Grid>
+                                        </Grid>
+                                    </SuiBox>
+                                </SuiBox>
+                            </Card>
                         </Grid>
                         <Grid item xs={12} sm={6} xl={3}>
                             <Box onClick={() => setTopUpOpen(true)}>
                                 <MiniStatisticsCard
-                                    title={{ text: 'Nap Tien' }}
+                                    title={{ text: 'Nạp tiền' }}
                                     // percentage={{ color: 'success', text: '+55%' }}
                                     icon={{ color: 'info', component: 'paid' }}
                                 />
@@ -103,12 +130,13 @@ const Wallet = () => {
                                 open={topUpOpen}
                                 handleClose={() => setTopUpOpen(false)}
                                 reloadData={initData}
+                                walletId={wallet.id}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} xl={3}>
                             <Box onClick={() => setTransfer(true)}>
                                 <MiniStatisticsCard
-                                    title={{ text: 'Rut Tien' }}
+                                    title={{ text: 'Rut tiền' }}
                                     // percentage={{ color: 'success', text: '+55%' }}
                                     icon={{ color: 'info', component: 'paid' }}
                                 />
@@ -118,7 +146,7 @@ const Wallet = () => {
                                 open={transfer}
                                 handleClose={() => setTransfer(false)}
                                 reloadData={initData}
-                                accountId={wallet.id}
+                                walletId={wallet.id}
                             />
                         </Grid>
                         {/* <Grid item xs={12} sm={6} xl={3}>
@@ -153,9 +181,9 @@ const Wallet = () => {
             <SuiBox mb={3}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={7}>
-                        {transactions && (
+                        {transactionsList && (
                             <Transactions
-                                data={transactions}
+                                data={transactionsList}
                                 handleClick={handleTransactionClick}
                                 selectedTransaction={selectedTransaction}
                             />
@@ -237,9 +265,9 @@ const Wallet = () => {
                             />
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={7}>
+                    {/* <Grid item xs={12} md={7}>
                         <BillingInformation />
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </SuiBox>
         </>

@@ -20,10 +20,16 @@ export const loginUser = async (dispatch, email, password) => {
         const student = data.Student
         dispatch({
             type: USER_REDUCER_ACTION.LOGIN_SUCCESS,
-            payload: { userId: data.id, studentId: student.id, token: token },
+            payload: {
+                userId: data.id,
+                studentId: student.id,
+                token: token,
+                error: null,
+            },
         })
         return user
     } catch (err) {
+
         dispatch({
             type: USER_REDUCER_ACTION.LOGIN_FAILED,
             payload: { error: err },

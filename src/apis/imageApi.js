@@ -7,4 +7,12 @@ const uploadImage = (formData) => {
     })
 }
 
-export const imageApi = { uploadImage }
+const uploadImageWithProg = (formData, options) => {
+    return defaultInstance.post('/image/upload', formData, options)
+}
+
+const downloadFileURL = (url) => {
+    return defaultInstance.get(url, { responseType: 'blob' })
+}
+
+export const imageApi = { uploadImage, uploadImageWithProg, downloadFileURL }

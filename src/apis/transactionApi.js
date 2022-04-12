@@ -5,7 +5,7 @@ const getTransactionsByUserId = (userId) => {
 }
 
 const getTransactionByWalletId = (walletId) => {
-    return defaultInstance.get(`/transaction/account/${walletId}`)
+    return defaultInstance.get(`/transaction/wallet/${walletId}`)
 }
 
 const createTransaction = (data) => {

@@ -4,4 +4,8 @@ const createTutor = (data) => {
     return defaultInstance.post('/tutor', data)
 }
 
-export const tutorApi = { createTutor }
+const getTutorById = (id) => {
+    return defaultInstance.get(`/tutor/${id}`)
+}
+
+export const tutorApi = { createTutor,getTutorById }

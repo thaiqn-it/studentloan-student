@@ -36,6 +36,8 @@ import { loginUser } from 'context/userAction.js'
 import { useHistory } from 'react-router-dom'
 import { useAuthDispatch } from 'context/authContext'
 
+import LoginImage from "assets/loginImage.svg"
+
 function SignIn() {
     const [rememberMe, setRememberMe] = useState(true)
 
@@ -53,7 +55,7 @@ function SignIn() {
 
             const response = await loginUser(dispatch, email, password)
             if (!response.data.id) return setError(errorMessage)
-            history.push('/dashboard')
+            history.push('/trang-chu')
         } catch (err) {
             //handle Login
             setError(true)
@@ -70,9 +72,10 @@ function SignIn() {
 
     return (
         <CoverLayout
+        color="dark"
             title="Đăng Nhập"
             description="Xin hãy nhập email và mật khẩu để đăng nhập"
-            image={curved9}
+            image={LoginImage}
         >
             <SuiBox component="form" role="form" onSubmit={signIn}>
                 <SuiBox mb={2}>
@@ -140,9 +143,8 @@ function SignIn() {
                 </SuiBox>
                 <SuiBox mt={4} mb={1}>
                     <SuiButton
-                        variant="gradient"
                         type="submit"
-                        color="info"
+                        color="primary"
                         fullWidth
                         onClick={signIn}
                     >
@@ -160,9 +162,8 @@ function SignIn() {
                             component={Link}
                             to="/authentication/sign-up"
                             variant="button"
-                            color="info"
+                            color="primary"
                             fontWeight="medium"
-                            textGradient
                         >
                             Đăng kí
                         </SuiTypography>
