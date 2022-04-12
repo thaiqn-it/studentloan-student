@@ -29,12 +29,8 @@ function App() {
     }, [])
 
     onMessageListener()
-        .then((payload) => {
-            console.log('have payload', payload)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        .then((payload) => {})
+        .catch((err) => {})
 
     return (
         <AuthProvider>
