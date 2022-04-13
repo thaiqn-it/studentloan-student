@@ -8,7 +8,16 @@ import { fDisplayDate } from 'utils/formatTime'
 import DropFileZone from '../../../../components/DropFileZone'
 
 export default function PaperInformation(props) {
-    const { tutor } = props
+    const { tutor, onChangeTutorInfo } = props
+    const onChange = (e) => {
+        onChangeTutorInfo(e)
+    }
+    const onFileChangeURL = (newUrl, event) => {
+        onChangeTutorInfo(null, event.target.name, newUrl)
+    }
+    const onDelete = (id) => {
+        onChangeTutorInfo(null, id, "")
+    }
     return (
         <>
             <Box>
@@ -42,8 +51,10 @@ export default function PaperInformation(props) {
                                                 Số CMND/CCCD
                                             </SuiTypography>
                                             <SuiInput
-                                                type="text"
+                                                type="number"
                                                 placeholder="Số CMND"
+                                                onChange={onChange}
+                                                name="citizenId"
                                                 value={tutor?.citizenId}
                                             />
                                         </Grid>
@@ -57,6 +68,8 @@ export default function PaperInformation(props) {
                                             <SuiInput
                                                 type="date"
                                                 placeholder="Ngày cấp"
+                                                onChange={onChange}
+                                                name="citizenCardCreatedDate"
                                                 value={fDisplayDate(
                                                     tutor?.citizenCardCreatedDate
                                                 )}
@@ -72,6 +85,8 @@ export default function PaperInformation(props) {
                                             <SuiInput
                                                 type="text"
                                                 placeholder="Nơi cấp"
+                                                onChange={onChange}
+                                                name="citizenCardCreatedPlace"
                                                 value={
                                                     tutor?.citizenCardCreatedPlace
                                                 }
@@ -88,11 +103,18 @@ export default function PaperInformation(props) {
                                         Mặt trước CMND/CCCD
                                     </SuiTypography>
                                     <DropFileZone
+                                        elementId="frontCitizenCardImageUrl"
+                                        elementName="frontCitizenCardImageUrl"
+                                        flexEnd="flex-start"
                                         image={
                                             tutor?.frontCitizenCardImageUrl
                                                 ? tutor.frontCitizenCardImageUrl
                                                 : ''
                                         }
+                                        onFileChangeURL={(url, event) =>
+                                            onFileChangeURL(url, event)
+                                        }
+                                        onDelete={onDelete}
                                     />
                                 </Grid>
 
@@ -105,11 +127,18 @@ export default function PaperInformation(props) {
                                         Mặt sau CMND/CCCD
                                     </SuiTypography>
                                     <DropFileZone
+                                        elementId="backCitizenCardImageUrl"
+                                        elementName="backCitizenCardImageUrl"
+                                        flexEnd="flex-start"
                                         image={
                                             tutor?.backCitizenCardImageUrl
                                                 ? tutor.backCitizenCardImageUrl
                                                 : ''
                                         }
+                                        onFileChangeURL={(url, event) =>
+                                            onFileChangeURL(url, event)
+                                        }
+                                        onDelete={onDelete}
                                     />
                                 </Grid>
                             </Grid>

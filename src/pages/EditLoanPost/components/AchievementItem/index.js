@@ -18,7 +18,7 @@ export default function AchievementItem(props) {
             <Box sx={{ marginBottom: 5 }} id={id}>
                 <SuiInput
                     value={description}
-                    disabled="true"
+                    disabled
                     icon={{
                         component: (
                             <EditIcon

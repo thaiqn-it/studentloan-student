@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -12,23 +11,49 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SuiTypography from 'components/SuiTypography'
-
-function createData(name, birthDate, phoneNumber, address, relation) {
-    return { name, birthDate, phoneNumber, address, relation }
-}
-
-const rows = [
-    createData(
-        'Nguyễn Văn A',
-        '02/05/1970',
-        '0794485000',
-        '123 Song Hành, Trung Mỹ Tay, Quận 12 123 Song Hành, Trung Mỹ Tay, Quận 12 123 Song Hành, Trung Mỹ Tay, Quận 12',
-        'Cha'
-    ),
-]
+import { fDisplayDate } from 'utils/formatTime'
+import { renderTutorStatus } from 'utils/renderStatus'
+import { useState } from 'react'
+import ComfirmDelete from 'components/ComfirmDelete'
+import { tutorApi } from 'apis/tutorApi'
+import { set } from 'date-fns'
 
 export default function TutorTableCard(props) {
-    const {tutorInfo} = props
+    const { tutorInfo, deleteTutor } = props
+
+    const [openComfirm, setOpenConfirm] = useState(false)
+    const [deleteValue, setDeleteValue] = useState(null)
+
+    const renderStatusButton = (status) => {
+        var objectStatus = renderTutorStatus(status)
+
+        return (
+            <SuiTypography color={objectStatus.color} variant="caption">
+                {objectStatus.message}
+            </SuiTypography>
+        )
+    }
+
+    const handleOpenDelete = (id) => {
+        setDeleteValue(id)
+        setOpenConfirm(true)
+    }
+
+    const handleClose = () => {
+        setOpenConfirm(false)
+    }
+
+    const handleDelete = (value) => {
+        tutorApi
+            .deleteTutor(value)
+            .then((res) => {
+                setOpenConfirm(false)
+                deleteTutor()
+            })
+            .catch((err) => {
+                setOpenConfirm(false)
+            })
+    }
 
     return (
         <>
@@ -36,31 +61,44 @@ export default function TutorTableCard(props) {
                 display="flex"
                 sx={{ justifyContent: 'space-between', alignItem: 'center' }}
             >
-                <SuiTypography variant="h4" fontWeight="regular" color="black" my={2}>
+                <SuiTypography
+                    variant="h4"
+                    fontWeight="regular"
+                    color="black"
+                    my={2}
+                >
                     Thông tin người giám hộ
                 </SuiTypography>
-                <IconButton aria-label="delete" size="medium" href="/trang-chu/nguoi-giam-ho/tao">
-                    <AddCircleIcon fontSize="medium" color="black" /> <SuiTypography variant="button" color="black">Thêm thông tin người giám hộ</SuiTypography>
+                <IconButton
+                    aria-label="delete"
+                    size="medium"
+                    href="/trang-chu/nguoi-giam-ho/tao"
+                >
+                    <AddCircleIcon fontSize="medium" color="black" />{' '}
+                    <SuiTypography variant="button" color="black">
+                        Thêm thông tin người giám hộ
+                    </SuiTypography>
                 </IconButton>
             </Box>
             <Paper elevation={3} sx={{ borderRadius: '10px' }}>
                 <ThemeProvider theme={theme}>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead >
+                            <TableHead>
                                 <TableRow>
                                     <TableCell>Họ tên</TableCell>
                                     <TableCell>Ngày sinh</TableCell>
                                     <TableCell>Số điện thoại</TableCell>
                                     <TableCell width="40%">Địa chỉ</TableCell>
                                     <TableCell>Quan hệ</TableCell>
+                                    <TableCell>Trạng thái</TableCell>
                                     <TableCell align="center"></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {tutorInfo?.map((row) => (
                                     <TableRow
-                                        key={row.name}
+                                        key={row.id}
                                         sx={{
                                             '&:last-child td, &:last-child th':
                                                 {
@@ -71,21 +109,29 @@ export default function TutorTableCard(props) {
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
-                                        <TableCell>{row.birthday}</TableCell>
+                                        <TableCell>
+                                            {fDisplayDate(row.birthday)}
+                                        </TableCell>
                                         <TableCell>{row.phone}</TableCell>
                                         <TableCell>{row.address}</TableCell>
                                         <TableCell>{row.relation}</TableCell>
+                                        <TableCell>
+                                            {renderStatusButton(row.status)}
+                                        </TableCell>
                                         <TableCell align="center">
                                             <IconButton
                                                 aria-label="delete"
                                                 size="small"
-                                                href={`/dashboard/tutor/${row.id}`}
+                                                href={`/trang-chu/nguoi-giam-ho/${row.id}`}
                                             >
                                                 <EditIcon fontSize="small" />
                                             </IconButton>
                                             <IconButton
                                                 aria-label="delete"
                                                 size="small"
+                                                onClick={() =>
+                                                    handleOpenDelete(row.id)
+                                                }
                                             >
                                                 <DeleteIcon fontSize="small" />
                                             </IconButton>
@@ -96,7 +142,23 @@ export default function TutorTableCard(props) {
                         </Table>
                     </TableContainer>
                 </ThemeProvider>
+                <ComfirmDelete
+                    open={openComfirm}
+                    handleClose={handleClose}
+                    title="người giám hộ"
+                    handleDelete={handleDelete}
+                    value={deleteValue}
+                />
             </Paper>
+            {tutorInfo?.length === 0 ? (
+                <SuiTypography
+                    variant="caption"
+                    fontWeight="regular"
+                    color="error"
+                >
+                    Thông tin người giám hộ không được để trống
+                </SuiTypography>
+            ) : null}
         </>
     )
 }

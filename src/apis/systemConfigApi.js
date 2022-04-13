@@ -1,7 +1,7 @@
 import { defaultInstance } from ".";
 
-const getInterest = () => {
-  return defaultInstance.get("/config/interest");
+const getFee = () => {
+  return defaultInstance.get("/config/getOne");
 };
 
-export const systemConfigApi = { getInterest };
+export const systemConfigApi = { getFee };

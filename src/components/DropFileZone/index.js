@@ -33,11 +33,27 @@ const DropFileInput = (props) => {
 
     const onFileDrop = (e) => {
         const newFile = e.target.files
-
-        if (newFile) {
+        if (newFile && isValidInputFiles(newFile)) {
             connectUploadCloud(newFile, e)
         }
     }
+
+    const isValidInputFiles = (files) => {
+        var flag = true;
+        if (files) {
+          for (var i = 0; i < files.length; i++) {
+            if (
+              files[i].type !== "application/pdf" &&
+              files[i].type !== "image/png" &&
+              files[i].type !== "image/jpeg"
+            ) {
+              flag = false;
+            }
+          }
+        }
+    
+        return flag;
+      };
 
     const singleFileOptions = {
         onUploadProgress: (progressEvent) => {
@@ -58,7 +74,6 @@ const DropFileInput = (props) => {
         await imageApi
             .uploadImageWithProg(formData, singleFileOptions)
             .then((res) => {
-                setUrl(res.data.url)
                 setProgress(100)
                 onFileChangeURL(res.data.url, event)
                 setProgress(0)
@@ -69,9 +84,8 @@ const DropFileInput = (props) => {
     }
 
     const handleDelete = () => {
-        setUrl('')
         setProgress(0)
-        onDelete(elementName)
+        onDelete(elementId)
     }
 
     if (image !== '' && progress === 0) {
@@ -245,7 +259,7 @@ const DropFileInput = (props) => {
                                 }}
                             >
                                 <SuiProgress
-                                    variant="determinate"
+                                    variant="contained"
                                     value={progress}
                                     color="primary"
                                 />

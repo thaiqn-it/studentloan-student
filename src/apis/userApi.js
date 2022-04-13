@@ -40,7 +40,7 @@ const getStudentProfile = () => {
 }
 
 const updateUser = (data) => {
-    return defaultInstance.put('/', data)
+    return defaultInstance.put('/user/', data)
 }
 
 export const userApi = {

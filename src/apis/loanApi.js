@@ -16,4 +16,8 @@ const getLoanStudent = () => {
     return defaultInstance.get(`/loan/student`)
 }
 
-export const loanApi = { createLoanPost, getLoanById, getLoanStudent }
+const updateLoanPost = (id,type, data) => {
+    return defaultInstance.put(`/loan/${id}/${type}`, data)
+}
+
+export const loanApi = { createLoanPost, getLoanById, getLoanStudent, updateLoanPost }
