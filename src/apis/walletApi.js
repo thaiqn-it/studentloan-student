@@ -11,4 +11,8 @@ const updateWalletById = (id, money) => {
     return defaultInstance.put(`/wallet/${id}`, { money: money })
 }
 
-export const walletApi = { getWalletByUserId, updateWalletById }
+const repayment = (data) =>{
+    return defaultInstance.post(`/wallet/repayment/`, data)
+}
+
+export const walletApi = { getWalletByUserId, updateWalletById, repayment }

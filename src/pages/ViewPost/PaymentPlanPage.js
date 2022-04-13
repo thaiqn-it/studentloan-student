@@ -9,6 +9,8 @@ import SuiButton from 'components/SuiButton'
 import Repayment from '../Repayment/OTP'
 import Loading from 'components/Loading'
 
+import moment from 'moment'
+
 import { loanScheduleApi } from 'apis/loanScheduleApi'
 
 export default function PaymentPlanPage() {
@@ -20,57 +22,59 @@ export default function PaymentPlanPage() {
 
     useEffect(() => {
         setIsLoading(true)
+        fetchData()
+    }, [])
+
+    const fetchData = () => {
         loanScheduleApi
             .getLoanScheduleByLoanId(id)
             .then((res) => {
                 setLoanSchedules(res.data)
                 setIsLoading(false)
-                console.log(res.data)
             })
             .catch((err) => {
                 setIsLoading(false)
             })
-    }, [])
+    }
 
     const onHandleAction = (item) => {
         var path = `/trang-chu/thanh-toan/${item.id}`
         history.push(path)
     }
 
-    const handleClose = () => {
-        setOpenPayment(false)
-    }
+    const buttonPayment = (
+        <Box
+            display="flex"
+            justifyContent="flex-end"
+            onClick={() => onHandleAction(item)}
+        >
+            <SuiButton color="warning" variant="gradient" size="small">
+                Thanh toán
+            </SuiButton>
+        </Box>
+    )
 
-    const actionButton = (item) => {
-        return (
-            <>
-                <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    onClick={() => onHandleAction(item)}
-                >
-                    <SuiButton color="warning" variant="gradient" size="small">
-                        Thanh toán
-                    </SuiButton>
-                </Box>
-            </>
-        )
-    }
-
-    const itemStatue = (item) => {
+    const itemLoanSchedule = (item) => {
+        console.log('true')
         var statusObject = {
             color: 'warning',
             action: false,
         }
+
+        var now = moment(new Date()).format('DD/MM/YYYY')
+        var startDate = moment(item.startAt).format('DD/MM/YYYY')
+        var endDate = moment(item.endAt).format('DD/MM/YYYY')
+
+        var check = moment(now).isBetween(startDate, endDate)
         switch (item.status) {
             case 'ONGOING':
                 statusObject.color = 'warning'
-                statusObject.action = actionButton(item)
+                statusObject.action = check && buttonPayment
                 break
-            case 'COMPLETE':
+            case 'COMPLETED':
                 statusObject.color = 'success'
                 break
-            case 'INCOMPLETE':
+            case 'INCOMPLETED':
                 statusObject.color = 'error'
                 break
         }
@@ -78,10 +82,10 @@ export default function PaymentPlanPage() {
         return (
             <TimelineItem
                 key={item.id}
-                color="warning"
+                color={statusObject.color}
                 icon="paid"
-                title="12/2022"
-                dateTime="12/12/2022"
+                title="Thanh toán kỳ hạn"
+                dateTime={moment(item.startAt).format('DD/MM/YYYY').toString()}
                 information={
                     <>
                         <SuiTypography
@@ -89,7 +93,7 @@ export default function PaymentPlanPage() {
                             fontWeight="regular"
                             color="text"
                         >
-                            Số tiền: 200.000
+                            Số tiền: {item?.money}
                         </SuiTypography>
                         <Box>
                             <SuiTypography
@@ -124,7 +128,7 @@ export default function PaymentPlanPage() {
             <Box mb={3} p={3}>
                 <Container maxWidth="sm">
                     <TimelineList title="">
-                        {loanSchedules?.map((item) => itemStatue(item))}
+                        {loanSchedules?.map((item) => itemLoanSchedule(item))}
                     </TimelineList>
                 </Container>
             </Box>

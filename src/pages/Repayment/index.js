@@ -1,18 +1,29 @@
 import { Box, Card, Container, Divider, Grid, Paper } from '@mui/material'
 import { loanScheduleApi } from 'apis/loanScheduleApi'
+import { investmentApi } from 'apis/investmentApi'
+import { walletApi } from 'apis/walletApi'
 import OTPBox from 'components/OTPBox'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { fCurrency } from 'utils/formatNumber'
 import { fDateTimeSuffix } from 'utils/formatTime'
 
 export default function Repayment() {
     const { id } = useParams()
+    const history = useHistory()
     const [loanschedule, setLoanSchedule] = useState(null)
+    const [investments, setInvestments] = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
     useEffect(() => {
+        setLoading(true)
+        getLoanSchedule()
+    }, [])
+
+    const getLoanSchedule = () => {
         loanScheduleApi
             .getLoanScheduleById(id)
             .then((res) => {
@@ -31,12 +42,45 @@ export default function Repayment() {
                         money: Number(loanScheduleItem.money),
                     }
                 }
-                console.log(temp)
                 setLoanSchedule(temp)
+                getInvesment(temp.loanId)
             })
-            .catch((err) => {})
-    }, [])
+            .catch((err) => {
+                setLoading(false)
+            })
+    }
 
+    const getInvesment = (loanId) => {
+        investmentApi
+            .getInvestmentByLoanId(loanId)
+            .then((res) => {
+                setInvestments(res.data)
+
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+            })
+    }
+
+    const handleCancel = () => {
+        history.push(`/trang-chu/ho-so/xem/${loanschedule.loanId}`)
+    }
+
+    const handleConfirm = () => {
+        setLoading(true)
+        walletApi
+            .repayment({ loanschedule, investments })
+            .then((res) => {
+                setLoading(false)
+                if (res.data !== null) {
+                    history.push('/trang-chu/profile2/wallet')
+                }
+            })
+            .catch((err) => {
+                setLoading(false)
+            })
+    }
     return (
         <>
             <SuiTypography
@@ -194,10 +238,16 @@ export default function Repayment() {
                     alignItems="center"
                     mt={5}
                 >
-                    <SuiButton color="secondary" sx={{ mr: 3 }}>
+                    <SuiButton
+                        color="secondary"
+                        sx={{ mr: 3 }}
+                        onClick={handleCancel}
+                    >
                         Hủy bỏ
                     </SuiButton>
-                    <SuiButton color="primary">Xác nhận</SuiButton>
+                    <SuiButton color="primary" onClick={handleConfirm}>
+                        Xác nhận
+                    </SuiButton>
                 </Box>
             </Container>
             {/* <OTPBox /> */}

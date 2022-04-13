@@ -76,6 +76,13 @@ export default function ViewPost() {
                 description={item.description}
                 badges={[item.type]}
                 lastItem={isLastItem}
+                information={
+                    <>
+                        {item.LoanHistoryImages.map((item) => (
+                            <SuiTypography>hihi</SuiTypography>
+                        ))}
+                    </>
+                }
             />
         )
     }
@@ -128,14 +135,19 @@ export default function ViewPost() {
                                         <Grid item xs={12} md={3}>
                                             <Grid container spacing={1}>
                                                 <Grid item xs="12" md="12">
-                                                    <SuiProgress
-                                                        value={fProgress(
-                                                            loan.AccumulatedMoney,
-                                                            loan.totalMoney
-                                                        )}
-                                                        label
-                                                        color="primary"
-                                                    />
+                                                    <Box width="100%">
+                                                        <SuiProgress
+                                                            value={fProgress(
+                                                                loan.AccumulatedMoney,
+                                                                loan.totalMoney
+                                                            )}
+                                                            label
+                                                            color="primary"
+                                                            sx={{
+                                                                width: '100%',
+                                                            }}
+                                                        />
+                                                    </Box>
                                                 </Grid>
                                                 <Grid
                                                     item
@@ -312,7 +324,7 @@ export default function ViewPost() {
                                         multiline
                                         placeholder="Mô tả..."
                                         name="description"
-                                        value={loan.description}
+                                        value={loan.description || ''}
                                         disabled
                                     />
                                 </Box>
@@ -351,9 +363,17 @@ export default function ViewPost() {
                                     <Grid container spacing={3}>
                                         {loan?.Student?.Archievements.map(
                                             (item) => (
-                                                <Grid item xs={12} md={6}>
+                                                <Grid
+                                                    item
+                                                    xs={12}
+                                                    md={6}
+                                                    key={item.id}
+                                                >
                                                     <SuiInput
-                                                        value={item.description}
+                                                        value={
+                                                            item.description ||
+                                                            ''
+                                                        }
                                                         disabled
                                                     />
                                                     <ImageCard
@@ -379,7 +399,7 @@ export default function ViewPost() {
                         investors={loan.InvestorCount}
                     />
                 ) : null}
-                {currentTab === '3' ? <ReportPage /> : null}
+                {/* {currentTab === '3' ? <ReportPage /> : null} */}
                 {currentTab === '4' ? <PaymentPlanPage /> : null}
             </Paper>
         </>
