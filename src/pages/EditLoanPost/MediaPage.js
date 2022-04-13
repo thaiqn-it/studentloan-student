@@ -70,7 +70,6 @@ export default function MediaPage(props) {
             }
             setDemandNote(newDemand)
             handleChange(null, 'LoanMedia', newDemand)
-            console.log('demand')
         } else {
             var newStudetCert = studentCert
             if (studentCert.currentStatus === 'new') {

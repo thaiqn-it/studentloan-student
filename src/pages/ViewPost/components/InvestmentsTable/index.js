@@ -58,7 +58,7 @@ export default function InvestorTable(props) {
         // { name: 'action', align: 'center' },
     ]
 
-    const rows = data.map((item) => {
+    const rows = data?.map((item) => {
         var obj = {
             investor: (
                 <Author
@@ -74,7 +74,7 @@ export default function InvestorTable(props) {
             amount: (
                 <Function
                     job={fCurrencyNoVND(item?.total)}
-                    org={fInvestPercent(item?.total, currecurrentMoney) + '%'}
+                    org={item?.percent + '%'}
                 />
             ),
             status: (

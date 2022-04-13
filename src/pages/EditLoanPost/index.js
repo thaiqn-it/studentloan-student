@@ -13,11 +13,14 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 import { Link } from 'react-scroll'
 
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory,useLocation } from 'react-router-dom'
 
 import { loanApi } from '../../apis/loanApi'
 import MediaPage from './MediaPage'
-import SuiTypography from 'components/SuiTypography'
+
+import { renderStatus } from 'utils/renderStatus'
+import Loading from 'components/Loading'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 export default function EditLoanPost() {
     const { id } = useParams()
@@ -26,30 +29,36 @@ export default function EditLoanPost() {
     const [loan, setLoan] = useState({ LoanMedia: [] })
     const [loanMedia, setLoanMedia] = useState({})
     const [studentInfo, setStudentInfo] = useState({})
+    const [achievements, setAchievements] = useState(null)
+    const [loanHistory, setloanHistory] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
+    const [isChange, setIsChange] = useState("")
     useEffect(() => {
+        setIsLoading(true)
         loanApi
-            .getLoanById(id, 'view')
+            .getLoanById(id, 'edit')
             .then((res) => {
-                const {
-                    LoanMedia,
-                    Investments,
-                    Contracts,
-                    Student,
-                    LoanHistories,
-                    ...restLoanData
-                } = res.data.loan
+                const { LoanMedia, Student, LoanHistories, ...restLoanData } =
+                    res.data.loan
+
+                const { User, Archievements } = Student
+                setloanHistory(LoanHistories[0])
                 setLoan(restLoanData)
                 setLoanMedia(convertArrayToObject(LoanMedia, 'type'))
                 setStudentInfo(Student)
+                setAchievements(Archievements)
+                setDocTitle(restLoanData.title + "-StudentLoan" || "Chỉnh sửa hồ sơ-StudentLoan")
+                setIsLoading(false)
             })
             .catch((error) => {
+                setIsLoading(false)
                 history.push({
                     pathname: '/dashboard/404',
                     state: { content: 'Không tìm thấy hồ sơ' },
                 })
             })
-    }, [])
+    }, [isChange])
 
     const convertArrayToObject = (array, key) => {
         const initialValue = {}
@@ -82,19 +91,93 @@ export default function EditLoanPost() {
                 ...loan,
                 [name]: realValue,
             })
+
+            console.log(loanMedia)
         }
     }
 
     const handleOnchangeAchievement = (value) => {
-        setAchivements([...achievements, value])
+        setAchievements([...achievements, value])
     }
 
     const handleSubmit = () => {
-        // console.log(loanMedia)
+        setIsLoading(true)
+        loanApi
+            .updateLoanPost(id, 'WAITING', {loan, loanHistory})
+            .then((res) => {
+                setIsChange(Date.now())
+                setIsLoading(false)
+            })
+            .catch((err) => {
+                setIsLoading(false)
+            })
+    }
+
+    const handleSave = () => {
+        setIsLoading(true)
+        console.log(loanMedia)
+        loanApi
+            .updateLoanPost(id, 'DRAFT', {loan, loanHistory})
+            .then((res) => {
+                setIsChange(Date.now())
+                setIsLoading(false)
+            })
+            .catch((err) => {
+                setIsLoading(false)
+            })
+    }
+
+    const getStatus = () => {
+        var statusObject = renderStatus(loanHistory?.type)
+
+        return (
+            <SuiButton
+                size="large"
+                color={statusObject.color}
+                sx={{ borderRadius: 0 }}
+            >
+                {statusObject.status}
+            </SuiButton>
+        )
+    }
+
+    const getDeleteButton = () => {
+        if (loanHistory?.type !== 'DRAFT') {
+            return null
+        }
+        return (
+            <>
+                <SuiButton
+                    sx={{ mr: 3, mb: 3 }}
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                >
+                    Xóa hồ sơ
+                </SuiButton>
+                <SuiButton
+                    sx={{ mr: 3, mb: 3 }}
+                    color="dark"
+                    variant="outlined"
+                    size="large"
+                    onClick={handleSave}
+                >
+                    Lưu
+                </SuiButton>
+                <SuiButton
+                    color="primary"
+                    size="large"
+                    sx={{ mb: 3 }}
+                    onClick={handleSubmit}
+                >
+                    Gửi
+                </SuiButton>
+            </>
+        )
     }
 
     return (
         <>
+            {isLoading ? <Loading /> : null}
             <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0 }}>
                 <ButtonGroup
                     variant="contained"
@@ -155,7 +238,7 @@ export default function EditLoanPost() {
                         </SuiButton>
                     </Link>
                     <SuiButton
-                        href={`/dashboard/loan/view/${id}`}
+                        href={`/trang-chu/ho-so/xem/${id}`}
                         sx={{
                             borderRadius: 0,
                         }}
@@ -169,20 +252,21 @@ export default function EditLoanPost() {
             <SuiBox>
                 <Paper elevation={6} sx={{ borderRadius: 3 }}>
                     <Box sx={{ width: '100%' }}>
+                        {getStatus()}
                         <PostInfoPage
                             loan={loan}
-                            // handleChange={handleOnchange}
+                            handleChange={handleOnchange}
                         />
 
                         <MediaPage
                             loanId={loan.id}
                             loanMedia={loanMedia}
-                            // handleChange={handleOnchange}
+                            handleChange={handleOnchange}
                         />
 
                         <ArchievementPage
                             studentId={studentInfo.id}
-                            achievements={studentInfo?.Archievements}
+                            achievements={achievements}
                             handleChange={handleOnchangeAchievement}
                         />
                         <ConfirmPage studentInfo={studentInfo} />
@@ -195,29 +279,7 @@ export default function EditLoanPost() {
                                 justifyContent: 'flex-end',
                             }}
                         >
-                            <SuiButton
-                                sx={{ mr: 3, mb: 3 }}
-                                color="error"
-                                startIcon={<DeleteIcon />}
-                            >
-                                Xóa hồ sơ
-                            </SuiButton>
-                            <SuiButton
-                                sx={{ mr: 3, mb: 3 }}
-                                color="dark"
-                                variant="outlined"
-                                size="large"
-                            >
-                                Lưu
-                            </SuiButton>
-                            <SuiButton
-                                color="primary"
-                                size="large"
-                                sx={{ mb: 3 }}
-                                onClick={handleSubmit}
-                            >
-                                Gửi
-                            </SuiButton>
+                            {getDeleteButton()}
                         </Box>
                     </Box>
                 </Paper>

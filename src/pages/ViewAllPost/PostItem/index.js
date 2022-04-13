@@ -14,7 +14,7 @@ import {
     fCurrencyNoVND,
     fProgress,
 } from '..//..//..//utils/formatNumber'
-import { fDate, fToNowNumber } from '..//..//..//utils/formatTime'
+import { fDate, fDateToNow, fToNow, fToNowNumber } from '..//..//..//utils/formatTime'
 import { getThumbnail } from 'utils/youtube'
 import { renderStatus } from 'utils/renderStatus'
 
@@ -83,6 +83,12 @@ export default function PostItem(props) {
                             variant="button"
                             fontWeight="regular"
                             color="text"
+                            sx={{
+                                display: '-webkit-box',
+                                overflow: 'hidden',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: 1,
+                            }}
                         >
                             {loan.description
                                 ? loan.description

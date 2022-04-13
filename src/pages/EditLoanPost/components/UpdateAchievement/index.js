@@ -7,13 +7,16 @@ import React, { useEffect, useState } from 'react'
 
 export default function UpdateAchievement(props) {
     const { onClose, open, choseValue, handleUpdateAchieve } = props
-    const [description, setDescription] = useState(choseValue.description || "")
-    const [url, setUrl] = useState(choseValue.imageUrl || "" )
+    const [description, setDescription] = useState('')
+    const [url, setUrl] = useState('')
 
     useEffect(() => {
         if (choseValue) {
             setDescription(choseValue.description)
             setUrl(choseValue.imageUrl)
+        } else {
+            setDescription('')
+            setUrl('')
         }
     }, [choseValue])
 
@@ -34,7 +37,12 @@ export default function UpdateAchievement(props) {
     }
 
     const handleUpdate = (type) => {
-        var newItem = {...choseValue, description: description, imageUrl: url, status: type}
+        var newItem = {
+            ...choseValue,
+            description: description,
+            imageUrl: url,
+            status: type,
+        }
         handleUpdateAchieve(newItem)
         onClose()
     }
@@ -51,37 +59,45 @@ export default function UpdateAchievement(props) {
                     <SuiTypography variant="h5">Tiêu đề</SuiTypography>
                     <SuiInput
                         mt={1}
-                        value={description}
+                        value={description || ''}
                         onChange={onChangeDes}
                     />
                     <Box my={1} width="360px">
                         <DropFileInput
                             image={url}
+                            flexEnd="flex-start"
                             elementName="achievement"
                             elementId="achievement"
                             onDelete={onDelete}
                             onFileChangeURL={onFileChangeURL}
                         />
                     </Box>
-                    {
-                        choseValue ? ( <Box display="flex" justifyContent="space-between">
-                        <SuiButton
-                            color="error"
-                            onClick={()=>handleUpdate('inactive')}
-                        >
-                            Xóa
-                        </SuiButton>
+                    {choseValue ? (
+                        <Box display="flex" justifyContent="space-between">
+                            <SuiButton
+                                color="error"
+                                onClick={() => handleUpdate('delete')}
+                            >
+                                Xóa
+                            </SuiButton>
 
-                        <SuiButton color="primary" onClick={()=>handleUpdate("update")}>
-                            Sửa
-                        </SuiButton>
-                    </Box>):( <Box display="flex" justifyContent="space-between">
-                        <SuiButton color="primary" onClick={()=>handleUpdate("create")}>
-                            Tạo
-                        </SuiButton>
-                    </Box>)
-                    }
-                   
+                            <SuiButton
+                                color="primary"
+                                onClick={() => handleUpdate('update')}
+                            >
+                                Sửa
+                            </SuiButton>
+                        </Box>
+                    ) : (
+                        <Box display="flex" justifyContent="space-between">
+                            <SuiButton
+                                color="primary"
+                                onClick={() => handleUpdate('create')}
+                            >
+                                Tạo
+                            </SuiButton>
+                        </Box>
+                    )}
                 </Box>
             </Dialog>
         </>

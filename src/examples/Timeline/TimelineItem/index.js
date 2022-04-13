@@ -126,19 +126,7 @@ function TimelineItem({
                         {renderBadges}
                     </SuiBox>
                 ) : null}
-                {action ? (
-                    <>
-                        <SuiBox display="flex" justifyContent="flex-end">
-                            <SuiButton
-                                color="warning"
-                                variant="gradient"
-                                size="small"
-                            >
-                                Thanh toán
-                            </SuiButton>
-                        </SuiBox>
-                    </>
-                ) : null}
+                {action ? action : null}
             </SuiBox>
         </SuiBox>
     )

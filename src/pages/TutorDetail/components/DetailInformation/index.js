@@ -12,7 +12,10 @@ import SuiInput from 'components/SuiInput'
 import {fDisplayDate} from "utils/formatTime"
 
 export default function DetailInformation(props) {
-    const {tutor} = props
+    const {tutor, onChangeTutorInfo} = props
+    const onChange=(e)=>{
+        onChangeTutorInfo(e)
+    }
     return (
         <>
             <Paper elevation={3} sx={{borderRadius:"10px"}}>
@@ -30,6 +33,8 @@ export default function DetailInformation(props) {
                             <SuiInput
                                 type="text"
                                 placeholder="Họ và tên"
+                                name="name"
+                                onChange={onChange}
                                 value={tutor?.name}
                             />
                         </Grid>
@@ -41,6 +46,8 @@ export default function DetailInformation(props) {
                                 type="email"
                                 placeholder="Email"
                                 value={tutor?.email}
+                                name="email"
+                                onChange={onChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -49,9 +56,9 @@ export default function DetailInformation(props) {
                             </SuiTypography>
                             <SuiInput
                                 type="date"
-                                value={fDisplayDate(tutor?.birthDay)}
-                                // onChange={handleInputState}
-                                // name={name}
+                                value={fDisplayDate(tutor?.birthday)}
+                                name="birthday"
+                                onChange={onChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -62,6 +69,8 @@ export default function DetailInformation(props) {
                                 type="text"
                                 placeholder="Quan hệ"
                                 value={tutor?.relation}
+                                name="relation"
+                                onChange={onChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -69,9 +78,11 @@ export default function DetailInformation(props) {
                                 Số điện thoại
                             </SuiTypography>
                             <SuiInput
-                                type="text"
+                                type="number"
                                 placeholder="Số điện thoại"
                                 value={tutor?.phone}
+                                name="phone"
+                                onChange={onChange}
                             />
                         </Grid>
                         <Grid item xs={12} md={12}>
@@ -82,6 +93,8 @@ export default function DetailInformation(props) {
                                 type="text"
                                 placeholder="Địa chỉ"
                                 value={tutor?.address}
+                                name="address"
+                                onChange={onChange}
                             />
                         </Grid>
                     </Grid>

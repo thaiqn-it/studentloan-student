@@ -1,16 +1,24 @@
 import { defaultInstance } from '.'
 
 const getStudentByUserId = (userId) => {
-    return defaultInstance.post(`/student/${userId}`)
-}
+  return defaultInstance.post(`/student/${userId}`);
+};
 
-const updateStudentInfo = ({ studentId, ...data }) => {
-    return defaultInstance.put(`/student/${studentId}`, data)
-}
+const updateStudentInfo = ({ id, ...data }, userType) => {
+  return defaultInstance.put(`/student/profile/${id}`, {studentInfo: data, userType});
+};
 
 const getStudentProfile = () => {
-    return defaultInstance.get(`/student/profile`)
+  return defaultInstance.get(`/student/profile`);
 }
+
+// const updateStudentInfo = ({ studentId, ...data }) => {
+//     return defaultInstance.put(`/student/${studentId}`, data)
+// }
+
+// const getStudentProfile = () => {
+//     return defaultInstance.get(`/student/profile`)
+// }
 
 const createNewStudent = (data) => {
     return defaultInstance.post('/student', data)

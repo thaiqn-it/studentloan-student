@@ -157,7 +157,7 @@ function SignIn() {
                         color="text"
                         fontWeight="regular"
                     >
-                        Chưa có tài khoảng ?
+                        Chưa có tài khoản ?
                         <SuiTypography
                             component={Link}
                             to="/authentication/sign-up"

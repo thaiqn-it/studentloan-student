@@ -1,16 +1,55 @@
-import { Box, Grid, Paper } from '@mui/material'
+import { Autocomplete, Box, Grid, Paper, TextField } from '@mui/material'
 import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { fDisplayDate } from 'utils/formatTime'
+
+import { PROVINCEVN } from '..//..//..//..//apis/static/provinceVN'
 
 import DropFileZone from '../../../../components/DropFileZone'
 
 export default function PaperCard(props) {
-    const { studentInfo } = props
-    const onFileChangeURL = (url) => {
-        console.log(url)
+    const { studentInfo, onChangeStudent } = props
+    const [listCity, setListCity] = useState()
+    const [city, setCity] = useState(null)
+
+    const onFileChangeURL = (url, e) => {
+        onChangeStudent(null, e.target.name, url)
+    }
+
+    const onChange = (e) => {
+        onChangeStudent(e)
+    }
+
+    const onChangeCity = (value) => {
+        setCity(value)
+        if (value) {
+            onChangeStudent(null, 'citizenCardCreatedPlace', value.name)
+        } else {
+            onChangeStudent(null, 'citizenCardCreatedPlace', '')
+        }
+    }
+
+    useEffect(() => {
+        getCity()
+    }, [studentInfo])
+
+    const getCity = () => {
+        var list = PROVINCEVN.province
+        var city = list.filter(
+            (item) => item.name === studentInfo?.citizenCardCreatedPlace
+        )
+        if (city.length !== 0) {
+            setCity(city[0])
+        } else {
+            setCity(null)
+        }
+        setListCity(PROVINCEVN.province)
+    }
+
+    const onDelete = (id) => {
+        onChangeStudent(null, id, null)
     }
 
     return (
@@ -41,9 +80,16 @@ export default function PaperCard(props) {
                                             Số CMND/CCCD
                                         </SuiTypography>
                                         <SuiInput
-                                            type="text"
+                                            type="number"
                                             placeholder="Số CMND"
-                                            value={studentInfo?.citizenId}
+                                            value={studentInfo?.citizenId || ''}
+                                            name="citizenId"
+                                            onChange={onChange}
+                                            error={
+                                                studentInfo?.citizenId ===
+                                                    null ||
+                                                studentInfo?.citizenId === ''
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -55,10 +101,20 @@ export default function PaperCard(props) {
                                         </SuiTypography>
                                         <SuiInput
                                             type="date"
-                                            // placeholder="Email"
-                                            value={fDisplayDate(
-                                                studentInfo?.citizenCardCreatedDate
-                                            )}
+                                            placeholder="Ngày cấp"
+                                            value={
+                                                fDisplayDate(
+                                                    studentInfo?.citizenCardCreatedDate
+                                                ) || ''
+                                            }
+                                            name="citizenCardCreatedDate"
+                                            onChange={onChange}
+                                            error={
+                                                studentInfo?.citizenCardCreatedDate ===
+                                                    null ||
+                                                studentInfo?.citizenCardCreatedDate ===
+                                                    ''
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={4}>
@@ -68,12 +124,49 @@ export default function PaperCard(props) {
                                         >
                                             Nơi cấp CMND/CCCD
                                         </SuiTypography>
-                                        <SuiInput
-                                            type="text"
-                                            placeholder="Nơi cấp"
-                                            value={
-                                                studentInfo?.citizenCardCreatedPlace
+                                        <Autocomplete
+                                            name="citizenCardCreatedPlace"
+                                            onChange={(event, value) =>
+                                                onChangeCity(value)
                                             }
+                                            isOptionEqualToValue={(
+                                                option,
+                                                value
+                                            ) =>
+                                                option.idProvince ===
+                                                value.idProvince
+                                            }
+                                            value={city}
+                                            id="school-select"
+                                            sx={{ width: 300 }}
+                                            options={listCity}
+                                            autoHighlight
+                                            getOptionLabel={(option) =>
+                                                option.name
+                                            }
+                                            renderOption={(props, option) => (
+                                                <Box
+                                                    component="li"
+                                                    {...props}
+                                                    key={option.idProvince}
+                                                >
+                                                    {option.name}
+                                                </Box>
+                                            )}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    error={city === null}
+                                                    helperText={
+                                                        city === null
+                                                            ? 'Nơi cấp không được để trống'
+                                                            : null
+                                                    }
+                                                    {...params}
+                                                    inputProps={{
+                                                        ...params.inputProps,
+                                                    }}
+                                                />
+                                            )}
                                         />
                                     </Grid>
                                 </Grid>
@@ -92,13 +185,23 @@ export default function PaperCard(props) {
                                             ? studentInfo.frontCitizenCardImageUrl
                                             : ''
                                     }
-                                    // image="https://cdn.pixabay.com/photo/2020/06/01/22/23/eye-5248678__340.jpg"
                                     flexEnd="flex-start"
-                                    id="frontID"
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    elementId="frontCitizenCardImageUrl"
+                                    elementName="frontCitizenCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
+                                    onDelete={onDelete}
                                 />
+                                {studentInfo?.frontCitizenCardImageUrl ? null : (
+                                    <SuiTypography
+                                        variant="caption"
+                                        fontWeight="regular"
+                                        color="error"
+                                    >
+                                        Mặt trước CMND/CCCD không được để trống
+                                    </SuiTypography>
+                                )}
                             </Grid>
 
                             <Grid item xs={12} md={6}>
@@ -115,10 +218,23 @@ export default function PaperCard(props) {
                                             ? studentInfo.backCitizenCardImageUrl
                                             : ''
                                     }
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    flexEnd="flex-start"
+                                    elementId="backCitizenCardImageUrl"
+                                    elementName="backCitizenCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
+                                    onDelete={onDelete}
                                 />
+                                 {studentInfo?.backCitizenCardImageUrl ? null : (
+                                    <SuiTypography
+                                        variant="caption"
+                                        fontWeight="regular"
+                                        color="error"
+                                    >
+                                        Mặt sau CMND/CCCD không được để trống
+                                    </SuiTypography>
+                                )}
                             </Grid>
                         </Grid>
                     </Box>
@@ -137,9 +253,16 @@ export default function PaperCard(props) {
                                         Mã sinh viên
                                     </SuiTypography>
                                     <SuiInput
-                                        type="text"
+                                        type="number"
                                         placeholder="Mã sinh viên"
-                                        value={studentInfo?.studentCardId}
+                                        value={studentInfo?.studentCardId || ''}
+                                        name="studentCardId"
+                                        onChange={onChange}
+                                        error={
+                                            studentInfo?.studentCardId ===
+                                                null ||
+                                            studentInfo?.studentCardId === ''
+                                        }
                                     />
                                 </Grid>
                             </Grid>
@@ -157,10 +280,23 @@ export default function PaperCard(props) {
                                             ? studentInfo.frontStudentCardImageUrl
                                             : ''
                                     }
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    flexEnd="flex-start"
+                                    elementId="frontStudentCardImageUrl"
+                                    elementName="frontStudentCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
+                                    onDelete={onDelete}
                                 />
+                                 {studentInfo?.frontStudentCardImageUrl ? null : (
+                                    <SuiTypography
+                                        variant="caption"
+                                        fontWeight="regular"
+                                        color="error"
+                                    >
+                                        Mặt trước thẻ sinh viên không được để trống
+                                    </SuiTypography>
+                                )}
                             </Grid>
 
                             <Grid item xs={12} md={6}>
@@ -177,10 +313,23 @@ export default function PaperCard(props) {
                                             ? studentInfo.backStudentCardImageUrl
                                             : ''
                                     }
-                                    onFileChangeURL={(url) =>
-                                        onFileChangeURL(url)
+                                    flexEnd="flex-start"
+                                    elementId="backStudentCardImageUrl"
+                                    elementName="backStudentCardImageUrl"
+                                    onFileChangeURL={(url, e) =>
+                                        onFileChangeURL(url, e)
                                     }
+                                    onDelete={onDelete}
                                 />
+                                 {studentInfo?.backStudentCardImageUrl ? null : (
+                                    <SuiTypography
+                                        variant="caption"
+                                        fontWeight="regular"
+                                        color="error"
+                                    >
+                                        Mặt sau thẻ sinh viên không được để trống
+                                    </SuiTypography>
+                                )}
                             </Grid>
                         </Grid>
                     </Box>
