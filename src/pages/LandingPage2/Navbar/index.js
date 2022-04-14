@@ -142,12 +142,12 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         m={0}
                         p={0}
                     >
-                        <DefaultNavbarLink
+                        {/* <DefaultNavbarLink
                             icon="donut_large"
                             name="dashboard"
                             direct="/dashboard"
                             light={light}
-                        />
+                        /> */}
                         {/* <DefaultNavbarLink
                         icon="person"
                         name="profile"
@@ -156,13 +156,13 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     /> */}
                         <DefaultNavbarLink
                             icon="account_circle"
-                            name="sign up"
+                            name="Đăng kí"
                             route="/authentication/sign-up"
                             light={light}
                         />
                         <DefaultNavbarLink
                             icon="key"
-                            name="sign in"
+                            name="Đăng nhập"
                             route="/authentication/sign-in"
                             light={light}
                         />

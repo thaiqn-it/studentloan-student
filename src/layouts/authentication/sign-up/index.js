@@ -37,6 +37,8 @@ import Separator from 'layouts/authentication/components/Separator'
 import curved6 from 'assets/images/curved-images/curved14.jpg'
 import { userApi } from 'apis/userApi'
 import { studentApi } from 'apis/studentApi'
+import { ThemeProvider } from '@mui/material'
+import theme from 'assets/theme'
 
 function SignUp() {
     const userData = {
@@ -155,178 +157,182 @@ function SignUp() {
             // description="Use these awesome forms to login or create new account in your project for free."
             image={curved6}
         >
-            <Card>
-                <SuiBox p={3} mb={1} textAlign="center">
-                    <SuiTypography variant="h5" fontWeight="medium">
-                        Đằng kí
-                    </SuiTypography>
-                </SuiBox>
-                <SuiBox mb={2}>
-                    <Socials />
-                </SuiBox>
-                <Separator />
-                <form onSubmit={handleSubmit}>
-                    <SuiBox pt={2} pb={3} px={3}>
-                        <SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    placeholder="Tên"
-                                    type="text"
-                                    name="name"
-                                    error={error.name}
-                                    value={data.name}
-                                    onChange={handleChange}
-                                />
-                                {error.name && (
+            <ThemeProvider theme={theme}>
+                <Card>
+                    <SuiBox p={3} mb={1} textAlign="center">
+                        <SuiTypography variant="h5" fontWeight="medium">
+                            Đăng kí
+                        </SuiTypography>
+                    </SuiBox>
+                    <SuiBox mb={2}>
+                        <Socials />
+                    </SuiBox>
+                    <Separator />
+                    <form onSubmit={handleSubmit}>
+                        <SuiBox pt={2} pb={3} px={3}>
+                            <SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        placeholder="Tên"
+                                        type="text"
+                                        name="name"
+                                        error={error.name}
+                                        value={data.name}
+                                        onChange={handleChange}
+                                    />
+                                    {error.name && (
+                                        <SuiTypography
+                                            component="label"
+                                            variant="caption"
+                                            fontWeight="bold"
+                                            color="error"
+                                        >
+                                            {error.name}
+                                        </SuiTypography>
+                                    )}
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        type="email"
+                                        placeholder="Email"
+                                        name="email"
+                                        error={error.email}
+                                        value={data.email}
+                                        onChange={handleChange}
+                                    />
+                                    {error.email && (
+                                        <SuiTypography
+                                            component="label"
+                                            variant="caption"
+                                            fontWeight="bold"
+                                            color="error"
+                                        >
+                                            {error.email}
+                                        </SuiTypography>
+                                    )}
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        type="phone"
+                                        placeholder="Số điện thoại"
+                                        name="phone"
+                                        error={error.phone}
+                                        value={data.phone}
+                                        onChange={handleChange}
+                                    />
+                                    {error.phone && (
+                                        <SuiTypography
+                                            component="label"
+                                            variant="caption"
+                                            fontWeight="bold"
+                                            color="error"
+                                        >
+                                            {error.phone}
+                                        </SuiTypography>
+                                    )}
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        type="password"
+                                        placeholder="Mât Khẩu"
+                                        name="password"
+                                        error={error.password}
+                                        value={data.password}
+                                        onChange={handleChange}
+                                    />
+                                    {error.password && (
+                                        <SuiTypography
+                                            component="label"
+                                            variant="caption"
+                                            fontWeight="bold"
+                                            color="error"
+                                        >
+                                            {error.password}
+                                        </SuiTypography>
+                                    )}
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        type="password"
+                                        placeholder="Xác Thực Mât Khẩu"
+                                        name="confirmPassword"
+                                        error={error.confirmPassword}
+                                        value={data.confirmPassword}
+                                        onChange={handleChange}
+                                    />
+                                    {error.confirmPassword && (
+                                        <SuiTypography
+                                            component="label"
+                                            variant="caption"
+                                            fontWeight="bold"
+                                            color="error"
+                                        >
+                                            {error.confirmPassword}
+                                        </SuiTypography>
+                                    )}
+                                </SuiBox>
+                                <SuiBox display="flex" alignItems="center">
+                                    <Checkbox
+                                        color="primary"
+                                        checked={agreement}
+                                        onChange={handleSetAgremment}
+                                    />
                                     <SuiTypography
-                                        component="label"
-                                        variant="caption"
-                                        fontWeight="bold"
-                                        color="error"
-                                    >
-                                        {error.name}
-                                    </SuiTypography>
-                                )}
-                            </SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    type="email"
-                                    placeholder="Email"
-                                    name="email"
-                                    error={error.email}
-                                    value={data.email}
-                                    onChange={handleChange}
-                                />
-                                {error.email && (
-                                    <SuiTypography
-                                        component="label"
-                                        variant="caption"
-                                        fontWeight="bold"
-                                        color="error"
-                                    >
-                                        {error.email}
-                                    </SuiTypography>
-                                )}
-                            </SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    type="phone"
-                                    placeholder="Số điện thoại"
-                                    name="phone"
-                                    error={error.phone}
-                                    value={data.phone}
-                                    onChange={handleChange}
-                                />
-                                {error.phone && (
-                                    <SuiTypography
-                                        component="label"
-                                        variant="caption"
-                                        fontWeight="bold"
-                                        color="error"
-                                    >
-                                        {error.phone}
-                                    </SuiTypography>
-                                )}
-                            </SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    type="password"
-                                    placeholder="Mât Khẩu"
-                                    name="password"
-                                    error={error.password}
-                                    value={data.password}
-                                    onChange={handleChange}
-                                />
-                                {error.password && (
-                                    <SuiTypography
-                                        component="label"
-                                        variant="caption"
-                                        fontWeight="bold"
-                                        color="error"
-                                    >
-                                        {error.password}
-                                    </SuiTypography>
-                                )}
-                            </SuiBox>
-                            <SuiBox mb={2}>
-                                <SuiInput
-                                    type="password"
-                                    placeholder="Xác Thực Mât Khẩu"
-                                    name="confirmPassword"
-                                    error={error.confirmPassword}
-                                    value={data.confirmPassword}
-                                    onChange={handleChange}
-                                />
-                                {error.confirmPassword && (
-                                    <SuiTypography
-                                        component="label"
-                                        variant="caption"
-                                        fontWeight="bold"
-                                        color="error"
-                                    >
-                                        {error.confirmPassword}
-                                    </SuiTypography>
-                                )}
-                            </SuiBox>
-                            <SuiBox display="flex" alignItems="center">
-                                <Checkbox
-                                    checked={agreement}
-                                    onChange={handleSetAgremment}
-                                />
-                                <SuiTypography
-                                    variant="button"
-                                    fontWeight="regular"
-                                    onClick={handleSetAgremment}
-                                    sx={{
-                                        cursor: 'poiner',
-                                        userSelect: 'none',
-                                    }}
-                                >
-                                    &nbsp;&nbsp;Tôi đồng ý với &nbsp;
-                                </SuiTypography>
-                                <SuiTypography
-                                    component="a"
-                                    href="#"
-                                    variant="button"
-                                    fontWeight="bold"
-                                    textGradient
-                                >
-                                    điều khoản sử dụng
-                                </SuiTypography>
-                            </SuiBox>
-                            <SuiBox mt={4} mb={1}>
-                                <SuiButton
-                                    variant="gradient"
-                                    color="dark"
-                                    type="submit"
-                                    fullWidth
-                                >
-                                    Đăng kí
-                                </SuiButton>
-                            </SuiBox>
-                            <SuiBox mt={3} textAlign="center">
-                                <SuiTypography
-                                    variant="button"
-                                    color="text"
-                                    fontWeight="regular"
-                                >
-                                    Already have an account?&nbsp;
-                                    <SuiTypography
-                                        component={Link}
-                                        to="/authentication/sign-in"
                                         variant="button"
-                                        color="dark"
+                                        fontWeight="regular"
+                                        onClick={handleSetAgremment}
+                                        sx={{
+                                            cursor: 'poiner',
+                                            userSelect: 'none',
+                                        }}
+                                    >
+                                        &nbsp;&nbsp;Tôi đồng ý với &nbsp;
+                                    </SuiTypography>
+                                    <SuiTypography
+                                        component="a"
+                                        href="#"
+                                        variant="button"
                                         fontWeight="bold"
+                                        color="primary"
                                         textGradient
                                     >
-                                        Sign in
+                                        điều khoản sử dụng
                                     </SuiTypography>
-                                </SuiTypography>
+                                </SuiBox>
+                                <SuiBox mt={4} mb={1}>
+                                    <SuiButton
+                                        variant="gradient"
+                                        color="primary"
+                                        type="submit"
+                                        fullWidth
+                                    >
+                                        Đăng kí
+                                    </SuiButton>
+                                </SuiBox>
+                                <SuiBox mt={3} textAlign="center">
+                                    <SuiTypography
+                                        variant="button"
+                                        color="text"
+                                        fontWeight="regular"
+                                    >
+                                        Already have an account?&nbsp;
+                                        <SuiTypography
+                                            component={Link}
+                                            to="/authentication/sign-in"
+                                            variant="button"
+                                            color="primary"
+                                            fontWeight="bold"
+                                            textGradient
+                                        >
+                                            Đăng nhập
+                                        </SuiTypography>
+                                    </SuiTypography>
+                                </SuiBox>
                             </SuiBox>
                         </SuiBox>
-                    </SuiBox>
-                </form>
-            </Card>
+                    </form>
+                </Card>
+            </ThemeProvider>
         </BasicLayout>
     )
 }

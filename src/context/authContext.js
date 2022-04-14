@@ -40,9 +40,13 @@ export function isAuthenticated() {
 const userId = localStorage.getItem(USER_ID)
 const studentId = localStorage.getItem(STUDENT_ID)
 const token = localStorage.getItem(JWT_TOKEN)
+const user = null
+const student = null
 
 const initialState = {
     userId: userId,
+    user: user,
+    student: student,
     studentId: studentId,
     token: token,
     loading: false,
@@ -56,13 +60,22 @@ export const authReducer = (initialState, action) => {
         case USER_REDUCER_ACTION.LOGIN_SUCCESS:
             return {
                 ...initialState,
+                user: action.payload.user,
+                student: action.payload.student,
                 loading: false,
                 userId: action.payload.userId,
                 studentId: action.payload.studentId,
                 token: action.payload.token,
             }
         case USER_REDUCER_ACTION.LOG_OUT:
-            return { ...initialState, user: '', token: '' }
+            return {
+                ...initialState,
+                user: null,
+                token: null,
+                studentId: null,
+                student: null,
+                userId: null,
+            }
         case USER_REDUCER_ACTION.LOGIN_FAILED:
             return {
                 ...initialState,

@@ -58,12 +58,10 @@ const Group = ({ transactions, handleClick, selectedTransaction }) => {
                             <Transaction
                                 date={transaction.date}
                                 color={
-                                    transaction.status === 'SUCCESS'
-                                        ? 'success'
-                                        : 'error'
+                                    transaction.money >= 0 ? 'success' : 'error'
                                 }
                                 icon={
-                                    transaction.status === 'SUCCESS'
+                                    transaction.money <= 0
                                         ? 'arrow_upward'
                                         : 'arrow_downward'
                                 }
