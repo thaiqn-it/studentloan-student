@@ -1,5 +1,5 @@
 import { Box, Card, Container, Divider, Grid, Paper } from '@mui/material'
-import { loanScheduleApi } from 'apis/loanScheduleApi'
+import { loanScheduleApi } from '..//..//apis/loanScheduleApi'
 import { investmentApi } from 'apis/investmentApi'
 import { walletApi } from 'apis/walletApi'
 import OTPBox from 'components/OTPBox'
@@ -10,17 +10,37 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { fCurrency } from 'utils/formatNumber'
 import { fDateTimeSuffix } from 'utils/formatTime'
+import Loading from 'components/Loading'
+import ConfirmPayment from './ConfirmPayment'
+import SnackbarMessage from 'components/SnackbarMessage'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 export default function Repayment() {
     const { id } = useParams()
     const history = useHistory()
-    const [loanschedule, setLoanSchedule] = useState(null)
+    const [loanSchedule, setLoanSchedule] = useState(null)
     const [investments, setInvestments] = useState(null)
     const [isLoading, setLoading] = useState(false)
+    const [wallet, setWallet] = useState(null)
+    const [openConfirm, setOpenConfirm] = useState(false)
+    const [openSnack, setOpenSnack] = useState(false)
 
     useEffect(() => {
+        setDocTitle("Thanh toán khoản vay - StudentLoan")
         setLoading(true)
-        getLoanSchedule()
+        getBalance()
+        if (id === 'tat-ca') {
+            loanScheduleApi
+                .getLoanScheduleByLoanId(
+                    '81276580-8b43-4f90-be63-f7106a2c63df',
+                    'COMPLETED'
+                )
+                .then((res) => {
+                    console.log(res)
+                })
+        } else {
+            getLoanSchedule()
+        }
     }, [])
 
     const getLoanSchedule = () => {
@@ -44,6 +64,19 @@ export default function Repayment() {
                 }
                 setLoanSchedule(temp)
                 getInvesment(temp.loanId)
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+            })
+    }
+
+    const getBalance = () => {
+        walletApi
+            .getWallet()
+            .then((res) => {
+                setWallet(res.data)
+                setLoading(false)
             })
             .catch((err) => {
                 setLoading(false)
@@ -64,25 +97,43 @@ export default function Repayment() {
     }
 
     const handleCancel = () => {
-        history.push(`/trang-chu/ho-so/xem/${loanschedule.loanId}`)
+        history.push(`/trang-chu/ho-so/xem/${loanSchedule.loanId}`)
     }
 
-    const handleConfirm = () => {
-        setLoading(true)
-        walletApi
-            .repayment({ loanschedule, investments })
-            .then((res) => {
-                setLoading(false)
-                if (res.data !== null) {
-                    history.push('/trang-chu/profile2/wallet')
-                }
-            })
-            .catch((err) => {
-                setLoading(false)
-            })
+    const handleConfirm = (value) => {
+        setOpenConfirm(false)
+        if (value) {
+            console.log(loanSchedule)
+            console.log(investments)
+            walletApi
+                .repayment({ loanSchedule, investments })
+                .then((res) => {
+                    setLoading(false)
+                    if (res.data !== null) {
+                        history.push('/trang-chu/profile2/wallet')
+                    }
+                })
+                .catch((err) => {
+                    setLoading(false)
+                })
+        } else {
+            setOpenSnack(true)
+        }
+    }
+
+    const payment = () => {
+        setOpenConfirm(true)
+    }
+    const handleCloseComfirm = () => {
+        setOpenConfirm(false)
+    }
+
+    const closeSnack = () => {
+        setOpenSnack(false)
     }
     return (
         <>
+            {isLoading ? <Loading /> : null}
             <SuiTypography
                 variant="h4"
                 fontWeight="regular"
@@ -92,7 +143,7 @@ export default function Repayment() {
                 Thanh toán khoản vay
             </SuiTypography>
             <Container maxWidth="lg">
-                <Card>
+                <Card sx={{ boxShadow: 3 }}>
                     <Box p={3}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
@@ -129,7 +180,7 @@ export default function Repayment() {
                                             variant="caption"
                                             color="text"
                                         >
-                                            Số dư: 200.000.000
+                                            Số dư: {fCurrency(wallet?.money)}
                                         </SuiTypography>
                                     </Box>
                                 </Box>
@@ -149,8 +200,8 @@ export default function Repayment() {
                                         fontWeight="light"
                                     >
                                         {fCurrency(
-                                            loanschedule?.money +
-                                                loanschedule?.penaltyMoney
+                                            loanSchedule?.money +
+                                                loanSchedule?.penaltyMoney
                                         )}
                                     </SuiTypography>
                                 </Box>
@@ -171,7 +222,7 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {loanschedule?.type}
+                                        {loanSchedule?.type}
                                     </SuiTypography>
                                 </Box>
                                 <Box
@@ -188,7 +239,7 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {fDateTimeSuffix(loanschedule?.startAt)}
+                                        {fDateTimeSuffix(loanSchedule?.startAt)}
                                     </SuiTypography>
                                 </Box>
                             </Grid>
@@ -207,7 +258,7 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {fCurrency(loanschedule?.money)}
+                                        {fCurrency(loanSchedule?.money)}
                                     </SuiTypography>
                                 </Box>
                                 <Box
@@ -224,7 +275,7 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {fCurrency(loanschedule?.penaltyMoney)}
+                                        {fCurrency(loanSchedule?.penaltyMoney)}
                                     </SuiTypography>
                                 </Box>
                             </Grid>
@@ -245,11 +296,21 @@ export default function Repayment() {
                     >
                         Hủy bỏ
                     </SuiButton>
-                    <SuiButton color="primary" onClick={handleConfirm}>
-                        Xác nhận
+                    <SuiButton color="primary" onClick={payment}>
+                        Thanh toán
                     </SuiButton>
                 </Box>
             </Container>
+            <ConfirmPayment
+                open={openConfirm}
+                handleConfirm={handleConfirm}
+                handleClose={handleCloseComfirm}
+            />
+            <SnackbarMessage
+                snack={{ color: 'error', message: 'Xin lỗi mật khẩu bạn nhập không đúng' }}
+                onClickClose={closeSnack}
+                open={openSnack}
+            />
             {/* <OTPBox /> */}
         </>
     )

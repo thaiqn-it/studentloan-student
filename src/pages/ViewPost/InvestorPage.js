@@ -123,7 +123,11 @@ export default function InvestorPage(props) {
                     <Grid item xs={12} md={3}>
                         <MiniStatisticsCard
                             title={{ text: 'Nhà đầu tư' }}
-                            count={investments?.length + ' thành viên'}
+                            count={
+                                investments?.length === undefined
+                                    ? '0'
+                                    : investments?.length + ' thành viên'
+                            }
                             // percentage={{ color: 'success', text: '+55%' }}
                             icon={{ color: 'success', component: 'people' }}
                         />

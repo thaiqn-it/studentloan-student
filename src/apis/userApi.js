@@ -46,6 +46,10 @@ const updateUser = (data) => {
     return defaultInstance.put('/user/', data)
 }
 
+const verifyPassword = (data) => {
+    return defaultInstance.post('/user/verifyPassword', data)
+}
+
 export const userApi = {
     login,
     getUserById,
@@ -57,4 +61,5 @@ export const userApi = {
     getTransactions,
     getStudentProfile,
     updateUser,
+    verifyPassword,
 }
