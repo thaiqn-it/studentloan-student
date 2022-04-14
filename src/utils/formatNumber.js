@@ -1,6 +1,6 @@
 export function fCurrency(text) {
     if (!text) {
-        text = 0
+        text = text
     }
     return Number(text).toLocaleString('it-IT', {
         style: 'currency',
