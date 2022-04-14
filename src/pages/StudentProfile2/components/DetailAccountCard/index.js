@@ -171,7 +171,6 @@ export default function DetailAccountCard(props) {
                                 type="email"
                                 placeholder="Email"
                                 name="email"
-                                onChange={onChangeUserInfo}
                                 value={userInfo?.email || ''}
                             />
                         </Grid>
@@ -185,7 +184,6 @@ export default function DetailAccountCard(props) {
                                 placeholder="Số điện thoại"
                                 name="phoneNumber"
                                 value={userInfo?.phoneNumber || ''}
-                                onChange={onChangeUserInfo}
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>

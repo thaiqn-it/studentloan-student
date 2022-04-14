@@ -40,7 +40,7 @@ export default function TabInfo(props) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ width: '100%'}}>
+            <Box sx={{ width: '100%' }}>
                 <Tabs
                     value={currentTab}
                     onChange={handleChange}
@@ -49,7 +49,7 @@ export default function TabInfo(props) {
                     scrollButtons={isModbile}
                     allowScrollButtonsMobile={isModbile}
                     aria-label="loan application tab"
-                    TabIndicatorProps={{ style: { background: '#344767' } }}
+                    textColor="palette.success.main"
                 >
                     <Tab
                         value="1"
@@ -61,14 +61,7 @@ export default function TabInfo(props) {
                                 sx={{ width: 30, height: 30 }}
                             />
                         }
-                        label={
-                            <Typography
-                                sx={{ color: '#344767' }}
-                                fontWeight="regular"
-                            >
-                                Thông tin hồ sơ vay
-                            </Typography>
-                        }
+                        label="Thông tin hồ sơ vay"
                         sx={{ textTransform: 'none' }}
                     />
                     {/* <Tab
@@ -101,17 +94,10 @@ export default function TabInfo(props) {
                                 sx={{ width: 30, height: 30 }}
                             />
                         }
-                        label={
-                            <Typography
-                                sx={{ color: '#344767' }}
-                                fontWeight="regular"
-                            >
-                                Nhà đầu tư
-                            </Typography>
-                        }
+                        label="Nhà đầu tư"
                         sx={{ textTransform: 'none' }}
                     />
-                    <Tab
+                    {/* <Tab
                         value="3"
                         icon={
                             <Avatar
@@ -130,7 +116,7 @@ export default function TabInfo(props) {
                             </Typography>
                         }
                         sx={{ textTransform: 'none' }}
-                    />
+                    /> */}
                     <Tab
                         value="4"
                         icon={
@@ -141,14 +127,7 @@ export default function TabInfo(props) {
                                 sx={{ width: 30, height: 30 }}
                             />
                         }
-                        label={
-                            <Typography
-                                sx={{ color: '#344767' }}
-                                fontWeight="regular"
-                            >
-                                Kế hoạch trả
-                            </Typography>
-                        }
+                        label="Kế hoạch trả"
                         sx={{ textTransform: 'none' }}
                     />
                 </Tabs>

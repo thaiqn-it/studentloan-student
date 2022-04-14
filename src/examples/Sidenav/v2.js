@@ -270,7 +270,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                             component="h6"
                             variant="button"
                             fontWeight="bold"
-                            color="black"
+                            color="dark"
                         >
                             {brandName}
                         </SuiTypography>
