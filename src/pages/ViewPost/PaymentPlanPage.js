@@ -43,9 +43,12 @@ export default function PaymentPlanPage() {
         history.push(path)
     }
 
-    const handlePayAll = () =>{
+    const handlePayAll = () => {
         var path = `/trang-chu/thanh-toan/tat-ca`
-        history.push(path)
+        history.push({
+            pathname: path,
+            state: { loanId: id },
+        })
     }
 
     const buttonPayment = (item) => {
@@ -145,7 +148,11 @@ export default function PaymentPlanPage() {
             {/* <Repayment open={openPayment} handleClose={handleClose} selectedValue={selectedValue}/> */}
             <Box mb={3} bgcolor="#f8f9fa">
                 <Box display="flex" justifyContent="flex-end">
-                    <SuiButton color="primary" sx={{ borderRadius: 0 }} onClick={handlePayAll}>
+                    <SuiButton
+                        color="primary"
+                        sx={{ borderRadius: 0 }}
+                        onClick={handlePayAll}
+                    >
                         Thanh toán tất cả
                     </SuiButton>
                 </Box>

@@ -1,6 +1,6 @@
 export function fCurrency(text) {
     if (!text) {
-        text = text
+        text = 0
     }
     return Number(text).toLocaleString('it-IT', {
         style: 'currency',
@@ -10,7 +10,7 @@ export function fCurrency(text) {
 
 export function fCurrencyNoVND(text) {
     if (!text) {
-        text = text
+        text = 0
     }
     return Number(text).toLocaleString('it-IT')
 }

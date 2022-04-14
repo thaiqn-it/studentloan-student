@@ -4,6 +4,8 @@ import SuiBox from 'components/SuiBox'
 import { Box } from '@mui/material'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
+import { fCurrency } from 'utils/formatNumber'
+import { fDateTimeMin } from 'utils/formatTime'
 
 export default function TransactionDetail({ transaction }) {
     return (
@@ -18,9 +20,7 @@ export default function TransactionDetail({ transaction }) {
                             gap: '30px',
                         }}
                     >
-                        {/* <ContentPasteIcon /> */}
-
-                        <SuiTypography variant="body2">
+                        <SuiTypography variant="body2" fontWeight="bold">
                             Mã giao dịch
                         </SuiTypography>
 
@@ -28,44 +28,62 @@ export default function TransactionDetail({ transaction }) {
                             {transaction?.id}
                         </SuiTypography>
                     </Box>
-                    <Box
-                        sx={{
-                            marginTop: '10px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            rowGap: '10px',
-                        }}
-                    >
-                        <SuiTypography
-                            color={transaction?.money < 0 ? 'error' : 'success'}
-                            variant="h2"
-                        >
-                            {`${String(transaction?.money).replace(
-                                /(\d)(?=(\d{3})+$)/g,
-                                '$1,'
-                            )} đ`}
-                        </SuiTypography>
-
-                        <SuiTypography variant="subtitle2">
-                            {transaction?.date}
-                        </SuiTypography>
-                        <Box></Box>
-                    </Box>
 
                     <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
                             rowGap: '10px',
-
-                            marginTop: '20px',
                         }}
                     >
                         <Box
                             sx={{
+                                marginTop: '10px',
                                 display: 'flex',
-                                padding: '10px',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                rowGap: '10px',
+                            }}
+                        >
+                            <SuiTypography
+                                color={
+                                    transaction?.type === 'TRANSFER'
+                                        ? 'error'
+                                        : 'success'
+                                }
+                                variant="h3"
+                            >
+                                {fCurrency(transaction?.money)}
+                            </SuiTypography>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                gap: '15px',
+                                marginTop: '20px',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '15px',
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                <SuiTypography variant="h6">
+                                    Thời gian
+                                </SuiTypography>
+                            </Box>
+
+                            <SuiTypography variant="subtitle2">
+                                {fDateTimeMin(transaction?.createdAt)}
+                            </SuiTypography>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
                                 justifyContent: 'space-between',
                                 gap: '15px',
                             }}
@@ -78,12 +96,11 @@ export default function TransactionDetail({ transaction }) {
                                     flexDirection: 'row',
                                 }}
                             >
-                                <ContentPasteIcon />
-                                <SuiTypography variant="body2">
+                                <SuiTypography variant="h6">
                                     Phí giao dịch
                                 </SuiTypography>
                             </Box>
-                            <SuiTypography color="error">
+                            <SuiTypography color="error" variant="h5">
                                 {`${String(transaction?.transactionFee).replace(
                                     /(.)(?=(\d{3})+$)/g,
                                     '$1,'
@@ -93,7 +110,6 @@ export default function TransactionDetail({ transaction }) {
                         <Box
                             sx={{
                                 display: 'flex',
-                                padding: '10px',
                                 justifyContent: 'space-between',
                                 gap: '15px',
                             }}
@@ -106,9 +122,7 @@ export default function TransactionDetail({ transaction }) {
                                     flexDirection: 'row',
                                 }}
                             >
-                                <ContentPasteIcon />
-
-                                <SuiTypography variant="body2">
+                                <SuiTypography variant="h6">
                                     Trạng thái
                                 </SuiTypography>
                             </Box>
@@ -119,6 +133,7 @@ export default function TransactionDetail({ transaction }) {
                                         ? 'success'
                                         : 'error'
                                 }
+                                variant="h6"
                             >
                                 {transaction?.status}
                             </SuiTypography>
@@ -126,7 +141,6 @@ export default function TransactionDetail({ transaction }) {
                         <Box
                             sx={{
                                 display: 'flex',
-                                padding: '10px',
                                 justifyContent: 'space-between',
                                 gap: '15px',
                             }}
@@ -139,21 +153,18 @@ export default function TransactionDetail({ transaction }) {
                                     flexDirection: 'row',
                                 }}
                             >
-                                {' '}
-                                <ContentPasteIcon />
-                                <SuiTypography variant="body2">
+                                <SuiTypography variant="h6">
                                     Nguồn tiền
                                 </SuiTypography>
                             </Box>
 
-                            <SuiTypography>
+                            <SuiTypography variant="h6">
                                 {transaction?.senderName}
                             </SuiTypography>
                         </Box>
                         <Box
                             sx={{
                                 display: 'flex',
-                                padding: '10px',
                                 justifyContent: 'space-between',
                                 gap: '15px',
                             }}
@@ -166,23 +177,27 @@ export default function TransactionDetail({ transaction }) {
                                     flexDirection: 'row',
                                 }}
                             >
-                                <ContentPasteIcon />
-
-                                <SuiTypography variant="body2">
+                                <SuiTypography variant="h6">
                                     Người nhận
                                 </SuiTypography>
                             </Box>
 
-                            <SuiTypography>
+                            <SuiTypography variant="h6">
                                 {transaction?.recipientName}
                             </SuiTypography>
                         </Box>
-                        <SuiTypography>Nội dung giao dịch</SuiTypography>
-                        <Box sx={{ paddingLeft: '15px', marginTop: '5px' }}>
-                            <SuiTypography variant="h5">
-                                {transaction?.description}
-                            </SuiTypography>
-                        </Box>
+                    </Box>
+                    <SuiTypography
+                        variant="body2"
+                        fontWeight="bold"
+                        sx={{ mt: 5 }}
+                    >
+                        Nội dung giao dịch
+                    </SuiTypography>
+                    <Box sx={{ marginTop: '5px' }}>
+                        <SuiTypography variant="h6">
+                            {transaction?.description}
+                        </SuiTypography>
                     </Box>
                 </SuiBox>
             )}

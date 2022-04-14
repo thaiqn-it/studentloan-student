@@ -5,7 +5,7 @@ import React from 'react'
 import { Box } from '@mui/system'
 
 function SlideTransition(props) {
-    return <Slide {...props} direction="up" />
+    return <Slide {...props} direction="left" />
 }
 
 export default function SnackbarMessage(props) {
