@@ -26,7 +26,7 @@ export default function Repayment() {
     const [openSnack, setOpenSnack] = useState(false)
 
     useEffect(() => {
-        setDocTitle("Thanh toán khoản vay - StudentLoan")
+        setDocTitle('Thanh toán khoản vay - StudentLoan')
         setLoading(true)
         getBalance()
         if (id === 'tat-ca') {
@@ -307,7 +307,10 @@ export default function Repayment() {
                 handleClose={handleCloseComfirm}
             />
             <SnackbarMessage
-                snack={{ color: 'error', message: 'Xin lỗi mật khẩu bạn nhập không đúng' }}
+                snack={{
+                    color: 'error',
+                    message: 'Xin lỗi mật khẩu bạn nhập không đúng',
+                }}
                 onClickClose={closeSnack}
                 open={openSnack}
             />
