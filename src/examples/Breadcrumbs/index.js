@@ -77,7 +77,7 @@ function Breadcrumbs({ icon, title, route, light }) {
                     {title.replace('-', ' ')}
                 </SuiTypography>
             </MuiBreadcrumbs>
-            <SuiTypography
+            {/* <SuiTypography
                 fontWeight="bold"
                 // textTransform="capitalize"
                 variant="h6"
@@ -85,7 +85,7 @@ function Breadcrumbs({ icon, title, route, light }) {
                 noWrap
             >
                 {title.replace('-', ' ')}
-            </SuiTypography>
+            </SuiTypography> */}
         </SuiBox>
     )
 }

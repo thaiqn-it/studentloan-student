@@ -42,7 +42,7 @@ export default function LandingPage() {
     return (
         <>
             <Box className={classes.welcome}>
-                    <Navbar title="StudentLoanPlatform" />
+                <Navbar title="StudentLoanPlatform" />
 
                 <Container maxWidth="xl">
                     <Box padding="10% 20px 0 20px">

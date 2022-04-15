@@ -144,6 +144,7 @@ export default function StudentProfile2() {
 
     const renderStatusButton = () => {
         var objectStatus = renderUserStatus(userInfo?.status)
+        console.log(userInfo?.status)
 
         return (
             <>

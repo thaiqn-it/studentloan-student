@@ -1,9 +1,11 @@
-import { defaultInstance } from '.'
+import { USER_TYPE } from 'utils/enum'
+import { defaultInstance, loadToken } from '.'
 
 const login = (email, password) => {
     return defaultInstance.post('/user/login', {
         email: email,
         password: password,
+        type: USER_TYPE.STUDENT,
     })
 }
 
@@ -36,11 +38,16 @@ const getTransactions = () => {
 }
 
 const getStudentProfile = () => {
+    loadToken()
     return defaultInstance.get('user/student/me')
 }
 
 const updateUser = (data) => {
     return defaultInstance.put('/user/', data)
+}
+
+const verifyPassword = (data) => {
+    return defaultInstance.post('/user/verifyPassword', data)
 }
 
 export const userApi = {
@@ -54,4 +61,5 @@ export const userApi = {
     getTransactions,
     getStudentProfile,
     updateUser,
+    verifyPassword,
 }

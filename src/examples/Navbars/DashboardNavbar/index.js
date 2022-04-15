@@ -59,6 +59,8 @@ import team2 from 'assets/images/team-2.jpg'
 import logoSpotify from 'assets/images/small-logos/logo-spotify.svg'
 import { useAuthState } from 'context/authContext'
 import { notificationApi } from 'apis/notificationApi'
+import { logOut } from 'context/userAction'
+import { useAuthDispatch } from 'context/authContext'
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [navbarType, setNavbarType] = useState()
@@ -73,7 +75,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const loadNotification = async () => {
         try {
             const notiRes = await notificationApi.getNotification()
-            console.log(notiRes)
+
             if (notiRes) setData(notiRes.data)
         } catch (e) {}
     }
@@ -123,6 +125,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const formatTime = (date) => {
         const currDate = new Date()
         return fTimeDiff(date, currDate, 'days')
+    }
+    const authDispatch = useAuthDispatch()
+    const handleLogout = async () => {
+        await logOut(authDispatch)
+        history.push('/authentication/sign-in')
     }
     // Render the notifications menu
     const renderMenu = () => (
@@ -217,26 +224,27 @@ function DashboardNavbar({ absolute, light, isMini }) {
               />
             </SuiBox> */}
                         <SuiBox color={light ? 'white' : 'inherit'}>
-                            <Link to="/authentication/sign-in">
-                                <IconButton sx={navbarIconButton} size="small">
-                                    <Icon
-                                        sx={({ palette: { dark, white } }) => ({
-                                            color: light
-                                                ? white.main
-                                                : dark.main,
-                                        })}
-                                    >
-                                        account_circle
-                                    </Icon>
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                        color={light ? 'white' : 'dark'}
-                                    >
-                                        Đăng xuất
-                                    </SuiTypography>
-                                </IconButton>
-                            </Link>
+                            <IconButton
+                                sx={navbarIconButton}
+                                size="small"
+                                onClick={handleLogout}
+                            >
+                                <Icon
+                                    sx={({ palette: { dark, white } }) => ({
+                                        color: light ? white.main : dark.main,
+                                    })}
+                                >
+                                    account_circle
+                                </Icon>
+                                <SuiTypography
+                                    variant="button"
+                                    fontWeight="medium"
+                                    color={light ? 'white' : 'dark'}
+                                >
+                                    Đăng xuất
+                                </SuiTypography>
+                            </IconButton>
+
                             <IconButton
                                 size="small"
                                 color="inherit"

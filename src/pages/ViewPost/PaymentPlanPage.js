@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 
-import { Box, Container } from '@mui/material'
+import { Box, Container, Divider } from '@mui/material'
 import TimelineList from 'examples/Timeline/TimelineList'
 import TimelineItem from 'examples/Timeline/TimelineItem'
 import SuiTypography from 'components/SuiTypography'
 import SuiButton from 'components/SuiButton'
-import Repayment from '../Repayment/OTP'
 import Loading from 'components/Loading'
 
 import moment from 'moment'
 
-import { loanScheduleApi } from 'apis/loanScheduleApi'
+import { loanScheduleApi } from '../../apis/loanScheduleApi'
+import { fCurrency } from 'utils/formatNumber'
+import { fCurrencyNoVND } from 'utils/formatNumber'
 
 export default function PaymentPlanPage() {
     const { id } = useParams()
@@ -42,20 +43,39 @@ export default function PaymentPlanPage() {
         history.push(path)
     }
 
-    const buttonPayment = (
-        <Box
-            display="flex"
-            justifyContent="flex-end"
-            onClick={() => onHandleAction(item)}
-        >
-            <SuiButton color="warning" variant="gradient" size="small">
-                Thanh toán
-            </SuiButton>
-        </Box>
-    )
+    const handlePayAll = () => {
+        var path = `/trang-chu/thanh-toan/tat-ca`
+        history.push({
+            pathname: path,
+            state: { loanId: id },
+        })
+    }
+
+    const buttonPayment = (item) => {
+        return (
+            <>
+                <Box>
+                    <SuiButton
+                        color="warning"
+                        variant="gradient"
+                        size="small"
+                        onClick={() => onHandleAction(item)}
+                        sx={{ mt: '50%' }}
+                    >
+                        Thanh toán
+                    </SuiButton>
+                </Box>
+            </>
+        )
+    }
+
+    const sumTotal = (money, penaltyMoney) => {
+        var tempMoney = new Number(money)
+        var tempPenaltyMoney = new Number(penaltyMoney)
+        return fCurrency(tempMoney + tempPenaltyMoney)
+    }
 
     const itemLoanSchedule = (item) => {
-        console.log('true')
         var statusObject = {
             color: 'warning',
             action: false,
@@ -69,7 +89,7 @@ export default function PaymentPlanPage() {
         switch (item.status) {
             case 'ONGOING':
                 statusObject.color = 'warning'
-                statusObject.action = check && buttonPayment
+                statusObject.action = true && buttonPayment(item)
                 break
             case 'COMPLETED':
                 statusObject.color = 'success'
@@ -93,7 +113,7 @@ export default function PaymentPlanPage() {
                             fontWeight="regular"
                             color="text"
                         >
-                            Số tiền: {item?.money}
+                            Số tiền: {fCurrency(item?.money)}
                         </SuiTypography>
                         <Box>
                             <SuiTypography
@@ -101,7 +121,7 @@ export default function PaymentPlanPage() {
                                 fontWeight="regular"
                                 color="text"
                             >
-                                Tiền phạt: 10.000
+                                Tiền phạt:{fCurrency(item?.penaltyMoney)}
                             </SuiTypography>
                         </Box>
                         <Box mt={3}>
@@ -110,7 +130,8 @@ export default function PaymentPlanPage() {
                                 fontWeight="medium"
                                 color="text"
                             >
-                                Tổng: 210.000
+                                Tổng:
+                                {sumTotal(item?.money, item?.penaltyMoney)}
                             </SuiTypography>
                         </Box>
                     </>
@@ -125,7 +146,16 @@ export default function PaymentPlanPage() {
         <>
             {isLoading ? <Loading /> : null}
             {/* <Repayment open={openPayment} handleClose={handleClose} selectedValue={selectedValue}/> */}
-            <Box mb={3} p={3}>
+            <Box mb={3} bgcolor="#f8f9fa">
+                <Box display="flex" justifyContent="flex-end">
+                    <SuiButton
+                        color="primary"
+                        sx={{ borderRadius: 0 }}
+                        onClick={handlePayAll}
+                    >
+                        Thanh toán tất cả
+                    </SuiButton>
+                </Box>
                 <Container maxWidth="sm">
                     <TimelineList title="">
                         {loanSchedules?.map((item) => itemLoanSchedule(item))}

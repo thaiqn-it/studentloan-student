@@ -14,6 +14,8 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout'
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar'
 
 import ReleaseLogo from '../../assets/newLogo3.png'
+import { useAuthState, useAuthDispatch } from 'context/authContext'
+import { reloadData } from 'context/userAction'
 
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]
@@ -81,6 +83,20 @@ const StudentDashboard = () => {
             setOnMouseEnter(false)
         }
     }
+
+    const userObj = useAuthState()
+    const authDispatch = useAuthDispatch()
+
+    const reloadUserData = async () => {
+        if (!userObj.user === null) return
+        try {
+            const user = await reloadData(authDispatch)
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        reloadUserData()
+    }, [])
 
     return (
         <>

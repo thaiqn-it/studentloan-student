@@ -15,4 +15,12 @@ const repayment = (data) =>{
     return defaultInstance.post(`/wallet/repayment/`, data)
 }
 
-export const walletApi = { getWalletByUserId, updateWalletById, repayment }
+const repaymentAll = (data) =>{
+    return defaultInstance.post(`/wallet/repaymentAll/`, data)
+}
+
+const getWallet = () =>{
+    return defaultInstance.get(`/wallet/`)
+}
+
+export const walletApi = { getWalletByUserId, updateWalletById, repayment, getWallet, repaymentAll }

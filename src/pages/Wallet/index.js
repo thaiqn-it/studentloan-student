@@ -1,4 +1,14 @@
-import { Button, Grid, Typography, Box, Card, Icon } from '@mui/material'
+import {
+    Button,
+    Grid,
+    Typography,
+    Box,
+    Card,
+    Icon,
+    Modal,
+    Backdrop,
+    Fade,
+} from '@mui/material'
 import React, { useState } from 'react'
 import classes from './Wallet.module.css'
 import SendIcon from '@mui/icons-material/Send'
@@ -24,10 +34,78 @@ import { transactionApi } from 'apis/transactionApi'
 import { useEffect } from 'react'
 import TopUp from 'components/TopUp'
 import Transfer from 'components/Transfer'
+import { useHistory } from 'react-router-dom'
+import { USER_STATUS } from 'utils/enum'
+import SuiButton from 'components/SuiButton'
+
+import { fCurrency } from 'utils/formatNumber'
+
+const NotifiModal = ({ open, handleClose, onClick }) => {
+    return (
+        <>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={open}>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: 400,
+                            bgcolor: 'background.paper',
+
+                            boxShadow: 24,
+                            p: 4,
+                        }}
+                    >
+                        <Typography
+                            id="transition-modal-title"
+                            variant="h2"
+                            color="primary"
+                            sx={{ textAlign: 'center' }}
+                        >
+                            Lưu ý
+                        </Typography>
+                        <Typography
+                            id="transition-modal-description"
+                            sx={{ mt: 2, textAlign: 'center' }}
+                        >
+                            Tài khoản của bạn chưa được admin xác thực nên chưa
+                            thể thực hiện hành động này.
+                        </Typography>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                marginTop: '15px',
+                            }}
+                        >
+                            <SuiButton
+                                color="primary"
+                                variant="contained"
+                                onClick={onClick}
+                            >
+                                Xác thực tài khoản
+                            </SuiButton>
+                        </Box>
+                    </Box>
+                </Fade>
+            </Modal>
+        </>
+    )
+}
 
 const Wallet = () => {
     const [wallet, setWallet] = useState({})
-
+    const history = useHistory()
     const userObj = useAuthState()
     // const [transactions, setTransactions] = useState()
     const [transactionsList, setTransactionsList] = useState()
@@ -35,7 +113,9 @@ const Wallet = () => {
     const [topUpOpen, setTopUpOpen] = useState(false)
 
     const [transfer, setTransfer] = useState(false)
-
+    const [notVerify, setNotVerify] = useState(false)
+    const handleNotVerifyClose = () => setNotVerify(false)
+    const handleNotVerifyOpen = () => setNotVerify(true)
     const initData = async () => {
         try {
             const userId = userObj.userId
@@ -46,6 +126,7 @@ const Wallet = () => {
             const transactionRes =
                 await transactionApi.getTransactionByWalletId(wallet.id)
             const trans = transactionRes.data
+            console.log(trans)
 
             setTransactionsList(trans)
             setSelectedTransaction(trans[0].transaction[0])
@@ -64,10 +145,10 @@ const Wallet = () => {
         } catch (e) {}
     }
 
-    const formattedBalance = `${String(wallet?.money).replace(
-        /(\d)(?=(\d{3})+$)/g,
-        '$1,'
-    )} đ`
+    // const formattedBalance = `${String(wallet?.money).replace(
+    //     /(\d)(?=(\d{3})+$)/g,
+    //     '$1,'
+    // )} đ`
 
     const handleTransactionClick = (id, date) => {
         const group = transactionsList.find((trans) => trans.date === date)
@@ -77,12 +158,37 @@ const Wallet = () => {
         setSelectedTransaction(transaction)
     }
 
+    const authObj = useAuthState()
+    const user = authObj.user
+
     useEffect(() => {
         initData()
     }, [])
 
+    const checkAction = (action) => {
+        if (user.data.status !== USER_STATUS.VERIFIED) return handleNotVerifyOpen()
+
+        switch (action) {
+            case 'TopUp':
+                setTopUpOpen(true)
+                break
+            case 'Transfer':
+                setTransfer(true)
+                break
+            default:
+                console.log('action not defined')
+        }
+    }
+
     return (
         <>
+            <NotifiModal
+                open={notVerify}
+                handleClose={handleNotVerifyClose}
+                onClick={() => {
+                    history.push('/trang-chu/xac-thuc')
+                }}
+            />
             <SuiBox mb={3}>
                 <SuiBox mb={3} sx={{ marginTop: '20px' }}>
                     <Grid container spacing={3}>
@@ -103,11 +209,12 @@ const Wallet = () => {
                                                     </SuiTypography>
                                                     <Box>
                                                         <SuiTypography
-                                                            variant="h5"
+                                                            variant="h4"
                                                             fontWeight="bold"
-                                                            color={'dark'}
+                                                            color="dark"
                                                         >
-                                                            {formattedBalance}
+                                                            {/* {formattedBalance} */}
+                                                            {fCurrency(wallet?.money)}
                                                         </SuiTypography>
                                                     </Box>
                                                 </SuiBox>
@@ -118,7 +225,7 @@ const Wallet = () => {
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={6} xl={3}>
-                            <Box onClick={() => setTopUpOpen(true)}>
+                            <Box onClick={() => checkAction('TopUp')}>
                                 <MiniStatisticsCard
                                     title={{ text: 'Nạp tiền' }}
                                     // percentage={{ color: 'success', text: '+55%' }}
@@ -134,11 +241,11 @@ const Wallet = () => {
                             />
                         </Grid>
                         <Grid item xs={12} sm={6} xl={3}>
-                            <Box onClick={() => setTransfer(true)}>
+                            <Box onClick={() => checkAction('Transfer')}>
                                 <MiniStatisticsCard
-                                    title={{ text: 'Rut tiền' }}
+                                    title={{ text: 'Rút tiền' }}
                                     // percentage={{ color: 'success', text: '+55%' }}
-                                    icon={{ color: 'info', component: 'paid' }}
+                                    icon={{ color: 'warning', component: 'logout' }}
                                 />
                             </Box>
 

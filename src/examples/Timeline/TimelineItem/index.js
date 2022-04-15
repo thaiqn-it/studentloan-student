@@ -33,6 +33,7 @@ import {
     timelineItemIcon,
 } from 'examples/Timeline/TimelineItem/styles'
 import SuiButton from 'components/SuiButton'
+import { Divider } from '@mui/material'
 
 function TimelineItem({
     color,
@@ -87,47 +88,52 @@ function TimelineItem({
                     {icon}
                 </Icon>
             </SuiBox>
-            <SuiBox
-                ml={5.75}
-                pt={description ? 0.7 : 0.5}
-                lineHeight={0}
-                maxWidth="30rem"
-            >
-                <SuiTypography
-                    variant="button"
-                    fontWeight="medium"
-                    color={isDark ? 'white' : 'dark'}
+
+            <SuiBox display="flex" justifyContent="space-between">
+                <SuiBox
+                    ml={5.75}
+                    pt={description ? 0.7 : 0.5}
+                    lineHeight={0}
+                    maxWidth="30rem"
                 >
-                    {title}
-                </SuiTypography>
-                <SuiBox mt={0.5}>
                     <SuiTypography
-                        variant="caption"
+                        variant="button"
                         fontWeight="medium"
-                        color={isDark ? 'secondary' : 'text'}
+                        color={isDark ? 'white' : 'dark'}
                     >
-                        {dateTime}
+                        {title}
                     </SuiTypography>
-                </SuiBox>
-                <SuiBox mt={2} mb={1.5}>
-                    {description ? (
+                    <SuiBox mt={0.5}>
                         <SuiTypography
-                            variant="button"
-                            fontWeight="regular"
-                            color="text"
+                            variant="caption"
+                            fontWeight="medium"
+                            color={isDark ? 'secondary' : 'text'}
                         >
-                            {description}
+                            {dateTime}
                         </SuiTypography>
-                    ) : null}
-                    {information ? information : null}
-                </SuiBox>
-                {badges.length > 0 ? (
-                    <SuiBox display="flex" pb={lastItem ? 1 : 2}>
-                        {renderBadges}
                     </SuiBox>
-                ) : null}
+                    <SuiBox mt={2} mb={1.5}>
+                        {description ? (
+                            <SuiTypography
+                                variant="button"
+                                fontWeight="regular"
+                                color="text"
+                            >
+                                {description}
+                            </SuiTypography>
+                        ) : null}
+                        {information ? information : null}
+                    </SuiBox>
+                    {badges.length > 0 ? (
+                        <SuiBox display="flex" pb={lastItem ? 1 : 2}>
+                            {renderBadges}
+                        </SuiBox>
+                    ) : null}
+                </SuiBox>
+
                 {action ? action : null}
             </SuiBox>
+            <Divider width="100%" sx={{ ml: 5 }} />
         </SuiBox>
     )
 }

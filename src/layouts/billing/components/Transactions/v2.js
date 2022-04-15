@@ -58,18 +58,16 @@ const Group = ({ transactions, handleClick, selectedTransaction }) => {
                             <Transaction
                                 date={transaction.date}
                                 color={
-                                    transaction.status === 'SUCCESS'
-                                        ? 'success'
-                                        : 'error'
+                                    transaction.type !== "TRANSFER" ? 'success' : 'error'
                                 }
                                 icon={
-                                    transaction.status === 'SUCCESS'
+                                    transaction.type !== "TRANSFER"
                                         ? 'arrow_upward'
                                         : 'arrow_downward'
                                 }
                                 name={transaction.description}
                                 description={transaction.date}
-                                value={transaction.money}
+                                value={transaction.type !== "TRANSFER" ? transaction.money : -transaction.money}
                                 handleClick={handleClick}
                                 id={transaction.id}
                                 selected={
