@@ -3,11 +3,15 @@ import { Container, Grid, Divider, Box, CardMedia } from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
 
+import { useParams } from 'react-router-dom'
+
 import DropFileInput from '../../components/DropFileZone'
 import YoutubeEmbed from './../../components/YoutubeEmbed'
 import { validVideoId } from 'utils/youtube'
+import { LOANMEDIA_STATUS } from 'utils/enum'
 
 export default function MediaPage(props) {
+    const { id } = useParams()
     const { loanId, loanMedia, handleChange } = props
 
     useEffect(() => {
@@ -16,23 +20,23 @@ export default function MediaPage(props) {
 
     const [videoId, setVideoId] = useState('')
     const [demandNote, setDemandNote] = useState({
-        loanId: loanId,
-        description: 'demand-note',
+        loanId: id,
+        description: 'Giấy báo học phí',
         imageUrl: '',
         status: 'active',
         type: 'DEMANDNOTE',
         currentStatus: 'new',
     })
     const [studentCert, setStudentCert] = useState({
-        loanId: loanId,
-        description: 'student-certification',
+        loanId: id,
+        description: 'Giấy xác nhận sinh viên',
         imageUrl: '',
         status: 'active',
         type: 'STUDENTCERT',
         currentStatus: 'new',
     })
     const [youtubeVideo, setYoutubeVideo] = useState({
-        loanId: loanId,
+        loanId: id,
         description: 'youtube-video',
         imageUrl: '',
         status: 'active',
@@ -65,7 +69,7 @@ export default function MediaPage(props) {
                     ...demandNote,
                     currentStatus: 'update',
                     imageUrl: newUrl,
-                    status: 'active',
+                    status: LOANMEDIA_STATUS.ACTIVE,
                 }
             }
             setDemandNote(newDemand)
@@ -79,7 +83,7 @@ export default function MediaPage(props) {
                     ...studentCert,
                     currentStatus: 'update',
                     imageUrl: newUrl,
-                    status: 'active',
+                    status: LOANMEDIA_STATUS.ACTIVE,
                 }
             }
             setStudentCert(newStudetCert)
@@ -91,8 +95,10 @@ export default function MediaPage(props) {
         var url = event.target.value
         if (true) {
             var loandMediaId = ''
+            var current = "new"
             if (loanMedia.VIDEO) {
                 loandMediaId = loanMedia.VIDEO.id
+                current = "update"
             }
             var videoMedia = {
                 ...sampleLoanMedia,
@@ -101,8 +107,8 @@ export default function MediaPage(props) {
                 description: 'youtube-video',
                 imageUrl: url,
                 type: 'VIDEO',
-                status: 'active',
-                currentStatus: 'new',
+                status: LOANMEDIA_STATUS.ACTIVE,
+                currentStatus: current,
             }
 
             handleChange(null, 'LoanMedia', videoMedia)
@@ -114,18 +120,18 @@ export default function MediaPage(props) {
         if (id === 'DEMANDNOTE') {
             var newDemand = {
                 ...demandNote,
-                currentStatus: 'update',
+                currentStatus: 'delete',
                 imageUrl: '',
-                status: 'inactive',
+                status: LOANMEDIA_STATUS.INACTIVE,
             }
             setDemandNote(newDemand)
             handleChange(null, 'LoanMedia', newDemand)
         } else {
             var newStudetCert = {
                 ...studentCert,
-                currentStatus: 'update',
+                currentStatus: 'delete',
                 imageUrl: '',
-                status: 'inactive',
+                status: LOANMEDIA_STATUS.INACTIVE,
             }
             setDemandNote(newStudetCert)
             handleChange(null, 'LoanMedia', newStudetCert)
