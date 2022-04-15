@@ -4,7 +4,7 @@ import { API_URL, getJWToken } from '../constants'
 const defaultInstance = axios.create({
     baseURL: API_URL,
     headers: {
-        Authorization: `Bearer ${getJWToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('JWT_TOKEN')}`,
     },
 })
 

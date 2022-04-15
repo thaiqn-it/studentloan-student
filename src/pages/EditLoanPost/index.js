@@ -178,7 +178,7 @@ export default function EditLoanPost() {
     return (
         <>
             {isLoading ? <Loading /> : null}
-            <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0 }}>
+            <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0, boxShadow:3, }} width="100%">
                 <ButtonGroup
                     variant="contained"
                     aria-label="outlined primary button group"

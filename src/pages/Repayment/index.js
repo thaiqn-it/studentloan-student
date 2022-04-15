@@ -1,5 +1,5 @@
 import { Box, Card, Container, Divider, Grid, Paper } from '@mui/material'
-import { loanScheduleApi } from 'apis/loanScheduleApi'
+import { loanScheduleApi } from '..//..//apis/loanScheduleApi'
 import { investmentApi } from 'apis/investmentApi'
 import { walletApi } from 'apis/walletApi'
 import OTPBox from 'components/OTPBox'
@@ -7,21 +7,58 @@ import SuiAvatar from 'components/SuiAvatar'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 import { fCurrency } from 'utils/formatNumber'
-import { fDateTimeSuffix } from 'utils/formatTime'
+import { fDate } from 'utils/formatTime'
+import Loading from 'components/Loading'
+import ConfirmPayment from './ConfirmPayment'
+import SnackbarMessage from 'components/SnackbarMessage'
+import { setDocTitle } from 'utils/dynamicDocTitle'
+import { LOAN_SCHEDULE_TYPE } from 'utils/enum'
 
 export default function Repayment() {
     const { id } = useParams()
     const history = useHistory()
-    const [loanschedule, setLoanSchedule] = useState(null)
+    const location = useLocation()
+    const loanId = location.state?.loanId || null
+    const [loanSchedule, setLoanSchedule] = useState(null)
+    const [loanSchedules, setLoanSchedules] = useState(null)
     const [investments, setInvestments] = useState(null)
     const [isLoading, setLoading] = useState(false)
+    const [wallet, setWallet] = useState(null)
+    const [openConfirm, setOpenConfirm] = useState(false)
+    const [openSnack, setOpenSnack] = useState(false)
+    const [snack, setSnack] = useState(null)
+    const [totalMoney, setTotalMoney] = useState(null)
+    const [penalty, setPenalty] = useState(null)
 
     useEffect(() => {
+        setDocTitle('Thanh toán khoản vay - StudentLoan')
         setLoading(true)
-        getLoanSchedule()
+        getBalance()
+        if (id === 'tat-ca') {
+            getAllLoanSchedule()
+        } else {
+            getLoanSchedule()
+        }
     }, [])
+
+    const getAllLoanSchedule = () => {
+        loanScheduleApi
+            .getLoanScheduleByLoanId(loanId, 'COMPLETED')
+            .then((res) => {
+                var schedules = res.data
+                setLoanSchedules(schedules)
+                var sum = 0
+                var penalty = 0
+                schedules.map((item) => {
+                    sum += Number(item.money)
+                    penalty += Number(item.penaltyMoney)
+                })
+                setTotalMoney(sum)
+                setPenalty(penalty)
+            })
+    }
 
     const getLoanSchedule = () => {
         loanScheduleApi
@@ -38,12 +75,25 @@ export default function Repayment() {
                 } else {
                     temp = {
                         ...loanScheduleItem,
-                        penaltyMoney: Number(loanScheduleItem.loanScheduleItem),
+                        penaltyMoney: Number(loanScheduleItem.penaltyMoney),
                         money: Number(loanScheduleItem.money),
                     }
                 }
                 setLoanSchedule(temp)
                 getInvesment(temp.loanId)
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+            })
+    }
+
+    const getBalance = () => {
+        walletApi
+            .getWallet()
+            .then((res) => {
+                setWallet(res.data)
+                setLoading(false)
             })
             .catch((err) => {
                 setLoading(false)
@@ -64,25 +114,138 @@ export default function Repayment() {
     }
 
     const handleCancel = () => {
-        history.push(`/trang-chu/ho-so/xem/${loanschedule.loanId}`)
+        if (id === 'tat-ca') {
+            history.goBack()
+        }
+        history.push(`/trang-chu/ho-so/xem/${loanSchedule.loanId}`)
     }
 
-    const handleConfirm = () => {
-        setLoading(true)
-        walletApi
-            .repayment({ loanschedule, investments })
-            .then((res) => {
-                setLoading(false)
-                if (res.data !== null) {
-                    history.push('/trang-chu/profile2/wallet')
-                }
+    const handleConfirm = (value) => {
+        setOpenConfirm(false)
+        if (value) {
+            if (id === 'tat-ca') {
+                walletApi
+                    .repaymentAll({ loanSchedules, investments })
+                    .then((res) => {
+                        setLoading(false)
+                        console.log(res.data)
+                        // if (res.data !== null) {
+                        //     history.push('/trang-chu/profile2/wallet')
+                        // }
+                    })
+                    .catch((err) => {
+                    
+                        setLoading(false)
+                    })
+            } else {
+                walletApi
+                    .repayment({ loanSchedule, investments })
+                    .then((res) => {
+                        setLoading(false)
+                        if (res.data !== null) {
+                            history.push('/trang-chu/profile2/wallet')
+                        }
+                    })
+                    .catch((err) => {
+                        setLoading(false)
+                    })
+            }
+        } else {
+            setSnack({
+                color: 'error',
+                message: 'Xin lỗi mật khẩu bạn nhập không đúng',
             })
-            .catch((err) => {
-                setLoading(false)
-            })
+            setOpenSnack(true)
+        }
     }
+
+    const payment = () => {
+        var temp = 0
+        if (id === 'tat-ca') {
+            temp = totalMoney
+        } else {
+            temp = loanSchedule.money
+        }
+        if (wallet.money < temp) {
+            setSnack({
+                color: 'error',
+                message:
+                    'Xin lỗi số tiền trong ví của bạn không đủ để thanh toán',
+            })
+            setOpenSnack(true)
+        } else {
+            setOpenConfirm(true)
+        }
+    }
+    const handleCloseComfirm = () => {
+        setOpenConfirm(false)
+    }
+
+    const closeSnack = () => {
+        setOpenSnack(false)
+    }
+
+    const getAmount = () => {
+        var amount = 0
+        if (id === 'tat-ca') {
+            amount = fCurrency(totalMoney)
+        } else {
+            amount = fCurrency(loanSchedule?.money)
+        }
+        return amount
+    }
+
+    const getPenalty = () => {
+        var amount = 0
+        if (id === 'tat-ca') {
+            amount = fCurrency(penalty)
+        } else {
+            amount = fCurrency(loanSchedule?.penaltyMoney)
+        }
+        return amount
+    }
+
+    const getTotalAmount = () => {
+        var amount = 0
+        if (id === 'tat-ca') {
+            amount = fCurrency(totalMoney + penalty)
+        } else {
+            amount = fCurrency(loanSchedule?.money + loanSchedule?.penaltyMoney)
+        }
+        return amount
+    }
+
+    const getType = () => {
+        var type = ''
+        if (id === 'tat-ca') {
+            if (loanSchedules) {
+                type =
+                    loanSchedules[0]?.type + ' - ' + loanSchedules.at(-1)?.type
+            }
+        } else {
+            type = loanSchedule?.type
+        }
+        return type
+    }
+
+    const getPeriod = () => {
+        var period = ''
+        if (id === 'tat-ca') {
+            if (loanSchedules) {
+                period =
+                    fDate(loanSchedules[0]?.startAt) +
+                    ' - ' +
+                    fDate(loanSchedules.at(-1)?.startAt)
+            }
+        } else {
+            period = fDate(loanSchedule?.startAt)
+        }
+        return period
+    }
+
     return (
         <>
+            {isLoading ? <Loading /> : null}
             <SuiTypography
                 variant="h4"
                 fontWeight="regular"
@@ -92,7 +255,7 @@ export default function Repayment() {
                 Thanh toán khoản vay
             </SuiTypography>
             <Container maxWidth="lg">
-                <Card>
+                <Card sx={{ boxShadow: 3 }}>
                     <Box p={3}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
@@ -129,7 +292,7 @@ export default function Repayment() {
                                             variant="caption"
                                             color="text"
                                         >
-                                            Số dư: 200.000.000
+                                            Số dư: {fCurrency(wallet?.money)}
                                         </SuiTypography>
                                     </Box>
                                 </Box>
@@ -148,10 +311,11 @@ export default function Repayment() {
                                         variant="h2"
                                         fontWeight="light"
                                     >
-                                        {fCurrency(
-                                            loanschedule?.money +
-                                                loanschedule?.penaltyMoney
-                                        )}
+                                        {/* {fCurrency(
+                                            loanSchedule?.money +
+                                                loanSchedule?.penaltyMoney
+                                        )} */}
+                                        {getTotalAmount()}
                                     </SuiTypography>
                                 </Box>
                                 <Divider />
@@ -171,7 +335,8 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {loanschedule?.type}
+                                        {/* {loanSchedule?.type} */}
+                                        {getType()}
                                     </SuiTypography>
                                 </Box>
                                 <Box
@@ -182,13 +347,14 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        Tháng:
+                                        Kỳ hạn:
                                     </SuiTypography>
                                     <SuiTypography
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {fDateTimeSuffix(loanschedule?.startAt)}
+                                        {/* {fDate(loanSchedule?.startAt)} */}
+                                        {getPeriod()}
                                     </SuiTypography>
                                 </Box>
                             </Grid>
@@ -207,7 +373,8 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {fCurrency(loanschedule?.money)}
+                                        {/* {fCurrency(loanSchedule?.money)} */}
+                                        {getAmount()}
                                     </SuiTypography>
                                 </Box>
                                 <Box
@@ -224,7 +391,8 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {fCurrency(loanschedule?.penaltyMoney)}
+                                        {/* {fCurrency(loanSchedule?.penaltyMoney)} */}
+                                        {getPenalty()}
                                     </SuiTypography>
                                 </Box>
                             </Grid>
@@ -245,11 +413,21 @@ export default function Repayment() {
                     >
                         Hủy bỏ
                     </SuiButton>
-                    <SuiButton color="primary" onClick={handleConfirm}>
-                        Xác nhận
+                    <SuiButton color="primary" onClick={payment}>
+                        Thanh toán
                     </SuiButton>
                 </Box>
             </Container>
+            <ConfirmPayment
+                open={openConfirm}
+                handleConfirm={handleConfirm}
+                handleClose={handleCloseComfirm}
+            />
+            <SnackbarMessage
+                snack={snack}
+                onClickClose={closeSnack}
+                open={openSnack}
+            />
             {/* <OTPBox /> */}
         </>
     )

@@ -7,6 +7,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Grid,
     Modal,
     Typography,
 } from '@mui/material'
@@ -17,6 +18,9 @@ import { PayPalButton } from 'react-paypal-button-v2'
 
 import { exchangeCurrency } from 'utils/concurencyExchange'
 import { walletApi } from 'apis/walletApi'
+import SuiTypography from 'components/SuiTypography'
+import { fCurrency } from 'utils/formatNumber'
+import SuiButton from 'components/SuiButton'
 
 const source = 'https://studentloanfpt.ddns.net'
 const TopUpModal = ({ open, onClose, url }) => {
@@ -135,17 +139,19 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
                             >
                                 Số tiền
                             </Typography>
-
+                            <SuiTypography align="center" variant="h4">{fCurrency(money)}</SuiTypography>
                             <SuiInput
                                 value={money}
                                 onChange={handleMoneyChange}
                                 name={'money'}
+                                type="number"
+                                sx={{mt:3}}
                             />
-                            {/* {error && (
-                    <Typography variant="caption" className={classes.error}>
-                        {helperText}
-                    </Typography>
-                )} */}
+                            {/* <Grid container mt={1}>
+                                <Grid item xs={12} md={3}>
+                                    <SuiButton color="primary" onClick={e=>setMoney(e.currentTarget.value)}>200.000</SuiButton>
+                                </Grid>
+                            </Grid> */}
                         </Box>
                     </Box>
 
@@ -175,7 +181,7 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Huỷ</Button>
+                    <SuiButton color="dark" onClick={handleClose} size="large" variant="text">Hủy</SuiButton>
                 </DialogActions>
             </Dialog>
         </>

@@ -89,9 +89,9 @@ function Transaction({
                         <Box sx={{ width: 90 }}>
                             <SuiTypography
                                 variant="body2"
-                                color={value >= 0 ? 'success' : 'warning'}
+                                color={value >= 0 ? 'success' : 'error'}
                                 fontWeight="medium"
-                                textGradient
+                                // textGradient
                             >
                                 {`${String(value).replace(
                                     /(\d)(?=(\d{3})+$)/g,

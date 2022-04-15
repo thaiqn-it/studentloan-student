@@ -89,10 +89,8 @@ const StudentDashboard = () => {
 
     const reloadUserData = async () => {
         if (!userObj.user === null) return
-        console.log('reload data')
         try {
             const user = await reloadData(authDispatch)
-            console.log(user)
         } catch (e) {}
     }
 

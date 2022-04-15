@@ -1,4 +1,12 @@
-import { Container, Box, Grid, Divider, Paper, CardMedia } from '@mui/material'
+import {
+    Container,
+    Box,
+    Grid,
+    Divider,
+    Paper,
+    CardMedia,
+    Link,
+} from '@mui/material'
 import ImageCard from 'components/ImageCard'
 import SuiBox from 'components/SuiBox'
 import SuiButton from 'components/SuiButton'
@@ -63,6 +71,13 @@ export default function ViewPost() {
         setCurrentTab(tab)
     }
 
+    function getFileName(url) {
+        var splittedArr = url.split('/')
+        var name = splittedArr[splittedArr.length - 1]
+        var fileName = name.substring(name.indexOf('-') + 1, name.length)
+        return fileName
+    }
+
     const renderStatusTimeline = (item, index) => {
         var objectStatus = renderStatus(item.type)
         var isLastItem = index === loanHistories.length - 1
@@ -79,7 +94,17 @@ export default function ViewPost() {
                 information={
                     <>
                         {item.LoanHistoryImages.map((item) => (
-                            <SuiTypography>hihi</SuiTypography>
+                            <Link
+                                href={item.imageUrl}
+                                underline="hover"
+                                color="black"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <SuiTypography variant="caption">
+                                    {getFileName(item.imageUrl)}
+                                </SuiTypography>
+                            </Link>
                         ))}
                     </>
                 }

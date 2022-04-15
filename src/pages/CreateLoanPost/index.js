@@ -243,7 +243,7 @@ export default function CreateLoanPost(props) {
                                 variant="h3"
                                 component="div"
                                 fontWeight="medium"
-                                color="black"
+                                color="dark"
                                 align="center"
                             >
                                 Hồ sơ vay
@@ -272,7 +272,7 @@ export default function CreateLoanPost(props) {
                                 <SuiTypography
                                     variant="h4"
                                     fontWeight="regular"
-                                    color="black"
+                                    color="dark"
                                     align="center"
                                     mb={5}
                                 >
