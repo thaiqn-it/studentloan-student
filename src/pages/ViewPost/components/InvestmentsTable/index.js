@@ -106,7 +106,7 @@ export default function InvestorTable(props) {
                 //     view
                 // </SuiTypography>
                 <Link
-                    href="https://res.cloudinary.com/larrytran/image/upload/v1648997077/pdf/hmq3b48dybfpn1mvfqsa.pdf"
+                    href={item?.Contract?.contractUrl}
                     underline="hover"
                     color="black"
                     target="_blank"
