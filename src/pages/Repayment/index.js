@@ -130,10 +130,9 @@ export default function Repayment() {
                     .repaymentAll({ loanSchedules, investments })
                     .then((res) => {
                         setLoading(false)
-                        console.log(res.data)
-                        // if (res.data !== null) {
-                        //     history.push('/trang-chu/profile2/wallet')
-                        // }
+                        if (res.data !== null) {
+                            history.push('/trang-chu/vi')
+                        }
                     })
                     .catch((err) => {
                     
@@ -145,7 +144,7 @@ export default function Repayment() {
                     .then((res) => {
                         setLoading(false)
                         if (res.data !== null) {
-                            history.push('/trang-chu/profile2/wallet')
+                            history.push('/trang-chu/vi')
                         }
                     })
                     .catch((err) => {
