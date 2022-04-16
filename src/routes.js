@@ -11,6 +11,7 @@ import ViewPost from 'pages/ViewPost'
 import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
 import TutorDetail from 'pages/TutorDetail'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 
 import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
@@ -19,7 +20,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm'
 
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
-
+import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 let routes = [
     // {
     //     type: 'collapse',
@@ -107,7 +108,7 @@ let routes = [
         name: 'Xem tất cả hồ sơ vay',
         key: 'tat-ca',
         route: '/ho-so/tat-ca',
-        icon: <SpaceShip size="12px" />,
+        icon: <AssignmentIcon size="12px" />,
         component: ViewAllPost,
         noCollapse: true,
     },
@@ -116,7 +117,7 @@ let routes = [
         name: 'Thông tin',
         key: 'thong-tin',
         route: '/thong-tin',
-        icon: <SpaceShip size="12px" />,
+        icon: <PermIdentityIcon size="12px" />,
         component: StudentProfile2,
         noCollapse: false,
     },
