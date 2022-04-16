@@ -115,7 +115,7 @@ export default function LandingPage() {
                     },
                 }}
             >
-                <Container textAlign="center" maxWidth="xl">
+                {/* <Container textAlign="center" maxWidth="xl">
                     <SuiTypography
                         variant="h2"
                         fontWeight="medium"
@@ -302,14 +302,14 @@ export default function LandingPage() {
                             </Box>
                         </Grid>
                     </Grid>
-                </Container>
+                </Container> */}
             </Box>
 
-            <Box
+            {/* <Box
                 height="100vh"
                 position="relative"
                 padding="0 20px 0 20px"
-            ></Box>
+            ></Box> */}
         </>
     )
 }
