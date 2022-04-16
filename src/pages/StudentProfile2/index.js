@@ -144,8 +144,6 @@ export default function StudentProfile2() {
 
     const renderStatusButton = () => {
         var objectStatus = renderUserStatus(userInfo?.status)
-        console.log(userInfo?.status)
-
         return (
             <>
                 <SuiButton
@@ -247,7 +245,39 @@ export default function StudentProfile2() {
 
     }
 
-    const handleUpdate = () => {}
+    const handleUpdate = () => {
+        if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
+            schoolMajorApi
+                .getBySchoolAndMajorId(
+                    schoolAndMajor?.majorId,
+                    schoolAndMajor?.schoolId
+                )
+                .then((res) => {
+                    var schoolMajor = res.data
+                    var temp = { ...studentInfo }
+                    if (schoolMajor) {
+                        temp = { ...temp, schoolMajorId: schoolMajor.id }
+                    }
+                    studentApi
+                        .updateStudentInfo(temp, { status: 'PENDING' })
+                        .then((res) => {
+                            console.log(res)
+                            setIsChange(Date.now())
+                        })
+                        .catch((err) => {})
+                })
+        }
+        if (JSON.stringify(oldUserInfo) !== JSON.stringify(userInfo)) {
+            const { id, ...restData } = userInfo
+            userApi
+                .updateUser(restData)
+                .then((res) => {
+                    console.log(res)
+                    setIsChange(Date.now())
+                })
+                .catch((err) => {})
+        }
+    }
 
     return (
         <>

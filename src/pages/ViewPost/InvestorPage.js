@@ -35,6 +35,7 @@ export default function InvestorPage(props) {
                 var invest = res.data
                 if (res.data.length != 0) {
                     setInvestments(invest)
+                    console.log(invest)
                     var sum = 0
                     invest.map((item) => {
                         sum += item.total
@@ -56,11 +57,6 @@ export default function InvestorPage(props) {
         if (investments) {
             setIsLoading(true)
             var zip = JSZip()
-            // var urls = [
-            //     'https://res.cloudinary.com/larrytran/image/upload/v1649403365/file/1649403288746-hmq3b48dybfpn1mvfqsa.pdf',
-            //     'https://res.cloudinary.com/larrytran/image/upload/v1649056391/file/1649056316704-HOMEWORK_-_LESSON_13.pdf',
-            //     'https://res.cloudinary.com/larrytran/image/upload/v1649056390/file/1649056316812-sample.pdf',
-            // ]
             var requests = investments.map((item) => {
                 return imageApi.downloadFileURL(item?.Contract?.contractUrl)
             })
@@ -135,7 +131,7 @@ export default function InvestorPage(props) {
                 </Grid>
             </Box>
             <Box mb={3}>
-                <InvestorTable data={investments} currecurrentMoney={20000} />
+                <InvestorTable data={investments} currecurrentMoney={currentMoney} />
             </Box>
         </>
     )

@@ -57,6 +57,7 @@ export default function Repayment() {
                 })
                 setTotalMoney(sum)
                 setPenalty(penalty)
+                getInvesment(loanId)
             })
     }
 
@@ -124,6 +125,7 @@ export default function Repayment() {
         setOpenConfirm(false)
         if (value) {
             if (id === 'tat-ca') {
+                console.log(investments)
                 walletApi
                     .repaymentAll({ loanSchedules, investments })
                     .then((res) => {

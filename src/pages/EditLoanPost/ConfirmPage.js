@@ -192,7 +192,7 @@ export default function ConfirmPage(props) {
                                     <SuiInput
                                         type="text"
                                         placeholder="Địa chỉ"
-                                        value={studentInfo?.address}
+                                        value={studentInfo?.User?.address}
                                         disabled
                                     />
                                 </Grid>

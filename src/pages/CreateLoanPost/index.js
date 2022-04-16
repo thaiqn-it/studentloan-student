@@ -135,7 +135,7 @@ export default function CreateLoanPost(props) {
                 fixedMoney: res.data.fixedMoney,
                 penaltyFee: res.data.penaltyFee,
             })
-            setInterest(res.data.interest)
+            setInterest(Number(res.data.interest) * 100)
         })
     }
 

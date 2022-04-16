@@ -55,14 +55,14 @@ export default function UpdateAchievement(props) {
                 maxWidth="md"
                 scroll="body"
             >
-                <Box sx={{ padding: 5 }}>
+                <Box sx={{ padding: 5, width:"768px" }}>
                     <SuiTypography variant="h5">Tiêu đề</SuiTypography>
                     <SuiInput
                         mt={1}
                         value={description || ''}
                         onChange={onChangeDes}
                     />
-                    <Box my={1} width="360px">
+                    <Box my={1}>
                         <DropFileInput
                             image={url}
                             flexEnd="flex-start"

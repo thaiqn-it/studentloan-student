@@ -51,7 +51,7 @@ export function renderStatus(status) {
             statusObject.message = LOAN_STATUS_MESSAGE.FAIL
             statusObject.icon = 'cancel'
             break
-        case LOAN_STATUS_MESSAGE.ONGOING:
+        case LOAN_STATUS.ONGOING:
             statusObject.color = 'info'
             statusObject.status = 'Đang thanh toán nợ'
             statusObject.message = LOAN_STATUS_MESSAGE.ONGOING
