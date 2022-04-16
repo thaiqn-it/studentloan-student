@@ -34,7 +34,7 @@ export default function ConfirmSign(props) {
                     </SuiTypography>
 
                     <DialogContentText align="center">
-                        Hãy mật khẩu để xác thực
+                        Xác nhận đồng nghĩa bạn đồng ý ký vào hợp đồng khi gọi vốn thành công
                     </DialogContentText>
 
                     <SuiButton
