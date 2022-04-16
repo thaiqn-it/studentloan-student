@@ -21,41 +21,41 @@ import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 
 let routes = [
-    {
-        type: 'collapse',
-        name: 'Trang chính',
-        key: 'main',
-        route: '/main',
-        icon: <ContentPasteIcon size="12px" />,
-        component: Main,
-        noCollapse: true,
-    },
-    {
-        type: 'collapse',
-        name: 'Thông tin v2',
-        key: 'profile2',
-        icon: <AssignmentIndIcon size="12px" />,
-        collapse: [
-            {
-                type: 'collapse',
-                name: 'Thông tin',
-                key: 'profile',
-                route: '/profile2/profile',
-                icon: <AssignmentIndIcon size="12px" />,
-                component: StudentProfile,
-                noCollapse: true,
-            },
-            {
-                type: 'collapse',
-                name: 'Ví',
-                key: 'wallet',
-                route: '/profile2/wallet',
-                icon: <AccountBalanceWalletIcon size="12px" />,
-                component: Wallet,
-                noCollapse: true,
-            },
-        ],
-    },
+    // {
+    //     type: 'collapse',
+    //     name: 'Trang chính',
+    //     key: 'main',
+    //     route: '/main',
+    //     icon: <ContentPasteIcon size="12px" />,
+    //     component: Main,
+    //     noCollapse: true,
+    // },
+    // {
+    //     type: 'collapse',
+    //     name: 'Thông tin v2',
+    //     key: 'profile2',
+    //     icon: <AssignmentIndIcon size="12px" />,
+    //     collapse: [
+    //         {
+    //             type: 'collapse',
+    //             name: 'Thông tin',
+    //             key: 'profile',
+    //             route: '/profile2/profile',
+    //             icon: <AssignmentIndIcon size="12px" />,
+    //             component: StudentProfile,
+    //             noCollapse: true,
+    //         },
+    //         {
+    //             type: 'collapse',
+    //             name: 'Ví',
+    //             key: 'wallet',
+    //             route: '/profile2/wallet',
+    //             icon: <AccountBalanceWalletIcon size="12px" />,
+    //             component: Wallet,
+    //             noCollapse: true,
+    //         },
+    //     ],
+    // },
 
     // {
     //     type: 'collapse',
@@ -93,6 +93,15 @@ let routes = [
     //     component: Verify,
     //     noCollapse: true,
     // },
+    {
+        type: 'collapse',
+        name: 'Ví',
+        key: 'wallet',
+        route: '/vi',
+        icon: <AccountBalanceWalletIcon size="12px" />,
+        component: Wallet,
+        noCollapse: true,
+    },
     {
         type: 'collapse',
         name: 'Xem tất cả hồ sơ vay',
