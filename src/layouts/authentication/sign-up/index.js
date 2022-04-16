@@ -35,6 +35,7 @@ import Separator from 'layouts/authentication/components/Separator'
 
 // Images
 import curved6 from 'assets/images/curved-images/curved14.jpg'
+import signupImage from "../../../assets/signupImage.svg"
 import { userApi } from 'apis/userApi'
 import { studentApi } from 'apis/studentApi'
 import { ThemeProvider } from '@mui/material'
@@ -42,14 +43,16 @@ import theme from 'assets/theme'
 
 function SignUp() {
     const userData = {
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         phone: '',
         password: '',
         confirmPassword: '',
     }
     const defaultError = {
-        name: null,
+        firstName: null,
+        lastName: null,
         email: null,
         password: null,
         confirmPassword: null,
@@ -66,14 +69,12 @@ function SignUp() {
         e.preventDefault()
 
         if (!verification()) return
-        console.log('pass verify')
         try {
-            const [firstname, lastname] = data.name.split(' ')
             const student = {
                 email: data.email,
                 password: data.password,
-                firstName: firstname,
-                lastName: lastname,
+                firstName: data.firstName,
+                lastName: data.lastName,
                 type: 'STUDENT',
                 phoneNumber: data.phone,
             }
@@ -83,7 +84,6 @@ function SignUp() {
                 userId: res.data.id,
                 status: 'ACTIVE',
             })
-            console.log(studentRes.data)
             if (res.data && studentRes.data)
                 history.push('/authentication/sign-in')
         } catch (e) {
@@ -107,12 +107,20 @@ function SignUp() {
 
     const verification = () => {
         let verificationError = {}
-        const { name, password, email, confirmPassword, phone } = data
+        const { firstName, lastName, password, email, confirmPassword, phone } =
+            data
         var flag = true
-        if (name.length < 1) {
+        if (firstName.length < 1) {
             verificationError = {
                 ...verificationError,
-                name: 'Tên không dược bỏ trống',
+                firstName: 'Họ không dược bỏ trống',
+            }
+            flag = false
+        }
+        if (lastName.length < 1) {
+            verificationError = {
+                ...verificationError,
+                lastName: 'Tên không dược bỏ trống',
             }
             flag = false
         }
@@ -153,41 +161,61 @@ function SignUp() {
 
     return (
         <BasicLayout
-            // title="Welcome!"
-            // description="Use these awesome forms to login or create new account in your project for free."
-            image={curved6}
+            title="Xin chào !"
+            description="Hãy tạo tài khoản để bắt đầu khoản vay."
+            image={signupImage}
         >
             <ThemeProvider theme={theme}>
                 <Card>
                     <SuiBox p={3} mb={1} textAlign="center">
-                        <SuiTypography variant="h5" fontWeight="medium">
-                            Đăng kí
+                        <SuiTypography variant="h3" fontWeight="regular">
+                            Đăng ký
                         </SuiTypography>
                     </SuiBox>
-                    <SuiBox mb={2}>
+                    {/* <SuiBox mb={2}>
                         <Socials />
                     </SuiBox>
-                    <Separator />
+                    <Separator /> */}
                     <form onSubmit={handleSubmit}>
-                        <SuiBox pt={2} pb={3} px={3}>
+                        <SuiBox pb={3} px={3}>
                             <SuiBox>
                                 <SuiBox mb={2}>
                                     <SuiInput
-                                        placeholder="Tên"
+                                        placeholder="Họ"
                                         type="text"
-                                        name="name"
-                                        error={error.name}
-                                        value={data.name}
+                                        name="firstName"
+                                        error={error.firstName}
+                                        value={data.firstName}
                                         onChange={handleChange}
                                     />
-                                    {error.name && (
+                                    {error.firstName && (
                                         <SuiTypography
                                             component="label"
                                             variant="caption"
                                             fontWeight="bold"
                                             color="error"
                                         >
-                                            {error.name}
+                                            {error.firstName}
+                                        </SuiTypography>
+                                    )}
+                                </SuiBox>
+                                <SuiBox mb={2}>
+                                    <SuiInput
+                                        placeholder="Tên"
+                                        type="text"
+                                        name="lastName"
+                                        error={error.lastName}
+                                        value={data.lastName}
+                                        onChange={handleChange}
+                                    />
+                                    {error.lastName && (
+                                        <SuiTypography
+                                            component="label"
+                                            variant="caption"
+                                            fontWeight="bold"
+                                            color="error"
+                                        >
+                                            {error.lastName}
                                         </SuiTypography>
                                     )}
                                 </SuiBox>
@@ -294,19 +322,17 @@ function SignUp() {
                                         variant="button"
                                         fontWeight="bold"
                                         color="primary"
-                                        textGradient
                                     >
                                         điều khoản sử dụng
                                     </SuiTypography>
                                 </SuiBox>
                                 <SuiBox mt={4} mb={1}>
                                     <SuiButton
-                                        variant="gradient"
                                         color="primary"
                                         type="submit"
                                         fullWidth
                                     >
-                                        Đăng kí
+                                        Đăng ký
                                     </SuiButton>
                                 </SuiBox>
                                 <SuiBox mt={3} textAlign="center">
@@ -315,18 +341,28 @@ function SignUp() {
                                         color="text"
                                         fontWeight="regular"
                                     >
-                                        Already have an account?&nbsp;
+                                        Bạn đã có tài khoản ?&nbsp;
                                         <SuiTypography
                                             component={Link}
                                             to="/authentication/sign-in"
                                             variant="button"
                                             color="primary"
                                             fontWeight="bold"
-                                            textGradient
                                         >
                                             Đăng nhập
                                         </SuiTypography>
                                     </SuiTypography>
+                                    <SuiBox>
+                                        <SuiTypography
+                                            component={Link}
+                                            to="/"
+                                            variant="caption"
+                                            color="dark"
+                                            fontWeight="medium"
+                                        >
+                                            Quay lại
+                                        </SuiTypography>
+                                    </SuiBox>
                                 </SuiBox>
                             </SuiBox>
                         </SuiBox>

@@ -1,14 +1,44 @@
-import { Box, Grid, Paper } from '@mui/material'
+import { Box, Grid, Paper, Autocomplete, TextField } from '@mui/material'
 import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { fDisplayDate } from 'utils/formatTime'
+import { PROVINCEVN } from '..//..//..//..//apis/static/provinceVN'
 
 import DropFileZone from '../../../../components/DropFileZone'
 
 export default function PaperInformation(props) {
     const { tutor, onChangeTutorInfo } = props
+    const [listCity, setListCity] = useState()
+    const [city, setCity] = useState(null)
+
+    useEffect(() => {
+        getCity()
+    }, [])
+
+    const getCity = () => {
+        var list = PROVINCEVN.province
+        var city = list.filter(
+            (item) => item.name === tutor?.citizenCardCreatedPlace
+        )
+        if (city.length !== 0) {
+            setCity(city[0])
+        } else {
+            setCity(null)
+        }
+        setListCity(PROVINCEVN.province)
+    }
+
+    const onChangeCity = (value) => {
+        setCity(value)
+        if (value) {
+            onChangeTutorInfo(null, 'citizenCardCreatedPlace', value.name)
+        } else {
+            onChangeTutorInfo(null, 'citizenCardCreatedPlace', '')
+        }
+    }
+
     const onChange = (e) => {
         onChangeTutorInfo(e)
     }
@@ -16,7 +46,7 @@ export default function PaperInformation(props) {
         onChangeTutorInfo(null, event.target.name, newUrl)
     }
     const onDelete = (id) => {
-        onChangeTutorInfo(null, id, "")
+        onChangeTutorInfo(null, id, '')
     }
     return (
         <>
@@ -82,7 +112,7 @@ export default function PaperInformation(props) {
                                             >
                                                 Nơi cấp CMND/CCCD
                                             </SuiTypography>
-                                            <SuiInput
+                                            {/* <SuiInput
                                                 type="text"
                                                 placeholder="Nơi cấp"
                                                 onChange={onChange}
@@ -90,6 +120,53 @@ export default function PaperInformation(props) {
                                                 value={
                                                     tutor?.citizenCardCreatedPlace
                                                 }
+                                            /> */}
+                                            <Autocomplete
+                                                name="citizenCardCreatedPlace"
+                                                onChange={(event, value) =>
+                                                    onChangeCity(value)
+                                                }
+                                                isOptionEqualToValue={(
+                                                    option,
+                                                    value
+                                                ) =>
+                                                    option.idProvince ===
+                                                    value.idProvince
+                                                }
+                                                value={city}
+                                                id="school-select"
+                                                sx={{ width: 300 }}
+                                                options={listCity}
+                                                autoHighlight
+                                                getOptionLabel={(option) =>
+                                                    option.name
+                                                }
+                                                renderOption={(
+                                                    props,
+                                                    option
+                                                ) => (
+                                                    <Box
+                                                        component="li"
+                                                        {...props}
+                                                        key={option.idProvince}
+                                                    >
+                                                        {option.name}
+                                                    </Box>
+                                                )}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        // error={city === null}
+                                                        // helperText={
+                                                        //     city === null
+                                                        //         ? 'Nơi cấp không được để trống'
+                                                        //         : null
+                                                        // }
+                                                        {...params}
+                                                        inputProps={{
+                                                            ...params.inputProps,
+                                                        }}
+                                                    />
+                                                )}
                                             />
                                         </Grid>
                                     </Grid>

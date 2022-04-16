@@ -12,14 +12,6 @@ const getStudentProfile = () => {
   return defaultInstance.get(`/student/profile`);
 }
 
-// const updateStudentInfo = ({ studentId, ...data }) => {
-//     return defaultInstance.put(`/student/${studentId}`, data)
-// }
-
-// const getStudentProfile = () => {
-//     return defaultInstance.get(`/student/profile`)
-// }
-
 const createNewStudent = (data) => {
     return defaultInstance.post('/student', data)
 }

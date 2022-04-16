@@ -54,7 +54,7 @@ function CoverLayout({
                 container
                 justifyContent="center"
                 sx={{
-                    minHeight: '75vh',
+                    minHeight: '70vh',
                     margin: 0,
                 }}
             >

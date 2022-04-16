@@ -58,7 +58,6 @@ export default function Repayment() {
                 setTotalMoney(sum)
                 setPenalty(penalty)
                 getInvesment(loanId)
-                
             })
     }
 
@@ -127,16 +126,14 @@ export default function Repayment() {
 
         if (value) {
             if (id === 'tat-ca') {
-                console.log("investment is" ,investments)
+                console.log('investment is', investments)
                 walletApi
                     .repaymentAll({ loanSchedules, investments })
                     .then((res) => {
-                        
                         setLoading(false)
-                        console.log(res.data)
-                        // if (res.data !== null) {
-                        //     history.push('/trang-chu/profile2/wallet')
-                        // }
+                        if (res.data !== null) {
+                            history.push('/trang-chu/vi')
+                        }
                     })
                     .catch((err) => {
                         console.log(err)
@@ -148,7 +145,7 @@ export default function Repayment() {
                     .then((res) => {
                         setLoading(false)
                         if (res.data !== null) {
-                            history.push('/trang-chu/profile2/wallet')
+                            history.push('/trang-chu/vi')
                         }
                     })
                     .catch((err) => {

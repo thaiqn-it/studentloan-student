@@ -13,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 import { Link } from 'react-scroll'
 
-import { useParams, useHistory,useLocation } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 
 import { loanApi } from '../../apis/loanApi'
 import MediaPage from './MediaPage'
@@ -21,6 +21,9 @@ import MediaPage from './MediaPage'
 import { renderStatus } from 'utils/renderStatus'
 import Loading from 'components/Loading'
 import { setDocTitle } from 'utils/dynamicDocTitle'
+import { loanMediaApi } from 'apis/loanMediaApi'
+import { LOAN_STATUS } from 'utils/enum'
+import ConfirmSign from './components/ConfirmSign'
 
 export default function EditLoanPost() {
     const { id } = useParams()
@@ -32,8 +35,9 @@ export default function EditLoanPost() {
     const [achievements, setAchievements] = useState(null)
     const [loanHistory, setloanHistory] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [openConfirm, setOpenConfirm] = useState(false)
 
-    const [isChange, setIsChange] = useState("")
+    const [isChange, setIsChange] = useState('')
     useEffect(() => {
         setIsLoading(true)
         loanApi
@@ -48,7 +52,10 @@ export default function EditLoanPost() {
                 setLoanMedia(convertArrayToObject(LoanMedia, 'type'))
                 setStudentInfo(Student)
                 setAchievements(Archievements)
-                setDocTitle(restLoanData.title + "-StudentLoan" || "Chỉnh sửa hồ sơ-StudentLoan")
+                setDocTitle(
+                    restLoanData.title + '-StudentLoan' ||
+                        'Chỉnh sửa hồ sơ-StudentLoan'
+                )
                 setIsLoading(false)
             })
             .catch((error) => {
@@ -101,9 +108,18 @@ export default function EditLoanPost() {
     }
 
     const handleSubmit = () => {
+        // setOpenConfirm(true)
         setIsLoading(true)
+        for (const [key, value] of Object.entries(loanMedia)) {
+            const { id, ...rest } = value
+            if (value.currentStatus === 'new') {
+                loanMediaApi.createLoanMedia(rest)
+            }else{
+                loanMediaApi.updateLoanMedia(id, rest)
+            }
+        }
         loanApi
-            .updateLoanPost(id, 'WAITING', {loan, loanHistory})
+            .updateLoanPost(id, 'WAITING', { loan, loanHistory })
             .then((res) => {
                 setIsChange(Date.now())
                 setIsLoading(false)
@@ -115,9 +131,17 @@ export default function EditLoanPost() {
 
     const handleSave = () => {
         setIsLoading(true)
-        console.log(loanMedia)
+        for (const [key, value] of Object.entries(loanMedia)) {
+            const { id, ...rest } = value
+            if (value.currentStatus === 'new') {
+                loanMediaApi.createLoanMedia(rest)
+            }else{
+                console.log(rest)
+                loanMediaApi.updateLoanMedia(id, rest)
+            }
+        }
         loanApi
-            .updateLoanPost(id, 'DRAFT', {loan, loanHistory})
+            .updateLoanPost(id, 'DRAFT', { loan, loanHistory })
             .then((res) => {
                 setIsChange(Date.now())
                 setIsLoading(false)
@@ -142,7 +166,7 @@ export default function EditLoanPost() {
     }
 
     const getDeleteButton = () => {
-        if (loanHistory?.type !== 'DRAFT') {
+        if (loanHistory?.type !== LOAN_STATUS.DRAFT && loanHistory?.type !== LOAN_STATUS.REJECTED) {
             return null
         }
         return (
@@ -178,7 +202,11 @@ export default function EditLoanPost() {
     return (
         <>
             {isLoading ? <Loading /> : null}
-            <SuiBox position="fixed" sx={{ zIndex: 1, bottom: 0, boxShadow:3, }} width="100%">
+            <SuiBox
+                position="fixed"
+                sx={{ zIndex: 1, bottom: 0, boxShadow: 3 }}
+                width="100%"
+            >
                 <ButtonGroup
                     variant="contained"
                     aria-label="outlined primary button group"
@@ -284,6 +312,7 @@ export default function EditLoanPost() {
                     </Box>
                 </Paper>
             </SuiBox>
+            <ConfirmSign open={openConfirm} />
         </>
     )
 }

@@ -45,7 +45,7 @@ function BasicLayout({ title, description, image, children }) {
       /> */}
             <SuiBox
                 width="calc(100% - 2rem)"
-                minHeight="50vh"
+                minHeight="100vh"
                 borderRadius="lg"
                 mx={2}
                 my={2}
@@ -58,8 +58,8 @@ function BasicLayout({ title, description, image, children }) {
                     }) =>
                         image &&
                         `${linearGradient(
-                            rgba(gradients.dark.main, 0.6),
-                            rgba(gradients.dark.state, 0.6)
+                            rgba(gradients.dark.main, 0),
+                            rgba(gradients.dark.state, 0)
                         )}, url(${image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -95,7 +95,7 @@ function BasicLayout({ title, description, image, children }) {
                 </Grid>
             </SuiBox>
             <SuiBox
-                mt={{ xs: -26, lg: -24 }}
+                mt={{ xs: -26, lg: -70 }}
                 px={1}
                 width="calc(100% - 2rem)"
                 mx="auto"
