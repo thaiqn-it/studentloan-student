@@ -36,7 +36,7 @@ import { loginUser } from 'context/userAction.js'
 import { useHistory } from 'react-router-dom'
 import { useAuthDispatch } from 'context/authContext'
 
-import LoginImage from "assets/loginImage.svg"
+import LoginImage from 'assets/loginImage.svg'
 
 function SignIn() {
     const [rememberMe, setRememberMe] = useState(true)
@@ -71,106 +71,119 @@ function SignIn() {
     }
 
     return (
-        <CoverLayout
-        color="dark"
-            title="Đăng Nhập"
-            description="Xin hãy nhập email và mật khẩu để đăng nhập"
-            image={LoginImage}
-        >
-            <SuiBox component="form" role="form" onSubmit={signIn}>
-                <SuiBox mb={2}>
-                    <SuiBox mb={1} ml={0.5}>
-                        <SuiTypography
-                            component="label"
-                            variant="caption"
-                            fontWeight="bold"
-                        >
-                            Email
-                        </SuiTypography>
+        <>
+            <CoverLayout
+                color="dark"
+                title="Đăng Nhập"
+                description="Xin hãy nhập email và mật khẩu để đăng nhập"
+                image={LoginImage}
+            >
+                <SuiBox component="form" role="form" onSubmit={signIn}>
+                    <SuiBox mb={2}>
+                        <SuiBox mb={1} ml={0.5}>
+                            <SuiTypography
+                                component="label"
+                                variant="caption"
+                                fontWeight="bold"
+                            >
+                                Email
+                            </SuiTypography>
+                        </SuiBox>
+                        <SuiInput
+                            type="email"
+                            placeholder="Email"
+                            error={error}
+                            value={email}
+                            onChange={handleInputEmail}
+                            onClick={() => setError(false)}
+                        />
                     </SuiBox>
-                    <SuiInput
-                        type="email"
-                        placeholder="Email"
-                        error={error}
-                        value={email}
-                        onChange={handleInputEmail}
-                        onClick={() => setError(false)}
-                    />
-                </SuiBox>
-                <SuiBox mb={2}>
-                    <SuiBox mb={1} ml={0.5}>
-                        <SuiTypography
-                            component="label"
-                            variant="caption"
-                            fontWeight="bold"
-                        >
-                            Mật Khẩu
-                        </SuiTypography>
-                    </SuiBox>
+                    <SuiBox mb={2}>
+                        <SuiBox mb={1} ml={0.5}>
+                            <SuiTypography
+                                component="label"
+                                variant="caption"
+                                fontWeight="bold"
+                            >
+                                Mật Khẩu
+                            </SuiTypography>
+                        </SuiBox>
 
-                    <SuiInput
-                        type="password"
-                        placeholder="Mật Khẩu"
-                        error={error}
-                        value={password}
-                        onChange={handleInputPassword}
-                        onClick={() => setError(false)}
-                    />
-                    {error && (
+                        <SuiInput
+                            type="password"
+                            placeholder="Mật Khẩu"
+                            error={error}
+                            value={password}
+                            onChange={handleInputPassword}
+                            onClick={() => setError(false)}
+                        />
+                        {error && (
+                            <SuiTypography
+                                component="label"
+                                variant="caption"
+                                fontWeight="bold"
+                                color="error"
+                            >
+                                {errorMessage}
+                            </SuiTypography>
+                        )}
+                    </SuiBox>
+                    <SuiBox display="flex" alignItems="center">
+                        <Switch
+                            checked={rememberMe}
+                            onChange={handleSetRememberMe}
+                        />
                         <SuiTypography
-                            component="label"
-                            variant="caption"
-                            fontWeight="bold"
-                            color="error"
-                        >
-                            {errorMessage}
-                        </SuiTypography>
-                    )}
-                </SuiBox>
-                <SuiBox display="flex" alignItems="center">
-                    <Switch
-                        checked={rememberMe}
-                        onChange={handleSetRememberMe}
-                    />
-                    <SuiTypography
-                        variant="button"
-                        fontWeight="regular"
-                        onClick={handleSetRememberMe}
-                        sx={{ cursor: 'pointer', userSelect: 'none' }}
-                    >
-                        &nbsp;&nbsp;Ghi nhớ đăng nhập
-                    </SuiTypography>
-                </SuiBox>
-                <SuiBox mt={4} mb={1}>
-                    <SuiButton
-                        type="submit"
-                        color="primary"
-                        fullWidth
-                        onClick={signIn}
-                    >
-                        Đăng Nhập
-                    </SuiButton>
-                </SuiBox>
-                <SuiBox mt={3} textAlign="center">
-                    <SuiTypography
-                        variant="button"
-                        color="text"
-                        fontWeight="regular"
-                    >
-                        Chưa có tài khoản ?
-                        <SuiTypography
-                            component={Link}
-                            to="/authentication/sign-up"
                             variant="button"
-                            color="primary"
-                            fontWeight="medium"
+                            fontWeight="regular"
+                            onClick={handleSetRememberMe}
+                            sx={{ cursor: 'pointer', userSelect: 'none' }}
                         >
-                            Đăng kí
+                            &nbsp;&nbsp;Ghi nhớ đăng nhập
                         </SuiTypography>
-                    </SuiTypography>
+                    </SuiBox>
+                    <SuiBox mt={4} mb={1}>
+                        <SuiButton
+                            type="submit"
+                            color="primary"
+                            fullWidth
+                            onClick={signIn}
+                        >
+                            Đăng Nhập
+                        </SuiButton>
+                    </SuiBox>
+                    <SuiBox mt={3} textAlign="center">
+                        <SuiTypography
+                            variant="button"
+                            color="text"
+                            fontWeight="regular"
+                        >
+                            Chưa có tài khoản ?
+                            <SuiTypography
+                                component={Link}
+                                to="/authentication/sign-up"
+                                variant="button"
+                                color="primary"
+                                fontWeight="medium"
+                            >
+                                Đăng kí
+                            </SuiTypography>
+                        </SuiTypography>
+                        <SuiBox>
+                            <SuiTypography
+                                component={Link}
+                                to="/"
+                                variant="caption"
+                                color="dark"
+                                fontWeight="medium"
+                            >
+                                Quay lại
+                            </SuiTypography>
+                        </SuiBox>
+                    </SuiBox>
                 </SuiBox>
-            </SuiBox>
-        </CoverLayout>
+            </CoverLayout>
+        </>
     )
 }
 

@@ -112,7 +112,7 @@ export default function InvestorTable(props) {
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    {getFileName("https://res.cloudinary.com/larrytran/image/upload/v1648997077/pdf/hmq3b48dybfpn1mvfqsa.pdf")}
+                    {getFileName(item?.Contract?.contractUrl)}
                 </Link>
             ),
         }

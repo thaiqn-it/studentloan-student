@@ -101,9 +101,11 @@ export default function ViewPost() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                <SuiTypography variant="caption">
-                                    {getFileName(item.imageUrl)}
-                                </SuiTypography>
+                                <Box>
+                                    <SuiTypography variant="caption">
+                                        {getFileName(item.imageUrl)}
+                                    </SuiTypography>
+                                </Box>
                             </Link>
                         ))}
                     </>

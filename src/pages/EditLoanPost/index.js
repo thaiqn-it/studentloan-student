@@ -22,6 +22,8 @@ import { renderStatus } from 'utils/renderStatus'
 import Loading from 'components/Loading'
 import { setDocTitle } from 'utils/dynamicDocTitle'
 import { loanMediaApi } from 'apis/loanMediaApi'
+import { LOAN_STATUS } from 'utils/enum'
+import ConfirmSign from './components/ConfirmSign'
 
 export default function EditLoanPost() {
     const { id } = useParams()
@@ -33,6 +35,7 @@ export default function EditLoanPost() {
     const [achievements, setAchievements] = useState(null)
     const [loanHistory, setloanHistory] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [openConfirm, setOpenConfirm] = useState(false)
 
     const [isChange, setIsChange] = useState('')
     useEffect(() => {
@@ -105,6 +108,7 @@ export default function EditLoanPost() {
     }
 
     const handleSubmit = () => {
+        // setOpenConfirm(true)
         setIsLoading(true)
         for (const [key, value] of Object.entries(loanMedia)) {
             const { id, ...rest } = value
@@ -162,7 +166,7 @@ export default function EditLoanPost() {
     }
 
     const getDeleteButton = () => {
-        if (loanHistory?.type !== 'DRAFT') {
+        if (loanHistory?.type !== LOAN_STATUS.DRAFT && loanHistory?.type !== LOAN_STATUS.REJECTED) {
             return null
         }
         return (
@@ -308,6 +312,7 @@ export default function EditLoanPost() {
                     </Box>
                 </Paper>
             </SuiBox>
+            <ConfirmSign open={openConfirm} />
         </>
     )
 }

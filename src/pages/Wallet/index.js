@@ -186,7 +186,7 @@ const Wallet = () => {
                 open={notVerify}
                 handleClose={handleNotVerifyClose}
                 onClick={() => {
-                    history.push('/trang-chu/xac-thuc')
+                    history.push('/trang-chu/thong-tin')
                 }}
             />
             <SuiBox mb={3}>
