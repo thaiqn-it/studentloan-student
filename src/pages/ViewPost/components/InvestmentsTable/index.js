@@ -6,7 +6,7 @@ import SuiBadge from 'components/SuiBadge'
 import { fInvestPercent, fCurrencyNoVND } from 'utils/formatNumber'
 import { Card, Link } from '@mui/material'
 import Table from 'examples/Tables/Table'
-import { fDateTime, fDateTimeSuffix } from 'utils/formatTime'
+import { fDateTime, fDateTimeMin } from 'utils/formatTime'
 
 function Author({ image, name, email }) {
     return (
@@ -74,7 +74,7 @@ export default function InvestorTable(props) {
             amount: (
                 <Function
                     job={fCurrencyNoVND(item?.total)}
-                    org={item?.percent + '%'}
+                    org={item?.percent*100 + '%'}
                 />
             ),
             status: (
@@ -92,7 +92,7 @@ export default function InvestorTable(props) {
                     color="secondary"
                     fontWeight="medium"
                 >
-                    {fDateTimeSuffix(item?.createdAt)}
+                    {fDateTimeMin(item?.createdAt)}
                 </SuiTypography>
             ),
             contract: (

@@ -47,13 +47,13 @@ export function renderStatus(status) {
             break
         case LOAN_STATUS.FAIL:
             statusObject.color = 'error'
-            statusObject.status = 'Kêu gọi thất bại'
+            statusObject.status = 'Thất bại'
             statusObject.message = LOAN_STATUS_MESSAGE.FAIL
             statusObject.icon = 'cancel'
             break
         case LOAN_STATUS.ONGOING:
             statusObject.color = 'info'
-            statusObject.status = 'Đang thanh toán nợ'
+            statusObject.status = 'Đang thanh toán'
             statusObject.message = LOAN_STATUS_MESSAGE.ONGOING
             statusObject.icon = 'play_circle_filled'
             break

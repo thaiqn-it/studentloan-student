@@ -39,6 +39,7 @@ import { USER_STATUS } from 'utils/enum'
 import SuiButton from 'components/SuiButton'
 
 import { fCurrency } from 'utils/formatNumber'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 const NotifiModal = ({ open, handleClose, onClick }) => {
     return (
@@ -162,6 +163,7 @@ const Wallet = () => {
     const user = authObj.user
 
     useEffect(() => {
+        setDocTitle("Thông tin ví-StudentLoan")
         initData()
     }, [])
 
@@ -192,7 +194,7 @@ const Wallet = () => {
             <SuiBox mb={3}>
                 <SuiBox mb={3} sx={{ marginTop: '20px' }}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6} xl={3}>
+                        <Grid item xs={12} sm={6} xl={4}>
                             <Card>
                                 <SuiBox variant="gradient">
                                     <SuiBox p={2}>

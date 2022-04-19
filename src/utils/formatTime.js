@@ -1,3 +1,4 @@
+import { ElevatorSharp } from '@mui/icons-material'
 import {
     format,
     formatDistanceToNow,
@@ -19,7 +20,11 @@ export function fDateTime(date) {
 }
 
 export function fDateTimeMin(date) {
-    return format(new Date(date), 'dd/MM/yyyy HH:mm:ss')
+    if (date) {
+        return format(new Date(date), 'dd/MM/yyyy HH:mm:ss')
+    } else {
+        return ''
+    }
 }
 
 export function fDateTimeSuffix(date) {
@@ -48,7 +53,9 @@ export function fToNowNumber(date) {
     var day = new Date(date)
     var day2 = new Date()
     // var realValue = diff_months(day, day2)
-    return Math.floor((day - day2) / (24 * 3600 * 1000) + 1)
+    var value = Math.floor((day - day2) / (24 * 3600 * 1000) + 1)
+    if (value < 0) value = 0
+    return value
 }
 
 // function diff_months(dt2, dt1) {

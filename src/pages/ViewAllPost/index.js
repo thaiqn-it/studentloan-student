@@ -5,11 +5,13 @@ import { loanApi } from 'apis/loanApi'
 
 import PostItem from './PostItem'
 import Loading from '..//..//components/Loading'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 export default function ViewAllPost() {
     const [listLoan, setListLoan] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
+        setDocTitle("Tất cả hồ sơ vay-StudentLoan")
         setIsLoading(true)
         fetchData()
     }, [])

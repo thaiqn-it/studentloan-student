@@ -231,7 +231,7 @@ const DropFileInput = (props) => {
                     >
                         <div className="drop-file-input__label">
                             <img src={uploadImg} alt="" />
-                            <p>Drag & Drop your files here</p>
+                            <p>Kéo hoặc thả tệp của bạn vào đây</p>
                         </div>
                         <input
                             type="file"

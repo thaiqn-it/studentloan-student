@@ -22,6 +22,7 @@ import { systemConfigApi } from '../../apis/systemConfigApi'
 import { userApi } from 'apis/userApi'
 import SnackbarMessage from 'components/SnackbarMessage'
 import { isNullish } from 'utils/isNullish'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -109,7 +110,7 @@ export default function CreateLoanPost(props) {
 
     const handleClickOpen = () => {
         getInterest()
-
+        setDocTitle("Tạo hồ sơ vay - StudentLoan")
         userApi
             .getStudentProfile()
             .then((res) => {
@@ -263,9 +264,9 @@ export default function CreateLoanPost(props) {
                         <SuiButton
                             disable
                             sx={{ borderRadius: 0 }}
-                            color="warning"
+                            color="dark"
                         >
-                            Draft
+                            Nháp
                         </SuiButton>
                         <Container maxWidth="sm">
                             <Box sx={{ paddingTop: '10%' }}>

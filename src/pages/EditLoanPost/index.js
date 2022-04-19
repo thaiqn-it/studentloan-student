@@ -24,6 +24,7 @@ import { setDocTitle } from 'utils/dynamicDocTitle'
 import { loanMediaApi } from 'apis/loanMediaApi'
 import { LOAN_STATUS } from 'utils/enum'
 import ConfirmSign from './components/ConfirmSign'
+import SnackbarMessage from 'components/SnackbarMessage'
 
 export default function EditLoanPost() {
     const { id } = useParams()
@@ -36,6 +37,12 @@ export default function EditLoanPost() {
     const [loanHistory, setloanHistory] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [openConfirm, setOpenConfirm] = useState(false)
+
+    const [snack, setSnack] = useState({
+        color: 'error',
+        message: 'Tên không trùng khớp',
+    })
+    const [openSnack, setOpenSnack] = useState(false)
 
     const [isChange, setIsChange] = useState('')
     useEffect(() => {
@@ -53,8 +60,9 @@ export default function EditLoanPost() {
                 setStudentInfo(Student)
                 setAchievements(Archievements)
                 setDocTitle(
-                    restLoanData.title + '-StudentLoan' ||
-                        'Chỉnh sửa hồ sơ-StudentLoan'
+                    restLoanData.title === null
+                        ? 'Chỉnh sửa hồ sơ-StudentLoan'
+                        : restLoanData.title + '-StudentLoan'
                 )
                 setIsLoading(false)
             })
@@ -108,25 +116,33 @@ export default function EditLoanPost() {
     }
 
     const handleSubmit = () => {
-        // setOpenConfirm(true)
-        setIsLoading(true)
-        for (const [key, value] of Object.entries(loanMedia)) {
-            const { id, ...rest } = value
-            if (value.currentStatus === 'new') {
-                loanMediaApi.createLoanMedia(rest)
-            }else{
-                loanMediaApi.updateLoanMedia(id, rest)
+        setOpenConfirm(true)
+    }
+
+    const handleConfirm = (value) => {
+        if (value) {
+            setIsLoading(true)
+            for (const [key, value] of Object.entries(loanMedia)) {
+                const { id, ...rest } = value
+                if (value.currentStatus === 'new') {
+                    loanMediaApi.createLoanMedia(rest)
+                } else {
+                    loanMediaApi.updateLoanMedia(id, rest)
+                }
             }
+            loanApi
+                .updateLoanPost(id, 'WAITING', { loan, loanHistory })
+                .then((res) => {
+                    setIsChange(Date.now())
+                    setIsLoading(false)
+                    setOpenConfirm(false)
+                })
+                .catch((err) => {
+                    setIsLoading(false)
+                })
+        } else {
+            setOpenConfirm(false)
         }
-        loanApi
-            .updateLoanPost(id, 'WAITING', { loan, loanHistory })
-            .then((res) => {
-                setIsChange(Date.now())
-                setIsLoading(false)
-            })
-            .catch((err) => {
-                setIsLoading(false)
-            })
     }
 
     const handleSave = () => {
@@ -135,7 +151,7 @@ export default function EditLoanPost() {
             const { id, ...rest } = value
             if (value.currentStatus === 'new') {
                 loanMediaApi.createLoanMedia(rest)
-            }else{
+            } else {
                 console.log(rest)
                 loanMediaApi.updateLoanMedia(id, rest)
             }
@@ -166,7 +182,10 @@ export default function EditLoanPost() {
     }
 
     const getDeleteButton = () => {
-        if (loanHistory?.type !== LOAN_STATUS.DRAFT && loanHistory?.type !== LOAN_STATUS.REJECTED) {
+        if (
+            loanHistory?.type !== LOAN_STATUS.DRAFT &&
+            loanHistory?.type !== LOAN_STATUS.REJECTED
+        ) {
             return null
         }
         return (
@@ -312,7 +331,13 @@ export default function EditLoanPost() {
                     </Box>
                 </Paper>
             </SuiBox>
-            <ConfirmSign open={openConfirm} />
+            <ConfirmSign
+                open={openConfirm}
+                firstName={studentInfo?.User?.firstName}
+                lastName={studentInfo?.User?.lastName}
+                handleConfirm={handleConfirm}
+            />
+            <SnackbarMessage snack={snack} open={openSnack} />
         </>
     )
 }

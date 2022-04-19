@@ -52,10 +52,12 @@ export default function ViewPost() {
             .then((res) => {
                 setLoan(res.data.loan)
                 setDocTitle(
-                    res.data.loan.title + '-StudentLoan' ||
-                        'Xem hồ sơ-StudentLoan'
+                    res.data.loan.title === null
+                        ? 'Xem hồ sơ vay-StudentLoan'
+                        : res.data.loan.title + '-StudentLoan'
                 )
                 setLoanHistories(res.data.loan.LoanHistories)
+                console.log(res.data.loan.LoanHistories)
                 setIsLoading(false)
             })
             .catch((error) => {
@@ -113,7 +115,6 @@ export default function ViewPost() {
             />
         )
     }
-
     return (
         <>
             <Paper sx={{ boxShadow: 0 }}>
@@ -274,71 +275,6 @@ export default function ViewPost() {
                                         {loanHistories?.map((item, index) =>
                                             renderStatusTimeline(item, index)
                                         )}
-                                        {/* <TimelineItem
-                                            color="dark"
-                                            icon="drafts"
-                                            title="Hồ sơ đang ở dạng nháp"
-                                            dateTime="22 DEC 7:20 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['DRAFT']}
-                                        />
-                                        <TimelineItem
-                                            color="secondary"
-                                            icon="delete"
-                                            title="New order #1832412"
-                                            dateTime="21 DEC 11 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['DELETED']}
-                                        />
-                                        <TimelineItem
-                                            color="warning"
-                                            icon="access_time"
-                                            title="Server payments for April"
-                                            dateTime="21 DEC 9:34 PM"
-                                        description={null}
-                                            badges={['WAITING']}
-                                        />
-                                        <TimelineItem
-                                            color="error"
-                                            icon="do_disturb_on"
-                                            title="$2400 Design changes"
-                                            dateTime="22 DEC 7:20 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['REJECTED']}
-                                        />
-                                        <TimelineItem
-                                            color="primary"
-                                            icon="monetization_on"
-                                            title="$2400 Design changes"
-                                            dateTime="22 DEC 7:20 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['FUNDING']}
-                                        />
-                                        <TimelineItem
-                                            color="error"
-                                            icon="cancel"
-                                            title="$2400 Design changes"
-                                            dateTime="22 DEC 7:20 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['FAIL']}
-                                        />
-                                        <TimelineItem
-                                            color="info"
-                                            icon="play_circle_filled"
-                                            title="$2400 Design changes"
-                                            dateTime="22 DEC 7:20 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['ONGOING']}
-                                        />
-                                        <TimelineItem
-                                            color="success"
-                                            icon="check_circle"
-                                            title="$2400 Design changes"
-                                            dateTime="22 DEC 7:20 PM"
-                                            description="People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of."
-                                            badges={['FINISH']}
-                                            lastItem
-                                        /> */}
                                     </TimelineList>
                                 </Box>
                                 <Divider sx={{ my: 5 }} />

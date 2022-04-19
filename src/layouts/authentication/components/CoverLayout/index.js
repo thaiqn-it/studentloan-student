@@ -31,6 +31,9 @@ import PageLayout from 'examples/LayoutContainers/PageLayout'
 // Authentication layout components
 import Footer from 'layouts/authentication/components/Footer'
 
+import brand from 'assets/brand.png'
+import { useHistory } from 'react-router-dom'
+
 function CoverLayout({
     color,
     header,
@@ -40,6 +43,7 @@ function CoverLayout({
     top,
     children,
 }) {
+    const history = useHistory()
     return (
         <PageLayout background="white">
             {/* <DefaultNavbar
@@ -50,6 +54,23 @@ function CoverLayout({
         //   color: "dark",
         // }}
       /> */}
+            <SuiBox
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    position: 'fixed',
+                }}
+            >
+                <SuiBox
+                    component="img"
+                    src={brand}
+                    width="30%"
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => history.push('/')}
+                />
+            </SuiBox>
             <Grid
                 container
                 justifyContent="center"
@@ -98,11 +119,7 @@ function CoverLayout({
                         justifyContent="center"
                         // position="relative"
                     >
-                        <SuiBox
-                            component="img"
-                            width="90%"
-                            src={image}
-                        />
+                        <SuiBox component="img" width="90%" src={image} />
                     </SuiBox>
                 </Grid>
             </Grid>

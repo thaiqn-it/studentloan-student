@@ -19,6 +19,7 @@ import { imageApi } from 'apis/imageApi'
 import { renderUserStatus } from 'utils/renderStatus'
 import { isNullish } from 'utils/isNullish'
 import { USER_STATUS } from 'utils/enum'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 export default function StudentProfile2() {
     const [loading, setLoading] = useState(true)
@@ -36,6 +37,7 @@ export default function StudentProfile2() {
     const [isChange, setIsChange] = useState(null)
 
     useEffect(() => {
+        setDocTitle("Thông tin - StudentLoan")
         fetchData()
     }, [isChange])
 
@@ -48,7 +50,6 @@ export default function StudentProfile2() {
                     res.data.student
                 const tutors = res.data.tutors
                 const achievements = res.data.achievements
-                console.log(res.data)
 
                 setStudentInfo(student)
                 setOldStudentInfo(student)
@@ -226,7 +227,6 @@ export default function StudentProfile2() {
                     studentApi
                         .updateStudentInfo(temp, { status: 'PENDING' })
                         .then((res) => {
-                            console.log(res)
                             setIsChange(Date.now())
                         })
                         .catch((err) => {})
@@ -237,51 +237,74 @@ export default function StudentProfile2() {
             userApi
                 .updateUser(restData)
                 .then((res) => {
-                    console.log(res)
                     setIsChange(Date.now())
                 })
                 .catch((err) => {})
         }
-
     }
 
     const handleUpdate = () => {
-        if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
-            schoolMajorApi
-                .getBySchoolAndMajorId(
-                    schoolAndMajor?.majorId,
-                    schoolAndMajor?.schoolId
-                )
-                .then((res) => {
-                    var schoolMajor = res.data
-                    var temp = { ...studentInfo }
-                    if (schoolMajor) {
-                        temp = { ...temp, schoolMajorId: schoolMajor.id }
-                    }
-                    studentApi
-                        .updateStudentInfo(temp, { status: 'PENDING' })
-                        .then((res) => {
-                            console.log(res)
-                            setIsChange(Date.now())
-                        })
-                        .catch((err) => {})
-                })
-        }
+        // if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
+        //     schoolMajorApi
+        //         .getBySchoolAndMajorId(
+        //             schoolAndMajor?.majorId,
+        //             schoolAndMajor?.schoolId
+        //         )
+        //         .then((res) => {
+        //             var schoolMajor = res.data
+        //             var temp = { ...studentInfo }
+        //             if (schoolMajor) {
+        //                 temp = { ...temp, schoolMajorId: schoolMajor.id }
+        //             }
+        //             studentApi
+        //                 .updateStudentInfo(temp, { status: 'PENDING' })
+        //                 .then((res) => {
+        //                     setIsChange(Date.now())
+        //                 })
+        //                 .catch((err) => {})
+        //         })
+        // }
         if (JSON.stringify(oldUserInfo) !== JSON.stringify(userInfo)) {
             const { id, ...restData } = userInfo
             userApi
                 .updateUser(restData)
                 .then((res) => {
-                    console.log(res)
                     setIsChange(Date.now())
                 })
                 .catch((err) => {})
         }
+        window.scrollTo(0, 0)
     }
 
     return (
         <>
             {loading ? <Loading /> : null}
+            {userInfo?.status === USER_STATUS.VERIFIED ||
+            userInfo?.status === USER_STATUS.PENDING ? (
+                <SuiButton color="warning" fullWidth>
+                    <SuiTypography
+                        variant="caption"
+                        fontWeight="regular"
+                        sx={{ padding: 0 }}
+                    >
+                        *Thay đổi thông tin trường, chuyên ngành, thông tin
+                        người giám hộ, giấy tờ cần phải xét duyệt lại*
+                    </SuiTypography>
+                </SuiButton>
+            ) : null}
+            {userInfo?.status === USER_STATUS.UNVERIFIED ? (
+                <SuiButton color="info" fullWidth>
+                    <SuiTypography
+                        color="white"
+                        variant="caption"
+                        fontWeight="regular"
+                        sx={{ padding: 0 }}
+                    >
+                        *Bạn cần xác thực thông tin để tạo hồ sơ vay*
+                    </SuiTypography>
+                </SuiButton>
+            ) : null}
+
             <SuiTypography
                 variant="h4"
                 fontWeight="regular"
