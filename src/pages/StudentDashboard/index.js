@@ -17,6 +17,8 @@ import ReleaseLogo from '../../assets/newLogo3.png'
 import { useAuthState, useAuthDispatch } from 'context/authContext'
 import { reloadData } from 'context/userAction'
 
+import { useHistory } from 'react-router'
+
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]
 
@@ -68,6 +70,8 @@ const StudentDashboard = () => {
     const { miniSidenav, direction, layout, openConfigurator, sidenavColor } =
         controller
 
+    const history = useHistory()
+
     // Open sidenav when mouse enter on mini sidenav
     const handleOnMouseEnter = () => {
         if (miniSidenav && !onMouseEnter) {
@@ -96,6 +100,9 @@ const StudentDashboard = () => {
 
     useEffect(() => {
         reloadUserData()
+        if (history.location.pathname === '/trang-chu') {
+            history.push('/trang-chu/main')
+        }
     }, [])
 
     return (

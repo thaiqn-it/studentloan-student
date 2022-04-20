@@ -11,7 +11,7 @@ export default function TransactionDetail({ transaction }) {
     return (
         <>
             {transaction && (
-                <SuiBox pt={3} px={2}>
+                <SuiBox pt={3} px={2} > 
                     <Box
                         sx={{
                             display: 'flex',

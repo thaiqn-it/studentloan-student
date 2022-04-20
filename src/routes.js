@@ -22,15 +22,15 @@ import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 let routes = [
-    // {
-    //     type: 'collapse',
-    //     name: 'Trang chính',
-    //     key: 'main',
-    //     route: '/main',
-    //     icon: <ContentPasteIcon size="12px" />,
-    //     component: Main,
-    //     noCollapse: true,
-    // },
+    {
+        type: 'collapse',
+        name: 'Trang chính',
+        key: 'main',
+        route: '/main',
+        icon: <ContentPasteIcon size="12px" />,
+        component: Main,
+        noCollapse: true,
+    },
     // {
     //     type: 'collapse',
     //     name: 'Thông tin v2',

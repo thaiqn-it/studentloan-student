@@ -69,7 +69,7 @@ function Transaction({
                         <SuiBox display="flex" flexDirection="column">
                             <SuiTypography
                                 variant="body2"
-                                fontWeight="medium"
+                                fontWeight="bold"
                                 gutterBottom
                             >
                                 {name}
@@ -86,7 +86,7 @@ function Transaction({
                             gap: '30px',
                         }}
                     >
-                        <Box sx={{ width: 90 }}>
+                        <Box sx={{ width: 200 }}>
                             <SuiTypography
                                 variant="body2"
                                 color={value >= 0 ? 'success' : 'error'}

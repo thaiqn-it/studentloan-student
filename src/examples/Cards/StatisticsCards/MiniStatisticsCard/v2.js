@@ -34,7 +34,7 @@ function MiniStatisticsCard({
     direction,
 }) {
     return (
-        <Card>
+        <Card style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
             <SuiBox bgColor={bgColor} variant="gradient">
                 <SuiBox p={2}>
                     <Grid container alignItems="center">
