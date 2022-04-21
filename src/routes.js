@@ -11,6 +11,7 @@ import ViewPost from 'pages/ViewPost'
 import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
 import TutorDetail from 'pages/TutorDetail'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 
 import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
@@ -20,24 +21,15 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
-
+import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 let routes = [
-    // {
-    //     type: 'collapse',
-    //     name: 'Trang chính',
-    //     key: 'main',
-    //     route: '/main',
-    //     icon: <ContentPasteIcon size="12px" />,
-    //     component: Main,
-    //     noCollapse: true,
-    // },
     {
         type: 'collapse',
-        name: 'Ví',
-        key: 'wallet',
-        route: '/vi',
-        icon: <AccountBalanceWalletIcon size="12px" />,
-        component: Wallet,
+        name: 'Trang chính',
+        key: 'main',
+        route: '/main',
+        icon: <ContentPasteIcon size="12px" />,
+        component: Main,
         noCollapse: true,
     },
     // {
@@ -103,24 +95,32 @@ let routes = [
     //     component: Verify,
     //     noCollapse: true,
     // },
-
     {
         type: 'collapse',
-        name: 'Thông tin',
-        key: 'thong-tin',
-        route: '/thong-tin',
-        icon: <AccountBoxIcon size="12px" />,
-        component: StudentProfile2,
-        noCollapse: false,
+        name: 'Ví',
+        key: 'wallet',
+        route: '/vi',
+        icon: <AccountBalanceWalletIcon size="12px" />,
+        component: Wallet,
+        noCollapse: true,
     },
     {
         type: 'collapse',
         name: 'Xem tất cả hồ sơ vay',
         key: 'tat-ca',
         route: '/ho-so/tat-ca',
-        icon: <SpaceShip size="12px" />,
+        icon: <AssignmentIcon size="12px" />,
         component: ViewAllPost,
         noCollapse: true,
+    },
+    {
+        type: 'collapse',
+        name: 'Thông tin',
+        key: 'thong-tin',
+        route: '/thong-tin',
+        icon: <PermIdentityIcon size="12px" />,
+        component: StudentProfile2,
+        noCollapse: false,
     },
 ]
 

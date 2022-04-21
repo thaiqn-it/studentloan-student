@@ -20,6 +20,8 @@ import StudentDashboard from 'pages/StudentDashboard'
 import { AuthProvider } from 'context/authContext'
 import Success from 'pages/PaymentNotification/Success'
 import Cancel from 'pages/PaymentNotification/Cancel'
+import Helmet from 'react-helmet'
+
 import { getFirebaseToken, onMessageListener } from './firebase'
 
 function App() {
@@ -33,51 +35,59 @@ function App() {
         .catch((err) => {})
 
     return (
-        <AuthProvider>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Router>
-                    <Switch>
-                        <Route path="/" exact component={LandingPage} />
-                        <Route path="/About" component={''} />
-                        <Route path="/Landing" component={StudentLanding} />
-                        <Route
-                            path="/Services"
-                            exact
-                            component={ResetPassword}
-                        />
-                        <Route
-                            path="/authentication/sign-up"
-                            exact
-                            component={SignUp}
-                        />
-                        <Route path="/trang-chu" component={StudentDashboard} />
-                        <Route
-                            path="/authentication/sign-in"
-                            exact
-                            component={Login}
-                        />
-                        <Route
-                            path="/ForgotPassword"
-                            exact
-                            component={ForgotPassword}
-                        />
-                        <Route
-                            path="/payment/success"
-                            exact
-                            component={Success}
-                        />
-                        <Route
-                            path="/payment/cancel"
-                            exact
-                            component={Cancel}
-                        />
-                        <Route path="/404" exact component={NotFound} />
-                        <Route path="*" exact component={NotFound} />
-                    </Switch>
-                </Router>
-            </ThemeProvider>
-        </AuthProvider>
+        <>
+            <Helmet>
+                <title>Student Loan Platform</title>
+            </Helmet>
+            <AuthProvider>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <Router>
+                        <Switch>
+                            <Route path="/" exact component={LandingPage} />
+                            <Route path="/About" component={''} />
+                            <Route path="/Landing" component={StudentLanding} />
+                            <Route
+                                path="/Services"
+                                exact
+                                component={ResetPassword}
+                            />
+                            <Route
+                                path="/authentication/sign-up"
+                                exact
+                                component={SignUp}
+                            />
+                            <Route
+                                path="/trang-chu"
+                                component={StudentDashboard}
+                            />
+                            <Route
+                                path="/authentication/sign-in"
+                                exact
+                                component={Login}
+                            />
+                            <Route
+                                path="/ForgotPassword"
+                                exact
+                                component={ForgotPassword}
+                            />
+                            <Route
+                                path="/payment/success"
+                                exact
+                                component={Success}
+                            />
+                            <Route
+                                path="/payment/cancel"
+                                exact
+                                component={Cancel}
+                            />
+                            <Route path="/404" exact component={NotFound} />
+                            <Route path="*" exact component={NotFound} />
+                        </Switch>
+                    </Router>
+                </ThemeProvider>
+            </AuthProvider>
+        </>
     )
 }
 

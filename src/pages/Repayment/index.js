@@ -123,9 +123,9 @@ export default function Repayment() {
 
     const handleConfirm = (value) => {
         setOpenConfirm(false)
+        
         if (value) {
             if (id === 'tat-ca') {
-                console.log(investments)
                 walletApi
                     .repaymentAll({ loanSchedules, investments })
                     .then((res) => {
@@ -135,7 +135,7 @@ export default function Repayment() {
                         }
                     })
                     .catch((err) => {
-                    
+                        console.log(err)
                         setLoading(false)
                     })
             } else {

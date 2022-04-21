@@ -194,12 +194,12 @@ const Wallet = () => {
             <SuiBox mb={3}>
                 <SuiBox mb={3} sx={{ marginTop: '20px' }}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6} xl={4}>
-                            <Card>
+                        <Grid item xs={12} sm={6} xl={3}>
+                            <Card style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
                                 <SuiBox variant="gradient">
                                     <SuiBox p={2}>
                                         <Grid container alignItems="center">
-                                            <Grid item xs={8}>
+                                            <Grid item xs={10}>
                                                 <SuiBox ml={0} lineHeight={1}>
                                                     <SuiTypography
                                                         variant="button"
@@ -226,7 +226,7 @@ const Wallet = () => {
                                 </SuiBox>
                             </Card>
                         </Grid>
-                        <Grid item xs={12} sm={6} xl={3}>
+                        <Grid item xs={12} sm={6} xl={3} >
                             <Box onClick={() => checkAction('TopUp')}>
                                 <MiniStatisticsCard
                                     title={{ text: 'Nạp tiền' }}
@@ -299,7 +299,7 @@ const Wallet = () => {
                         )}
                     </Grid>
                     <Grid item xs={12} md={5}>
-                        <Card sx={{ height: '100%' }}>
+                        <Card sx={{ height: '70%' }} style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
                             {/* <SuiBox pt={3} px={2}>
                                 <SuiTypography>
                                     Transaction detail

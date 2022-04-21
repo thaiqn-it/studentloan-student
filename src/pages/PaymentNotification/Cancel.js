@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet'
 
 
 export default function Cancel(props) {
-   const title = "Giao Dịch đã được huỷ"
+   const title = "Cancel"
     return (
         <>
         <Helmet>

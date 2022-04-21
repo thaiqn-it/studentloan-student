@@ -14,165 +14,63 @@ import SuiTypography from 'components/SuiTypography'
 import React from 'react'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
 import LoanCalendar from 'components/LoanCalendar'
-import { Link } from 'react-router-dom'
+import { styled } from '@mui/material/styles';
+import { Button } from '@mui/material';
+import { PRIMARY_COLOR, SECONDARY_COLOR } from '../../constants/color'
 
+import ProgressBar from "@ramonak/react-progress-bar";
 export default function Main() {
     return (
         <>
-            <SuiBox mt={4}>
-                <SuiBox mb={1.5}>
-                    <Paper sx={{ height: '100%', padding: '30px' }}>
-                        <LoanRepaymentProgress />
-                    </Paper>
-                </SuiBox>
-
-                <SuiBox mb={1.5}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} lg={5}>
-                            <SuiBox my={3} sx={{ paddingLeft: '5px' }}>
-                                <Grid container spacing={4}>
-                                    <Grid item xs={12} sm={6} xl={6}>
-                                        <Card>
-                                            <CardActionArea
-                                                sx={{ height: '150px' }}
-                                            >
-                                                <Link to="">
-                                                    <SuiBox
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems:
-                                                                'center',
-                                                            flexDirection:
-                                                                'column',
-                                                            justifyContent:
-                                                                'center',
-                                                            rowGap: '10px',
-                                                            height: '100%',
-                                                        }}
-                                                    >
-                                                        <LocalAtmIcon fontSize="large" />
-                                                        <SuiTypography
-                                                            variant="h4"
-                                                            color={'text'}
-                                                            opacity={1}
-                                                            textTransform="capitalize"
-                                                        >
-                                                            Yêu cầu vay
-                                                        </SuiTypography>
-                                                    </SuiBox>
-                                                </Link>
-                                            </CardActionArea>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} xl={6}>
-                                        <Link to="./payment">
-                                            {' '}
-                                            <Card sx={{ height: '150px' }}>
-                                                <CardActionArea
-                                                    sx={{ height: '150px' }}
-                                                >
-                                                    <SuiBox
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems:
-                                                                'center',
-                                                            flexDirection:
-                                                                'column',
-                                                            justifyContent:
-                                                                'center',
-                                                            rowGap: '10px',
-                                                            height: '100%',
-                                                        }}
-                                                    >
-                                                        <LocalAtmIcon fontSize="large" />
-                                                        <SuiTypography
-                                                            variant="h4"
-                                                            color={'text'}
-                                                            opacity={1}
-                                                            textTransform="capitalize"
-                                                        >
-                                                            Trả nợ
-                                                        </SuiTypography>
-                                                    </SuiBox>
-                                                </CardActionArea>
-                                            </Card>
-                                        </Link>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} xl={6}>
-                                        <Link to="./wallet">
-                                            <Card sx={{ height: '150px' }}>
-                                                <CardActionArea
-                                                    sx={{ height: '150px' }}
-                                                >
-                                                    <SuiBox
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems:
-                                                                'center',
-                                                            flexDirection:
-                                                                'column',
-                                                            justifyContent:
-                                                                'center',
-                                                            rowGap: '10px',
-                                                            height: '100%',
-                                                        }}
-                                                    >
-                                                        <LocalAtmIcon fontSize="large" />
-                                                        <SuiTypography
-                                                            variant="h4"
-                                                            color={'text'}
-                                                            opacity={1}
-                                                            textTransform="capitalize"
-                                                        >
-                                                            Ví
-                                                        </SuiTypography>
-                                                    </SuiBox>
-                                                </CardActionArea>
-                                            </Card>
-                                        </Link>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} xl={6}>
-                                        <Link to="./contract">
-                                            <Card sx={{ height: '150px' }}>
-                                                <CardActionArea
-                                                    sx={{ height: '150px' }}
-                                                >
-                                                    {' '}
-                                                    <SuiBox
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems:
-                                                                'center',
-                                                            flexDirection:
-                                                                'column',
-                                                            justifyContent:
-                                                                'center',
-                                                            rowGap: '10px',
-                                                            height: '100%',
-                                                        }}
-                                                    >
-                                                        <LocalAtmIcon fontSize="large" />
-                                                        <SuiTypography
-                                                            variant="h4"
-                                                            color={'text'}
-                                                            opacity={1}
-                                                            textTransform="capitalize"
-                                                        >
-                                                            Xem hợp đồng
-                                                        </SuiTypography>
-                                                    </SuiBox>
-                                                </CardActionArea>
-                                            </Card>
-                                        </Link>
-                                    </Grid>
+            <SuiBox mb={3}>       
+                <Grid container spacing={4}>   
+                    <Grid item xs={12} md={7}>
+                        <LoanCalendar />
+                    </Grid>    
+                    <Grid item xs={12} md={5}>
+                        
+                        <Card style={{ borderRadius : 5,boxShadow: "1px 2px 4px #9E9E9E"}} sx={{ height: '100%' }}>
+                            <Typography style={{ textAlign : 'center', fontWeight : 'bold', color : SECONDARY_COLOR }}>Đang kêu gọi</Typography>
+                            {/* foreach chỗ này */}
+                            <Card style={{ borderRadius : 5,boxShadow: "1px 2px 4px #9E9E9E", margin : 10 , padding : 10 }}>                              
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        gap: '15px',
+                                    }}
+                                >                
+                                    <Grid xs={6}>
+                                        <Typography style={{ fontWeight : 'bold', fontSize : 16 }}>Khoản tiền : 20.000.000</Typography>
+                                    </Grid>  
+                                                                  
+                                        <Button variant="text" size="medium">
+                                            Chi tiết
+                                        </Button>    
+                                                             
+                                </Box>
+                                <Grid style={{ marginTop : 10, marginBottom : 10 }}>
+                                    <ProgressBar completed={60} maxCompleted={100} bgColor={PRIMARY_COLOR}/>
                                 </Grid>
-                            </SuiBox>
-                        </Grid>
-                        <Grid item xs={12} lg={7}>
-                            <LoanCalendar />
-                        </Grid>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        gap: '15px',
+                                    }}
+                                >                
+                                    <Grid xs={6}>
+                                        <Typography style={{ fontWeight : 'bold', fontSize : 15, opacity : 0.6 }}>Số nhà đầu tư : 6</Typography>
+                                    </Grid>       
+                                    <Grid xs={6}>
+                                        <Typography style={{ fontWeight : 'bold', fontSize : 15, opacity : 0.6 }}>Số ngày còn lại : 27 ngày</Typography>
+                                    </Grid>
+                                </Box>
+                            </Card>
+                            
+                        </Card>
                     </Grid>
-                </SuiBox>
+                </Grid>  
             </SuiBox>
 
             {/* <Footer /> */}

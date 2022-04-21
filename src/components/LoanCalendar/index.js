@@ -222,16 +222,16 @@ const appointments = [
     {
         id: 0,
         title: 'Hạn trả nợ',
-        startDate: new Date(2018, 6, 23, 9, 30),
-        endDate: new Date(2018, 6, 23, 11, 30),
+        startDate: new Date(2022, 4, 23, 9, 30),
+        endDate: new Date(2022, 4, 23, 11, 30),
         ownerId: 1,
     },
     {
         id: 0,
         title: 'Hạn trả nợ',
-        startDate: new Date(2018, 7, 23, 9, 30),
-        endDate: new Date(2018, 7, 23, 11, 30),
-        ownerId: 1,
+        startDate: new Date('2022-7-22'),
+        endDate: new Date('2022-7-23'),
+        ownerId: 2,
     },
 ]
 
@@ -306,7 +306,7 @@ const FlexibleSpace = ({ ...restProps }) => (
     >
         <div className={classes.flexContainer}>
             {/* <ColorLens fontSize="large" htmlColor="#FF7043" /> */}
-            <Typography variant="h5" style={{ marginLeft: '10px' }}>
+            <Typography variant="h6" style={{ marginLeft: '10px' }} fontWeight="medium">
                 Lịch hạn trả tiền
             </Typography>
         </div>
@@ -351,10 +351,10 @@ export default class LoanCalendar extends React.PureComponent {
 
         return (
             <ThemeProvider theme={theme}>
-                <Paper>
-                    <Scheduler data={data} locate="vn-VN">
+                <Paper style={{ borderRadius : 5,boxShadow: "1px 2px 3px #9E9E9E"}}>
+                    <Scheduler data={data} locale={'vn-VN'}> 
                         <EditingState onCommitChanges={this.commitChanges} />
-                        <ViewState defaultCurrentDate="2018-07-17" />
+                        <ViewState defaultCurrentDate="2022-01-1" />
 
                         <MonthView
                             timeTableCellComponent={TimeTableCell}
