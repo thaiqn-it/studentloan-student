@@ -5,9 +5,9 @@ exports.LOAN_STATUS_MESSAGE = {
     REJECTED: 'Hồ sơ đã bị từ chối',
     FUNDING: 'Hồ sơ đã được duyệt và đang kêu gọi vay tiền',
     FAIL: 'Hồ sơ kêu gọi không thành công',
-    ONGOING: 'Hồ sơ đang trong quá trình trả nợ',
+    ONGOING: 'Hồ sơ đang trong quá trình thanh toán',
     FINISH: 'Hồ sơ đã hoàn thành',
-    INCOMPLETE: 'Người vay không có khả năng trả nợ',
+    INCOMPLETE: 'Người vay không có khả năng thanh toán',
 }
 
 exports.USER_STATUS_MESSAGE = {
@@ -18,7 +18,7 @@ exports.USER_STATUS_MESSAGE = {
 }
 
 exports.TUTOR_STATUS_MESSAGE = {
-    VERIFIED: 'Đã xác thực',
+    VERIFIED: 'Đang sử dụng',
     UNVERIFIED: 'Chưa xác thực',
 }
 

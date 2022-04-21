@@ -35,7 +35,7 @@ export function renderStatus(status) {
             break
         case LOAN_STATUS.REJECTED:
             statusObject.color = 'error'
-            statusObject.status = 'Bị từ chối'
+            statusObject.status = 'Từ chối'
             statusObject.message = LOAN_STATUS_MESSAGE.REJECTED
             statusObject.icon = 'do_disturb_on'
             break
@@ -47,7 +47,7 @@ export function renderStatus(status) {
             break
         case LOAN_STATUS.FAIL:
             statusObject.color = 'error'
-            statusObject.status = 'Thất bại'
+            statusObject.status = 'Không thành công'
             statusObject.message = LOAN_STATUS_MESSAGE.FAIL
             statusObject.icon = 'cancel'
             break
@@ -65,7 +65,7 @@ export function renderStatus(status) {
             break
         case LOAN_STATUS.INCOMPLETE:
             statusObject.color = 'error'
-            statusObject.status = 'Không thể trả'
+            statusObject.status = 'Không thanh toán'
             statusObject.message = LOAN_STATUS_MESSAGE.INCOMPLETE
             statusObject.icon = 'do_disturb_on'
             break

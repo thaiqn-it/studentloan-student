@@ -127,7 +127,7 @@ export default function ConfirmPage(props) {
                                         Ngày sinh
                                     </SuiTypography>
                                     <SuiInput
-                                        type="date"
+                                        type="text"
                                         value={fDate(
                                             studentInfo?.User?.birthDate
                                         )}
@@ -160,7 +160,7 @@ export default function ConfirmPage(props) {
                                         placeholder="Trường đại học"
                                         disabled
                                         value={
-                                            studentInfo?.SchoolMajor?.School
+                                            studentInfo?.Information?.SchoolMajor?.School
                                                 ?.name
                                         }
                                     />
@@ -177,7 +177,7 @@ export default function ConfirmPage(props) {
                                         placeholder="Chuyên ngành"
                                         disabled
                                         value={
-                                            studentInfo?.SchoolMajor?.Major
+                                            studentInfo?.Information?.SchoolMajor?.Major
                                                 ?.name
                                         }
                                     />

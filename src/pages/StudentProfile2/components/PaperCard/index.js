@@ -8,9 +8,11 @@ import { fDisplayDate } from 'utils/formatTime'
 import { PROVINCEVN } from '..//..//..//..//apis/static/provinceVN'
 
 import DropFileZone from '../../../../components/DropFileZone'
+import { USER_STATUS } from 'utils/enum'
+import ImageCard from 'components/ImageCard'
 
 export default function PaperCard(props) {
-    const { studentInfo, onChangeStudent } = props
+    const { studentInfo, onChangeStudent, userStatus } = props
     const [listCity, setListCity] = useState()
     const [city, setCity] = useState(null)
 
@@ -80,6 +82,10 @@ export default function PaperCard(props) {
                                             Số CMND/CCCD
                                         </SuiTypography>
                                         <SuiInput
+                                            disabled={
+                                                userStatus ===
+                                                USER_STATUS.VERIFIED
+                                            }
                                             type="number"
                                             placeholder="Số CMND"
                                             value={studentInfo?.citizenId || ''}
@@ -100,6 +106,10 @@ export default function PaperCard(props) {
                                             Ngày cấp CMND/CCCD
                                         </SuiTypography>
                                         <SuiInput
+                                            disabled={
+                                                userStatus ===
+                                                USER_STATUS.VERIFIED
+                                            }
                                             type="date"
                                             placeholder="Ngày cấp"
                                             value={
@@ -125,6 +135,10 @@ export default function PaperCard(props) {
                                             Nơi cấp CMND/CCCD
                                         </SuiTypography>
                                         <Autocomplete
+                                            disabled={
+                                                userStatus ===
+                                                USER_STATUS.VERIFIED
+                                            }
                                             name="citizenCardCreatedPlace"
                                             onChange={(event, value) =>
                                                 onChangeCity(value)
@@ -179,20 +193,29 @@ export default function PaperCard(props) {
                                 >
                                     Mặt trước CMND/CCCD
                                 </SuiTypography>
-                                <DropFileZone
-                                    image={
-                                        studentInfo?.frontCitizenCardImageUrl
-                                            ? studentInfo.frontCitizenCardImageUrl
-                                            : ''
-                                    }
-                                    flexEnd="flex-start"
-                                    elementId="frontCitizenCardImageUrl"
-                                    elementName="frontCitizenCardImageUrl"
-                                    onFileChangeURL={(url, e) =>
-                                        onFileChangeURL(url, e)
-                                    }
-                                    onDelete={onDelete}
-                                />
+                                {userStatus === USER_STATUS.VERIFIED ? (
+                                    <ImageCard
+                                        image={
+                                            studentInfo?.frontCitizenCardImageUrl
+                                        }
+                                    />
+                                ) : (
+                                    <DropFileZone
+                                        image={
+                                            studentInfo?.frontCitizenCardImageUrl
+                                                ? studentInfo.frontCitizenCardImageUrl
+                                                : ''
+                                        }
+                                        flexEnd="flex-start"
+                                        elementId="frontCitizenCardImageUrl"
+                                        elementName="frontCitizenCardImageUrl"
+                                        onFileChangeURL={(url, e) =>
+                                            onFileChangeURL(url, e)
+                                        }
+                                        onDelete={onDelete}
+                                    />
+                                )}
+
                                 {studentInfo?.frontCitizenCardImageUrl ? null : (
                                     <SuiTypography
                                         variant="caption"
@@ -212,21 +235,29 @@ export default function PaperCard(props) {
                                 >
                                     Mặt sau CMND/CCCD
                                 </SuiTypography>
-                                <DropFileZone
-                                    image={
-                                        studentInfo?.backCitizenCardImageUrl
-                                            ? studentInfo.backCitizenCardImageUrl
-                                            : ''
-                                    }
-                                    flexEnd="flex-start"
-                                    elementId="backCitizenCardImageUrl"
-                                    elementName="backCitizenCardImageUrl"
-                                    onFileChangeURL={(url, e) =>
-                                        onFileChangeURL(url, e)
-                                    }
-                                    onDelete={onDelete}
-                                />
-                                 {studentInfo?.backCitizenCardImageUrl ? null : (
+                                {userStatus === USER_STATUS.VERIFIED ? (
+                                    <ImageCard
+                                        image={
+                                            studentInfo?.backCitizenCardImageUrl
+                                        }
+                                    />
+                                ) : (
+                                    <DropFileZone
+                                        image={
+                                            studentInfo?.backCitizenCardImageUrl
+                                                ? studentInfo.backCitizenCardImageUrl
+                                                : ''
+                                        }
+                                        flexEnd="flex-start"
+                                        elementId="backCitizenCardImageUrl"
+                                        elementName="backCitizenCardImageUrl"
+                                        onFileChangeURL={(url, e) =>
+                                            onFileChangeURL(url, e)
+                                        }
+                                        onDelete={onDelete}
+                                    />
+                                )}
+                                {studentInfo?.backCitizenCardImageUrl ? null : (
                                     <SuiTypography
                                         variant="caption"
                                         fontWeight="regular"
@@ -253,6 +284,9 @@ export default function PaperCard(props) {
                                         Mã sinh viên
                                     </SuiTypography>
                                     <SuiInput
+                                        disabled={
+                                            userStatus === USER_STATUS.VERIFIED
+                                        }
                                         type="number"
                                         placeholder="Mã sinh viên"
                                         value={studentInfo?.studentCardId || ''}
@@ -274,27 +308,36 @@ export default function PaperCard(props) {
                                 >
                                     Mặt trước thẻ sinh viên
                                 </SuiTypography>
-                                <DropFileZone
-                                    image={
-                                        studentInfo?.frontStudentCardImageUrl
-                                            ? studentInfo.frontStudentCardImageUrl
-                                            : ''
-                                    }
-                                    flexEnd="flex-start"
-                                    elementId="frontStudentCardImageUrl"
-                                    elementName="frontStudentCardImageUrl"
-                                    onFileChangeURL={(url, e) =>
-                                        onFileChangeURL(url, e)
-                                    }
-                                    onDelete={onDelete}
-                                />
-                                 {studentInfo?.frontStudentCardImageUrl ? null : (
+                                {userStatus === USER_STATUS.VERIFIED ? (
+                                    <ImageCard
+                                        image={
+                                            studentInfo?.frontStudentCardImageUrl
+                                        }
+                                    />
+                                ) : (
+                                    <DropFileZone
+                                        image={
+                                            studentInfo?.frontStudentCardImageUrl
+                                                ? studentInfo.frontStudentCardImageUrl
+                                                : ''
+                                        }
+                                        flexEnd="flex-start"
+                                        elementId="frontStudentCardImageUrl"
+                                        elementName="frontStudentCardImageUrl"
+                                        onFileChangeURL={(url, e) =>
+                                            onFileChangeURL(url, e)
+                                        }
+                                        onDelete={onDelete}
+                                    />
+                                )}
+                                {studentInfo?.frontStudentCardImageUrl ? null : (
                                     <SuiTypography
                                         variant="caption"
                                         fontWeight="regular"
                                         color="error"
                                     >
-                                        Mặt trước thẻ sinh viên không được để trống
+                                        Mặt trước thẻ sinh viên không được để
+                                        trống
                                     </SuiTypography>
                                 )}
                             </Grid>
@@ -307,27 +350,36 @@ export default function PaperCard(props) {
                                 >
                                     Mặt sau thẻ sinh viên
                                 </SuiTypography>
-                                <DropFileZone
-                                    image={
-                                        studentInfo?.backStudentCardImageUrl
-                                            ? studentInfo.backStudentCardImageUrl
-                                            : ''
-                                    }
-                                    flexEnd="flex-start"
-                                    elementId="backStudentCardImageUrl"
-                                    elementName="backStudentCardImageUrl"
-                                    onFileChangeURL={(url, e) =>
-                                        onFileChangeURL(url, e)
-                                    }
-                                    onDelete={onDelete}
-                                />
-                                 {studentInfo?.backStudentCardImageUrl ? null : (
+                                {userStatus === USER_STATUS.VERIFIED ? (
+                                    <ImageCard
+                                        image={
+                                            studentInfo?.backStudentCardImageUrl
+                                        }
+                                    />
+                                ) : (
+                                    <DropFileZone
+                                        image={
+                                            studentInfo?.backStudentCardImageUrl
+                                                ? studentInfo.backStudentCardImageUrl
+                                                : ''
+                                        }
+                                        flexEnd="flex-start"
+                                        elementId="backStudentCardImageUrl"
+                                        elementName="backStudentCardImageUrl"
+                                        onFileChangeURL={(url, e) =>
+                                            onFileChangeURL(url, e)
+                                        }
+                                        onDelete={onDelete}
+                                    />
+                                )}
+                                {studentInfo?.backStudentCardImageUrl ? null : (
                                     <SuiTypography
                                         variant="caption"
                                         fontWeight="regular"
                                         color="error"
                                     >
-                                        Mặt sau thẻ sinh viên không được để trống
+                                        Mặt sau thẻ sinh viên không được để
+                                        trống
                                     </SuiTypography>
                                 )}
                             </Grid>

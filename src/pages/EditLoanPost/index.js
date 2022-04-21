@@ -25,6 +25,7 @@ import { loanMediaApi } from 'apis/loanMediaApi'
 import { LOAN_STATUS } from 'utils/enum'
 import ConfirmSign from './components/ConfirmSign'
 import SnackbarMessage from 'components/SnackbarMessage'
+import ComfirmDelete from 'components/ComfirmDelete'
 
 export default function EditLoanPost() {
     const { id } = useParams()
@@ -37,6 +38,7 @@ export default function EditLoanPost() {
     const [loanHistory, setloanHistory] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [openConfirm, setOpenConfirm] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
 
     const [snack, setSnack] = useState({
         color: 'error',
@@ -69,7 +71,7 @@ export default function EditLoanPost() {
             .catch((error) => {
                 setIsLoading(false)
                 history.push({
-                    pathname: '/dashboard/404',
+                    pathname: '/trang-chu/404',
                     state: { content: 'Không tìm thấy hồ sơ' },
                 })
             })
@@ -106,8 +108,6 @@ export default function EditLoanPost() {
                 ...loan,
                 [name]: realValue,
             })
-
-            console.log(loanMedia)
         }
     }
 
@@ -167,6 +167,25 @@ export default function EditLoanPost() {
             })
     }
 
+    const handleDelete = () => {
+        setIsLoading(true)
+        loanApi
+            .updateLoanPost(id, LOAN_STATUS.DELETED, { loan, loanHistory })
+            .then((res) => {
+                setIsChange(Date.now())
+                setIsLoading(false)
+                setOpenDelete(false)
+                history.push('/trang-chu/ho-so/tat-ca')
+            })
+            .catch((err) => {
+                setIsLoading(false)
+            })
+    }
+
+    const handleCloseDelete = () => {
+        setOpenDelete(false)
+    }
+
     const getStatus = () => {
         var statusObject = renderStatus(loanHistory?.type)
 
@@ -194,6 +213,7 @@ export default function EditLoanPost() {
                     sx={{ mr: 3, mb: 3 }}
                     color="error"
                     startIcon={<DeleteIcon />}
+                    onClick={() => setOpenDelete(true)}
                 >
                     Xóa hồ sơ
                 </SuiButton>
@@ -336,6 +356,12 @@ export default function EditLoanPost() {
                 firstName={studentInfo?.User?.firstName}
                 lastName={studentInfo?.User?.lastName}
                 handleConfirm={handleConfirm}
+            />
+            <ComfirmDelete
+                title="hồ sơ vay"
+                open={openDelete}
+                handleClose={handleCloseDelete}
+                handleDelete={handleDelete}
             />
             <SnackbarMessage snack={snack} open={openSnack} />
         </>

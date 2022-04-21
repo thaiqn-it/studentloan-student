@@ -16,6 +16,7 @@ import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
 import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
@@ -108,7 +109,7 @@ let routes = [
         name: 'Thông tin',
         key: 'thong-tin',
         route: '/thong-tin',
-        icon: <SpaceShip size="12px" />,
+        icon: <AccountBoxIcon size="12px" />,
         component: StudentProfile2,
         noCollapse: false,
     },

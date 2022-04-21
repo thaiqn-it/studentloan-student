@@ -1,17 +1,56 @@
-import React, { useState } from 'react'
-import { Container, Grid, Divider, Box } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import {
+    Container,
+    Grid,
+    Divider,
+    Box,
+    TextField,
+    Autocomplete,
+} from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
 
 import { getText } from 'number-to-text-vietnamese'
+import { million } from 'utils/moneyCall'
+
 import moment from 'moment'
 
 export default function PostInfoPage(props) {
     const { loan, handleChange } = props
 
+    const [millionChoose, setMillionChoose] = useState('2')
+    const [thousandChoose, setThousandChoose] = useState('000')
+
+    const [millionExpectChoose, setMillionExpectChoose] = useState('2')
+    const [thousandExpectChoose, setThousandExpectChoose] = useState('000')
+
     // const [date, setDate] = useState(new Date())
     // const [demandImages, setDemandImages] = useState([])
     // const [moneyText, setMoneyText] = useState('')
+
+    useEffect(() => {
+        setMillionChoose(loan?.totalMoney?.slice(0, loan.totalMoney.length - 6))
+        setThousandChoose(
+            loan?.totalMoney?.slice(
+                loan.totalMoney.length - 6,
+                loan.totalMoney.length - 3
+            )
+        )
+        if (loan.expectedMoney !== null) {
+            setMillionExpectChoose(
+                loan?.expectedMoney?.slice(0, loan.expectedMoney.length - 6)
+            )
+            setThousandExpectChoose(
+                loan?.expectedMoney?.slice(
+                    loan.expectedMoney.length - 6,
+                    loan.expectedMoney.length - 3
+                )
+            )
+        } else {
+            setMillionExpectChoose('2')
+            setThousandExpectChoose('000')
+        }
+    }, [loan])
 
     const handleOnchange = (e) => {
         e.preventDefault()
@@ -51,15 +90,40 @@ export default function PostInfoPage(props) {
         return getText(money) === 'không' ? null : getText(money)
     }
 
-
-    function formatExpectGraduateTime(createTime, time){
-        var day = new Date(createTime);
+    function formatExpectGraduateTime(createTime, time) {
+        var day = new Date(createTime)
         var returnDate = new Date(day.setMonth(day.getMonth() + time))
         return moment(returnDate).format('YYYY-MM')
     }
 
-    function formatExpireTime(time){
+    function formatExpireTime(time) {
         return moment(time).format('YYYY-MM-DD')
+    }
+
+    const handleChangeMoney = (e, value) => {
+        var num = 0
+        if (e.target.id.includes('million')) {
+            setMillionChoose(value.label)
+            setMillionExpectChoose(value.label)
+            num = value.label + thousandChoose + '000'
+        } else {
+            setThousandChoose(value.label)
+            setMillionExpectChoose('000')
+            num = millionChoose + value.label + '000'
+        }
+        handleChange(null, 'totalMoney', num)
+    }
+
+    const handleChangeExpectMoney = (e, value) => {
+        var num = 0
+        if (e.target.id.includes('million')) {
+            setMillionExpectChoose(value.label)
+            num = value.label + thousandChoose + '000'
+        } else {
+            setThousandExpectChoose(value.label)
+            num = millionChoose + value.label + '000'
+        }
+        handleChange(null, 'expectedMoney', num)
     }
 
     return (
@@ -93,7 +157,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Tiêu đề (*)
+                            Tiêu đề *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -126,7 +190,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Thông tin vay (*)
+                            Thông tin vay *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -152,7 +216,10 @@ export default function PostInfoPage(props) {
                                     type="month"
                                     onChange={handleDateOnChange}
                                     name="expectedGraduationTime"
-                                    value={formatExpectGraduateTime(loan.postCreatedAt, loan.expectedGraduationTime)}
+                                    value={formatExpectGraduateTime(
+                                        loan.postCreatedAt,
+                                        loan.expectedGraduationTime
+                                    )}
                                 />
                             </Grid>
                             <Grid item xs="12" md="6">
@@ -199,7 +266,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Mô tả (*)
+                            Mô tả *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -240,7 +307,7 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Số tiền kêu gọi (*)
+                            Số tiền kêu gọi *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -263,7 +330,7 @@ export default function PostInfoPage(props) {
                                 </SuiTypography>
                             </Grid>
                             <Grid item xs="12" md="6">
-                                <SuiInput
+                                {/* <SuiInput
                                     onChange={getMoneyText}
                                     type="number"
                                     name="totalMoney"
@@ -272,7 +339,67 @@ export default function PostInfoPage(props) {
                                         component: 'đ',
                                         direction: 'right',
                                     }}
-                                />
+                                /> */}
+                                <Grid container>
+                                    <Grid item xs={12} md={4}>
+                                        <Autocomplete
+                                            disablePortal
+                                            id="combo-box-million"
+                                            value={millionChoose}
+                                            options={million(2, 500)}
+                                            onChange={(event, value) =>
+                                                handleChangeMoney(event, value)
+                                            }
+                                            isOptionEqualToValue={(
+                                                option,
+                                                value
+                                            ) => option.label === value}
+                                            disableClearable
+                                            sx={{ width: '100%' }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} />
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <Autocomplete
+                                            disablePortal
+                                            disableClearable
+                                            onChange={(event, value) =>
+                                                handleChangeMoney(event, value)
+                                            }
+                                            isOptionEqualToValue={(
+                                                option,
+                                                value
+                                            ) => option.label === value}
+                                            id="combo-box-thousand"
+                                            value={thousandChoose}
+                                            options={[
+                                                {
+                                                    id: 2,
+                                                    label: '500',
+                                                },
+                                                {
+                                                    id: 1,
+                                                    label: '000',
+                                                },
+                                            ]}
+                                            sx={{ width: '100%' }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} />
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <SuiInput
+                                            value="000"
+                                            icon={{
+                                                component: 'đ',
+                                                direction: 'right',
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item xs="12" md="12">
                                 <SuiTypography
@@ -282,7 +409,9 @@ export default function PostInfoPage(props) {
                                     name="moneyText"
                                     textTransform="capitalize"
                                 >
-                                    {getInitialMoneyText(loan.totalMoney)}
+                                    {getInitialMoneyText(
+                                        millionChoose + thousandChoose + '000'
+                                    )}
                                 </SuiTypography>
                             </Grid>
                         </Grid>
@@ -299,16 +428,17 @@ export default function PostInfoPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Số tiền kỳ vọng (*)
+                            Số tiền kỳ vọng *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
                             fontWeight="regular"
                             color="text"
                         >
-                            Nếu bài viết chưa đạt 100% nhưng số tiền kêu gọi
-                            được lớn hơn hoặc bằng số tiền kỳ vọng chúng tôi vẫn
-                            chấp nhận và giải ngân cho bạn
+                            Nếu kết thúc thời gian kêu gọi nhưng bài viết chưa
+                            đạt 100%, hệ thống sẽ dựa vào số tiền kỳ vọng mà
+                            chấp nhận khoản vay (số tiền kỳ vọng phải nhỏ hơn số
+                            tiền kêu gọi)
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
@@ -323,7 +453,7 @@ export default function PostInfoPage(props) {
                                 </SuiTypography>
                             </Grid>
                             <Grid item xs="12" md="6">
-                                <SuiInput
+                                {/* <SuiInput
                                     onChange={getMoneyText}
                                     type="number"
                                     name="expectedMoney"
@@ -332,7 +462,80 @@ export default function PostInfoPage(props) {
                                         component: 'đ',
                                         direction: 'right',
                                     }}
-                                />
+                                /> */}
+                                <Grid container>
+                                    <Grid item xs={12} md={4}>
+                                        <Autocomplete
+                                            disablePortal
+                                            id="combo-box-million"
+                                            defaultValue={millionExpectChoose}
+                                            value={millionExpectChoose}
+                                            inputValue={millionExpectChoose}
+                                            options={million(
+                                                2,
+                                                Number(millionChoose)
+                                            )}
+                                            onChange={(event, value) =>
+                                                handleChangeExpectMoney(
+                                                    event,
+                                                    value
+                                                )
+                                            }
+                                            isOptionEqualToValue={(
+                                                option,
+                                                value
+                                            ) => option.label === value}
+                                            disableClearable
+                                            sx={{ width: '100%' }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} />
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <Autocomplete
+                                            disablePortal
+                                            disableClearable
+                                            onChange={(event, value) =>
+                                                handleChangeExpectMoney(
+                                                    event,
+                                                    value
+                                                )
+                                            }
+                                            isOptionEqualToValue={(
+                                                option,
+                                                value
+                                            ) => option.label === value}
+                                            id="combo-box-thousand"
+                                            defaultValue={thousandExpectChoose}
+                                            value={thousandExpectChoose}
+                                            inputValue={thousandExpectChoose}
+                                            options={[
+                                                {
+                                                    id: 2,
+                                                    label: '500',
+                                                },
+                                                {
+                                                    id: 1,
+                                                    label: '000',
+                                                },
+                                            ]}
+                                            sx={{ width: '100%' }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} />
+                                            )}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={4}>
+                                        <SuiInput
+                                            value="000"
+                                            icon={{
+                                                component: 'đ',
+                                                direction: 'right',
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item xs="12" md="12">
                                 <SuiTypography
@@ -342,7 +545,11 @@ export default function PostInfoPage(props) {
                                     name="moneyText"
                                     textTransform="capitalize"
                                 >
-                                    {getInitialMoneyText(loan.expectedMoney)}
+                                    {getInitialMoneyText(
+                                        millionExpectChoose +
+                                            thousandExpectChoose +
+                                            '000'
+                                    )}
                                 </SuiTypography>
                             </Grid>
                         </Grid>

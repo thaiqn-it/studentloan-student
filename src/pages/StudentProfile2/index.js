@@ -20,6 +20,7 @@ import { renderUserStatus } from 'utils/renderStatus'
 import { isNullish } from 'utils/isNullish'
 import { USER_STATUS } from 'utils/enum'
 import { setDocTitle } from 'utils/dynamicDocTitle'
+import SnackbarMessage from 'components/SnackbarMessage'
 
 export default function StudentProfile2() {
     const [loading, setLoading] = useState(true)
@@ -32,12 +33,21 @@ export default function StudentProfile2() {
     const [oldUserInfo, setOldUserInfo] = useState(null)
     const [oldStudentInfo, setOldStudentInfo] = useState(null)
 
-    const [schoolAndMajor, setSchoolAndMajor] = useState(null)
+    const [schoolAndMajor, setSchoolAndMajor] = useState({
+        schoolId: null,
+        majorId: null,
+    })
 
     const [isChange, setIsChange] = useState(null)
 
+    const [snack, setSnack] = useState({
+        color: 'error',
+        message: 'Thông tin không được để trống',
+    })
+    const [openSnack, setOpenSnack] = useState(false)
+
     useEffect(() => {
-        setDocTitle("Thông tin - StudentLoan")
+        setDocTitle('Thông tin - StudentLoan')
         fetchData()
     }, [isChange])
 
@@ -50,7 +60,6 @@ export default function StudentProfile2() {
                     res.data.student
                 const tutors = res.data.tutors
                 const achievements = res.data.achievements
-
                 setStudentInfo(student)
                 setOldStudentInfo(student)
                 setTutorInfo(tutors)
@@ -156,7 +165,7 @@ export default function StudentProfile2() {
                 >
                     {objectStatus.message}
                 </SuiButton>
-                {userInfo?.status === 'BAN' ? (
+                {userInfo?.status !== 'VERIFIED' && userInfo?.status !== 'PENDING' ? (
                     <Box
                         display="flex"
                         flexDirection="row"
@@ -188,8 +197,7 @@ export default function StudentProfile2() {
                             Xác thực
                         </SuiButton>
                     ) : null}
-                    {status === USER_STATUS.VERIFIED ||
-                    status === USER_STATUS.PENDING ? (
+                    {status === USER_STATUS.PENDING ? (
                         <SuiButton
                             color="primary"
                             onClick={handleUpdate}
@@ -211,7 +219,62 @@ export default function StudentProfile2() {
         setIsChange(Date.now())
     }
 
+    const onClickCloseSnack = () => {
+        setOpenSnack(false)
+    }
+
     const handleVerify = () => {
+        var flag = true
+        const { schoolMajorId, ...rest } = studentInfo
+        if (isNullish(rest) === false) {
+            flag = false
+        }
+        if (schoolMajorId === null) {
+            if (isNullish(schoolAndMajor) === false) {
+                flag = false
+            }
+        }
+        if (userInfo.address === null || userInfo.address === '') {
+            flag = false
+        }
+        if (userInfo.birthDate === null || userInfo.birthDate === '') {
+            flag = false
+        }
+        if (tutorInfo.length === 0) {
+            flag = false
+        }
+        if (flag) {
+            schoolMajorApi
+                .getBySchoolAndMajorId(
+                    schoolAndMajor?.majorId,
+                    schoolAndMajor?.schoolId
+                )
+                .then((res) => {
+                    var schoolMajor = res.data
+                    var temp = { ...studentInfo }
+                    if (schoolMajor) {
+                        temp = { ...temp, schoolMajorId: schoolMajor.id }
+                    }
+                    studentApi
+                        .updateStudentInfo(temp, { status: 'PENDING' })
+                        .then((res) => {
+                            setIsChange(Date.now())
+                        })
+                        .catch((err) => {})
+                })
+            const { id, ...restData } = userInfo
+            userApi
+                .updateUser(restData)
+                .then((res) => {
+                    setIsChange(Date.now())
+                })
+                .catch((err) => {})
+        } else {
+            setOpenSnack(true)
+        }
+    }
+
+    const handleUpdate = () => {
         if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
             schoolMajorApi
                 .getBySchoolAndMajorId(
@@ -241,38 +304,6 @@ export default function StudentProfile2() {
                 })
                 .catch((err) => {})
         }
-    }
-
-    const handleUpdate = () => {
-        // if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
-        //     schoolMajorApi
-        //         .getBySchoolAndMajorId(
-        //             schoolAndMajor?.majorId,
-        //             schoolAndMajor?.schoolId
-        //         )
-        //         .then((res) => {
-        //             var schoolMajor = res.data
-        //             var temp = { ...studentInfo }
-        //             if (schoolMajor) {
-        //                 temp = { ...temp, schoolMajorId: schoolMajor.id }
-        //             }
-        //             studentApi
-        //                 .updateStudentInfo(temp, { status: 'PENDING' })
-        //                 .then((res) => {
-        //                     setIsChange(Date.now())
-        //                 })
-        //                 .catch((err) => {})
-        //         })
-        // }
-        if (JSON.stringify(oldUserInfo) !== JSON.stringify(userInfo)) {
-            const { id, ...restData } = userInfo
-            userApi
-                .updateUser(restData)
-                .then((res) => {
-                    setIsChange(Date.now())
-                })
-                .catch((err) => {})
-        }
         window.scrollTo(0, 0)
     }
 
@@ -287,8 +318,9 @@ export default function StudentProfile2() {
                         fontWeight="regular"
                         sx={{ padding: 0 }}
                     >
-                        *Thay đổi thông tin trường, chuyên ngành, thông tin
-                        người giám hộ, giấy tờ cần phải xét duyệt lại*
+                        *Để thay đổi thông tin bạn cần liên hệ bộ phận chăm sóc
+                        khách hàng. Vui lòng gửi mail tới
+                        studentloanfpt@gmail.com để được hỗ trợ*
                     </SuiTypography>
                 </SuiButton>
             ) : null}
@@ -417,12 +449,14 @@ export default function StudentProfile2() {
             </Grid>
             <Box my={5}>
                 <TutorTableCard
+                    userStatus={userInfo?.status}
                     tutorInfo={tutorInfo}
                     deleteTutor={deleteTutor}
                 />
             </Box>
             <Box my={5}>
                 <PaperCard
+                    userStatus={userInfo?.status}
                     studentInfo={studentInfo}
                     onChangeStudent={onChangeStudent}
                 />
@@ -434,6 +468,11 @@ export default function StudentProfile2() {
                 />
             </Box>
             {renderActionButton()}
+            <SnackbarMessage
+                snack={snack}
+                open={openSnack}
+                onClickClose={onClickCloseSnack}
+            />
         </>
     )
 }

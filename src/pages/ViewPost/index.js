@@ -37,6 +37,8 @@ import Loading from 'components/Loading'
 import { renderStatus } from 'utils/renderStatus'
 import { fDateTime } from 'utils/formatTime'
 
+import { LOAN_STATUS } from 'utils/enum'
+
 export default function ViewPost() {
     const { id } = useParams()
     const history = useHistory()
@@ -57,8 +59,13 @@ export default function ViewPost() {
                         : res.data.loan.title + '-StudentLoan'
                 )
                 setLoanHistories(res.data.loan.LoanHistories)
-                console.log(res.data.loan.LoanHistories)
+                console.log(res.data.loan)
                 setIsLoading(false)
+                if (
+                    res.data.loan.LoanHistories.pop().type === LOAN_STATUS.DELETED
+                ) {
+                    throw new Error()
+                }
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -81,8 +88,9 @@ export default function ViewPost() {
     }
 
     const renderStatusTimeline = (item, index) => {
+        console.log(item)
         var objectStatus = renderStatus(item.type)
-        var isLastItem = index === loanHistories.length - 1
+        var isLastItem = true
         return (
             <TimelineItem
                 key={index}
@@ -92,7 +100,7 @@ export default function ViewPost() {
                 dateTime={fDateTime(item.updatedAt)}
                 description={item.description}
                 badges={[item.type]}
-                lastItem={isLastItem}
+                // lastItem={isLastItem}
                 information={
                     <>
                         {item.LoanHistoryImages.map((item) => (
@@ -297,7 +305,7 @@ export default function ViewPost() {
                                         {loan?.LoanMedia?.filter(
                                             (item) => item.type !== 'VIDEO'
                                         ).map((item) => (
-                                            <Grid item xs={12} md={6}>
+                                            <Grid item xs={12} md={4}>
                                                 <SuiTypography
                                                     color="black"
                                                     mb={1}

@@ -208,11 +208,6 @@ export default function DetailAccountCard(props) {
                                     userInfo?.birthDate === ''
                                 }
                             />
-                            <SuiTypography
-                                variant="caption"
-                                fontWeight="regular"
-                                color="error"
-                            ></SuiTypography>
                         </Grid>
                         <Grid item xs={0} md={6}></Grid>
 
@@ -221,6 +216,9 @@ export default function DetailAccountCard(props) {
                                 Trường
                             </SuiTypography>
                             <Autocomplete
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 onChange={(event, value) =>
                                     handleChangeSchool(value)
                                 }
@@ -265,7 +263,11 @@ export default function DetailAccountCard(props) {
                             </SuiTypography>
                             <Tooltip title="Chọn trường trước tiên">
                                 <Autocomplete
-                                    disabled={!isSelectedSchool}
+                                    disabled={
+                                        !isSelectedSchool ||
+                                        userInfo?.status ===
+                                            USER_STATUS.VERIFIED
+                                    }
                                     onChange={(event, value) =>
                                         handleChangeMajor(value)
                                     }
@@ -310,6 +312,9 @@ export default function DetailAccountCard(props) {
                                 Địa chỉ
                             </SuiTypography>
                             <SuiInput
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 type="text"
                                 placeholder="Địa chỉ"
                                 value={userInfo?.address || ''}
