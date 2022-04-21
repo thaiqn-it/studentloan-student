@@ -33,13 +33,13 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
 
             const data = {
                 money,
-                type: 'type',
+                type: 'WITHDRAW',
                 description: 'Rút tiền sang ví paypal',
                 walletId,
                 recipientId: null,
-                recipientName: 'Ví của tôi',
+                recipientName: 'Paypal',
                 senderId: '',
-                senderName: 'Paypal',
+                senderName: 'Ví của tôi',
                 transactionFee: '',
                 status: 'SUCCESS',
                 paypalTransaction: res.data.payoutId,
