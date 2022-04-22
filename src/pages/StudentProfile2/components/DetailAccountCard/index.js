@@ -60,6 +60,8 @@ export default function DetailAccountCard(props) {
         getSchool()
     }, [schoolMajor])
 
+
+
     const getSchool = () => {
         schoolApi
             .getAllSchool()

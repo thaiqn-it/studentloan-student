@@ -21,6 +21,7 @@ import { isNullish } from 'utils/isNullish'
 import { USER_STATUS } from 'utils/enum'
 import { setDocTitle } from 'utils/dynamicDocTitle'
 import SnackbarMessage from 'components/SnackbarMessage'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export default function StudentProfile2() {
     const [loading, setLoading] = useState(true)
@@ -39,6 +40,13 @@ export default function StudentProfile2() {
     })
 
     const [isChange, setIsChange] = useState(null)
+    const history = useHistory()
+    let location = useLocation()
+    const tempProfileChange = location.state?.tempProfileChange || {
+        studentInfo: null,
+        schoolAndMajor: null,
+        achievements: null,
+    }
 
     const [snack, setSnack] = useState({
         color: 'error',
@@ -50,6 +58,12 @@ export default function StudentProfile2() {
         setDocTitle('Thông tin - StudentLoan')
         fetchData()
     }, [isChange])
+    useEffect(() => {
+        console.log('profile page', tempProfileChange)
+        setStudentInfo(tempProfileChange.studentInfo)
+        setSchoolAndMajor(tempProfileChange.schoolAndMajor)
+        setAchievements(tempProfileChange.achievements)
+    }, [])
 
     const fetchData = async () => {
         setLoading(true)
@@ -116,7 +130,7 @@ export default function StudentProfile2() {
 
     const onChangeUser = (e, name, value) => {
         if (e) {
-            e.preventDefault
+            e.preventDefault()
             setUserInfo({
                 ...userInfo,
                 [e.target.name]: e.target.value,
@@ -133,7 +147,7 @@ export default function StudentProfile2() {
         var tempName = null
         var tempValue = null
         if (e) {
-            e.preventDefault
+            e.preventDefault()
             tempName = e.target.name
             tempValue = e.target.value
         } else {
@@ -308,6 +322,20 @@ export default function StudentProfile2() {
         }
         window.scrollTo(0, 0)
     }
+    const handleAddButtonClick = (e) => {
+        e.preventDefault()
+
+        history.push({
+            pathname: '/trang-chu/nguoi-giam-ho/tao-moi',
+            state: {
+                tempProfileChange: {
+                    studentInfo: studentInfo,
+                    schoolAndMajor: schoolAndMajor,
+                    achievements: achievements,
+                },
+            },
+        })
+    }
 
     return (
         <>
@@ -451,6 +479,7 @@ export default function StudentProfile2() {
             <Box my={5}>
                 <TutorTableCard
                     userStatus={userInfo?.status}
+                    handleAddButtonClick={handleAddButtonClick}
                     tutorInfo={tutorInfo}
                     deleteTutor={deleteTutor}
                 />

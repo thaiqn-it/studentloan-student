@@ -18,10 +18,13 @@ import ComfirmDelete from 'components/ComfirmDelete'
 import { tutorApi } from 'apis/tutorApi'
 import { USER_STATUS } from 'utils/enum'
 import { set } from 'date-fns'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export default function TutorTableCard(props) {
-    const { tutorInfo, deleteTutor, userStatus } = props
-
+    const history = useHistory()
+    const { tutorInfo, deleteTutor , handleAddButtonClick } = props
+    let location = useLocation()
+    const tempProfileChange = location.state?.tempProfileChange
     const [openComfirm, setOpenConfirm] = useState(false)
     const [deleteValue, setDeleteValue] = useState(null)
 
@@ -56,6 +59,8 @@ export default function TutorTableCard(props) {
             })
     }
 
+   
+
     return (
         <>
             <Box
@@ -73,7 +78,10 @@ export default function TutorTableCard(props) {
                 <IconButton
                     aria-label="delete"
                     size="medium"
-                    href="/trang-chu/nguoi-giam-ho/tao"
+                    // href="/trang-chu/nguoi-giam-ho/tao"
+                    onClick={(event) => {
+                        handleAddButtonClick(event)
+                    }}
                 >
                     <AddCircleIcon fontSize="medium" color="black" />{' '}
                     <SuiTypography variant="button" color="black">

@@ -18,14 +18,25 @@ import SuiButton from 'components/SuiButton'
 import { fCurrency } from 'utils/formatNumber'
 import SuiTypography from 'components/SuiTypography'
 
-export default function Transfer({ open, handleClose, walletId, reloadData }) {
+import { WALLET_TYPE } from 'utils/enum/index'
+
+export default function Transfer({
+    open,
+    handleClose,
+    walletId,
+    reloadData,
+    currentMoney,
+}) {
     const title = 'Rút tiền'
 
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
+    const [error, setError] = useState()
+    const [emailError, setEmailError] = useState()
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
+        if (email.length < 1) return setEmailError('Email không được để trống')
         try {
             const res = await paypalApi.transfer({
                 email: email,
@@ -35,7 +46,7 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
 
             const data = {
                 money,
-                type: 'WITHDRAW',
+                type: WALLET_TYPE.WITHDRAW,
                 description: 'Rút tiền sang ví paypal',
                 walletId,
                 recipientId: null,
@@ -56,7 +67,8 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
             if (!res) throw new Error()
             // const transaction = aw
         } catch (e) {
-            console.log(e)
+            if (e.response.status === 400) setError(e.response.data.error)
+            console.log(e.response.data.error)
         }
     }
 
@@ -79,14 +91,13 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                             <SuiInput
                                 type={'number'}
                                 value={money}
-                                onChange={(e) => setMoney(e.target.value)}
+                                error={error}
+                                onChange={(e) => {
+                                    setError(null)
+                                    setMoney(e.target.value)
+                                }}
                                 name={'money'}
                             />
-                            {/* {error && (
-                    <Typography variant="caption" className={classes.error}>
-                        {helperText}
-                    </Typography>
-                )} */}
                         </Box>
                         <Box className={classes.inputBox}>
                             <Typography
@@ -98,18 +109,39 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                             <SuiInput
                                 type={'email'}
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                error={emailError}
+                                onChange={(e) => {
+                                    setEmail(e.target.value)
+                                    setEmailError(null)
+                                }}
                                 name={'email'}
                             />
-                            {/* {error && (
-                    <Typography variant="caption" className={classes.error}>
-                        {helperText}
-                    </Typography>
-                )} */}
+                            {emailError && (
+                                <Typography
+                                    variant="caption"
+                                    className={classes.error}
+                                >
+                                    {emailError}
+                                </Typography>
+                            )}
+                            {error && (
+                                <Typography
+                                    variant="caption"
+                                    color="error"
+                                    className={classes.error}
+                                >
+                                    {error}
+                                </Typography>
+                            )}
                         </Box>
                     </Box>
                 </DialogContent>
-                <Box display="flex" justifyContent="space-between" px={3} pb={1}>
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    px={3}
+                    pb={1}
+                >
                     <SuiButton onClick={handleClose} color="dark">
                         Huỷ
                     </SuiButton>

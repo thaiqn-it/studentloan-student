@@ -15,7 +15,8 @@ import { renderTutorStatus } from 'utils/renderStatus'
 import Loading from 'components/Loading'
 import ComfirmDelete from 'components/ComfirmDelete'
 import { isNullish } from 'utils/isNullish'
-import {TUTOR_STATUS} from "utils/enum"
+import { TUTOR_STATUS } from 'utils/enum'
+import { useLocation } from 'react-router-dom'
 
 export default function TutorDetail() {
     const { id } = useParams()
@@ -33,12 +34,15 @@ export default function TutorDetail() {
         backCitizenCardImageUrl: '',
         // portraitUrl:"",
         relation: '',
-        status: TUTOR_STATUS.UNVERIFIED
+        status: TUTOR_STATUS.UNVERIFIED,
     }
 
     const [loading, setLoading] = useState(false)
     const [tutor, setTutor] = useState(data)
 
+    let location = useLocation()
+    const tempProfileChange = location.state?.tempProfileChange
+    console.log('Tutor page', tempProfileChange)
     const [openComfirm, setOpenConfirm] = useState(false)
     const [deleteValue, setDeleteValue] = useState(null)
     const [error, setError] = useState(false)
@@ -48,7 +52,7 @@ export default function TutorDetail() {
     }, [])
 
     const fetchData = async () => {
-        if (id != 'tao') {
+        if (id != 'tao-moi') {
             setLoading(true)
             await tutorApi
                 .getTutorById(id)
@@ -122,19 +126,17 @@ export default function TutorDetail() {
 
     const handleSubmit = () => {
         if (id === 'tao') {
-            if (isNullish(tutor)) {
-                tutorApi
-                    .createTutor(tutor)
-                    .then((res) => {
-                        history.push(`/trang-chu/thong-tin/`)
-                    })
-                    .catch((err) => {})
-            } else {
-                setError(true)
-            }
+            tutorApi
+                .createTutor(tutor)
+                .then((res) => {
+                    // history.push(`/trang-chu/thong-tin/`)
+                    handleChangePage()
+                })
+                .catch((err) => {})
         } else {
             tutorApi.updateTutor(id, tutor).then((res) => {
-                history.push(`/trang-chu/thong-tin/`)
+                // history.push(`/trang-chu/thong-tin/`)
+                handleChangePage()
             })
         }
     }
@@ -165,11 +167,14 @@ export default function TutorDetail() {
     }
 
     const handleDelete = () => {
+        if (id === 'tao-moi') return handleChangePage()
+
         tutorApi
             .deleteTutor(id)
             .then((res) => {
                 setOpenConfirm(false)
-                history.push(`/trang-chu/thong-tin/`)
+                // history.push(`/trang-chu/thong-tin/`)
+                handleChangePage()
             })
             .catch((err) => {
                 setOpenConfirm(false)
@@ -178,6 +183,13 @@ export default function TutorDetail() {
 
     const handleClose = () => {
         setOpenConfirm(false)
+    }
+
+    const handleChangePage = () => {
+        history.push({
+            pathname: `/trang-chu/thong-tin/`,
+            state: { tempProfileChange: tempProfileChange },
+        })
     }
 
     return (
@@ -275,7 +287,7 @@ export default function TutorDetail() {
                             onClick={handleOpenDelete}
                             size="large"
                         >
-                            Xóa
+                            {id === 'tao-moi' ? 'Huỷ' : 'Xoá'}
                         </SuiButton>
                         <ComfirmDelete
                             open={openComfirm}
@@ -286,7 +298,7 @@ export default function TutorDetail() {
                     </>
                 )}
                 <SuiButton color="primary" onClick={handleSubmit} size="large">
-                    {id === 'tao' ? 'Tạo' : 'Cập nhật'}
+                    {id === 'tao-moi' ? 'Tạo' : 'Cập nhật'}
                 </SuiButton>
             </Box>
         </>

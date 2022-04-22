@@ -119,7 +119,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const history = useHistory()
     const handleNoti = (redirectUrl) => {
         setOpenMenu(false)
-        if (redirectUrl) return history.push(redirectUrl)
+        if(!redirectUrl) return
+        const url = new URL(redirectUrl)
+        if(url) return history.push(url.pathname)
+        // console.log(redirectUrl.split("/"))
+        // if (redirectUrl) return history.push(redirectUrl)
     }
 
     const formatTime = (date) => {
@@ -186,8 +190,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                             </Icon>
                         }
                         title={['', notification.description]}
-                        date={`${formatTime(notification.createdAt)} dates`}
-                        onClick={handleNoti}
+                        date={`${formatTime(notification.createdAt)} ngày`}
+                        onClick={() =>{handleNoti(notification.redirectUrl)}}
                     />
                 )
             })}
@@ -208,12 +212,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     mb={{ xs: 1, md: 0 }}
                     sx={(theme) => navbarRow(theme, { isMini })}
                 >
-                    <Breadcrumbs
+                    {/* <Breadcrumbs
                         icon="home"
                         title={route[route.length - 1]}
                         route={route}
                         light={light}
-                    />
+                    /> */}
                 </SuiBox>
                 {isMini ? null : (
                     <SuiBox sx={(theme) => navbarRow(theme, { isMini })}>
