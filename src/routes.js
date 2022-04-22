@@ -17,6 +17,7 @@ import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
 import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
@@ -97,7 +98,7 @@ let routes = [
     {
         type: 'collapse',
         name: 'Ví',
-        key: 'wallet',
+        key: 'vi',
         route: '/vi',
         icon: <AccountBalanceWalletIcon size="12px" />,
         component: Wallet,

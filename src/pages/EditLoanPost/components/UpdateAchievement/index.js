@@ -11,7 +11,7 @@ export default function UpdateAchievement(props) {
     const [url, setUrl] = useState('')
 
     useEffect(() => {
-        if (choseValue) {
+        if (choseValue !== null) {
             setDescription(choseValue.description)
             setUrl(choseValue.imageUrl)
         } else {

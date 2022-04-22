@@ -39,7 +39,7 @@ const TopUpModal = ({ open, onClose, url }) => {
 }
 
 export default function TopUp({ open, handleClose, reloadData, walletId }) {
-    const title = 'Rut Tien'
+    const title = 'Nạp tiền'
     const [money, setMoney] = useState()
     const [usd, setUsd] = useState()
     const [modalOpen, setModalOpen] = useState(false)

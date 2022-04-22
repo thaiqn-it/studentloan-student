@@ -19,6 +19,8 @@ import { imageApi } from 'apis/imageApi'
 import { renderUserStatus } from 'utils/renderStatus'
 import { isNullish } from 'utils/isNullish'
 import { USER_STATUS } from 'utils/enum'
+import { setDocTitle } from 'utils/dynamicDocTitle'
+import SnackbarMessage from 'components/SnackbarMessage'
 
 export default function StudentProfile2() {
     const [loading, setLoading] = useState(true)
@@ -31,11 +33,21 @@ export default function StudentProfile2() {
     const [oldUserInfo, setOldUserInfo] = useState(null)
     const [oldStudentInfo, setOldStudentInfo] = useState(null)
 
-    const [schoolAndMajor, setSchoolAndMajor] = useState(null)
+    const [schoolAndMajor, setSchoolAndMajor] = useState({
+        schoolId: null,
+        majorId: null,
+    })
 
     const [isChange, setIsChange] = useState(null)
 
+    const [snack, setSnack] = useState({
+        color: 'error',
+        message: 'Thông tin không được để trống',
+    })
+    const [openSnack, setOpenSnack] = useState(false)
+
     useEffect(() => {
+        setDocTitle('Thông tin - StudentLoan')
         fetchData()
     }, [isChange])
 
@@ -48,8 +60,7 @@ export default function StudentProfile2() {
                     res.data.student
                 const tutors = res.data.tutors
                 const achievements = res.data.achievements
-                console.log(res.data)
-
+                console.log(tutors)
                 setStudentInfo(student)
                 setOldStudentInfo(student)
                 setTutorInfo(tutors)
@@ -155,7 +166,8 @@ export default function StudentProfile2() {
                 >
                     {objectStatus.message}
                 </SuiButton>
-                {userInfo?.status === 'BAN' ? (
+                {userInfo?.status !== 'VERIFIED' &&
+                userInfo?.status !== 'PENDING' ? (
                     <Box
                         display="flex"
                         flexDirection="row"
@@ -187,8 +199,7 @@ export default function StudentProfile2() {
                             Xác thực
                         </SuiButton>
                     ) : null}
-                    {status === USER_STATUS.VERIFIED ||
-                    status === USER_STATUS.PENDING ? (
+                    {status === USER_STATUS.PENDING ? (
                         <SuiButton
                             color="primary"
                             onClick={handleUpdate}
@@ -210,8 +221,31 @@ export default function StudentProfile2() {
         setIsChange(Date.now())
     }
 
+    const onClickCloseSnack = () => {
+        setOpenSnack(false)
+    }
+
     const handleVerify = () => {
-        if (JSON.stringify(oldStudentInfo) !== JSON.stringify(studentInfo)) {
+        var flag = true
+        const { schoolMajorId, ...rest } = studentInfo
+        if (isNullish(rest) === false) {
+            flag = false
+        }
+        if (schoolMajorId === null) {
+            if (isNullish(schoolAndMajor) === false) {
+                flag = false
+            }
+        }
+        if (userInfo.address === null || userInfo.address === '') {
+            flag = false
+        }
+        if (userInfo.birthDate === null || userInfo.birthDate === '') {
+            flag = false
+        }
+        if (tutorInfo.length === 0) {
+            flag = false
+        }
+        if (flag) {
             schoolMajorApi
                 .getBySchoolAndMajorId(
                     schoolAndMajor?.majorId,
@@ -226,23 +260,20 @@ export default function StudentProfile2() {
                     studentApi
                         .updateStudentInfo(temp, { status: 'PENDING' })
                         .then((res) => {
-                            console.log(res)
                             setIsChange(Date.now())
                         })
                         .catch((err) => {})
                 })
-        }
-        if (JSON.stringify(oldUserInfo) !== JSON.stringify(userInfo)) {
             const { id, ...restData } = userInfo
             userApi
                 .updateUser(restData)
                 .then((res) => {
-                    console.log(res)
                     setIsChange(Date.now())
                 })
                 .catch((err) => {})
+        } else {
+            setOpenSnack(true)
         }
-
     }
 
     const handleUpdate = () => {
@@ -261,7 +292,6 @@ export default function StudentProfile2() {
                     studentApi
                         .updateStudentInfo(temp, { status: 'PENDING' })
                         .then((res) => {
-                            console.log(res)
                             setIsChange(Date.now())
                         })
                         .catch((err) => {})
@@ -272,16 +302,42 @@ export default function StudentProfile2() {
             userApi
                 .updateUser(restData)
                 .then((res) => {
-                    console.log(res)
                     setIsChange(Date.now())
                 })
                 .catch((err) => {})
         }
+        window.scrollTo(0, 0)
     }
 
     return (
         <>
             {loading ? <Loading /> : null}
+            {userInfo?.status === USER_STATUS.VERIFIED ||
+            userInfo?.status === USER_STATUS.PENDING ? (
+                <SuiButton color="warning" fullWidth>
+                    <SuiTypography
+                        variant="caption"
+                        fontWeight="regular"
+                        sx={{ padding: 0 }}
+                    >
+                        *Để thay đổi thông tin bạn cần liên hệ bộ phận chăm sóc
+                        khách hàng. Vui lòng gửi mail tới
+                        studentloanfpt@gmail.com để được hỗ trợ*
+                    </SuiTypography>
+                </SuiButton>
+            ) : null}
+            {userInfo?.status === USER_STATUS.UNVERIFIED ? (
+                <SuiButton color="info" fullWidth>
+                    <SuiTypography
+                        color="white"
+                        variant="caption"
+                        fontWeight="regular"
+                        sx={{ padding: 0 }}
+                    >
+                        *Bạn cần xác thực thông tin để tạo hồ sơ vay*
+                    </SuiTypography>
+                </SuiButton>
+            ) : null}
             <SuiTypography
                 variant="h4"
                 fontWeight="regular"
@@ -394,12 +450,14 @@ export default function StudentProfile2() {
             </Grid>
             <Box my={5}>
                 <TutorTableCard
+                    userStatus={userInfo?.status}
                     tutorInfo={tutorInfo}
                     deleteTutor={deleteTutor}
                 />
             </Box>
             <Box my={5}>
                 <PaperCard
+                    userStatus={userInfo?.status}
                     studentInfo={studentInfo}
                     onChangeStudent={onChangeStudent}
                 />
@@ -411,6 +469,11 @@ export default function StudentProfile2() {
                 />
             </Box>
             {renderActionButton()}
+            <SnackbarMessage
+                snack={snack}
+                open={openSnack}
+                onClickClose={onClickCloseSnack}
+            />
         </>
     )
 }

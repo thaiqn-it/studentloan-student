@@ -1,9 +1,10 @@
 import { Box } from '@mui/material'
 import ImageModal from 'components/ImageModal'
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default function ImageCard(props) {
-    const { image } = props
+    const { image, isBlur = false } = props
 
     return (
         <>
@@ -20,16 +21,22 @@ export default function ImageCard(props) {
                     <ImageModal
                         component="img"
                         image={image}
+                        isBlur={isBlur}
                         sx={{
                             borderRadius: 0,
                             margin: 0,
                             cursor: 'pointer',
                             maxWidth: '100%',
                             height: 'auto',
+                            filter: isBlur ? 'blur(4px)' : 'none',
                         }}
                     />
                 </Box>
             </Box>
         </>
     )
+}
+
+ImageCard.defaultProps = {
+    isBlur: false,
 }

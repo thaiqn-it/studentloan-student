@@ -15,6 +15,11 @@ import Plan2 from '..//..//..//..//assets/plan2.png'
 import Writing from '..//..//..//..//assets/writing.png'
 import Flag from '..//..//..//..//assets/flag.png'
 import Group from '..//..//..//..//assets/group-chat.png'
+
+import TodayIcon from '@mui/icons-material/Today';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+
 import { useState, useEffect } from 'react'
 
 export default function TabInfo(props) {
@@ -49,18 +54,19 @@ export default function TabInfo(props) {
                     scrollButtons={isModbile}
                     allowScrollButtonsMobile={isModbile}
                     aria-label="loan application tab"
-                    textColor="palette.success.main"
+                    // textColor="palette.success.main"
                 >
                     <Tab
                         value="1"
-                        icon={
-                            <Avatar
-                                alt="test avatar"
-                                src={Writing}
-                                variant="rounded"
-                                sx={{ width: 30, height: 30 }}
-                            />
-                        }
+                        // icon={
+                        //     <Avatar
+                        //         alt="test avatar"
+                        //         src={Writing}
+                        //         variant="rounded"
+                        //         sx={{ width: 30, height: 30 }}
+                        //     />
+                        // }
+                        icon={<ImportContactsIcon/>}
                         label="Thông tin hồ sơ vay"
                         sx={{ textTransform: 'none' }}
                     />
@@ -86,14 +92,15 @@ export default function TabInfo(props) {
                     /> */}
                     <Tab
                         value="2"
-                        icon={
-                            <Avatar
-                                alt="test avatar"
-                                src={Group}
-                                variant="rounded"
-                                sx={{ width: 30, height: 30 }}
-                            />
-                        }
+                        // icon={
+                        //     <Avatar
+                        //         alt="test avatar"
+                        //         src={Group}
+                        //         variant="rounded"
+                        //         sx={{ width: 30, height: 30 }}
+                        //     />
+                        // }
+                        icon={<PeopleAltIcon/>}
                         label="Nhà đầu tư"
                         sx={{ textTransform: 'none' }}
                     />
@@ -119,14 +126,15 @@ export default function TabInfo(props) {
                     /> */}
                     <Tab
                         value="4"
-                        icon={
-                            <Avatar
-                                alt="test avatar"
-                                src={Plan2}
-                                variant="rounded"
-                                sx={{ width: 30, height: 30 }}
-                            />
-                        }
+                        // icon={
+                        //     <Avatar
+                        //         alt="test avatar"
+                        //         src={Plan2}
+                        //         variant="rounded"
+                        //         sx={{ width: 30, height: 30 }}
+                        //     />
+                        // }
+                        icon={<TodayIcon/>}
                         label="Kế hoạch trả"
                         sx={{ textTransform: 'none' }}
                     />

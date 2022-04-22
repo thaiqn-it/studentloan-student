@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 
 import DropFileInput from '../../components/DropFileZone'
 import YoutubeEmbed from './../../components/YoutubeEmbed'
-import { validVideoId } from 'utils/youtube'
+import { getYoutubeId } from 'utils/youtube'
 import { LOANMEDIA_STATUS } from 'utils/enum'
 
 export default function MediaPage(props) {
@@ -18,7 +18,7 @@ export default function MediaPage(props) {
         initiateData()
     }, [loanMedia])
 
-    const [videoId, setVideoId] = useState('')
+    const [videoUrl, setVideoUrl] = useState(null)
     const [demandNote, setDemandNote] = useState({
         loanId: id,
         description: 'Giấy báo học phí',
@@ -41,6 +41,14 @@ export default function MediaPage(props) {
         imageUrl: '',
         status: 'active',
         type: 'VIDEO',
+        currentStatus: 'new',
+    })
+    const [transcript, setTranscript] = useState({
+        loanId: id,
+        description: 'Bảng điểm học kỳ gần nhất',
+        imageUrl: '',
+        status: 'active',
+        type: 'TRANSCRIPT',
         currentStatus: 'new',
     })
 
@@ -74,7 +82,7 @@ export default function MediaPage(props) {
             }
             setDemandNote(newDemand)
             handleChange(null, 'LoanMedia', newDemand)
-        } else {
+        } else if (event.target.id === 'STUDENTCERT') {
             var newStudetCert = studentCert
             if (studentCert.currentStatus === 'new') {
                 newStudetCert = { ...studentCert, imageUrl: newUrl }
@@ -88,31 +96,48 @@ export default function MediaPage(props) {
             }
             setStudentCert(newStudetCert)
             handleChange(null, 'LoanMedia', newStudetCert)
+        } else {
+            var newTranscript = transcript
+            if (transcript.currentStatus === 'new') {
+                newTranscript = { ...transcript, imageUrl: newUrl }
+            } else {
+                newTranscript = {
+                    ...transcript,
+                    currentStatus: 'update',
+                    imageUrl: newUrl,
+                    status: LOANMEDIA_STATUS.ACTIVE,
+                }
+            }
+            setTranscript(newTranscript)
+            handleChange(null, 'LoanMedia', newTranscript)
         }
     }
 
     const onGetYoutubeUrl = (event) => {
         var url = event.target.value
-        if (true) {
+        var id = getYoutubeId(url)
+
+        if (id !== false) {
             var loandMediaId = ''
-            var current = "new"
+            var current = 'new'
             if (loanMedia.VIDEO) {
                 loandMediaId = loanMedia.VIDEO.id
-                current = "update"
+                current = 'update'
             }
             var videoMedia = {
                 ...sampleLoanMedia,
                 loanId: loanId,
                 id: loandMediaId,
                 description: 'youtube-video',
-                imageUrl: url,
+                imageUrl: id,
                 type: 'VIDEO',
                 status: LOANMEDIA_STATUS.ACTIVE,
                 currentStatus: current,
             }
-
+            setVideoUrl('https://www.youtube.com/watch?v=' + id)
             handleChange(null, 'LoanMedia', videoMedia)
         } else {
+            setVideoUrl(event.target.value)
         }
     }
 
@@ -142,6 +167,10 @@ export default function MediaPage(props) {
         if (loanMedia) {
             if (loanMedia.VIDEO) {
                 setYoutubeVideo(loanMedia.VIDEO)
+                setVideoUrl(
+                    'https://www.youtube.com/watch?v=' +
+                        loanMedia.VIDEO.imageUrl
+                )
                 // initiateYoutubeVideo(loanMedia.VIDEO.imageUrl)
             }
             if (loanMedia.DEMANDNOTE) {
@@ -149,6 +178,9 @@ export default function MediaPage(props) {
             }
             if (loanMedia.STUDENTCERT) {
                 setStudentCert(loanMedia.STUDENTCERT)
+            }
+            if (loanMedia.TRANSCRIPT) {
+                setTranscript(loanMedia.TRANSCRIPT)
             }
         }
     }
@@ -177,22 +209,23 @@ export default function MediaPage(props) {
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <Grid container spacing={2}>
-                            <Grid item xs="12" md="12">
-                                <SuiInput
-                                    sx={{ marginBottom: 3 }}
-                                    placeholder="https://www.youtube.com/watch?v=id"
-                                    onChange={onGetYoutubeUrl}
-                                    name="videoUrl"
-                                    value={youtubeVideo.imageUrl}
-                                ></SuiInput>
-                                {youtubeVideo?.imageUrl ? (
-                                    <YoutubeEmbed
-                                        url={youtubeVideo?.imageUrl}
-                                    />
-                                ) : null}
-                            </Grid>
-                        </Grid>
+                        <SuiInput
+                            sx={{ marginBottom: 3 }}
+                            placeholder="https://www.youtube.com/watch?v=id"
+                            onChange={onGetYoutubeUrl}
+                            name="videoUrl"
+                            value={videoUrl}
+                        ></SuiInput>
+                        {videoUrl === null || videoUrl?.length < 43 ? (
+                            null
+                        ) : (
+                            <YoutubeEmbed url={youtubeVideo?.imageUrl} />
+                        )}
+                         {videoUrl !== null && videoUrl.length < 43 ? (
+                            <SuiTypography variant="button" fontWeight="regular">
+                                Video không hợp lệ
+                            </SuiTypography>
+                        ) : null}
                     </Grid>
                 </Grid>
             </Container>
@@ -206,7 +239,7 @@ export default function MediaPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Giấy báo học phí (*)
+                            Giấy báo học phí *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -214,8 +247,8 @@ export default function MediaPage(props) {
                             color="text"
                         >
                             Chúng tôi cần giấy báo học phí như là bằng chứng cho
-                            hồ sơ vay, điều này sẽ liên quan đến việc hồ sơ vay
-                            của bạn có được duyệt hay không
+                            hồ sơ vay, điều này sẽ liên quan đến quá trình thẩm
+                            định của hồ sơ vay
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
@@ -245,7 +278,7 @@ export default function MediaPage(props) {
                             textTransform="capitalize"
                             color="black"
                         >
-                            Giấy xác nhận sinh viên (*)
+                            Giấy xác nhận sinh viên *
                         </SuiTypography>
                         <SuiTypography
                             variant="button"
@@ -253,24 +286,55 @@ export default function MediaPage(props) {
                             color="text"
                         >
                             Giấy xác nhận sinh viên sẽ giúp hệ thống chắc chắn
-                            bạn đúng là sinh viên của trường đại học và tăng
-                            thêm uy tín với nhà đầu tư
+                            bạn đúng là sinh viên của trường đại học và quá
+                            trình thẩm định diễn sẽ ra thuận lợi hơn
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <Grid container spacing={2}>
-                            <Grid item xs="12" md="12">
-                                <DropFileInput
-                                    image={studentCert.imageUrl}
-                                    elementName={studentCert.type}
-                                    elementId={studentCert.type}
-                                    onDelete={(id) => onDelete(id)}
-                                    onFileChangeURL={(url, event) =>
-                                        onFileChangeURL(url, event)
-                                    }
-                                />
-                            </Grid>
-                        </Grid>
+                        <DropFileInput
+                            image={studentCert.imageUrl}
+                            elementName={studentCert.type}
+                            elementId={studentCert.type}
+                            onDelete={(id) => onDelete(id)}
+                            onFileChangeURL={(url, event) =>
+                                onFileChangeURL(url, event)
+                            }
+                        />
+                    </Grid>
+                </Grid>
+            </Container>
+            <Divider />
+            <Container sx={{ padding: '3rem 3rem' }} maxWidth="xl">
+                <Grid container spacing={3}>
+                    <Grid item xs="12" md="5">
+                        <SuiTypography
+                            variant="h6"
+                            fontWeight="regular"
+                            textTransform="capitalize"
+                            color="black"
+                        >
+                            Bảng điểm học kỳ gần nhất *
+                        </SuiTypography>
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            color="text"
+                        >
+                            Bảng điểm giúp thẩm định viên và nhà đâu tư đánh giá
+                            được học lực của bạn. Bạn có thể cung cấp bảng điểm
+                            THPT nếu bạn chưa bắt đầu chương trình đại học.
+                        </SuiTypography>
+                    </Grid>
+                    <Grid item xs="12" md="7">
+                        <DropFileInput
+                            image={transcript.imageUrl}
+                            elementName={transcript.type}
+                            elementId={transcript.type}
+                            onDelete={(id) => onDelete(id)}
+                            onFileChangeURL={(url, event) =>
+                                onFileChangeURL(url, event)
+                            }
+                        />
                     </Grid>
                 </Grid>
             </Container>

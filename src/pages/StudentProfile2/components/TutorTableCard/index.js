@@ -11,15 +11,16 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import SuiTypography from 'components/SuiTypography'
-import { fDisplayDate } from 'utils/formatTime'
+import { fDate } from 'utils/formatTime'
 import { renderTutorStatus } from 'utils/renderStatus'
 import { useState } from 'react'
 import ComfirmDelete from 'components/ComfirmDelete'
 import { tutorApi } from 'apis/tutorApi'
+import { USER_STATUS } from 'utils/enum'
 import { set } from 'date-fns'
 
 export default function TutorTableCard(props) {
-    const { tutorInfo, deleteTutor } = props
+    const { tutorInfo, deleteTutor, userStatus } = props
 
     const [openComfirm, setOpenConfirm] = useState(false)
     const [deleteValue, setDeleteValue] = useState(null)
@@ -110,7 +111,7 @@ export default function TutorTableCard(props) {
                                             {row.name}
                                         </TableCell>
                                         <TableCell>
-                                            {fDisplayDate(row.birthday)}
+                                            {fDate(row.birthday)}
                                         </TableCell>
                                         <TableCell>{row.phone}</TableCell>
                                         <TableCell>{row.address}</TableCell>
@@ -118,24 +119,42 @@ export default function TutorTableCard(props) {
                                         <TableCell>
                                             {renderStatusButton(row.status)}
                                         </TableCell>
-                                        <TableCell align="center">
-                                            <IconButton
-                                                aria-label="delete"
-                                                size="small"
-                                                href={`/trang-chu/nguoi-giam-ho/${row.id}`}
-                                            >
-                                                <EditIcon fontSize="small" />
-                                            </IconButton>
-                                            <IconButton
-                                                aria-label="delete"
-                                                size="small"
-                                                onClick={() =>
-                                                    handleOpenDelete(row.id)
-                                                }
-                                            >
-                                                <DeleteIcon fontSize="small" />
-                                            </IconButton>
-                                        </TableCell>
+                                        {userStatus === USER_STATUS.VERIFIED ? (
+                                            <>
+                                                <TableCell align="center">
+                                                    <IconButton
+                                                        aria-label="delete"
+                                                        size="small"
+                                                        href={`/trang-chu/nguoi-giam-ho/${row.id}`}
+                                                    >
+                                                        <EditIcon fontSize="small" />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <TableCell align="center">
+                                                    <IconButton
+                                                        aria-label="delete"
+                                                        size="small"
+                                                        href={`/trang-chu/nguoi-giam-ho/${row.id}`}
+                                                    >
+                                                        <EditIcon fontSize="small" />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        aria-label="delete"
+                                                        size="small"
+                                                        onClick={() =>
+                                                            handleOpenDelete(
+                                                                row.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </>
+                                        )}
                                     </TableRow>
                                 ))}
                             </TableBody>

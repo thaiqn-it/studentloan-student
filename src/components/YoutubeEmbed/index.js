@@ -1,5 +1,4 @@
 import React from 'react'
-import { validVideoId, getYoutubeId } from 'utils/youtube'
 
 export default function YoutubeEmbed({ url, height }) {
     return (
@@ -8,7 +7,7 @@ export default function YoutubeEmbed({ url, height }) {
                 <iframe
                     width="100%"
                     height={height || '360'}
-                    src={`https://www.youtube.com/embed/${getYoutubeId(url)}`}
+                    src={`https://www.youtube.com/embed/${url}`}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

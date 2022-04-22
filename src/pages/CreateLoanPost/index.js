@@ -4,7 +4,19 @@ import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Slide from '@mui/material/Slide'
-import { Box, Container, Divider, Grid, Dialog } from '@mui/material'
+import {
+    Box,
+    Container,
+    Divider,
+    Grid,
+    Dialog,
+    InputLabel,
+    Select,
+    MenuItem,
+    Autocomplete,
+    TextField,
+    Tooltip,
+} from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
 import SuiTypography from 'components/SuiTypography'
@@ -22,6 +34,11 @@ import { systemConfigApi } from '../../apis/systemConfigApi'
 import { userApi } from 'apis/userApi'
 import SnackbarMessage from 'components/SnackbarMessage'
 import { isNullish } from 'utils/isNullish'
+import { setDocTitle } from 'utils/dynamicDocTitle'
+import { getOption } from 'utils/moneyCall'
+import { fCurrency } from 'utils/formatNumber'
+import { addMonth } from 'utils/formatTime'
+import { fDisplayMonth } from 'utils/formatTime'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -34,8 +51,29 @@ export default function CreateLoanPost(props) {
     const [open, setOpen] = useState(false)
     const [openSnack, setOpenSnack] = useState(false)
     const [interest, setInterest] = useState()
-    const [moneyText, setMoneyText] = useState('')
+
     const [actionSnack, setActionSnack] = useState(null)
+
+    const [millionChoose, setMillionChoose] = useState('2')
+    const [thousandChoose, setThousandChoose] = useState('000')
+    const [duration, setDuration] = useState('')
+
+    const [config, setConfig] = useState(null)
+
+    const [millionOption, setMillionOption] = useState(null)
+    const [thousandOption, setThousandOption] = useState([
+        {
+            id: 2,
+            label: '500',
+        },
+        {
+            id: 1,
+            label: '000',
+        },
+    ])
+    const [durationOption, setDurationOption] = useState([])
+
+    const [error, setError] = useState(false)
 
     const [snack, setSnack] = useState({
         message: 'Xác thực',
@@ -43,7 +81,7 @@ export default function CreateLoanPost(props) {
     })
 
     const data = {
-        totalMoney: '',
+        totalMoney: millionChoose + thousandChoose + '000',
         interest: '',
         fixedMoney: '',
         penaltyFee: '',
@@ -67,11 +105,14 @@ export default function CreateLoanPost(props) {
                 .then((res) => {
                     let path = `/trang-chu/ho-so/chinh-sua/${res.data.id}`
                     history.push(path)
+                    history.go(0)
                     setOpen(false)
                 })
                 .catch((e) => {
                     setLoading(false)
                 })
+        } else {
+            setError(true)
         }
     }
 
@@ -88,6 +129,9 @@ export default function CreateLoanPost(props) {
             var day = new Date(realValue)
             var day2 = new Date()
             realValue = diff_months(day, day2)
+            var tempMinDuration = config.minDuration + realValue
+            setDurationOption(getOption(config.minDuration + realValue, 72))
+            setDuration(tempMinDuration.toString())
         }
         if (e.target.name === 'postExpireAt') {
             var day = new Date(realValue).toISOString()
@@ -99,26 +143,69 @@ export default function CreateLoanPost(props) {
         })
     }
 
-    const getMoneyText = (event) => {
-        var money = Number(event.target.value)
-        if (Math.floor(money) == money) {
-            setMoneyText(getText(money))
-            handleOnchange(event)
+    const handleChangeMoney = (e, value) => {
+        var num = 0
+        if (e.target.id.includes('million')) {
+            if (Number(value.label + '000000') === config.maxRaiseMoney) {
+                setThousandOption([
+                    {
+                        id: 1,
+                        label: '000',
+                    },
+                ])
+                setThousandChoose('000')
+            } else {
+                setThousandOption([
+                    {
+                        id: 2,
+                        label: '500',
+                    },
+                    {
+                        id: 1,
+                        label: '000',
+                    },
+                ])
+            }
+            setMillionChoose(value.label)
+            num = value.label + thousandChoose + '000'
+        } else {
+            setThousandChoose(value.label)
+            num = millionChoose + value.label + '000'
         }
+        setUserData({
+            ...userData,
+            ['totalMoney']: num,
+        })
     }
+
+    const handleChangeDuration = (e, value) => {
+        setDuration(value.label)
+        setUserData({
+            ...userData,
+            ['duration']: Number(value.label),
+        })
+    }
+
+    // const getMoneyText = (event) => {
+    //     var money = Number(event.target.value)
+    //     if (Math.floor(money) == money) {
+    //         setMoneyText(getText(money))
+    //         handleOnchange(event)
+    //     }
+    // }
 
     const handleClickOpen = () => {
         getInterest()
-
+        setDocTitle('Tạo hồ sơ vay - StudentLoan')
         userApi
             .getStudentProfile()
             .then((res) => {
                 if (res.data.status === 'VERIFIED') {
                     setOpen(true)
-                } else if (res.data.status === "BAN") {
+                } else if (res.data.status === 'BAN') {
                     setActionSnack(ban)
                     setOpenSnack(true)
-                }else{
+                } else {
                     setActionSnack(action)
                     setOpenSnack(true)
                 }
@@ -135,13 +222,33 @@ export default function CreateLoanPost(props) {
                 fixedMoney: res.data.fixedMoney,
                 penaltyFee: res.data.penaltyFee,
             })
+            setConfig(res.data)
+            var tempMin = Number(
+                res.data.minRaiseMoney
+                    .toString()
+                    .slice(0, res.data.minRaiseMoney.toString().length - 6)
+            )
+            var tempMax = Number(
+                res.data.maxRaiseMoney
+                    .toString()
+                    .slice(0, res.data.maxRaiseMoney.toString().length - 6)
+            )
+
+            setMillionOption(getOption(tempMin, tempMax))
             setInterest(Number(res.data.interest) * 100)
         })
     }
 
     const handleClose = () => {
         setUserData(data)
-        setMoneyText('')
+        setError(false)
+        setDuration('')
+        setMillionChoose(
+            config.minRaiseMoney
+                .toString()
+                .slice(0, config.minRaiseMoney.toString().length - 6)
+        )
+        setThousandChoose('000')
         setOpen(false)
     }
 
@@ -172,7 +279,7 @@ export default function CreateLoanPost(props) {
     }
 
     const ban = {
-        go:  (
+        go: (
             <React.Fragment>
                 <Box>
                     <SuiButton
@@ -263,31 +370,32 @@ export default function CreateLoanPost(props) {
                         <SuiButton
                             disable
                             sx={{ borderRadius: 0 }}
-                            color="warning"
+                            color="dark"
                         >
-                            Draft
+                            Nháp
                         </SuiButton>
+
+                        <SuiTypography
+                            variant="h4"
+                            fontWeight="regular"
+                            color="dark"
+                            align="center"
+                            mb={3}
+                        >
+                            Hãy điền những thông tin bên dưới để tạo một hồ sơ
+                            vay
+                        </SuiTypography>
+                        <SuiTypography
+                            variant="h5"
+                            fontWeight="regular"
+                            color="text"
+                            align="center"
+                            mb={1}
+                        >
+                            Chọn số tiền bạn muốn vay và thời hạn vay
+                        </SuiTypography>
                         <Container maxWidth="sm">
-                            <Box sx={{ paddingTop: '10%' }}>
-                                <SuiTypography
-                                    variant="h4"
-                                    fontWeight="regular"
-                                    color="dark"
-                                    align="center"
-                                    mb={5}
-                                >
-                                    Hãy điền những thông tin bên dưới để tạo một
-                                    hồ sơ vay
-                                </SuiTypography>
-                                <SuiTypography
-                                    variant="h5"
-                                    fontWeight="regular"
-                                    color="text"
-                                    align="center"
-                                    mb={3}
-                                >
-                                    Chọn số tiền bạn muốn vay và thời hạn vay
-                                </SuiTypography>
+                            <Box sx={{ paddingTop: '5%' }}>
                                 <Grid container spacing={1}>
                                     <Grid item xs={12} md={12}>
                                         <SuiTypography
@@ -296,7 +404,19 @@ export default function CreateLoanPost(props) {
                                         >
                                             Số tiền
                                         </SuiTypography>
-                                        <SuiInput
+                                        <SuiTypography
+                                            variant="h3"
+                                            fontWeight="regular"
+                                            align="center"
+                                            sx={{ mb: 3 }}
+                                        >
+                                            {fCurrency(
+                                                millionChoose +
+                                                    thousandChoose +
+                                                    '000'
+                                            )}
+                                        </SuiTypography>
+                                        {/* <SuiInput
                                             name="totalMoney"
                                             type="number"
                                             icon={{
@@ -304,20 +424,88 @@ export default function CreateLoanPost(props) {
                                                 direction: 'right',
                                             }}
                                             onChange={getMoneyText}
-                                        />
+                                        /> */}
+                                        <Box>
+                                            <Grid container>
+                                                <Grid item xs={12} md={4}>
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        id="combo-box-million"
+                                                        value={millionChoose}
+                                                        options={millionOption}
+                                                        onChange={(
+                                                            event,
+                                                            value
+                                                        ) =>
+                                                            handleChangeMoney(
+                                                                event,
+                                                                value
+                                                            )
+                                                        }
+                                                        isOptionEqualToValue={(
+                                                            option,
+                                                            value
+                                                        ) =>
+                                                            option.label ===
+                                                            value
+                                                        }
+                                                        disableClearable
+                                                        sx={{ width: '100%' }}
+                                                        renderInput={(
+                                                            params
+                                                        ) => (
+                                                            <TextField
+                                                                {...params}
+                                                            />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={4}>
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        disableClearable
+                                                        onChange={(
+                                                            event,
+                                                            value
+                                                        ) =>
+                                                            handleChangeMoney(
+                                                                event,
+                                                                value
+                                                            )
+                                                        }
+                                                        isOptionEqualToValue={(
+                                                            option,
+                                                            value
+                                                        ) =>
+                                                            option.label ===
+                                                            value
+                                                        }
+                                                        id="combo-box-thousand"
+                                                        value={thousandChoose}
+                                                        options={thousandOption}
+                                                        sx={{ width: '100%' }}
+                                                        renderInput={(
+                                                            params
+                                                        ) => (
+                                                            <TextField
+                                                                {...params}
+                                                            />
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={4}>
+                                                    <SuiInput
+                                                        value="000"
+                                                        icon={{
+                                                            component: 'đ',
+                                                            direction: 'right',
+                                                        }}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        </Box>
                                     </Grid>
-                                    <Grid item xs="12" md="12">
-                                        <SuiTypography
-                                            variant="button"
-                                            fontWeight="regular"
-                                            color="text"
-                                            name="moneyText"
-                                            textTransform="capitalize"
-                                        >
-                                            {moneyText}
-                                        </SuiTypography>
-                                    </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12} md={6} sx={{ mt: 3 }}>
                                         <SuiTypography
                                             variant="h6"
                                             fontWeight="regular"
@@ -325,23 +513,65 @@ export default function CreateLoanPost(props) {
                                             Thời gian ra trường dự kiến
                                         </SuiTypography>
                                         <SuiInput
+                                            error={
+                                                userData?.expectedGraduationTime ===
+                                                    '' && error
+                                            }
                                             name="expectedGraduationTime"
                                             type="month"
                                             onChange={handleOnchange}
+                                            inputProps={{
+                                                min: fDisplayMonth(null),
+                                            }}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={12} md={6} sx={{ mt: 3 }}>
                                         <SuiTypography
                                             variant="h6"
                                             fontWeight="regular"
                                         >
                                             Thời hạn vay (tháng)
                                         </SuiTypography>
-                                        <SuiInput
+                                        {/* <SuiInput
+                                            error={
+                                                userData?.duration === '' &&
+                                                error
+                                            }
                                             name="duration"
                                             type="number"
                                             onChange={handleOnchange}
-                                        />
+                                            inputProps={{
+                                                min: 12,
+                                                max: 72,
+                                            }}
+                                        /> */}
+                                        <Tooltip title="Vui lòng chọn thời gian dự kiến ra trường trước">
+                                            <Autocomplete
+                                                disabled={
+                                                    userData?.expectedGraduationTime ===
+                                                    ''
+                                                }
+                                                disablePortal
+                                                disableClearable
+                                                onChange={(event, value) =>
+                                                    handleChangeDuration(
+                                                        event,
+                                                        value
+                                                    )
+                                                }
+                                                isOptionEqualToValue={(
+                                                    option,
+                                                    value
+                                                ) => option.label === value}
+                                                id="combo-box-duration "
+                                                value={duration}
+                                                options={durationOption}
+                                                sx={{ width: '100%' }}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} />
+                                                )}
+                                            />
+                                        </Tooltip>
                                     </Grid>
 
                                     <Grid item xs={12} md={6}>
@@ -370,6 +600,16 @@ export default function CreateLoanPost(props) {
                                             Thời gian hồ sơ hết hạn
                                         </SuiTypography>
                                         <SuiInput
+                                            inputProps={{
+                                                min: addMonth(
+                                                    null,
+                                                    config?.postExpireTime
+                                                ),
+                                            }}
+                                            error={
+                                                userData?.postExpireAt === '' &&
+                                                error
+                                            }
                                             name="postExpireAt"
                                             type="date"
                                             onChange={handleOnchange}
@@ -394,7 +634,7 @@ export default function CreateLoanPost(props) {
                                     }}
                                     onClick={createLoan}
                                 >
-                                    Tạo
+                                    Tạo mới
                                 </SuiButton>
                             </Box>
                         </Container>

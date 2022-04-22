@@ -16,6 +16,7 @@ import SuiButton from 'components/SuiButton'
 import { fDisplayDate } from 'utils/formatTime'
 import { schoolApi } from 'apis/shoolApi'
 import { majorApi } from 'apis/majorApi'
+import { USER_STATUS } from 'utils/enum'
 
 export default function DetailAccountCard(props) {
     const { userInfo, schoolMajor, onChangeUser, onChangeSchoolMajor } = props
@@ -29,29 +30,29 @@ export default function DetailAccountCard(props) {
     const [isSelectedSchool, setIsSelectedSchool] = useState(false)
 
     const [error, setError] = useState({
-        firstName:{
+        firstName: {
             error: false,
-            title: ""
+            title: '',
         },
-        lastName:{
+        lastName: {
             error: false,
-            title: ""
+            title: '',
         },
-        birthDate:{
+        birthDate: {
             error: false,
-            title: ""
+            title: '',
         },
-        school:{
+        school: {
             error: false,
-            title: ""
+            title: '',
         },
-        major:{
+        major: {
             error: false,
-            title: ""
+            title: '',
         },
-        address:{
+        address: {
             error: false,
-            title: ""
+            title: '',
         },
     })
 
@@ -64,7 +65,7 @@ export default function DetailAccountCard(props) {
             .getAllSchool()
             .then((res) => {
                 var schools = res.data
-               
+
                 setSchoolList(schools)
                 var value = schools.filter(
                     (item) => item.id === schoolMajor.schoolId
@@ -72,7 +73,6 @@ export default function DetailAccountCard(props) {
                 if (value.length !== 0) {
                     setSchool(value[0])
                     getMajor(value[0])
-
                 } else {
                     setSchool(null)
                 }
@@ -80,8 +80,7 @@ export default function DetailAccountCard(props) {
             .catch((err) => {})
     }
 
-    const getMajor = (item) =>{
-        
+    const getMajor = (item) => {
         majorApi
             .getBySchoolId(item.id)
             .then((res) => {
@@ -103,7 +102,7 @@ export default function DetailAccountCard(props) {
     const handleChangeSchool = (item) => {
         setSchool(item)
         setMajor(null)
-        onChangeSchoolMajor("schoolId", item.id)
+        onChangeSchoolMajor('schoolId', item.id)
         if (item) {
             getMajor(item)
         } else {
@@ -113,7 +112,7 @@ export default function DetailAccountCard(props) {
 
     const handleChangeMajor = (item) => {
         setMajor(item)
-        onChangeSchoolMajor("majorId", item.id)
+        onChangeSchoolMajor('majorId', item.id)
     }
 
     const onChangeUserInfo = (e) => {
@@ -135,6 +134,9 @@ export default function DetailAccountCard(props) {
                                 Họ
                             </SuiTypography>
                             <SuiInput
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 type="text"
                                 placeholder="Họ"
                                 name="firstName"
@@ -151,6 +153,9 @@ export default function DetailAccountCard(props) {
                                 Tên
                             </SuiTypography>
                             <SuiInput
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 type="text"
                                 placeholder="Tên"
                                 name="lastName"
@@ -191,6 +196,9 @@ export default function DetailAccountCard(props) {
                                 Ngày sinh
                             </SuiTypography>
                             <SuiInput
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 type="date"
                                 value={fDisplayDate(userInfo?.birthDate)}
                                 name="birthDate"
@@ -200,9 +208,6 @@ export default function DetailAccountCard(props) {
                                     userInfo?.birthDate === ''
                                 }
                             />
-                            <SuiTypography variant="caption" fontWeight="regular" color="error">
-                                
-                            </SuiTypography>
                         </Grid>
                         <Grid item xs={0} md={6}></Grid>
 
@@ -211,6 +216,9 @@ export default function DetailAccountCard(props) {
                                 Trường
                             </SuiTypography>
                             <Autocomplete
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 onChange={(event, value) =>
                                     handleChangeSchool(value)
                                 }
@@ -255,7 +263,11 @@ export default function DetailAccountCard(props) {
                             </SuiTypography>
                             <Tooltip title="Chọn trường trước tiên">
                                 <Autocomplete
-                                    disabled={!isSelectedSchool}
+                                    disabled={
+                                        !isSelectedSchool ||
+                                        userInfo?.status ===
+                                            USER_STATUS.VERIFIED
+                                    }
                                     onChange={(event, value) =>
                                         handleChangeMajor(value)
                                     }
@@ -300,6 +312,9 @@ export default function DetailAccountCard(props) {
                                 Địa chỉ
                             </SuiTypography>
                             <SuiInput
+                                disabled={
+                                    userInfo?.status === USER_STATUS.VERIFIED
+                                }
                                 type="text"
                                 placeholder="Địa chỉ"
                                 value={userInfo?.address || ''}

@@ -1,7 +1,10 @@
+import { ElevatorSharp } from '@mui/icons-material'
 import {
     format,
     formatDistanceToNow,
     formatDistanceToNowStrict,
+    add,
+    differenceInMonths,
 } from 'date-fns'
 
 // ----------------------------------------------------------------------
@@ -19,7 +22,11 @@ export function fDateTime(date) {
 }
 
 export function fDateTimeMin(date) {
-    return format(new Date(date), 'dd/MM/yyyy HH:mm:ss')
+    if (date) {
+        return format(new Date(date), 'dd/MM/yyyy HH:mm:ss')
+    } else {
+        return ''
+    }
 }
 
 export function fDateTimeSuffix(date) {
@@ -48,7 +55,9 @@ export function fToNowNumber(date) {
     var day = new Date(date)
     var day2 = new Date()
     // var realValue = diff_months(day, day2)
-    return Math.floor((day - day2) / (24 * 3600 * 1000) + 1)
+    var value = Math.floor((day - day2) / (24 * 3600 * 1000) + 1)
+    if (value < 0) value = 0
+    return value
 }
 
 // function diff_months(dt2, dt1) {
@@ -65,10 +74,32 @@ export function fDisplayDate(date) {
     return returnDate
 }
 
-export function fGetCurrentMonth() {
-    var returnMonth = format(new Date(), 'YYYY-MM')
-    return '2022-02'
+export function fDisplayMonth(date) {
+    var returnDate = ''
+    if (date === null) {
+        date = new Date()
+    }
+    returnDate = format(new Date(date), 'yyyy-MM')
+    return returnDate
 }
+
+export function addMonth(date, duration) {
+    if (date === null) {
+        date = new Date()
+    }
+    return format(add(date, { months: duration }), 'yyyy-MM-dd')
+}
+
+// export function getDifferenceMonth(dateLeft,dateRight) {
+//     return differenceInMonths(dateLeft, dateRight)
+// }
+
+
+
+// export function fGetCurrentMonth() {
+//     var returnMonth = format(new Date(), 'YYYY-MM')
+//     return '2022-02'
+// }
 
 export function fTimeDiff(date1, date2, interval) {
     var second = 1000,

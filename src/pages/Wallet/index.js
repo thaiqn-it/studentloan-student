@@ -39,6 +39,7 @@ import { USER_STATUS } from 'utils/enum'
 import SuiButton from 'components/SuiButton'
 
 import { fCurrency } from 'utils/formatNumber'
+import { setDocTitle } from 'utils/dynamicDocTitle'
 
 const NotifiModal = ({ open, handleClose, onClick }) => {
     return (
@@ -162,6 +163,7 @@ const Wallet = () => {
     const user = authObj.user
 
     useEffect(() => {
+        setDocTitle("Thông tin ví-StudentLoan")
         initData()
     }, [])
 

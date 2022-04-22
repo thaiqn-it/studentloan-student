@@ -15,7 +15,7 @@ export default function AchievementItem(props) {
 
     return (
         <>
-            <Box sx={{ marginBottom: 5 }} id={id}>
+            <Box sx={{ marginBottom: 5 }} key={id}>
                 <SuiInput
                     value={description}
                     disabled
