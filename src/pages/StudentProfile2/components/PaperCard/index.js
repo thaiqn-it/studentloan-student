@@ -198,6 +198,7 @@ export default function PaperCard(props) {
                                         image={
                                             studentInfo?.frontCitizenCardImageUrl
                                         }
+                                        isBlur={true}
                                     />
                                 ) : (
                                     <DropFileZone
@@ -240,6 +241,7 @@ export default function PaperCard(props) {
                                         image={
                                             studentInfo?.backCitizenCardImageUrl
                                         }
+                                        isBlur={true}
                                     />
                                 ) : (
                                     <DropFileZone
@@ -313,6 +315,7 @@ export default function PaperCard(props) {
                                         image={
                                             studentInfo?.frontStudentCardImageUrl
                                         }
+                                        isBlur={true}
                                     />
                                 ) : (
                                     <DropFileZone
@@ -355,6 +358,7 @@ export default function PaperCard(props) {
                                         image={
                                             studentInfo?.backStudentCardImageUrl
                                         }
+                                        isBlur={true}
                                     />
                                 ) : (
                                     <DropFileZone

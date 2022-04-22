@@ -100,7 +100,7 @@ export default function ViewPost() {
                 dateTime={fDateTime(item.updatedAt)}
                 description={item.description}
                 badges={[item.type]}
-                // lastItem={isLastItem}
+                lastItem={isLastItem}
                 information={
                     <>
                         {item.LoanHistoryImages.map((item) => (

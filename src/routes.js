@@ -98,7 +98,7 @@ let routes = [
     {
         type: 'collapse',
         name: 'Ví',
-        key: 'wallet',
+        key: 'vi',
         route: '/vi',
         icon: <AccountBalanceWalletIcon size="12px" />,
         component: Wallet,

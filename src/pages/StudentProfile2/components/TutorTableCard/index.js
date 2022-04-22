@@ -119,7 +119,19 @@ export default function TutorTableCard(props) {
                                         <TableCell>
                                             {renderStatusButton(row.status)}
                                         </TableCell>
-                                        {userStatus === USER_STATUS.VERIFIED ? null : (
+                                        {userStatus === USER_STATUS.VERIFIED ? (
+                                            <>
+                                                <TableCell align="center">
+                                                    <IconButton
+                                                        aria-label="delete"
+                                                        size="small"
+                                                        href={`/trang-chu/nguoi-giam-ho/${row.id}`}
+                                                    >
+                                                        <EditIcon fontSize="small" />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </>
+                                        ) : (
                                             <>
                                                 <TableCell align="center">
                                                     <IconButton

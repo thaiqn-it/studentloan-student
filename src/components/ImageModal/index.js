@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Button from '@mui/material/Button'
-import { CardMedia } from '@mui/material'
+import { CardMedia, Dialog } from '@mui/material'
 
 // const style = {
 //     position: 'absolute',
@@ -18,6 +18,7 @@ import { CardMedia } from '@mui/material'
 // }
 
 export default function ImageModal(props) {
+    const { image, isBlur = false } = props
     const [open, setOpen] = React.useState(false)
     const handleOpen = () => setOpen(true)
 
@@ -25,40 +26,39 @@ export default function ImageModal(props) {
 
     return (
         <>
-            <CardMedia {...props} onClick={handleOpen} />
+            <CardMedia image={image} onClick={handleOpen} {...props} />
 
-            <Modal
+            {/* <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 open={open}
                 onClose={handleClose}
                 closeAfterTransition
-                disableScrollLock
                 BackdropComponent={Backdrop}
                 BackdropProps={{
-                    timeout: 500,
+                    timeout: 5,
                 }}
+                sx={{ overflow: 'scroll' }}
             >
-                <Fade in={open}>
-                    <Box
-                        component="img"
-                        src={props.image}
-                        borderRadius={1}
-                        maxWidth="1200px"
-                        // sx={style}
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            outline: 'none',
-                            '@media (max-width: 1024px)': {
-                                maxWidth: '400px',
-                            },
-                        }}
-                    />
-                </Fade>
-            </Modal>
+                <Fade in={open}> */}
+            <Dialog onClose={handleClose} open={open} maxWidth="xl" >
+                <Box
+                    component="img"
+                    src={image}
+                    borderRadius={1}
+                    width="1200px"
+                    maxWidth="1200px"
+                    onContextMenu="return false;"
+                    sx={{
+                        '@media (max-width: 1024px)': {
+                            maxWidth: '400px',
+                        },
+                        filter: isBlur ? 'blur(4px)' : 'none',
+                    }}
+                />
+            </Dialog>
+            {/* </Fade>
+            </Modal> */}
         </>
     )
 }

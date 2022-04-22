@@ -1,6 +1,6 @@
-export function million(min, max) {
+export function getOption(min, max) {
     var data = []
-    for (let i = min; i < max + 1; i++) {
+    for (let i = Number(min); i < Number(max) + 1; i++) {
         var num = i
         var object = {
             id: i,

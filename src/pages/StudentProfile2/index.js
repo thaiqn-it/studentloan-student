@@ -60,6 +60,7 @@ export default function StudentProfile2() {
                     res.data.student
                 const tutors = res.data.tutors
                 const achievements = res.data.achievements
+                console.log(tutors)
                 setStudentInfo(student)
                 setOldStudentInfo(student)
                 setTutorInfo(tutors)
@@ -165,7 +166,8 @@ export default function StudentProfile2() {
                 >
                     {objectStatus.message}
                 </SuiButton>
-                {userInfo?.status !== 'VERIFIED' && userInfo?.status !== 'PENDING' ? (
+                {userInfo?.status !== 'VERIFIED' &&
+                userInfo?.status !== 'PENDING' ? (
                     <Box
                         display="flex"
                         flexDirection="row"
@@ -336,7 +338,6 @@ export default function StudentProfile2() {
                     </SuiTypography>
                 </SuiButton>
             ) : null}
-
             <SuiTypography
                 variant="h4"
                 fontWeight="regular"

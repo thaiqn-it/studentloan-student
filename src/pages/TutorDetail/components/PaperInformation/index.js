@@ -7,9 +7,10 @@ import { fDisplayDate } from 'utils/formatTime'
 import { PROVINCEVN } from '..//..//..//..//apis/static/provinceVN'
 
 import DropFileZone from '../../../../components/DropFileZone'
+import { TUTOR_STATUS } from 'utils/enum'
 
 export default function PaperInformation(props) {
-    const { tutor, onChangeTutorInfo } = props
+    const { tutor, onChangeTutorInfo, erroMess } = props
     const [listCity, setListCity] = useState()
     const [city, setCity] = useState(null)
 
@@ -86,6 +87,14 @@ export default function PaperInformation(props) {
                                                 onChange={onChange}
                                                 name="citizenId"
                                                 value={tutor?.citizenId}
+                                                error={
+                                                    erroMess &&
+                                                    tutor?.citizenId === ''
+                                                }
+                                                disabled={
+                                                    tutor?.status ===
+                                                    TUTOR_STATUS.VERIFIED
+                                                }
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={4}>
@@ -103,6 +112,15 @@ export default function PaperInformation(props) {
                                                 value={fDisplayDate(
                                                     tutor?.citizenCardCreatedDate
                                                 )}
+                                                error={
+                                                    erroMess &&
+                                                    tutor?.citizenCardCreatedDate ===
+                                                        ''
+                                                }
+                                                disabled={
+                                                    tutor?.status ===
+                                                    TUTOR_STATUS.VERIFIED
+                                                }
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={4}>
@@ -122,6 +140,10 @@ export default function PaperInformation(props) {
                                                 }
                                             /> */}
                                             <Autocomplete
+                                                disabled={
+                                                    tutor?.status ===
+                                                    TUTOR_STATUS.VERIFIED
+                                                }
                                                 name="citizenCardCreatedPlace"
                                                 onChange={(event, value) =>
                                                     onChangeCity(value)
@@ -155,12 +177,16 @@ export default function PaperInformation(props) {
                                                 )}
                                                 renderInput={(params) => (
                                                     <TextField
-                                                        // error={city === null}
-                                                        // helperText={
-                                                        //     city === null
-                                                        //         ? 'Nơi cấp không được để trống'
-                                                        //         : null
-                                                        // }
+                                                        error={
+                                                            erroMess &&
+                                                            city === null
+                                                        }
+                                                        helperText={
+                                                            erroMess &&
+                                                            city === null
+                                                                ? 'Nơi cấp không được để trống'
+                                                                : null
+                                                        }
                                                         {...params}
                                                         inputProps={{
                                                             ...params.inputProps,
@@ -193,6 +219,17 @@ export default function PaperInformation(props) {
                                         }
                                         onDelete={onDelete}
                                     />
+                                    {erroMess &&
+                                    tutor?.frontCitizenCardImageUrl === '' ? (
+                                        <SuiTypography
+                                            variant="caption"
+                                            fontWeight="regular"
+                                            color="error"
+                                        >
+                                            Mặt trước CMND/CCCD không được để
+                                            trống
+                                        </SuiTypography>
+                                    ) : null}
                                 </Grid>
 
                                 <Grid item xs={12} md={6}>
@@ -217,6 +254,17 @@ export default function PaperInformation(props) {
                                         }
                                         onDelete={onDelete}
                                     />
+                                    {erroMess &&
+                                    tutor?.backCitizenCardImageUrl === '' ? (
+                                        <SuiTypography
+                                            variant="caption"
+                                            fontWeight="regular"
+                                            color="error"
+                                        >
+                                            Mặt sau CMND/CCCD không được để
+                                            trống
+                                        </SuiTypography>
+                                    ) : null}
                                 </Grid>
                             </Grid>
                         </Box>

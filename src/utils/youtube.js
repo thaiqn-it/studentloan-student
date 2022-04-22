@@ -1,5 +1,5 @@
 export function getYoutubeId(url) {
-    var id = null
+    var id = false
     if (url) {
         var regExp =
             /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/
@@ -13,8 +13,8 @@ export function getYoutubeId(url) {
 export function getThumbnail(url) {
     var imageUrl = `https://www.solve-ideas.com/wp-content/uploads/BVP_HEADER_play_600px.png`
     if (url) {
-        var id = getYoutubeId(url)
-        imageUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
+        // var id = getYoutubeId(url)
+        imageUrl = `https://img.youtube.com/vi/${url}/maxresdefault.jpg`
     }
 
     return imageUrl

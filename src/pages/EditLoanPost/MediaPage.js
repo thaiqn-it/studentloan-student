@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 
 import DropFileInput from '../../components/DropFileZone'
 import YoutubeEmbed from './../../components/YoutubeEmbed'
-import { validVideoId } from 'utils/youtube'
+import { getYoutubeId } from 'utils/youtube'
 import { LOANMEDIA_STATUS } from 'utils/enum'
 
 export default function MediaPage(props) {
@@ -18,7 +18,7 @@ export default function MediaPage(props) {
         initiateData()
     }, [loanMedia])
 
-    const [videoId, setVideoId] = useState('')
+    const [videoUrl, setVideoUrl] = useState(null)
     const [demandNote, setDemandNote] = useState({
         loanId: id,
         description: 'Giấy báo học phí',
@@ -98,9 +98,9 @@ export default function MediaPage(props) {
             handleChange(null, 'LoanMedia', newStudetCert)
         } else {
             var newTranscript = transcript
-            if(transcript.currentStatus === "new"){
-                newTranscript = { ...transcript, imageUrl: newUrl}
-            }else{
+            if (transcript.currentStatus === 'new') {
+                newTranscript = { ...transcript, imageUrl: newUrl }
+            } else {
                 newTranscript = {
                     ...transcript,
                     currentStatus: 'update',
@@ -109,13 +109,15 @@ export default function MediaPage(props) {
                 }
             }
             setTranscript(newTranscript)
-            handleChange(null, "LoanMedia", newTranscript)
+            handleChange(null, 'LoanMedia', newTranscript)
         }
     }
 
     const onGetYoutubeUrl = (event) => {
         var url = event.target.value
-        if (true) {
+        var id = getYoutubeId(url)
+
+        if (id !== false) {
             var loandMediaId = ''
             var current = 'new'
             if (loanMedia.VIDEO) {
@@ -127,14 +129,15 @@ export default function MediaPage(props) {
                 loanId: loanId,
                 id: loandMediaId,
                 description: 'youtube-video',
-                imageUrl: url,
+                imageUrl: id,
                 type: 'VIDEO',
                 status: LOANMEDIA_STATUS.ACTIVE,
                 currentStatus: current,
             }
-
+            setVideoUrl('https://www.youtube.com/watch?v=' + id)
             handleChange(null, 'LoanMedia', videoMedia)
         } else {
+            setVideoUrl(event.target.value)
         }
     }
 
@@ -164,6 +167,10 @@ export default function MediaPage(props) {
         if (loanMedia) {
             if (loanMedia.VIDEO) {
                 setYoutubeVideo(loanMedia.VIDEO)
+                setVideoUrl(
+                    'https://www.youtube.com/watch?v=' +
+                        loanMedia.VIDEO.imageUrl
+                )
                 // initiateYoutubeVideo(loanMedia.VIDEO.imageUrl)
             }
             if (loanMedia.DEMANDNOTE) {
@@ -172,7 +179,7 @@ export default function MediaPage(props) {
             if (loanMedia.STUDENTCERT) {
                 setStudentCert(loanMedia.STUDENTCERT)
             }
-            if(loanMedia.TRANSCRIPT){
+            if (loanMedia.TRANSCRIPT) {
                 setTranscript(loanMedia.TRANSCRIPT)
             }
         }
@@ -207,10 +214,17 @@ export default function MediaPage(props) {
                             placeholder="https://www.youtube.com/watch?v=id"
                             onChange={onGetYoutubeUrl}
                             name="videoUrl"
-                            value={youtubeVideo.imageUrl}
+                            value={videoUrl}
                         ></SuiInput>
-                        {youtubeVideo?.imageUrl ? (
+                        {videoUrl === null || videoUrl?.length < 43 ? (
+                            null
+                        ) : (
                             <YoutubeEmbed url={youtubeVideo?.imageUrl} />
+                        )}
+                         {videoUrl !== null && videoUrl.length < 43 ? (
+                            <SuiTypography variant="button" fontWeight="regular">
+                                Video không hợp lệ
+                            </SuiTypography>
                         ) : null}
                     </Grid>
                 </Grid>

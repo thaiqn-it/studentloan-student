@@ -15,6 +15,7 @@ import {
     MenuItem,
     Autocomplete,
     TextField,
+    Tooltip,
 } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiInput from 'components/SuiInput'
@@ -34,9 +35,10 @@ import { userApi } from 'apis/userApi'
 import SnackbarMessage from 'components/SnackbarMessage'
 import { isNullish } from 'utils/isNullish'
 import { setDocTitle } from 'utils/dynamicDocTitle'
-import { million } from 'utils/moneyCall'
+import { getOption } from 'utils/moneyCall'
 import { fCurrency } from 'utils/formatNumber'
-import { fDisplayDate } from 'utils/formatTime'
+import { addMonth } from 'utils/formatTime'
+import { fDisplayMonth } from 'utils/formatTime'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -54,6 +56,22 @@ export default function CreateLoanPost(props) {
 
     const [millionChoose, setMillionChoose] = useState('2')
     const [thousandChoose, setThousandChoose] = useState('000')
+    const [duration, setDuration] = useState('')
+
+    const [config, setConfig] = useState(null)
+
+    const [millionOption, setMillionOption] = useState(null)
+    const [thousandOption, setThousandOption] = useState([
+        {
+            id: 2,
+            label: '500',
+        },
+        {
+            id: 1,
+            label: '000',
+        },
+    ])
+    const [durationOption, setDurationOption] = useState([])
 
     const [error, setError] = useState(false)
 
@@ -87,6 +105,7 @@ export default function CreateLoanPost(props) {
                 .then((res) => {
                     let path = `/trang-chu/ho-so/chinh-sua/${res.data.id}`
                     history.push(path)
+                    history.go(0)
                     setOpen(false)
                 })
                 .catch((e) => {
@@ -110,6 +129,9 @@ export default function CreateLoanPost(props) {
             var day = new Date(realValue)
             var day2 = new Date()
             realValue = diff_months(day, day2)
+            var tempMinDuration = config.minDuration + realValue
+            setDurationOption(getOption(config.minDuration + realValue, 72))
+            setDuration(tempMinDuration.toString())
         }
         if (e.target.name === 'postExpireAt') {
             var day = new Date(realValue).toISOString()
@@ -124,6 +146,26 @@ export default function CreateLoanPost(props) {
     const handleChangeMoney = (e, value) => {
         var num = 0
         if (e.target.id.includes('million')) {
+            if (Number(value.label + '000000') === config.maxRaiseMoney) {
+                setThousandOption([
+                    {
+                        id: 1,
+                        label: '000',
+                    },
+                ])
+                setThousandChoose('000')
+            } else {
+                setThousandOption([
+                    {
+                        id: 2,
+                        label: '500',
+                    },
+                    {
+                        id: 1,
+                        label: '000',
+                    },
+                ])
+            }
             setMillionChoose(value.label)
             num = value.label + thousandChoose + '000'
         } else {
@@ -133,6 +175,14 @@ export default function CreateLoanPost(props) {
         setUserData({
             ...userData,
             ['totalMoney']: num,
+        })
+    }
+
+    const handleChangeDuration = (e, value) => {
+        setDuration(value.label)
+        setUserData({
+            ...userData,
+            ['duration']: Number(value.label),
         })
     }
 
@@ -172,6 +222,19 @@ export default function CreateLoanPost(props) {
                 fixedMoney: res.data.fixedMoney,
                 penaltyFee: res.data.penaltyFee,
             })
+            setConfig(res.data)
+            var tempMin = Number(
+                res.data.minRaiseMoney
+                    .toString()
+                    .slice(0, res.data.minRaiseMoney.toString().length - 6)
+            )
+            var tempMax = Number(
+                res.data.maxRaiseMoney
+                    .toString()
+                    .slice(0, res.data.maxRaiseMoney.toString().length - 6)
+            )
+
+            setMillionOption(getOption(tempMin, tempMax))
             setInterest(Number(res.data.interest) * 100)
         })
     }
@@ -179,6 +242,13 @@ export default function CreateLoanPost(props) {
     const handleClose = () => {
         setUserData(data)
         setError(false)
+        setDuration('')
+        setMillionChoose(
+            config.minRaiseMoney
+                .toString()
+                .slice(0, config.minRaiseMoney.toString().length - 6)
+        )
+        setThousandChoose('000')
         setOpen(false)
     }
 
@@ -362,10 +432,7 @@ export default function CreateLoanPost(props) {
                                                         disablePortal
                                                         id="combo-box-million"
                                                         value={millionChoose}
-                                                        options={million(
-                                                            2,
-                                                            500
-                                                        )}
+                                                        options={millionOption}
                                                         onChange={(
                                                             event,
                                                             value
@@ -415,16 +482,7 @@ export default function CreateLoanPost(props) {
                                                         }
                                                         id="combo-box-thousand"
                                                         value={thousandChoose}
-                                                        options={[
-                                                            {
-                                                                id: 2,
-                                                                label: '500',
-                                                            },
-                                                            {
-                                                                id: 1,
-                                                                label: '000',
-                                                            },
-                                                        ]}
+                                                        options={thousandOption}
                                                         sx={{ width: '100%' }}
                                                         renderInput={(
                                                             params
@@ -462,6 +520,9 @@ export default function CreateLoanPost(props) {
                                             name="expectedGraduationTime"
                                             type="month"
                                             onChange={handleOnchange}
+                                            inputProps={{
+                                                min: fDisplayMonth(null),
+                                            }}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6} sx={{ mt: 3 }}>
@@ -471,7 +532,7 @@ export default function CreateLoanPost(props) {
                                         >
                                             Thời hạn vay (tháng)
                                         </SuiTypography>
-                                        <SuiInput
+                                        {/* <SuiInput
                                             error={
                                                 userData?.duration === '' &&
                                                 error
@@ -483,7 +544,34 @@ export default function CreateLoanPost(props) {
                                                 min: 12,
                                                 max: 72,
                                             }}
-                                        />
+                                        /> */}
+                                        <Tooltip title="Vui lòng chọn thời gian dự kiến ra trường trước">
+                                            <Autocomplete
+                                                disabled={
+                                                    userData?.expectedGraduationTime ===
+                                                    ''
+                                                }
+                                                disablePortal
+                                                disableClearable
+                                                onChange={(event, value) =>
+                                                    handleChangeDuration(
+                                                        event,
+                                                        value
+                                                    )
+                                                }
+                                                isOptionEqualToValue={(
+                                                    option,
+                                                    value
+                                                ) => option.label === value}
+                                                id="combo-box-duration "
+                                                value={duration}
+                                                options={durationOption}
+                                                sx={{ width: '100%' }}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} />
+                                                )}
+                                            />
+                                        </Tooltip>
                                     </Grid>
 
                                     <Grid item xs={12} md={6}>
@@ -512,6 +600,12 @@ export default function CreateLoanPost(props) {
                                             Thời gian hồ sơ hết hạn
                                         </SuiTypography>
                                         <SuiInput
+                                            inputProps={{
+                                                min: addMonth(
+                                                    null,
+                                                    config?.postExpireTime
+                                                ),
+                                            }}
                                             error={
                                                 userData?.postExpireAt === '' &&
                                                 error
@@ -519,9 +613,6 @@ export default function CreateLoanPost(props) {
                                             name="postExpireAt"
                                             type="date"
                                             onChange={handleOnchange}
-                                            inputProps={{
-                                                min: fDisplayDate(new Date()),
-                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -543,7 +634,7 @@ export default function CreateLoanPost(props) {
                                     }}
                                     onClick={createLoan}
                                 >
-                                    Tạo
+                                    Tạo mới
                                 </SuiButton>
                             </Box>
                         </Container>
