@@ -6,6 +6,8 @@ import SuiTypography from 'components/SuiTypography'
 import React, { useEffect, useState } from 'react'
 import AchievementItem from './components/AchievementItem'
 import UpdateAchievement from './components/UpdateAchievement'
+import PlaceholderCard from 'examples/Cards/PlaceholderCard'
+
 
 export default function ArchievementPage(props) {
     const { achievements, studentId, handleChange } = props
@@ -15,34 +17,39 @@ export default function ArchievementPage(props) {
     const [choseValue, setChoseValue] = useState({})
     const [open, setOpen] = useState(false)
 
-    const onDelete = (id) => {
-        setUrl('')
-    }
+    // const onDelete = (id) => {
+    //     setUrl('')
+    // }
 
-    const onFileChangeURL = (url, event) => {
-        setUrl(url)
-    }
+    // const onFileChangeURL = (url, event) => {
+    //     setUrl(url)
+    // }
 
-    const handleChangeTitle = (e) => {
-        setTitle(e.target.value)
-    }
+    // const handleChangeTitle = (e) => {
+    //     setTitle(e.target.value)
+    // }
 
-    const handleCreateAchieve = () => {
-        if (url !== '' && title !== '') {
-            var achieveItem = {
-                studentId: studentId,
-                imageUrl: url,
-                status: 'active',
-                description: title,
-            }
-            setUrl('')
-            setTitle('')
-            handleChange(achieveItem)
-        }
-    }
+    // const handleCreateAchieve = () => {
+    //     if (url !== '' && title !== '') {
+    //         var achieveItem = {
+    //             studentId: studentId,
+    //             imageUrl: url,
+    //             status: 'active',
+    //             description: title,
+    //         }
+    //         setUrl('')
+    //         setTitle('')
+    //         handleChange(achieveItem)
+    //     }
+    // }
 
     const onClickItem = (item) => {
         setChoseValue(item)
+        setOpen(true)
+    }
+
+    const onClickNewItem = () =>{
+        setChoseValue(null)
         setOpen(true)
     }
 
@@ -120,26 +127,15 @@ export default function ArchievementPage(props) {
                                 />
 
                                 <Box>
-                                    <SuiInput
-                                        placeholder="Tiêu đề"
-                                        onChange={handleChangeTitle}
-                                        value={title}
+                                    <PlaceholderCard
+                                        onClick={onClickNewItem}
+                                        title={{
+                                            variant: 'h5',
+                                            text: 'Thêm thành tựu',
+                                        }}
+                                        outlined
+                                        hasBorder
                                     />
-                                    <Box my={1}>
-                                        <DropFileInput
-                                            image={url}
-                                            elementName="achievement"
-                                            elementId="achievement"
-                                            onDelete={onDelete}
-                                            onFileChangeURL={onFileChangeURL}
-                                        />
-                                    </Box>
-                                    <SuiButton
-                                        color="primary"
-                                        onClick={handleCreateAchieve}
-                                    >
-                                        Thêm
-                                    </SuiButton>
                                 </Box>
                             </Grid>
                         </Grid>

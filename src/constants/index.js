@@ -3,7 +3,9 @@ const API_SUCCSES = 200
 const USER_ID = 'USER_ID'
 const STUDENT_ID = 'STUDENT_ID'
 const API_BAD_REQUEST = 400
-const API_URL = 'https://studentloanfpt.ddns.net/api'
+// const API_URL = 'https://studentloanfpt.ddns.net/api'
+
+const API_URL = 'http://localhost:3000/api'
 
 export let JWT_TOKEN_VALUE = ''
 

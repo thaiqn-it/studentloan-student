@@ -17,20 +17,21 @@ import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
 import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 let routes = [
-    // {
-    //     type: 'collapse',
-    //     name: 'Trang chính',
-    //     key: 'main',
-    //     route: '/main',
-    //     icon: <ContentPasteIcon size="12px" />,
-    //     component: Main,
-    //     noCollapse: true,
-    // },
+    {
+        type: 'collapse',
+        name: 'Trang chính',
+        key: 'main',
+        route: '/main',
+        icon: <ContentPasteIcon size="12px" />,
+        component: Main,
+        noCollapse: true,
+    },
     // {
     //     type: 'collapse',
     //     name: 'Thông tin v2',
@@ -97,7 +98,7 @@ let routes = [
     {
         type: 'collapse',
         name: 'Ví',
-        key: 'wallet',
+        key: 'vi',
         route: '/vi',
         icon: <AccountBalanceWalletIcon size="12px" />,
         component: Wallet,

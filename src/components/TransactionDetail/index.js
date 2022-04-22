@@ -1,7 +1,7 @@
 import React from 'react'
 import SuiTypography from 'components/SuiTypography'
 import SuiBox from 'components/SuiBox'
-import { Box } from '@mui/material'
+import { Box, Divider } from '@mui/material'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { fCurrency } from 'utils/formatNumber'
@@ -11,7 +11,7 @@ export default function TransactionDetail({ transaction }) {
     return (
         <>
             {transaction && (
-                <SuiBox pt={3} px={2}>
+                <SuiBox pt={3} px={2} > 
                     <Box
                         sx={{
                             display: 'flex',
@@ -53,7 +53,14 @@ export default function TransactionDetail({ transaction }) {
                                 }
                                 variant="h3"
                             >
-                                {fCurrency(transaction?.money)}
+                                {transaction?.type === 'TRANSFER' ? (
+                                    <>
+                                        {'-'}
+                                        {fCurrency(transaction?.money)}
+                                    </>
+                                ) : (
+                                    fCurrency(transaction?.money)
+                                )}
                             </SuiTypography>
                         </Box>
                         <Box
@@ -97,32 +104,6 @@ export default function TransactionDetail({ transaction }) {
                                 }}
                             >
                                 <SuiTypography variant="h6">
-                                    Phí giao dịch
-                                </SuiTypography>
-                            </Box>
-                            <SuiTypography color="error" variant="h5">
-                                {`${String(transaction?.transactionFee).replace(
-                                    /(.)(?=(\d{3})+$)/g,
-                                    '$1,'
-                                )} đ`}
-                            </SuiTypography>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                gap: '15px',
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '15px',
-                                    flexDirection: 'row',
-                                }}
-                            >
-                                <SuiTypography variant="h6">
                                     Trạng thái
                                 </SuiTypography>
                             </Box>
@@ -130,12 +111,12 @@ export default function TransactionDetail({ transaction }) {
                             <SuiTypography
                                 color={
                                     transaction?.status === 'SUCCESS'
-                                        ? 'success'
+                                        ? 'primary'
                                         : 'error'
                                 }
                                 variant="h6"
                             >
-                                {transaction?.status}
+                                {transaction?.status === "SUCCESS" ? "Thành công" : "Không thành công"}
                             </SuiTypography>
                         </Box>
                         <Box
@@ -186,6 +167,32 @@ export default function TransactionDetail({ transaction }) {
                                 {transaction?.recipientName}
                             </SuiTypography>
                         </Box>
+                    </Box>
+                    <Divider sx={{ my: 3 }} />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: '15px',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '15px',
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <SuiTypography variant="h6">
+                                Phí giao dịch
+                            </SuiTypography>
+                        </Box>
+                        <SuiTypography color="dark" variant="h6">
+                            {transaction?.transactionFee == 0
+                                ? 'Miễn phí'
+                                : fCurrency(transaction?.transactionFee)}
+                        </SuiTypography>
                     </Box>
                     <SuiTypography
                         variant="body2"

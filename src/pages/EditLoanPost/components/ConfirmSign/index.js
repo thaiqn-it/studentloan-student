@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import {
     DialogTitle,
@@ -14,7 +14,22 @@ import CloseIcon from '@mui/icons-material/Close'
 import SuiInput from 'components/SuiInput'
 
 export default function ConfirmSign(props) {
-    const { open, handleClose, handleConfirm } = props
+    const { open, handleConfirm, firstName, lastName } = props
+    const [name, setName] = useState(null)
+
+    const handleClick = () => {
+        if (name === firstName + lastName) {
+            handleConfirm(true)
+        }
+    }
+
+    const handleClose = () => {
+        handleConfirm(false)
+    }
+
+    const onChangeName = (e) => {
+        setName(e.target.value)
+    }
 
     return (
         <>
@@ -27,23 +42,42 @@ export default function ConfirmSign(props) {
                     </Box>
                     <SuiTypography
                         variant="h4"
-                        fontWeight="medium"
+                        fontWeight="bold"
                         align="center"
                     >
                         Xác nhận đã ký khi kêu gọi thành công
                     </SuiTypography>
 
                     <DialogContentText align="center">
-                        Xác nhận đồng nghĩa bạn đồng ý ký vào hợp đồng khi gọi vốn thành công
+                        <SuiTypography>
+                            Xác nhận đồng nghĩa bạn đã đồng ý ký hợp đồng khi
+                            kêu gọi thành công
+                        </SuiTypography>
                     </DialogContentText>
-
+                    <Box sx={{ mt: 5 }}>
+                        <SuiTypography variant="button" fontWeight="regular">
+                            Vui lòng nhập{' '}
+                            <SuiTypography variant="button">
+                                {firstName + lastName}{' '}
+                            </SuiTypography>
+                            để xác nhận
+                        </SuiTypography>
+                        <SuiInput onChange={onChangeName} name="name" />
+                    </Box>
                     <SuiButton
                         color="primary"
                         sx={{ borderRadius: 0, mt: 2 }}
                         fullWidth
-                        onClick={handleConfirm}
+                        onClick={handleClick}
+                        disabled={name !== firstName + lastName}
                     >
-                        Xác nhận
+                        <SuiTypography
+                            variant="button"
+                            color="white"
+                            fontWeight="regular"
+                        >
+                            Tôi đã hiểu yêu cầu
+                        </SuiTypography>
                     </SuiButton>
                 </Box>
             </Dialog>

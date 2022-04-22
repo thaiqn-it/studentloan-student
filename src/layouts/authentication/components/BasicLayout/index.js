@@ -30,8 +30,11 @@ import PageLayout from 'examples/LayoutContainers/PageLayout'
 
 // Authentication layout components
 import Footer from 'layouts/authentication/components/Footer'
+import brand from 'assets/brand.png'
+import { useHistory } from 'react-router-dom'
 
 function BasicLayout({ title, description, image, children }) {
+    const history = useHistory()
     return (
         <PageLayout>
             {/* <DefaultNavbar
@@ -43,6 +46,22 @@ function BasicLayout({ title, description, image, children }) {
         transparent
         light
       /> */}
+            <SuiBox
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                }}
+            >
+                <SuiBox
+                    component="img"
+                    src={brand}
+                    width="30%"
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => history.push('/')}
+                />
+            </SuiBox>
             <SuiBox
                 width="calc(100% - 2rem)"
                 minHeight="100vh"

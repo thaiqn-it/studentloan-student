@@ -9,7 +9,7 @@ function SlideTransition(props) {
 }
 
 export default function SnackbarMessage(props) {
-    const { open, snack, onClickClose, action } = props
+    const { open, snack, onClickClose, action, side } = props
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return
@@ -43,7 +43,7 @@ export default function SnackbarMessage(props) {
             open={open}
             autoHideDuration={3000}
             onClose={handleClose}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: side ? side : "right" }}
             TransitionComponent={SlideTransition}
             action={action ? action.go : null}
             message={action ? action.message : null}

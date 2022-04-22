@@ -31,15 +31,18 @@ import DateRangePicker from '@mui/lab/DateRangePicker'
 import { Box, TextField } from '@mui/material'
 import SuiInput from 'components/SuiInput'
 
+import moment from 'moment'
+
 const Group = ({ transactions, handleClick, selectedTransaction }) => {
     return (
         <>
             <SuiBox mb={2}>
                 <SuiTypography
-                    variant="caption"
+                    variant="h6"
                     color="text"
-                    fontWeight="bold"
+                    fontWeight="medium"
                     textTransform="uppercase"
+                    opacity={0.8}
                 >
                     {transactions.date}
                 </SuiTypography>
@@ -100,7 +103,7 @@ function Transactions({ handleClick, data, selectedTransaction }) {
     const [range, setRange] = useState([null, null])
 
     return (
-        <Card sx={{ height: '100%' }}>
+        <Card sx={{ height: '100%' }} style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
             <SuiBox
                 display="flex"
                 justifyContent="space-between"
@@ -109,8 +112,8 @@ function Transactions({ handleClick, data, selectedTransaction }) {
                 px={2}
             >
                 <SuiTypography
-                    variant="h6"
-                    fontWeight="medium"
+                    variant="h5"
+                    fontWeight="bold"
                     textTransform="capitalize"
                 >
                     Các giao dịch của bạn
@@ -127,7 +130,7 @@ function Transactions({ handleClick, data, selectedTransaction }) {
                             renderInput={(startProps, endProps) => (
                                 <>
                                     <SuiInput {...startProps} />
-                                    <Box sx={{ mx: 2 }}> to </Box>
+                                    <Box sx={{ mx: 1, fontSize : 16 }}> đến </Box>
                                     <SuiInput {...endProps} />
                                 </>
                             )}

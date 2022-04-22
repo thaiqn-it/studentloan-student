@@ -14,7 +14,9 @@ import classes from './Transfer.module.css'
 import SuiInput from 'components/SuiInput'
 import { transactionApi } from 'apis/transactionApi'
 import { walletApi } from 'apis/walletApi'
-
+import SuiButton from 'components/SuiButton'
+import { fCurrency } from 'utils/formatNumber'
+import SuiTypography from 'components/SuiTypography'
 
 export default function Transfer({ open, handleClose, walletId, reloadData }) {
     const title = 'Rút tiền'
@@ -33,13 +35,13 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
 
             const data = {
                 money,
-                type: 'type',
+                type: 'WITHDRAW',
                 description: 'Rút tiền sang ví paypal',
                 walletId,
                 recipientId: null,
-                recipientName: 'Ví của tôi',
+                recipientName: 'Paypal',
                 senderId: '',
-                senderName: 'Paypal',
+                senderName: 'Ví của tôi',
                 transactionFee: '',
                 status: 'SUCCESS',
                 paypalTransaction: res.data.payoutId,
@@ -69,8 +71,11 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                                 variant="caption"
                                 className={classes.title}
                             >
-                                So tien
+                                Số tiền
                             </Typography>
+                            <SuiTypography align="center" variant="h4">
+                                {fCurrency(money)}
+                            </SuiTypography>
                             <SuiInput
                                 type={'number'}
                                 value={money}
@@ -88,7 +93,7 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                                 variant="caption"
                                 className={classes.title}
                             >
-                                Email
+                                Tài khoản ví paypal
                             </Typography>
                             <SuiInput
                                 type={'email'}
@@ -104,10 +109,14 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                         </Box>
                     </Box>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Huỷ</Button>
-                    <Button onClick={handleFormSubmit}>Rút tiền</Button>
-                </DialogActions>
+                <Box display="flex" justifyContent="space-between" px={3} pb={1}>
+                    <SuiButton onClick={handleClose} color="dark">
+                        Huỷ
+                    </SuiButton>
+                    <SuiButton onClick={handleFormSubmit} color="primary">
+                        Rút tiền
+                    </SuiButton>
+                </Box>
             </Dialog>
         </>
     )

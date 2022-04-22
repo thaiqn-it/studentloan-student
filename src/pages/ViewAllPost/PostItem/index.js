@@ -176,6 +176,7 @@ export default function PostItem(props) {
                                     variant="h5"
                                     textTransform="none"
                                     align="right"
+                                    color={fToNowNumber(loan.postExpireAt) < 6 ? "error": "dark"}
                                 >
                                     {fToNowNumber(loan.postExpireAt)}
                                 </SuiTypography>

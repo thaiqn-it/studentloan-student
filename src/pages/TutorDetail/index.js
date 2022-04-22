@@ -14,15 +14,34 @@ import { imageApi } from 'apis/imageApi'
 import { renderTutorStatus } from 'utils/renderStatus'
 import Loading from 'components/Loading'
 import ComfirmDelete from 'components/ComfirmDelete'
+import { isNullish } from 'utils/isNullish'
+import {TUTOR_STATUS} from "utils/enum"
 
 export default function TutorDetail() {
-    const [loading, setLoading] = useState(false)
-    const [tutor, setTutor] = useState()
     const { id } = useParams()
     const history = useHistory()
 
+    const data = {
+        name: '',
+        phone: '',
+        // email: "",
+        birthday: '',
+        address: '',
+        citizenId: '',
+        citizenCardCreatedDate: '',
+        citizenCardCreatedPlace: '',
+        backCitizenCardImageUrl: '',
+        // portraitUrl:"",
+        relation: '',
+        status: TUTOR_STATUS.UNVERIFIED
+    }
+
+    const [loading, setLoading] = useState(false)
+    const [tutor, setTutor] = useState(data)
+
     const [openComfirm, setOpenConfirm] = useState(false)
     const [deleteValue, setDeleteValue] = useState(null)
+    const [error, setError] = useState(false)
 
     useEffect(() => {
         fetchData()
@@ -99,19 +118,20 @@ export default function TutorDetail() {
                 [name]: value,
             })
         }
-
-        console.log(tutor)
     }
 
     const handleSubmit = () => {
-        var statusTutor = { ...tutor, status: '' }
         if (id === 'tao') {
-            tutorApi
-                .createTutor(tutor)
-                .then((res) => {
-                    history.push(`/trang-chu/thong-tin/`)
-                })
-                .catch((err) => {})
+            if (isNullish(tutor)) {
+                tutorApi
+                    .createTutor(tutor)
+                    .then((res) => {
+                        history.push(`/trang-chu/thong-tin/`)
+                    })
+                    .catch((err) => {})
+            } else {
+                setError(true)
+            }
         } else {
             tutorApi.updateTutor(id, tutor).then((res) => {
                 history.push(`/trang-chu/thong-tin/`)
@@ -233,6 +253,7 @@ export default function TutorDetail() {
                 </Grid>
                 <Grid item md={8}>
                     <DetailInformation
+                        erroMess={error}
                         tutor={tutor}
                         onChangeTutorInfo={onChangeTutorInfo}
                     />
@@ -240,6 +261,7 @@ export default function TutorDetail() {
             </Grid>
             <Box my={5}>
                 <PaperInformation
+                    erroMess={error}
                     tutor={tutor}
                     onChangeTutorInfo={onChangeTutorInfo}
                 />
