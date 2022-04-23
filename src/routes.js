@@ -13,11 +13,11 @@ import Verify from 'pages/Verify'
 import TutorDetail from 'pages/TutorDetail'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 
-import StudentProfile2 from 'pages/StudentProfile2'
+import StudentProfile2 from 'pages/StudentProfile2/v2'
 import Main from 'pages/Main'
 import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
 
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'

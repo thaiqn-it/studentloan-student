@@ -39,13 +39,14 @@ export default function StudentProfile2() {
         majorId: null,
     })
 
-    const [isChange, setIsChange] = useState(null)
+    // const [isChange, setIsChange] = useState(null)
     const history = useHistory()
     let location = useLocation()
     const tempProfileChange = location.state?.tempProfileChange || {
         studentInfo: null,
         schoolAndMajor: null,
         achievements: null,
+        userInfo: null,
     }
 
     const [snack, setSnack] = useState({
@@ -54,16 +55,22 @@ export default function StudentProfile2() {
     })
     const [openSnack, setOpenSnack] = useState(false)
 
+    // useEffect(() => {
+    //     setDocTitle('Thông tin - StudentLoan')
+    //     // fetchData()
+    //     setLoading(false)
+    // }, [isChange])
     useEffect(() => {
-        setDocTitle('Thông tin - StudentLoan')
-        fetchData()
-    }, [isChange])
-    useEffect(() => {
+        if (userInfo === null && tempProfileChange.userInfo === null)
+            return fetchData()
         console.log('profile page', tempProfileChange)
-        
+        setStudentInfo(tempProfileChange.studentInfo)
+        setSchoolAndMajor(tempProfileChange.schoolAndMajor)
+        setAchievements(tempProfileChange.achievements)
+        setUserInfo(tempProfileChange.userInfo)
+        setLoading(false)
+        // fetchData()
     }, [])
-
-    
 
     const fetchData = async () => {
         setLoading(true)
@@ -74,7 +81,7 @@ export default function StudentProfile2() {
                     res.data.student
                 const tutors = res.data.tutors
                 const achievements = res.data.achievements
-                console.log(tutors)
+
                 setStudentInfo(student)
                 setOldStudentInfo(student)
                 setTutorInfo(tutors)
@@ -228,11 +235,13 @@ export default function StudentProfile2() {
     }
 
     const deleteTutor = () => {
-        setIsChange(Date.now())
+        // setIsChange(Date.now())
+        fetchData()
     }
 
     const onChangeAchievement = () => {
-        setIsChange(Date.now())
+        // setIsChange(Date.now())
+        fetchData()
     }
 
     const onClickCloseSnack = () => {
@@ -274,7 +283,8 @@ export default function StudentProfile2() {
                     studentApi
                         .updateStudentInfo(temp, { status: 'PENDING' })
                         .then((res) => {
-                            setIsChange(Date.now())
+                            // setIsChange(Date.now())
+                            fetchData()
                         })
                         .catch((err) => {})
                 })
@@ -282,7 +292,8 @@ export default function StudentProfile2() {
             userApi
                 .updateUser(restData)
                 .then((res) => {
-                    setIsChange(Date.now())
+                    // setIsChange(Date.now())
+                    fetchData()
                 })
                 .catch((err) => {})
         } else {
@@ -306,7 +317,8 @@ export default function StudentProfile2() {
                     studentApi
                         .updateStudentInfo(temp, { status: 'PENDING' })
                         .then((res) => {
-                            setIsChange(Date.now())
+                            // setIsChange(Date.now())
+                            fetchData()
                         })
                         .catch((err) => {})
                 })
@@ -316,7 +328,8 @@ export default function StudentProfile2() {
             userApi
                 .updateUser(restData)
                 .then((res) => {
-                    setIsChange(Date.now())
+                    // setIsChange(Date.now())
+                    fetchData()
                 })
                 .catch((err) => {})
         }
@@ -332,6 +345,7 @@ export default function StudentProfile2() {
                     studentInfo: studentInfo,
                     schoolAndMajor: schoolAndMajor,
                     achievements: achievements,
+                    userInfo: userInfo,
                 },
             },
         })

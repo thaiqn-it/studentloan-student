@@ -20,7 +20,7 @@ import { USER_STATUS } from 'utils/enum'
 
 export default function DetailAccountCard(props) {
     const { userInfo, schoolMajor, onChangeUser, onChangeSchoolMajor } = props
-
+    console.log('detail card state :', userInfo, schoolMajor)
     const [schoolList, setSchoolList] = useState([])
     const [majorList, setMajorList] = useState([])
 
@@ -59,8 +59,6 @@ export default function DetailAccountCard(props) {
     useEffect(() => {
         getSchool()
     }, [schoolMajor])
-
-
 
     const getSchool = () => {
         schoolApi
@@ -319,7 +317,7 @@ export default function DetailAccountCard(props) {
                                 }
                                 type="text"
                                 placeholder="Địa chỉ"
-                                value={userInfo?.address || ''}
+                                value={userInfo?.address}
                                 name="address"
                                 onChange={onChangeUserInfo}
                                 error={
