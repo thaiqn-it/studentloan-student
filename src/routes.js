@@ -22,6 +22,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
+import PasswordPage from 'pages/PasswordPage'
 let routes = [
     {
         type: 'collapse',
@@ -146,6 +147,11 @@ const extraRoutes = [
         key: 'xem',
     },
     {
+        route: '/mat-khau',
+        component: PasswordPage,
+        key: 'mat-khau',
+    },
+    {
         route: '/404',
         component: NotFound,
         key: 'notfound',
@@ -155,6 +161,7 @@ const extraRoutes = [
         component: NotFound,
         key: 'notfound',
     },
+
     // {
     //     route: '/',
     //     component: Report, // for dashboard
