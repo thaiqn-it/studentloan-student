@@ -10,9 +10,11 @@ import YoutubeEmbed from './../../components/YoutubeEmbed'
 import { getYoutubeId } from 'utils/youtube'
 import { LOANMEDIA_STATUS } from 'utils/enum'
 
+import { Element } from 'react-scroll'
+
 export default function MediaPage(props) {
     const { id } = useParams()
-    const { loanId, loanMedia, handleChange } = props
+    const { loanId, loanMedia, handleChange, errorMess } = props
 
     useEffect(() => {
         initiateData()
@@ -172,15 +174,23 @@ export default function MediaPage(props) {
                         loanMedia.VIDEO.imageUrl
                 )
                 // initiateYoutubeVideo(loanMedia.VIDEO.imageUrl)
+            } else {
+                handleChange(null, 'LoanMedia', youtubeVideo)
             }
             if (loanMedia.DEMANDNOTE) {
                 setDemandNote(loanMedia.DEMANDNOTE)
+            } else {
+                handleChange(null, 'LoanMedia', demandNote)
             }
             if (loanMedia.STUDENTCERT) {
                 setStudentCert(loanMedia.STUDENTCERT)
+            } else {
+                handleChange(null, 'LoanMedia', studentCert)
             }
             if (loanMedia.TRANSCRIPT) {
                 setTranscript(loanMedia.TRANSCRIPT)
+            } else {
+                handleChange(null, 'LoanMedia', transcript)
             }
         }
     }
@@ -209,20 +219,27 @@ export default function MediaPage(props) {
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <SuiInput
-                            sx={{ marginBottom: 3 }}
-                            placeholder="https://www.youtube.com/watch?v=id"
-                            onChange={onGetYoutubeUrl}
-                            name="videoUrl"
-                            value={videoUrl}
-                        ></SuiInput>
-                        {videoUrl === null || videoUrl?.length < 43 ? (
-                            null
-                        ) : (
+                        <Element name="scrollVideo">
+                            <SuiInput
+                                sx={{ marginBottom: 3 }}
+                                placeholder="https://www.youtube.com/watch?v=id"
+                                onChange={onGetYoutubeUrl}
+                                name="videoUrl"
+                                value={videoUrl}
+                                error={
+                                    errorMess &&
+                                    (videoUrl === null || videoUrl === '')
+                                }
+                            />
+                        </Element>
+                        {videoUrl === null || videoUrl?.length < 43 ? null : (
                             <YoutubeEmbed url={youtubeVideo?.imageUrl} />
                         )}
-                         {videoUrl !== null && videoUrl.length < 43 ? (
-                            <SuiTypography variant="button" fontWeight="regular">
+                        {videoUrl !== null && videoUrl.length < 43 ? (
+                            <SuiTypography
+                                variant="button"
+                                fontWeight="regular"
+                            >
                                 Video không hợp lệ
                             </SuiTypography>
                         ) : null}
@@ -254,15 +271,26 @@ export default function MediaPage(props) {
                     <Grid item xs="12" md="7">
                         <Grid container spacing={2}>
                             <Grid item xs="12" md="12">
-                                <DropFileInput
-                                    elementName={demandNote.type}
-                                    elementId={demandNote.type}
-                                    image={demandNote.imageUrl}
-                                    onDelete={(id) => onDelete(id)}
-                                    onFileChangeURL={(url, event) =>
-                                        onFileChangeURL(url, event)
-                                    }
-                                />
+                                <Element name="scrollDemandNote">
+                                    <DropFileInput
+                                        elementName={demandNote.type}
+                                        elementId={demandNote.type}
+                                        image={demandNote.imageUrl}
+                                        onDelete={(id) => onDelete(id)}
+                                        onFileChangeURL={(url, event) =>
+                                            onFileChangeURL(url, event)
+                                        }
+                                    />
+                                </Element>
+                                {errorMess && demandNote.imageUrl === '' ? (
+                                    <SuiTypography
+                                        variant="caption"
+                                        fontWeight="regular"
+                                        color="error"
+                                    >
+                                        Giấy báo học phí không được để trống
+                                    </SuiTypography>
+                                ) : null}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -291,15 +319,26 @@ export default function MediaPage(props) {
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <DropFileInput
-                            image={studentCert.imageUrl}
-                            elementName={studentCert.type}
-                            elementId={studentCert.type}
-                            onDelete={(id) => onDelete(id)}
-                            onFileChangeURL={(url, event) =>
-                                onFileChangeURL(url, event)
-                            }
-                        />
+                        <Element name="scrollStudentCert">
+                            <DropFileInput
+                                image={studentCert.imageUrl}
+                                elementName={studentCert.type}
+                                elementId={studentCert.type}
+                                onDelete={(id) => onDelete(id)}
+                                onFileChangeURL={(url, event) =>
+                                    onFileChangeURL(url, event)
+                                }
+                            />
+                        </Element>
+                        {errorMess && studentCert.imageUrl === '' ? (
+                            <SuiTypography
+                                variant="caption"
+                                fontWeight="regular"
+                                color="error"
+                            >
+                                Giấy xác nhận sinh viên không được để trống
+                            </SuiTypography>
+                        ) : null}
                     </Grid>
                 </Grid>
             </Container>
@@ -326,15 +365,26 @@ export default function MediaPage(props) {
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <DropFileInput
-                            image={transcript.imageUrl}
-                            elementName={transcript.type}
-                            elementId={transcript.type}
-                            onDelete={(id) => onDelete(id)}
-                            onFileChangeURL={(url, event) =>
-                                onFileChangeURL(url, event)
-                            }
-                        />
+                        <Element name="scrollTranscript">
+                            <DropFileInput
+                                image={transcript.imageUrl}
+                                elementName={transcript.type}
+                                elementId={transcript.type}
+                                onDelete={(id) => onDelete(id)}
+                                onFileChangeURL={(url, event) =>
+                                    onFileChangeURL(url, event)
+                                }
+                            />
+                        </Element>
+                        {errorMess && transcript.imageUrl === '' ? (
+                            <SuiTypography
+                                variant="caption"
+                                fontWeight="regular"
+                                color="error"
+                            >
+                                Giấy xác nhận sinh viên không được để trống
+                            </SuiTypography>
+                        ) : null}
                     </Grid>
                 </Grid>
             </Container>

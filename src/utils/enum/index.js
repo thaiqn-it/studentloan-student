@@ -3,7 +3,7 @@ exports.LOAN_STATUS_MESSAGE = {
     DELETED: 'Hồ sơ đã bị xóa',
     WAITING: 'Hồ sơ đang chờ xét duyệt',
     REJECTED: 'Hồ sơ đã bị từ chối',
-    FUNDING: 'Hồ sơ đã được duyệt và đang kêu gọi vay tiền',
+    FUNDING: 'Hồ sơ đã được duyệt và đang kêu gọi',
     FAIL: 'Hồ sơ kêu gọi không thành công',
     ONGOING: 'Hồ sơ đang trong quá trình thanh toán',
     FINISH: 'Hồ sơ đã hoàn thành',

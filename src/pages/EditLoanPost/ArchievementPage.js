@@ -7,48 +7,31 @@ import React, { useEffect, useState } from 'react'
 import AchievementItem from './components/AchievementItem'
 import UpdateAchievement from './components/UpdateAchievement'
 import PlaceholderCard from 'examples/Cards/PlaceholderCard'
-
+import { achievementApi } from 'apis/achievementApi'
 
 export default function ArchievementPage(props) {
-    const { achievements, studentId, handleChange } = props
-    const [url, setUrl] = useState('')
-    const [title, setTitle] = useState('')
+    const { handleChange } = props
 
-    const [choseValue, setChoseValue] = useState({})
+    const [choseValue, setChoseValue] = useState(null)
     const [open, setOpen] = useState(false)
+    const [achievements, setAchievements] = useState(null)
 
-    // const onDelete = (id) => {
-    //     setUrl('')
-    // }
+    useEffect(()=>{
+        fetchData()
+    },[])
 
-    // const onFileChangeURL = (url, event) => {
-    //     setUrl(url)
-    // }
-
-    // const handleChangeTitle = (e) => {
-    //     setTitle(e.target.value)
-    // }
-
-    // const handleCreateAchieve = () => {
-    //     if (url !== '' && title !== '') {
-    //         var achieveItem = {
-    //             studentId: studentId,
-    //             imageUrl: url,
-    //             status: 'active',
-    //             description: title,
-    //         }
-    //         setUrl('')
-    //         setTitle('')
-    //         handleChange(achieveItem)
-    //     }
-    // }
+    const fetchData = () =>{
+        achievementApi.getByStudentId().then(res=>{
+            setAchievements(res.data)
+        })
+    }
 
     const onClickItem = (item) => {
         setChoseValue(item)
         setOpen(true)
     }
 
-    const onClickNewItem = () =>{
+    const onClickNewItem = () => {
         setChoseValue(null)
         setOpen(true)
     }
@@ -56,10 +39,27 @@ export default function ArchievementPage(props) {
     const handleCloseAchieve = () => {
         setOpen(false)
     }
-
+    
     const handleUpdateAchieve = (newItem) => {
-        handleChange(newItem)
+        var temp = null
+        if (newItem.status === 'create') {
+            achievementApi
+                .createByStudentId(newItem)
+                .then((res) => fetchData())
+                .catch((err) => {})
+        } else {
+            if (newItem.status === 'update') {
+                temp = { ...newItem, status: 'ACTIVE' }
+            } else {
+                temp = { ...newItem, status: 'INACTIVE' }
+            }
+            achievementApi
+                .updateById(temp)
+                .then((res) => fetchData())
+                .catch((err) => {})
+        }
     }
+
     return (
         <>
             <Box

@@ -2,6 +2,7 @@ import { Box, Card, Container, Divider, Grid, Paper } from '@mui/material'
 import { loanScheduleApi } from '..//..//apis/loanScheduleApi'
 import { investmentApi } from 'apis/investmentApi'
 import { walletApi } from 'apis/walletApi'
+import { systemConfigApi } from 'apis/systemConfigApi'
 import OTPBox from 'components/OTPBox'
 import SuiAvatar from 'components/SuiAvatar'
 import SuiButton from 'components/SuiButton'
@@ -15,12 +16,16 @@ import ConfirmPayment from './ConfirmPayment'
 import SnackbarMessage from 'components/SnackbarMessage'
 import { setDocTitle } from 'utils/dynamicDocTitle'
 import { LOAN_SCHEDULE_TYPE } from 'utils/enum'
+import newLogo from 'assets/newLogo.png'
+import { paypalApi } from 'apis/paypalApi'
+import { transactionApi } from 'apis/transactionApi'
 
 export default function Repayment() {
     const { id } = useParams()
     const history = useHistory()
     const location = useLocation()
     const loanId = location.state?.loanId || null
+    const paypal = location.state?.paypal || null
     const [loanSchedule, setLoanSchedule] = useState(null)
     const [loanSchedules, setLoanSchedules] = useState(null)
     const [investments, setInvestments] = useState(null)
@@ -31,13 +36,15 @@ export default function Repayment() {
     const [snack, setSnack] = useState(null)
     const [totalMoney, setTotalMoney] = useState(null)
     const [penalty, setPenalty] = useState(null)
+    const [transactionFee, setTransactionFee] = useState(null)
 
     useEffect(() => {
-        setDocTitle('Thanh toán khoản vay - StudentLoan')
         setLoading(true)
         getBalance()
         if (id === 'tat-ca') {
             getAllLoanSchedule()
+        } else if (id === 'rut-tien') {
+            getTransactionFeee()
         } else {
             getLoanSchedule()
         }
@@ -58,6 +65,9 @@ export default function Repayment() {
                 setTotalMoney(sum)
                 setPenalty(penalty)
                 getInvesment(loanId)
+            })
+            .catch((err) => {
+                setLoading(false)
             })
     }
 
@@ -89,6 +99,23 @@ export default function Repayment() {
             })
     }
 
+    const getTransactionFeee = () => {
+        systemConfigApi
+            .getTransactionFee()
+            .then((res) => {
+                if (paypal == null) {
+                    throw new Error()
+                }
+                setTransactionFee(res.data.transactionFee)
+                setTotalMoney(paypal.money * (1 + transactionFee))
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+                history.push('/trang-chu/404')
+            })
+    }
+
     const getBalance = () => {
         walletApi
             .getWallet()
@@ -117,13 +144,52 @@ export default function Repayment() {
     const handleCancel = () => {
         if (id === 'tat-ca') {
             history.goBack()
+        } else if (id === 'rut-tien') {
+            history.goBack()
+        } else {
+            history.push(`/trang-chu/ho-so/xem/${loanSchedule.loanId}`)
         }
-        history.push(`/trang-chu/ho-so/xem/${loanSchedule.loanId}`)
+    }
+    const handleTransfer = () => {
+        // const res = await paypalApi.transfer({
+        //     email: email,
+        //     money: money,
+        //     accountId: wallet.id,
+        // })
+
+        var data = {
+            money: totalMoney,
+            type: 'WITHDRAW',
+            description: 'Rút tiền sang ví paypal',
+            walletId: wallet.id,
+            recipientId: null,
+            recipientName: 'Paypal',
+            senderId: '',
+            senderName: 'Ví của tôi',
+            transactionFee: transactionFee * paypal.money,
+            status: 'SUCCESS',
+            paypalTransaction: 'res.data.payoutId',
+        }
+        transactionApi
+            .createTransaction(data)
+            .then((res) => {
+                walletApi
+                    .updateWalletById(wallet.id, -1 * totalMoney)
+                    .then((res) => {
+                        console.log(res)
+                        setLoading(false)
+                    })
+                    .catch((err) => {
+                        setLoading(false)
+                    })
+            })
+            .catch((err) => {
+                setLoading(false)
+            })
     }
 
     const handleConfirm = (value) => {
         setOpenConfirm(false)
-        
         if (value) {
             if (id === 'tat-ca') {
                 walletApi
@@ -138,6 +204,8 @@ export default function Repayment() {
                         console.log(err)
                         setLoading(false)
                     })
+            } else if (id === 'rut-tien') {
+                handleTransfer()
             } else {
                 walletApi
                     .repayment({ loanSchedule, investments })
@@ -163,6 +231,8 @@ export default function Repayment() {
     const payment = () => {
         var temp = 0
         if (id === 'tat-ca') {
+            temp = totalMoney
+        } else if (id === 'rut-tien') {
             temp = totalMoney
         } else {
             temp = loanSchedule.money
@@ -210,6 +280,8 @@ export default function Repayment() {
         var amount = 0
         if (id === 'tat-ca') {
             amount = fCurrency(totalMoney + penalty)
+        } else if (id === 'rut-tien') {
+            amount = fCurrency(paypal.money * (1 + transactionFee))
         } else {
             amount = fCurrency(loanSchedule?.money + loanSchedule?.penaltyMoney)
         }
@@ -274,7 +346,7 @@ export default function Repayment() {
                                             alt="avatar"
                                             variant="rounded"
                                             shadow="md"
-                                            src="https://res.cloudinary.com/larrytran/image/upload/v1649698286/file/1649698287372-newLogo1.png"
+                                            src={newLogo}
                                         />
                                     </Box>
                                     <Box
@@ -287,7 +359,9 @@ export default function Repayment() {
                                             variant="button"
                                             fontWeight="medium"
                                         >
-                                            Trần Long
+                                            {wallet?.User?.firstName +
+                                                ' ' +
+                                                wallet?.User?.lastName}
                                         </SuiTypography>
                                         <SuiTypography
                                             variant="caption"
@@ -322,44 +396,148 @@ export default function Repayment() {
                                 <Divider />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                >
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                    >
-                                        Loại:
-                                    </SuiTypography>
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                    >
-                                        {/* {loanSchedule?.type} */}
-                                        {getType()}
-                                    </SuiTypography>
-                                </Box>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                >
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                    >
-                                        Kỳ hạn:
-                                    </SuiTypography>
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                    >
-                                        {/* {fDate(loanSchedule?.startAt)} */}
-                                        {getPeriod()}
-                                    </SuiTypography>
-                                </Box>
+                                {transactionFee !== null ? (
+                                    <>
+                                        <SuiTypography
+                                            variant="h6"
+                                            fontWeight="medium"
+                                        >
+                                            Chuyển đến
+                                        </SuiTypography>
+                                        <Box
+                                            component="li"
+                                            display="flex"
+                                            alignItems="center"
+                                            mb={3}
+                                        >
+                                            <Box mr={2}>
+                                                <SuiAvatar
+                                                    alt="avatar"
+                                                    variant="rounded"
+                                                    shadow="md"
+                                                    src="https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png"
+                                                />
+                                            </Box>
+                                            <Box
+                                                display="flex"
+                                                flexDirection="column"
+                                                alignItems="flex-start"
+                                                justifyContent="center"
+                                            >
+                                                <SuiTypography variant="button">
+                                                    Paypal
+                                                </SuiTypography>
+                                                <SuiTypography
+                                                    variant="button"
+                                                    fontWeight="regular"
+                                                >
+                                                    {paypal.email}
+                                                </SuiTypography>
+                                            </Box>
+                                        </Box>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-between"
+                                        >
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                Loại:
+                                            </SuiTypography>
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                {/* {loanSchedule?.type} */}
+                                                {getType()}
+                                            </SuiTypography>
+                                        </Box>
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-between"
+                                        >
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                Kỳ hạn:
+                                            </SuiTypography>
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                {/* {fDate(loanSchedule?.startAt)} */}
+                                                {getPeriod()}
+                                            </SuiTypography>
+                                        </Box>
+                                    </>
+                                )}
                             </Grid>
                             <Grid item xs={12} md={6}>
+                                {transactionFee !== null ? (
+                                    <>
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-between"
+                                        >
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                Số tiền:
+                                            </SuiTypography>
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                {fCurrency(paypal?.money)}
+                                            </SuiTypography>
+                                        </Box>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-between"
+                                        >
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                Số tiền khoản vay:
+                                            </SuiTypography>
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                {/* {fCurrency(loanSchedule?.money)} */}
+                                                {getAmount()}
+                                            </SuiTypography>
+                                        </Box>
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-between"
+                                        >
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                Tiền phạt:
+                                            </SuiTypography>
+                                            <SuiTypography
+                                                variant="button"
+                                                fontWeight="medium"
+                                            >
+                                                {/* {fCurrency(loanSchedule?.penaltyMoney)} */}
+                                                {getPenalty()}
+                                            </SuiTypography>
+                                        </Box>
+                                    </>
+                                )}
                                 <Box
                                     display="flex"
                                     justifyContent="space-between"
@@ -368,32 +546,17 @@ export default function Repayment() {
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        Số tiền khoản vay:
+                                        Phí dịch vụ:
                                     </SuiTypography>
                                     <SuiTypography
                                         variant="button"
                                         fontWeight="medium"
                                     >
-                                        {/* {fCurrency(loanSchedule?.money)} */}
-                                        {getAmount()}
-                                    </SuiTypography>
-                                </Box>
-                                <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                >
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                    >
-                                        Tiền phạt:
-                                    </SuiTypography>
-                                    <SuiTypography
-                                        variant="button"
-                                        fontWeight="medium"
-                                    >
-                                        {/* {fCurrency(loanSchedule?.penaltyMoney)} */}
-                                        {getPenalty()}
+                                        {transactionFee !== null
+                                            ? fCurrency(
+                                                  transactionFee * paypal?.money
+                                              )
+                                            : 'Miễn phí'}
                                     </SuiTypography>
                                 </Box>
                             </Grid>

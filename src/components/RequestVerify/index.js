@@ -13,16 +13,19 @@ import SuiTypography from 'components/SuiTypography'
 import CloseIcon from '@mui/icons-material/Close'
 
 export default function RequestVerify(props) {
-    const { open, handleClose, } = props
-
+    const { open, handleClose, value } = props
     return (
         <>
-            <Dialog onClose={handleClose} open={open} maxWidth="sm">
+            <Dialog
+                onClose={() => handleClose(false)}
+                open={open}
+                maxWidth="sm"
+            >
                 <Box p={2}>
                     <Box display="flex" justifyContent="flex-end">
-                    <IconButton onClick={handleClose}>
-                        <CloseIcon />
-                    </IconButton>
+                        <IconButton onClick={() => handleClose(false)}>
+                            <CloseIcon />
+                        </IconButton>
                     </Box>
                     <DialogTitle id="responsive-dialog-title">
                         <SuiTypography
@@ -30,23 +33,22 @@ export default function RequestVerify(props) {
                             fontWeight="medium"
                             align="center"
                         >
-                            Tài khoản của bạn chưa được admin xác thực nên chưa
-                            thể thực hiện hành động này.
+                            {value.title}
                         </SuiTypography>
                     </DialogTitle>
 
                     <DialogContent>
                         <DialogContentText align="center">
-                            Hành động này không thể được hoàn tác
+                            {value.message}
                         </DialogContentText>
                     </DialogContent>
                     <SuiButton
-                        color="error"
+                        color="warning"
                         sx={{ borderRadius: 0, mt: 2 }}
                         fullWidth
-                        onClick={() =>handleClose(true)}
+                        onClick={() => handleClose(true)}
                     >
-                         Xác thực tài khoản
+                        {value.button}
                     </SuiButton>
                 </Box>
             </Dialog>

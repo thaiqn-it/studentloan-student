@@ -8,4 +8,8 @@ const createByStudentId = (data) => {
     return defaultInstance.post(`/achievement`, data)
 }
 
-export const achievementApi = { updateById, createByStudentId }
+const getByStudentId = ()=>{
+    return defaultInstance.get(`/achievement/student/`)
+}
+
+export const achievementApi = { updateById, createByStudentId, getByStudentId }

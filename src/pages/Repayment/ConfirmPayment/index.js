@@ -19,7 +19,7 @@ import Loading from 'components/Loading'
 export default function ConfirmPayment(props) {
     const { open, handleClose, title, handleConfirm, value } = props
     const [loading, setLoading] = useState(false)
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState(null)
 
     const handleConfirmPassword = () => {
         setLoading(true)

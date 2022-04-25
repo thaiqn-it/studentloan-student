@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { paypalApi } from 'apis/paypalApi'
 import {
     Box,
@@ -19,6 +20,7 @@ import { fCurrency } from 'utils/formatNumber'
 import SuiTypography from 'components/SuiTypography'
 
 export default function Transfer({ open, handleClose, walletId, reloadData }) {
+    const history = useHistory()
     const title = 'Rút tiền'
 
     const [money, setMoney] = useState()
@@ -26,38 +28,48 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        try {
-            const res = await paypalApi.transfer({
-                email: email,
-                money: money,
-                accountId: walletId,
-            })
+        var path = '/trang-chu/thanh-toan/rut-tien'
+        history.push({
+            pathname: path,
+            state: {
+                paypal: {
+                    email: email,
+                    money: money,
+                },
+            },
+        })
+        // try {
+        //     const res = await paypalApi.transfer({
+        //         email: email,
+        //         money: money,
+        //         accountId: walletId,
+        //     })
 
-            const data = {
-                money,
-                type: 'WITHDRAW',
-                description: 'Rút tiền sang ví paypal',
-                walletId,
-                recipientId: null,
-                recipientName: 'Paypal',
-                senderId: '',
-                senderName: 'Ví của tôi',
-                transactionFee: '',
-                status: 'SUCCESS',
-                paypalTransaction: res.data.payoutId,
-            }
-            const transactionRes = await transactionApi.createTransaction(data)
-            const walletRes = await walletApi.updateWalletById(
-                walletId,
-                -1 * money
-            )
-            handleClose()
-            reloadData()
-            if (!res) throw new Error()
-            // const transaction = aw
-        } catch (e) {
-            console.log(e)
-        }
+        //     const data = {
+        //         money,
+        //         type: 'WITHDRAW',
+        //         description: 'Rút tiền sang ví paypal',
+        //         walletId,
+        //         recipientId: null,
+        //         recipientName: 'Paypal',
+        //         senderId: '',
+        //         senderName: 'Ví của tôi',
+        //         transactionFee: '',
+        //         status: 'SUCCESS',
+        //         paypalTransaction: res.data.payoutId,
+        //     }
+        //     const transactionRes = await transactionApi.createTransaction(data)
+        //     const walletRes = await walletApi.updateWalletById(
+        //         walletId,
+        //         -1 * money
+        //     )
+        //     handleClose()
+        //     reloadData()
+        //     if (!res) throw new Error()
+        //     // const transaction = aw
+        // } catch (e) {
+        //     console.log(e)
+        // }
     }
 
     return (
@@ -109,7 +121,12 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
                         </Box>
                     </Box>
                 </DialogContent>
-                <Box display="flex" justifyContent="space-between" px={3} pb={1}>
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    px={3}
+                    pb={1}
+                >
                     <SuiButton onClick={handleClose} color="dark">
                         Huỷ
                     </SuiButton>

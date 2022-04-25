@@ -32,13 +32,13 @@ import { getText } from 'number-to-text-vietnamese'
 import { loanApi } from '../../apis/loanApi'
 import { systemConfigApi } from '../../apis/systemConfigApi'
 import { userApi } from 'apis/userApi'
-import SnackbarMessage from 'components/SnackbarMessage'
 import { isNullish } from 'utils/isNullish'
 import { setDocTitle } from 'utils/dynamicDocTitle'
 import { getOption } from 'utils/moneyCall'
-import { fCurrency } from 'utils/formatNumber'
+import { fCurrency, fCurrencyNoVND } from 'utils/formatNumber'
 import { addMonth } from 'utils/formatTime'
 import { fDisplayMonth } from 'utils/formatTime'
+import RequestVerify from 'components/RequestVerify'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -49,39 +49,9 @@ export default function CreateLoanPost(props) {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [open, setOpen] = useState(false)
-    const [openSnack, setOpenSnack] = useState(false)
-    const [interest, setInterest] = useState()
-
-    const [actionSnack, setActionSnack] = useState(null)
-
-    const [millionChoose, setMillionChoose] = useState('2')
-    const [thousandChoose, setThousandChoose] = useState('000')
-    const [duration, setDuration] = useState('')
-
-    const [config, setConfig] = useState(null)
-
-    const [millionOption, setMillionOption] = useState(null)
-    const [thousandOption, setThousandOption] = useState([
-        {
-            id: 2,
-            label: '500',
-        },
-        {
-            id: 1,
-            label: '000',
-        },
-    ])
-    const [durationOption, setDurationOption] = useState([])
-
-    const [error, setError] = useState(false)
-
-    const [snack, setSnack] = useState({
-        message: 'Xác thực',
-        color: 'error',
-    })
 
     const data = {
-        totalMoney: millionChoose + thousandChoose + '000',
+        totalMoney: '',
         interest: '',
         fixedMoney: '',
         penaltyFee: '',
@@ -92,25 +62,48 @@ export default function CreateLoanPost(props) {
     }
 
     const [userData, setUserData] = useState(data)
+    const [interest, setInterest] = useState()
+    const [duration, setDuration] = useState(null)
 
-    const onClickClose = () => {
-        setOpenSnack(false)
-    }
+    const [config, setConfig] = useState(null)
+
+    const [durationOption, setDurationOption] = useState([])
+    const [moneyText, setMoneyText] = useState('0')
+
+    const [error, setError] = useState(false)
+
+    const [openVerify, setOpenVerify] = useState(false)
+    const [verifyMessage, setVerifyMessage] = useState({
+        title: 'Tài khoản không thể thực hiện hành động này',
+        message:
+            'Bạn cần điền đầy đủ thông tin cá nhân và gửi yêu cầu xác thực đến quản trị viên',
+        button: 'Xác thực tài khoản',
+    })
 
     const createLoan = async () => {
         if (isNullish(userData)) {
-            setLoading(true)
-            await loanApi
-                .createLoanPost(userData)
-                .then((res) => {
-                    let path = `/trang-chu/ho-so/chinh-sua/${res.data.id}`
-                    history.push(path)
-                    history.go(0)
-                    setOpen(false)
-                })
-                .catch((e) => {
-                    setLoading(false)
-                })
+            if (
+                config.minRaiseMoney <=
+                userData.totalMoney <=
+                config.maxRaiseMoney
+            ) {
+                setError(false)
+
+                setLoading(true)
+                await loanApi
+                    .createLoanPost(userData)
+                    .then((res) => {
+                        let path = `/trang-chu/ho-so/chinh-sua/${res.data.id}`
+                        history.push(path)
+                        history.go(0)
+                        setOpen(false)
+                    })
+                    .catch((e) => {
+                        setLoading(false)
+                    })
+            } else {
+                setError(true)
+            }
         } else {
             setError(true)
         }
@@ -125,56 +118,30 @@ export default function CreateLoanPost(props) {
     const handleOnchange = (e) => {
         e.preventDefault()
         var realValue = e.target.value
-        if (e.target.name === 'expectedGraduationTime') {
-            var day = new Date(realValue)
-            var day2 = new Date()
-            realValue = diff_months(day, day2)
-            var tempMinDuration = config.minDuration + realValue
-            setDurationOption(getOption(config.minDuration + realValue, 72))
-            setDuration(tempMinDuration.toString())
-        }
         if (e.target.name === 'postExpireAt') {
             var day = new Date(realValue).toISOString()
             realValue = day
         }
+
         setUserData({
             ...userData,
             [e.target.name]: realValue,
         })
     }
 
-    const handleChangeMoney = (e, value) => {
-        var num = 0
-        if (e.target.id.includes('million')) {
-            if (Number(value.label + '000000') === config.maxRaiseMoney) {
-                setThousandOption([
-                    {
-                        id: 1,
-                        label: '000',
-                    },
-                ])
-                setThousandChoose('000')
-            } else {
-                setThousandOption([
-                    {
-                        id: 2,
-                        label: '500',
-                    },
-                    {
-                        id: 1,
-                        label: '000',
-                    },
-                ])
-            }
-            setMillionChoose(value.label)
-            num = value.label + thousandChoose + '000'
-        } else {
-            setThousandChoose(value.label)
-            num = millionChoose + value.label + '000'
-        }
+    const handleChangeExpectGraduationTime = (e) => {
+        var day = new Date(e.target.value)
+        var day2 = new Date()
+        var realValue = diff_months(day, day2)
+        var tempMinDuration = config.minDuration + realValue
+        setDurationOption(
+            getOption(config.minDuration + realValue, config.maxDuration)
+        )
+        setDuration(tempMinDuration.toString())
         setUserData({
             ...userData,
-            ['totalMoney']: num,
+            expectedGraduationTime: realValue,
+            duration: tempMinDuration,
         })
     }
 
@@ -186,28 +153,32 @@ export default function CreateLoanPost(props) {
         })
     }
 
-    // const getMoneyText = (event) => {
-    //     var money = Number(event.target.value)
-    //     if (Math.floor(money) == money) {
-    //         setMoneyText(getText(money))
-    //         handleOnchange(event)
-    //     }
-    // }
+    const getMoneyText = (event) => {
+        var money = Number(event.target.value)
+        if (Math.floor(money) == money) {
+            setMoneyText(money)
+            handleOnchange(event)
+        }
+    }
 
     const handleClickOpen = () => {
-        getInterest()
-        setDocTitle('Tạo hồ sơ vay - StudentLoan')
         userApi
             .getStudentProfile()
             .then((res) => {
                 if (res.data.status === 'VERIFIED') {
+                    setDocTitle('Tạo hồ sơ vay - StudentLoan')
+                    getInterest()
                     setOpen(true)
                 } else if (res.data.status === 'BAN') {
-                    setActionSnack(ban)
-                    setOpenSnack(true)
+                    setVerifyMessage({
+                        title: 'Tài khoản của bạn đã bị chặn',
+                        message:
+                            'Vui lòng gửi mail tới studentloanfpt@gmail.com để được hỗ trợ',
+                        button: 'Xem',
+                    })
+                    setOpenVerify(true)
                 } else {
-                    setActionSnack(action)
-                    setOpenSnack(true)
+                    setOpenVerify(true)
                 }
                 setLoading(false)
             })
@@ -223,18 +194,6 @@ export default function CreateLoanPost(props) {
                 penaltyFee: res.data.penaltyFee,
             })
             setConfig(res.data)
-            var tempMin = Number(
-                res.data.minRaiseMoney
-                    .toString()
-                    .slice(0, res.data.minRaiseMoney.toString().length - 6)
-            )
-            var tempMax = Number(
-                res.data.maxRaiseMoney
-                    .toString()
-                    .slice(0, res.data.maxRaiseMoney.toString().length - 6)
-            )
-
-            setMillionOption(getOption(tempMin, tempMax))
             setInterest(Number(res.data.interest) * 100)
         })
     }
@@ -242,66 +201,16 @@ export default function CreateLoanPost(props) {
     const handleClose = () => {
         setUserData(data)
         setError(false)
-        setDuration('')
-        setMillionChoose(
-            config.minRaiseMoney
-                .toString()
-                .slice(0, config.minRaiseMoney.toString().length - 6)
-        )
-        setThousandChoose('000')
+        setDuration(null)
+        setMoneyText(0)
         setOpen(false)
     }
 
-    const action = {
-        go: (
-            <React.Fragment>
-                <Box>
-                    <SuiButton
-                        color="white"
-                        size="small"
-                        variant="text"
-                        href="/trang-chu/thong-tin"
-                    >
-                        Xác thực thông tin
-                    </SuiButton>
-                    <IconButton
-                        size="small"
-                        aria-label="close"
-                        color="inherit"
-                        onClick={onClickClose}
-                    >
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
-                </Box>
-            </React.Fragment>
-        ),
-        message: null,
-    }
-
-    const ban = {
-        go: (
-            <React.Fragment>
-                <Box>
-                    <SuiButton
-                        color="white"
-                        size="small"
-                        variant="text"
-                        href="/trang-chu/thong-tin"
-                    >
-                        Tài khoản bị chặn
-                    </SuiButton>
-                    <IconButton
-                        size="small"
-                        aria-label="close"
-                        color="inherit"
-                        onClick={onClickClose}
-                    >
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
-                </Box>
-            </React.Fragment>
-        ),
-        message: null,
+    const handleCloseVerify = (value) => {
+        setOpenVerify(false)
+        if (value === true) {
+            history.push('/trang-chu/thong-tin')
+        }
     }
 
     return (
@@ -331,10 +240,10 @@ export default function CreateLoanPost(props) {
                     Tạo hồ sơ vay
                 </SuiButton>
             )}
-            <SnackbarMessage
-                open={openSnack}
-                action={actionSnack}
-                onClickClose={onClickClose}
+            <RequestVerify
+                open={openVerify}
+                handleClose={handleCloseVerify}
+                value={verifyMessage}
             />
             <Dialog
                 fullScreen
@@ -410,13 +319,29 @@ export default function CreateLoanPost(props) {
                                             align="center"
                                             sx={{ mb: 3 }}
                                         >
-                                            {fCurrency(
-                                                millionChoose +
-                                                    thousandChoose +
-                                                    '000'
-                                            )}
+                                            {fCurrency(moneyText)}
                                         </SuiTypography>
-                                        {/* <SuiInput
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-between"
+                                            mb={1}
+                                        >
+                                            <SuiTypography variant="caption">
+                                                {fCurrencyNoVND(
+                                                    config?.minRaiseMoney
+                                                )}
+                                            </SuiTypography>
+                                            <SuiTypography variant="caption">
+                                                {fCurrencyNoVND(
+                                                    config?.maxRaiseMoney
+                                                )}
+                                            </SuiTypography>
+                                        </Box>
+                                        <SuiInput
+                                            error={
+                                                userData?.totalMoney === '' &&
+                                                error
+                                            }
                                             name="totalMoney"
                                             type="number"
                                             icon={{
@@ -424,86 +349,20 @@ export default function CreateLoanPost(props) {
                                                 direction: 'right',
                                             }}
                                             onChange={getMoneyText}
-                                        /> */}
-                                        <Box>
-                                            <Grid container>
-                                                <Grid item xs={12} md={4}>
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        id="combo-box-million"
-                                                        value={millionChoose}
-                                                        options={millionOption}
-                                                        onChange={(
-                                                            event,
-                                                            value
-                                                        ) =>
-                                                            handleChangeMoney(
-                                                                event,
-                                                                value
-                                                            )
-                                                        }
-                                                        isOptionEqualToValue={(
-                                                            option,
-                                                            value
-                                                        ) =>
-                                                            option.label ===
-                                                            value
-                                                        }
-                                                        disableClearable
-                                                        sx={{ width: '100%' }}
-                                                        renderInput={(
-                                                            params
-                                                        ) => (
-                                                            <TextField
-                                                                {...params}
-                                                            />
-                                                        )}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} md={4}>
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        disableClearable
-                                                        onChange={(
-                                                            event,
-                                                            value
-                                                        ) =>
-                                                            handleChangeMoney(
-                                                                event,
-                                                                value
-                                                            )
-                                                        }
-                                                        isOptionEqualToValue={(
-                                                            option,
-                                                            value
-                                                        ) =>
-                                                            option.label ===
-                                                            value
-                                                        }
-                                                        id="combo-box-thousand"
-                                                        value={thousandChoose}
-                                                        options={thousandOption}
-                                                        sx={{ width: '100%' }}
-                                                        renderInput={(
-                                                            params
-                                                        ) => (
-                                                            <TextField
-                                                                {...params}
-                                                            />
-                                                        )}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} md={4}>
-                                                    <SuiInput
-                                                        value="000"
-                                                        icon={{
-                                                            component: 'đ',
-                                                            direction: 'right',
-                                                        }}
-                                                    />
-                                                </Grid>
-                                            </Grid>
-                                        </Box>
+                                        />
+                                        {error &&
+                                        (config?.minRaiseMoney >
+                                            userData.totalMoney ||
+                                            userData.totalMoney >
+                                                config?.maxRaiseMoney) ? (
+                                            <SuiTypography
+                                                variant="caption"
+                                                fontWeight="regular"
+                                                color="error"
+                                            >
+                                                Số tiền không hợp lệ
+                                            </SuiTypography>
+                                        ) : null}
                                     </Grid>
                                     <Grid item xs={12} md={6} sx={{ mt: 3 }}>
                                         <SuiTypography
@@ -519,7 +378,9 @@ export default function CreateLoanPost(props) {
                                             }
                                             name="expectedGraduationTime"
                                             type="month"
-                                            onChange={handleOnchange}
+                                            onChange={
+                                                handleChangeExpectGraduationTime
+                                            }
                                             inputProps={{
                                                 min: fDisplayMonth(null),
                                             }}
