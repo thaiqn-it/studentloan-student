@@ -19,6 +19,7 @@ import { fCurrency } from 'utils/formatNumber'
 import SuiTypography from 'components/SuiTypography'
 
 import { WALLET_TYPE } from 'utils/enum/index'
+import { systemConfigApi } from 'apis/systemConfigApi'
 
 export default function Transfer({
     open,
@@ -33,7 +34,18 @@ export default function Transfer({
     const [email, setEmail] = useState()
     const [error, setError] = useState()
     const [emailError, setEmailError] = useState()
+    const [transactionFee, setTransactionFee] = useState()
 
+    const loadConfig = async () => {
+        try {
+            const res = await systemConfigApi.getFee()
+            if (res.data.transactionFee) return setTransactionFee()
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        loadConfig()
+    }, [])
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         if (email.length < 1) return setEmailError('Email không được để trống')
@@ -53,7 +65,7 @@ export default function Transfer({
                 recipientName: 'Paypal',
                 senderId: '',
                 senderName: 'Ví của tôi',
-                transactionFee: '',
+                transactionFee: transactionFee,
                 status: 'SUCCESS',
                 paypalTransaction: res.data.payoutId,
             }
