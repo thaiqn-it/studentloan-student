@@ -27,21 +27,7 @@ export default function ImageModal(props) {
     return (
         <>
             <CardMedia image={image} onClick={handleOpen} {...props} />
-
-            {/* <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 5,
-                }}
-                sx={{ overflow: 'scroll' }}
-            >
-                <Fade in={open}> */}
-            <Dialog onClose={handleClose} open={open} maxWidth="xl" >
+            <Dialog onClose={handleClose} open={open} maxWidth="xl" scroll='body'>
                 <Box
                     component="img"
                     src={image}
@@ -57,8 +43,6 @@ export default function ImageModal(props) {
                     }}
                 />
             </Dialog>
-            {/* </Fade>
-            </Modal> */}
         </>
     )
 }

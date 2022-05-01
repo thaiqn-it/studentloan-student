@@ -25,14 +25,15 @@ import Helmet from 'react-helmet'
 import { getFirebaseToken, onMessageListener } from './firebase'
 
 function App() {
-    const [token, setToken] = useState()
-    useEffect(() => {
-        getFirebaseToken(setToken)
-    }, [])
+    // const [token, setToken] = useState()
+    // useEffect(() => {
+    //     getFirebaseToken(setToken)
+    // }, [])
 
-    onMessageListener()
-        .then((payload) => {})
-        .catch((err) => {})
+    
+    // onMessageListener().then(payload => {
+    //     console.log(payload);
+    //   }).catch(err => console.log('failed: ', err));
 
     return (
         <>

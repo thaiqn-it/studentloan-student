@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
-const vapidKey = process.env.REACT_VAPID_KEY
+const vapidKey =
+    'BMnGl1NvSCxlMuc5dSka71oktF8oNBqut8OOk9HaqKR8qA9FHr_GTOnJ_JlbxqWamatW9xYAFjs6RTW1KnyvJx8'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,14 +19,13 @@ const vapidKey = process.env.REACT_VAPID_KEY
 // }
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyDYsjufZklXVJSKPJ32TKxZuhJPTSEKeak',
-    authDomain: 'loan-student.firebaseapp.com',
-    projectId: 'loan-student',
-    storageBucket: 'loan-student.appspot.com',
-    messagingSenderId: '761167549872',
-    appId: '1:761167549872:web:deb06f4c84d51c76507275',
-    measurementId: 'G-3WTQ4TP3BP',
-}
+    apiKey: "AIzaSyAs_8XhaLgbh1K6HhrCZ2T0NHRNKjL77D4",
+    authDomain: "studentloan-888d0.firebaseapp.com",
+    projectId: "studentloan-888d0",
+    storageBucket: "studentloan-888d0.appspot.com",
+    messagingSenderId: "909307399560",
+    appId: "1:909307399560:web:c0b488290f3812d897be3d"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
@@ -41,7 +41,7 @@ export const getFirebaseToken = (setToken) => {
             if (currentToken) {
                 // Send the token to your server and update the UI if necessary
                 // ...
-                console.log('current token for client :', currentToken)
+                console.log(currentToken)
                 setToken(currentToken)
             } else {
                 // Show permission request UI
@@ -63,3 +63,7 @@ export const onMessageListener = () =>
             resolve(payload)
         })
     })
+
+onMessage(messaging, (payload) => {
+    console.log(payload)
+})

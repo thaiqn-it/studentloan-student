@@ -51,6 +51,7 @@ const initialState = {
     token: token,
     loading: false,
     error: null,
+    pushToken: null,
 }
 
 export const authReducer = (initialState, action) => {

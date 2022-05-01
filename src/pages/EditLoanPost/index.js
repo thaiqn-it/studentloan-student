@@ -10,6 +10,8 @@ import SuiButton from 'components/SuiButton'
 import SuiBox from 'components/SuiBox'
 
 import DeleteIcon from '@mui/icons-material/Delete'
+import SendIcon from '@mui/icons-material/Send'
+import SaveIcon from '@mui/icons-material/Save'
 
 import Scroll, { Link, scroller } from 'react-scroll'
 var scroll = Scroll.animateScroll
@@ -286,6 +288,7 @@ export default function EditLoanPost() {
                     variant="outlined"
                     size="large"
                     onClick={handleSave}
+                    startIcon={<SaveIcon />}
                 >
                     Lưu
                 </SuiButton>
@@ -294,6 +297,7 @@ export default function EditLoanPost() {
                     size="large"
                     sx={{ mb: 3 }}
                     onClick={handleSubmit}
+                    endIcon={<SendIcon />}
                 >
                     Gửi
                 </SuiButton>

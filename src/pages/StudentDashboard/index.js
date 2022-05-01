@@ -18,6 +18,7 @@ import { useAuthState, useAuthDispatch } from 'context/authContext'
 import { reloadData } from 'context/userAction'
 
 import { useHistory } from 'react-router'
+import { onMessageListener } from '..//..//firebase'
 
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]

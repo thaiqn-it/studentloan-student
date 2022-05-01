@@ -7,6 +7,8 @@ import {
     differenceInMonths,
 } from 'date-fns'
 
+import vi from 'date-fns/locale/vi'
+
 // ----------------------------------------------------------------------
 
 export function fDate(date) {
@@ -40,7 +42,7 @@ export function fDateTimeSuffix(date) {
 export function fToNow(date) {
     return formatDistanceToNow(new Date(date), {
         addSuffix: false,
-        locale: 'vi-VN',
+        locale: vi,
     })
 }
 
@@ -93,8 +95,6 @@ export function addMonth(date, duration) {
 // export function getDifferenceMonth(dateLeft,dateRight) {
 //     return differenceInMonths(dateLeft, dateRight)
 // }
-
-
 
 // export function fGetCurrentMonth() {
 //     var returnMonth = format(new Date(), 'YYYY-MM')

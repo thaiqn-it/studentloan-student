@@ -3,18 +3,26 @@ import {
     Container,
     Grid,
     Box,
+    Divider,
     Slider,
     Radio,
     Paper,
+    Card,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
 } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
 import React, { useState } from 'react'
 import classes from './LandingPage.module.css'
-import Navbar from './Navbar'
+import Navbar from './components/Navbar'
 // import Navbar from "..//..//examples/Navbars/DefaultNavbar";
 
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+
 import landing from '../../assets/undraw_collaborating_re_l43g.svg'
+import Footer from './components/Footer'
 
 function valuetext(value) {
     return `${value}..000`
@@ -41,12 +49,20 @@ export default function LandingPage() {
 
     return (
         <>
-            <Box className={classes.welcome}>
+            {/* <Box className={classes.welcome}> */}
+            <Box
+                sx={{
+                    background: '#f7f5f2',
+                    position: 'relative',
+                    height: '100vh',
+                    minHeight: '700px',
+                }}
+            >
                 <Navbar title="StudentLoanPlatform" />
 
                 <Container maxWidth="xl">
                     <Box padding="10% 20px 0 20px">
-                        <Grid container>
+                        <Grid container spacing={2}>
                             <Grid item xs="12" md="12" lg="6">
                                 <SuiTypography
                                     variant="h1"
@@ -76,18 +92,19 @@ export default function LandingPage() {
                                     có khả năng chi trả học phí. Bên cạnh đó
                                     việc trả nợ rất ưu đãi cho sinh viên
                                 </SuiTypography>
-                                <SuiButton color="primary">
+                                <SuiButton color="dark">
                                     Tìm hiểu thêm
                                 </SuiButton>
                             </Grid>
                             <Grid item xs="12" md="12" lg="6">
                                 <CardMedia
-                                    src={landing}
+                                    src="https://www.usnewsglobaleducation.com/wp-content/uploads/2019/10/GettyImages-914314318-1024x683.jpg"
                                     component="img"
                                     sx={{
                                         height: 'auto',
-                                        maxWidth: '90%',
+                                        maxWidth: '100%',
                                         margin: '0px',
+                                        borderRadius: 0,
                                         mt: 5,
                                         float: 'right',
                                         '@media (max-width: 786px)': {
@@ -100,7 +117,7 @@ export default function LandingPage() {
                     </Box>
                 </Container>
             </Box>
-            <Box
+            {/* <Box
                 id="contact"
                 height="100vh"
                 position="relative"
@@ -111,17 +128,17 @@ export default function LandingPage() {
                         marginTop: '150px',
                     },
                     '@media (max-width: 786px)': {
-                        marginTop: '50px',
+                        marginTop: '200px',
                     },
                 }}
             >
-                {/* <Container textAlign="center" maxWidth="xl">
+                <Container textAlign="center" maxWidth="xl">
                     <SuiTypography
                         variant="h2"
                         fontWeight="medium"
                         color="black"
                     >
-                        Get started with your first installment plan
+                        Kế hoạch trả góp học phí cho các sinh viên
                     </SuiTypography>
                     <SuiTypography
                         variant="h6"
@@ -302,14 +319,187 @@ export default function LandingPage() {
                             </Box>
                         </Grid>
                     </Grid>
-                </Container> */}
-            </Box>
+                </Container>
+            </Box> */}
+            <Box height="100vh" p={3}>
+                <Container maxWidth="lg">
+                    <SuiTypography
+                        variant="h3"
+                        fontWeight="bold"
+                        color="black"
+                        align="center"
+                    >
+                        Kế hoạch trả góp học phí cho sinh viên
+                    </SuiTypography>
+                    <SuiTypography
+                        variant="h5"
+                        fontWeight="light"
+                        color="black"
+                        align="center"
+                        sx={{mt:1}}
+                    >
+                        Cho dù bạn là sinh viên năm nhất đại học hay đang học
+                        đại học, chúng tôi có thể hỗ trợ tài chính cho quá trình
+                        học tập của bạn.
+                    </SuiTypography>
 
-            {/* <Box
-                height="100vh"
-                position="relative"
-                padding="0 20px 0 20px"
-            ></Box> */}
+                    <Card sx={{ mt: 5 }}>
+                        <Box sx={{ p: 3 }}>
+                            <Grid container>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="bold"
+                                        color="black"
+                                    >
+                                        Kế hoạch trả góp học phí cho sinh viên
+                                    </SuiTypography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="regular"
+                                        color="black"
+                                    >
+                                        The Bukas Tuition Installment Plan
+                                        offers students an alternative way to
+                                        pay for their tuition with longer
+                                        payment terms, competitive interest
+                                        rates, and a hassle-free online process.
+                                    </SuiTypography>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Divider />
+
+                        <Box sx={{ background: '#f7f5f2', p: 3 }}>
+                            <Grid container>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="bold"
+                                        color="black"
+                                    >
+                                        Payment frequency
+                                    </SuiTypography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="regular"
+                                        color="black"
+                                    >
+                                        Pay monthly
+                                    </SuiTypography>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Divider />
+
+                        <Box sx={{ p: 3 }}>
+                            <Grid container>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="bold"
+                                        color="black"
+                                    >
+                                        Installment duration*
+                                    </SuiTypography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="regular"
+                                        color="black"
+                                    >
+                                        12 months
+                                    </SuiTypography>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Divider />
+                        <Box sx={{ background: '#f7f5f2', p: 3 }}>
+                            <Grid container>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="bold"
+                                        color="black"
+                                    >
+                                        Interest rate*
+                                    </SuiTypography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="regular"
+                                        color="black"
+                                    >
+                                        1.5 % per month
+                                    </SuiTypography>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Card>
+                    <Box mt={5} display="flex" alignItems="center">
+                        <SuiTypography
+                            variant="button"
+                            fontWeight="regular"
+                            align="center"
+                        >
+                            *A one-time origination fee of 3% is also added to
+                            the principal amount on our standard tuition
+                            installment plans. Interest rates may vary depending
+                            on the underwriting and the amount you ask for.
+                        </SuiTypography>
+                    </Box>
+                </Container>
+            </Box>
+            <Box height="100vh" sx={{ background: '#f7f5f2', p: 3 }}>
+                <Container maxWidth="xl">
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                >
+                                    <SuiTypography>Accordion 1</SuiTypography>
+                                </AccordionSummary>
+                                {/* <Divider /> */}
+                                <AccordionDetails>
+                                    <SuiTypography>
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipiscing elit. Suspendisse malesuada
+                                        lacus ex, sit amet blandit leo lobortis
+                                        eget.
+                                    </SuiTypography>
+                                </AccordionDetails>
+                            </Accordion>
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel2a-content"
+                                    id="panel2a-header"
+                                >
+                                    <SuiTypography>Accordion 2</SuiTypography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <SuiTypography>
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipiscing elit. Suspendisse malesuada
+                                        lacus ex, sit amet blandit leo lobortis
+                                        eget.
+                                    </SuiTypography>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Box>
+            <Footer />
         </>
     )
 }

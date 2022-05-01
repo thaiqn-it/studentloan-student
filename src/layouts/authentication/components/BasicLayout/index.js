@@ -6,7 +6,7 @@ import SuiTypography from 'components/SuiTypography'
 
 import PageLayout from 'examples/LayoutContainers/PageLayout'
 
-import brand from 'assets/brand.png'
+import brand from 'assets/brand1.png'
 import { useHistory } from 'react-router-dom'
 
 function BasicLayout({ title, description, image, children }) {
@@ -27,7 +27,6 @@ function BasicLayout({ title, description, image, children }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexDirection: 'column',
                 }}
             >
                 <SuiBox

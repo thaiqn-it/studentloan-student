@@ -19,6 +19,8 @@ import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
+import DashboardIcon from '@mui/icons-material/Dashboard';
+
 import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
@@ -33,32 +35,6 @@ let routes = [
         component: Main,
         noCollapse: true,
     },
-    // {
-    //     type: 'collapse',
-    //     name: 'Thông tin v2',
-    //     key: 'profile2',
-    //     icon: <AssignmentIndIcon size="12px" />,
-    //     collapse: [
-    //         {
-    //             type: 'collapse',
-    //             name: 'Thông tin',
-    //             key: 'profile',
-    //             route: '/profile2/profile',
-    //             icon: <AssignmentIndIcon size="12px" />,
-    //             component: StudentProfile,
-    //             noCollapse: true,
-    //         },
-    //         {
-    //             type: 'collapse',
-    //             name: 'Ví',
-    //             key: 'wallet',
-    //             route: '/profile2/wallet',
-    //             icon: <AccountBalanceWalletIcon size="12px" />,
-    //             component: Wallet,
-    //             noCollapse: true,
-    //         },
-    //     ],
-    // },
 
     // {
     //     type: 'collapse',
@@ -107,15 +83,6 @@ let routes = [
     },
     {
         type: 'collapse',
-        name: 'Xem tất cả hồ sơ vay',
-        key: 'tat-ca',
-        route: '/ho-so/tat-ca',
-        icon: <AssignmentIcon size="12px" />,
-        component: ViewAllPost,
-        noCollapse: true,
-    },
-    {
-        type: 'collapse',
         name: 'Thông tin',
         key: 'thong-tin',
         route: '/thong-tin',
@@ -123,6 +90,87 @@ let routes = [
         component: StudentProfile2,
         noCollapse: false,
     },
+    {
+        type: 'collapse',
+        name: 'Hồ sơ vay',
+        key: 'ho-so-vay',
+        icon: <AssignmentIcon size="12px" />,
+        collapse: [
+            {
+                type: 'collapse',
+                name: 'Tất cả',
+                key: 'tat-ca',
+                route: '/ho-so/tat-ca',
+                icon: "dashboard",
+                component: ViewAllPost,
+                noCollapse: true,
+            },
+            {
+                type: 'collapse',
+                name: 'Đang chờ duyệt',
+                key: 'dang-cho-duyet',
+                route: '/ho-so/dang-cho-duyet',
+                icon: "access_time",
+                component: ViewAllPost,
+                noCollapse: true,
+            },
+            {
+                type: 'collapse',
+                name: 'Đang kêu gọi',
+                key: 'dang-keu-goi',
+                route: '/ho-so/dang-keu-goi',
+                icon: "monetization_on",
+                component: ViewAllPost,
+                noCollapse: true,
+            },
+            {
+                type: 'collapse',
+                name: 'Thành công',
+                key: 'thanh-cong',
+                route: '/ho-so/thanh-cong',
+                icon: "check_circle",
+                component: ViewAllPost,
+                noCollapse: true,
+            },
+            {
+                type: 'collapse',
+                name: 'Đang thanh toán',
+                key: 'dang-thanh-toan',
+                route: '/ho-so/dang-thanh-toan',
+                icon: "play_circle_filled",
+                component: ViewAllPost,
+                noCollapse: true,
+            },
+            // {
+            //     type: 'collapse',
+            //     name: 'Từ chối',
+            //     key: 'tu-choi',
+            //     route: '/ho-so/tu-choi',
+            //     icon: "do_disturb_on",
+            //     component: ViewAllPost,
+            //     noCollapse: true,
+            // },
+            // {
+            //     type: 'collapse',
+            //     name: 'Không thành công',
+            //     key: 'khong-thanh-cong',
+            //     route: '/ho-so/khong-thanh-cong',
+            //     icon: "cancel",
+            //     component: ViewAllPost,
+            //     noCollapse: true,
+            // },
+            // {
+            //     type: 'collapse',
+            //     name: 'Không thanh toán',
+            //     key: 'khong-thanh-toan',
+            //     route: '/ho-so/khong-thanh-toan',
+            //     icon: "do_disturb_on",
+            //     component: ViewAllPost,
+            //     noCollapse: true,
+            // },
+        ],
+    },
+
 ]
 
 const extraRoutes = [

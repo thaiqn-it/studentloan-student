@@ -66,5 +66,5 @@ export const userApi = {
     getStudentProfile,
     updateUser,
     verifyPassword,
-    chagnePassword
+    chagnePassword,
 }

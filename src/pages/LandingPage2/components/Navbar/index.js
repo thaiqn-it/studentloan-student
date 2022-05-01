@@ -37,7 +37,7 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 // Soft UI Dashboard PRO React base styles
 import breakpoints from 'assets/theme/base/breakpoints'
 
-import ReleaseLogo from '../../../assets/newLogo.png'
+import ReleaseLogo from '../../../../assets/newLogo.png'
 
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
