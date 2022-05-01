@@ -144,6 +144,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         .then((payload) => {
             var noti = notifications.concat(payload)
             setNotifications(noti)
+            console.log(payload)
         })
         .catch((err) => console.log('failed: ', err))
 
