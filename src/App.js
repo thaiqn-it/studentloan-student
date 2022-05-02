@@ -54,7 +54,7 @@ function App() {
                                 component={ResetPassword}
                             />
                             <Route
-                                path="/authentication/sign-up"
+                                path="/xac-thuc/dang-ky"
                                 exact
                                 component={SignUp}
                             />
@@ -63,7 +63,7 @@ function App() {
                                 component={StudentDashboard}
                             />
                             <Route
-                                path="/authentication/sign-in"
+                                path="/xac-thuc/dang-nhap"
                                 exact
                                 component={Login}
                             />

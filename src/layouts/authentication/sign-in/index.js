@@ -150,7 +150,7 @@ function SignIn() {
                     <SuiBox mt={4} mb={1}>
                         <SuiButton
                             type="submit"
-                            color="dark"
+                            color="primary"
                             fullWidth
                             onClick={signIn}
                         >
@@ -174,17 +174,6 @@ function SignIn() {
                                 Đăng kí
                             </SuiTypography>
                         </SuiTypography>
-                        <SuiBox>
-                            <SuiTypography
-                                component={Link}
-                                to="/"
-                                variant="caption"
-                                color="dark"
-                                fontWeight="medium"
-                            >
-                                Quay lại
-                            </SuiTypography>
-                        </SuiBox>
                     </SuiBox>
                 </SuiBox>
             </CoverLayout>

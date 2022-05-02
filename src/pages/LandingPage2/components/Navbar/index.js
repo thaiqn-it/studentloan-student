@@ -157,13 +157,13 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         <DefaultNavbarLink
                             icon="account_circle"
                             name="Đăng kí"
-                            route="/authentication/sign-up"
+                            route="/xac-thuc/dang-ky"
                             light={light}
                         />
                         <DefaultNavbarLink
                             icon="key"
                             name="Đăng nhập"
-                            route="/authentication/sign-in"
+                            route="/xac-thuc/dang-nhap"
                             light={light}
                         />
                     </SuiBox>

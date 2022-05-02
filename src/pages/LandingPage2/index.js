@@ -73,7 +73,7 @@ export default function LandingPage() {
                                     Xin chào,
                                 </SuiTypography>
                                 <SuiTypography
-                                    variant="h1"
+                                    variant="h2"
                                     fontWeight="regular"
                                     marginBottom="20px"
                                     color="black"
