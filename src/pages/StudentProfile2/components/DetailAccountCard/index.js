@@ -9,10 +9,12 @@ import {
     Select,
     MenuItem,
     Tooltip,
+    IconButton,
 } from '@mui/material'
 import SuiTypography from 'components/SuiTypography'
 import SuiInput from 'components/SuiInput'
 import SuiButton from 'components/SuiButton'
+import EditIcon from '@mui/icons-material/Edit'
 import { fDisplayDate } from 'utils/formatTime'
 import { schoolApi } from 'apis/shoolApi'
 import { majorApi } from 'apis/majorApi'
@@ -123,10 +125,16 @@ export default function DetailAccountCard(props) {
         <>
             <Paper elevation={3} sx={{ borderRadius: '10px' }}>
                 <Box p={2}>
-                    <Box py={2}>
+                    <Box py={2} display="flex" justifyContent="space-between" alignItems="center">
                         <SuiTypography variant="h5">
                             Thông tin chi tiết
                         </SuiTypography>
+
+                        <IconButton size="medium" href="/trang-chu/mat-khau">
+                            <SuiTypography variant="caption" color="black" fontWeight="bold">
+                                Thay đổi mật khẩu
+                            </SuiTypography>
+                        </IconButton>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>

@@ -55,15 +55,12 @@ export default function StudentProfile2() {
     const [openSnack, setOpenSnack] = useState(false)
 
     useEffect(() => {
-        setDocTitle('Thông tin - StudentLoan')
+        // setDocTitle('Thông tin - StudentLoan')
         fetchData()
     }, [isChange])
     useEffect(() => {
         console.log('profile page', tempProfileChange)
-        
     }, [])
-
-    
 
     const fetchData = async () => {
         setLoading(true)
@@ -74,7 +71,6 @@ export default function StudentProfile2() {
                     res.data.student
                 const tutors = res.data.tutors
                 const achievements = res.data.achievements
-                console.log(tutors)
                 setStudentInfo(student)
                 setOldStudentInfo(student)
                 setTutorInfo(tutors)
@@ -180,8 +176,9 @@ export default function StudentProfile2() {
                 >
                     {objectStatus.message}
                 </SuiButton>
-                {userInfo?.status !== 'VERIFIED' &&
-                userInfo?.status !== 'PENDING' ? (
+                {(userInfo?.status !== 'UNVERIFIED' ||
+                    userInfo?.status !== 'BAN') &&
+                userInfo?.reason !== null ? (
                     <Box
                         display="flex"
                         flexDirection="row"

@@ -32,6 +32,7 @@ export default function TutorDetail() {
         citizenCardCreatedDate: '',
         citizenCardCreatedPlace: '',
         backCitizenCardImageUrl: '',
+        frontCitizenCardImageUrl: '',
         // portraitUrl:"",
         relation: '',
         status: TUTOR_STATUS.UNVERIFIED,
@@ -146,7 +147,7 @@ export default function TutorDetail() {
 
         return (
             <>
-                {tutor?.status ? (
+                {id !== 'tao' && tutor?.status ? (
                     <SuiButton
                         color={objectStatus.color}
                         size="small"
@@ -278,29 +279,34 @@ export default function TutorDetail() {
                     onChangeTutorInfo={onChangeTutorInfo}
                 />
             </Box>
-
-            <Box mb={3} display="flex" justifyContent="space-between">
-                {id === 'tao' ? null : (
-                    <>
-                        <SuiButton
-                            color="error"
-                            onClick={handleOpenDelete}
-                            size="large"
-                        >
-                            {id === 'tao-moi' ? 'Huỷ' : 'Xoá'}
-                        </SuiButton>
-                        <ComfirmDelete
-                            open={openComfirm}
-                            handleClose={handleClose}
-                            title="người giám hộ"
-                            handleDelete={handleDelete}
-                        />
-                    </>
-                )}
-                <SuiButton color="primary" onClick={handleSubmit} size="large">
-                    {id === 'tao-moi' ? 'Tạo' : 'Cập nhật'}
-                </SuiButton>
-            </Box>
+            {tutor?.status === 'VERIFIED' ? null : (
+                <Box mb={3} display="flex" justifyContent="space-between">
+                    {id === 'tao' ? null : (
+                        <>
+                            <SuiButton
+                                color="error"
+                                onClick={handleOpenDelete}
+                                size="large"
+                            >
+                                Xóa
+                            </SuiButton>
+                            <ComfirmDelete
+                                open={openComfirm}
+                                handleClose={handleClose}
+                                title="người giám hộ"
+                                handleDelete={handleDelete}
+                            />
+                        </>
+                    )}
+                    <SuiButton
+                        color="primary"
+                        onClick={handleSubmit}
+                        size="large"
+                    >
+                        {id === 'tao' ? 'Tạo' : 'Cập nhật'}
+                    </SuiButton>
+                </Box>
+            )}
         </>
     )
 }

@@ -8,6 +8,7 @@ import { PROVINCEVN } from '..//..//..//..//apis/static/provinceVN'
 
 import DropFileZone from '../../../../components/DropFileZone'
 import { TUTOR_STATUS } from 'utils/enum'
+import ImageCard from 'components/ImageCard'
 
 export default function PaperInformation(props) {
     const { tutor, onChangeTutorInfo, erroMess } = props
@@ -205,20 +206,29 @@ export default function PaperInformation(props) {
                                     >
                                         Mặt trước CMND/CCCD
                                     </SuiTypography>
-                                    <DropFileZone
-                                        elementId="frontCitizenCardImageUrl"
-                                        elementName="frontCitizenCardImageUrl"
-                                        flexEnd="flex-start"
-                                        image={
-                                            tutor?.frontCitizenCardImageUrl
-                                                ? tutor.frontCitizenCardImageUrl
-                                                : ''
-                                        }
-                                        onFileChangeURL={(url, event) =>
-                                            onFileChangeURL(url, event)
-                                        }
-                                        onDelete={onDelete}
-                                    />
+                                    {tutor?.status === TUTOR_STATUS.VERIFIED ? (
+                                        <ImageCard
+                                            image={
+                                                tutor?.frontCitizenCardImageUrl
+                                            }
+                                        />
+                                    ) : (
+                                        <DropFileZone
+                                            elementId="frontCitizenCardImageUrl"
+                                            elementName="frontCitizenCardImageUrl"
+                                            flexEnd="flex-start"
+                                            image={
+                                                tutor?.frontCitizenCardImageUrl
+                                                    ? tutor.frontCitizenCardImageUrl
+                                                    : ''
+                                            }
+                                            onFileChangeURL={(url, event) =>
+                                                onFileChangeURL(url, event)
+                                            }
+                                            onDelete={onDelete}
+                                        />
+                                    )}
+
                                     {erroMess &&
                                     tutor?.frontCitizenCardImageUrl === '' ? (
                                         <SuiTypography
@@ -240,20 +250,29 @@ export default function PaperInformation(props) {
                                     >
                                         Mặt sau CMND/CCCD
                                     </SuiTypography>
-                                    <DropFileZone
-                                        elementId="backCitizenCardImageUrl"
-                                        elementName="backCitizenCardImageUrl"
-                                        flexEnd="flex-start"
-                                        image={
-                                            tutor?.backCitizenCardImageUrl
-                                                ? tutor.backCitizenCardImageUrl
-                                                : ''
-                                        }
-                                        onFileChangeURL={(url, event) =>
-                                            onFileChangeURL(url, event)
-                                        }
-                                        onDelete={onDelete}
-                                    />
+                                    {tutor?.status === TUTOR_STATUS.VERIFIED ? (
+                                        <ImageCard
+                                            image={
+                                                tutor?.backCitizenCardImageUrl
+                                            }
+                                        />
+                                    ) : (
+                                        <DropFileZone
+                                            elementId="backCitizenCardImageUrl"
+                                            elementName="backCitizenCardImageUrl"
+                                            flexEnd="flex-start"
+                                            image={
+                                                tutor?.backCitizenCardImageUrl
+                                                    ? tutor.backCitizenCardImageUrl
+                                                    : ''
+                                            }
+                                            onFileChangeURL={(url, event) =>
+                                                onFileChangeURL(url, event)
+                                            }
+                                            onDelete={onDelete}
+                                        />
+                                    )}
+
                                     {erroMess &&
                                     tutor?.backCitizenCardImageUrl === '' ? (
                                         <SuiTypography

@@ -11,7 +11,8 @@ import SuiBox from 'components/SuiBox'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import { Link } from 'react-scroll'
+import Scroll, { Link, scroller } from 'react-scroll'
+var scroll = Scroll.animateScroll
 
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 
@@ -34,11 +35,12 @@ export default function EditLoanPost() {
     const [loan, setLoan] = useState({ LoanMedia: [] })
     const [loanMedia, setLoanMedia] = useState({})
     const [studentInfo, setStudentInfo] = useState({})
-    const [achievements, setAchievements] = useState(null)
     const [loanHistory, setloanHistory] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [openConfirm, setOpenConfirm] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
+
+    const [error, setError] = useState(false)
 
     const [snack, setSnack] = useState({
         color: 'error',
@@ -55,12 +57,10 @@ export default function EditLoanPost() {
                 const { LoanMedia, Student, LoanHistories, ...restLoanData } =
                     res.data.loan
 
-                const { User, Archievements } = Student
                 setloanHistory(LoanHistories[0])
                 setLoan(restLoanData)
                 setLoanMedia(convertArrayToObject(LoanMedia, 'type'))
                 setStudentInfo(Student)
-                setAchievements(Archievements)
                 setDocTitle(
                     restLoanData.title === null
                         ? 'Chỉnh sửa hồ sơ-StudentLoan'
@@ -111,12 +111,76 @@ export default function EditLoanPost() {
         }
     }
 
-    const handleOnchangeAchievement = (value) => {
-        setAchievements([...achievements, value])
+    const handleOnchangeAchievement = () => {
+        setIsChange(Date.now())
     }
 
     const handleSubmit = () => {
-        setOpenConfirm(true)
+        var flag = true
+        var scrollTo = ''
+        if (
+            loanMedia.TRANSCRIPT.imageUrl === '' ||
+            loanMedia.TRANSCRIPT.imageUrl === null
+        ) {
+            flag = false
+            scrollTo = 'scrollTranscript'
+        }
+        if (
+            loanMedia.STUDENTCERT.imageUrl === '' ||
+            loanMedia.STUDENTCERT.imageUrl === null
+        ) {
+            flag = false
+            scrollTo = 'scrollStudentCert'
+        }
+
+        if (
+            loanMedia.DEMANDNOTE.imageUrl === '' ||
+            loanMedia.DEMANDNOTE.imageUrl === null
+        ) {
+            flag = false
+            scrollTo = 'scrollDemandNote'
+            console.log(loanMedia.DEMANDNOTE)
+        }
+        if (
+            loanMedia.VIDEO.imageUrl === '' ||
+            loanMedia.VIDEO.imageUrl === null
+        ) {
+            flag = false
+            scrollTo = 'scrollVideo'
+        }
+        if (loan.expectedMoney === null || loan.expectedMoney === '') {
+            flag = false
+            scrollTo = 'scrollExpectedMoney'
+        }
+        if (loan.totalMoney === null || loan.totalMoney === '') {
+            flag = false
+            scrollTo = 'scrollTotalMoney'
+        }
+        if (loan.description === null || loan.description === '') {
+            flag = false
+            scrollTo = 'scrollDescription'
+        }
+        if (loan.title === null || loan.title === '') {
+            flag = false
+            scrollTo = 'scrollTitle'
+        }
+
+        if (flag == true) {
+            setOpenConfirm(true)
+        } else {
+            setError(true)
+            // scroll.scrollTo(scrollTo, {
+            //     duration: 100,
+            //     delay: 0,
+            //     smooth: 'easeInOutQuart',
+            // })
+            scroller.scrollTo(scrollTo, {
+                duration: 100,
+                delay: 0,
+                smooth: 'easeInOutQuart',
+                offset: -150,
+            })
+        }
     }
 
     const handleConfirm = (value) => {
@@ -172,7 +236,6 @@ export default function EditLoanPost() {
         loanApi
             .updateLoanPost(id, LOAN_STATUS.DELETED, { loan, loanHistory })
             .then((res) => {
-                setIsChange(Date.now())
                 setIsLoading(false)
                 setOpenDelete(false)
                 history.push('/trang-chu/ho-so/tat-ca')
@@ -321,21 +384,19 @@ export default function EditLoanPost() {
                     <Box sx={{ width: '100%' }}>
                         {getStatus()}
                         <PostInfoPage
+                            errorMess={error}
                             loan={loan}
                             handleChange={handleOnchange}
                         />
 
                         <MediaPage
+                            errorMess={error}
                             loanId={loan.id}
                             loanMedia={loanMedia}
                             handleChange={handleOnchange}
                         />
 
-                        <ArchievementPage
-                            studentId={studentInfo.id}
-                            achievements={achievements}
-                            handleChange={handleOnchangeAchievement}
-                        />
+                        <ArchievementPage />
                         <ConfirmPage studentInfo={studentInfo} />
                         <Divider />
 

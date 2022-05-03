@@ -1,31 +1,21 @@
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
-import {
-    Container,
-    ThemeProvider,
-    Typography,
-    Avatar,
-    Divider,
-} from '@mui/material'
+import { ThemeProvider, Divider } from '@mui/material'
 import theme from '../../../../theme'
 
-import Essay from '..//..//..//..//assets/essay.png'
-import Plan2 from '..//..//..//..//assets/plan2.png'
-import Writing from '..//..//..//..//assets/writing.png'
-import Flag from '..//..//..//..//assets/flag.png'
-import Group from '..//..//..//..//assets/group-chat.png'
-
-import TodayIcon from '@mui/icons-material/Today';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import TodayIcon from '@mui/icons-material/Today'
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
+import ImportContactsIcon from '@mui/icons-material/ImportContacts'
 
 import { useState, useEffect } from 'react'
+import { LOAN_STATUS } from 'utils/enum'
 
 export default function TabInfo(props) {
-    const { currentTab, onChangeTab } = props
+    const { currentTab, onChangeTab, status } = props
 
     const [isModbile, setIsMobile] = useState(false)
+    const [currentStatus, setCurrentStatus] = useState(null)
 
     useEffect(() => {
         function handleResize() {
@@ -35,12 +25,65 @@ export default function TabInfo(props) {
                 setIsMobile(false)
             }
         }
-
         window.addEventListener('resize', handleResize)
-    }, [])
+        setCurrentStatus(status)
+    }, [status])
 
     const handleChange = (event, newValue) => {
         onChangeTab(newValue)
+    }
+
+    const renderInvestorTab = () => {
+        if (currentStatus !== null) {
+            var current = currentStatus[currentStatus.length - 1].type
+            if (
+                current === LOAN_STATUS.FUNDING ||
+                current === LOAN_STATUS.FAIL ||
+                current === LOAN_STATUS.ONGOING ||
+                current === LOAN_STATUS.FINISH ||
+                current === LOAN_STATUS.CANCEL ||
+                current === LOAN_STATUS.INCOMPLETE
+            ) {
+                return (
+                    <Tab
+                        value="2"
+                        icon={<PeopleAltIcon />}
+                        label="Nhà đầu tư"
+                        sx={{ textTransform: 'none' }}
+                    />
+                )
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
+    }
+
+    const renderRepaymentTab = () => {
+        if (currentStatus !== null) {
+            var current = currentStatus[currentStatus.length - 1].type
+            if (
+                current === LOAN_STATUS.FAIL ||
+                current === LOAN_STATUS.ONGOING ||
+                current === LOAN_STATUS.FINISH ||
+                current === LOAN_STATUS.CANCEL ||
+                current === LOAN_STATUS.INCOMPLETE
+            ) {
+                return (
+                    <Tab
+                        value="4"
+                        icon={<TodayIcon />}
+                        label="Kế hoạch trả"
+                        sx={{ textTransform: 'none' }}
+                    />
+                )
+            } else {
+                return null
+            }
+        } else {
+            return null
+        }
     }
 
     return (
@@ -66,7 +109,7 @@ export default function TabInfo(props) {
                         //         sx={{ width: 30, height: 30 }}
                         //     />
                         // }
-                        icon={<ImportContactsIcon/>}
+                        icon={<ImportContactsIcon />}
                         label="Thông tin hồ sơ vay"
                         sx={{ textTransform: 'none' }}
                     />
@@ -90,20 +133,26 @@ export default function TabInfo(props) {
                         }
                         sx={{ textTransform: 'none' }}
                     /> */}
-                    <Tab
-                        value="2"
-                        // icon={
-                        //     <Avatar
-                        //         alt="test avatar"
-                        //         src={Group}
-                        //         variant="rounded"
-                        //         sx={{ width: 30, height: 30 }}
-                        //     />
-                        // }
-                        icon={<PeopleAltIcon/>}
-                        label="Nhà đầu tư"
-                        sx={{ textTransform: 'none' }}
-                    />
+                    {/* {status === null &&
+                    status[status.length - 1]?.type ===
+                        USER_STATUS.FUNDING ? null : (
+                        <Tab
+                            value="2"
+                            // icon={
+                            //     <Avatar
+                            //         alt="test avatar"
+                            //         src={Group}
+                            //         variant="rounded"
+                            //         sx={{ width: 30, height: 30 }}
+                            //     />
+                            // }
+                            icon={<PeopleAltIcon />}
+                            label="Nhà đầu tư"
+                            sx={{ textTransform: 'none' }}
+                        />
+                    )} */}
+                    {renderInvestorTab()}
+
                     {/* <Tab
                         value="3"
                         icon={
@@ -124,20 +173,23 @@ export default function TabInfo(props) {
                         }
                         sx={{ textTransform: 'none' }}
                     /> */}
-                    <Tab
-                        value="4"
-                        // icon={
-                        //     <Avatar
-                        //         alt="test avatar"
-                        //         src={Plan2}
-                        //         variant="rounded"
-                        //         sx={{ width: 30, height: 30 }}
-                        //     />
-                        // }
-                        icon={<TodayIcon/>}
-                        label="Kế hoạch trả"
-                        sx={{ textTransform: 'none' }}
-                    />
+                    {/* {status !== null && status[0]?.type === 'ONGOING' ? (
+                        <Tab
+                            value="4"
+                            // icon={
+                            //     <Avatar
+                            //         alt="test avatar"
+                            //         src={Plan2}
+                            //         variant="rounded"
+                            //         sx={{ width: 30, height: 30 }}
+                            //     />
+                            // }
+                            icon={<TodayIcon />}
+                            label="Kế hoạch trả"
+                            sx={{ textTransform: 'none' }}
+                        />
+                    ) : null} */}
+                    {renderRepaymentTab()}
                 </Tabs>
                 <Divider />
             </Box>

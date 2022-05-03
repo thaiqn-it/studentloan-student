@@ -17,60 +17,19 @@ import moment from 'moment'
 import { systemConfigApi } from 'apis/systemConfigApi'
 import { fDisplayMonth } from 'utils/formatTime'
 import { addMonth } from 'utils/formatTime'
-import { async } from '@firebase/util'
+import { Element } from 'react-scroll'
+import { fCurrencyNoVND } from 'utils/formatNumber'
 
 export default function PostInfoPage(props) {
-    const { loan, handleChange } = props
-
-    const [millionChoose, setMillionChoose] = useState('2')
-    const [thousandChoose, setThousandChoose] = useState('000')
+    const { loan, handleChange, errorMess } = props
     const [duration, setDuration] = useState('')
     const [durationOption, setDurationOption] = useState([])
-    const [millionOption, setMillionOption] = useState([])
-    const [thousandOption, setThousandOption] = useState([
-        {
-            id: 2,
-            label: '500',
-        },
-        {
-            id: 1,
-            label: '000',
-        },
-    ])
-
-    const [millionExpectChoose, setMillionExpectChoose] = useState('2')
-    const [thousandExpectChoose, setThousandExpectChoose] = useState('000')
 
     const [config, setConfig] = useState(null)
-
-    // const [date, setDate] = useState(new Date())
-    // const [demandImages, setDemandImages] = useState([])
-    // const [moneyText, setMoneyText] = useState('')
 
     useEffect(() => {
         getConfig()
         setDuration(loan?.duration + '')
-        setMillionChoose(loan?.totalMoney?.slice(0, loan.totalMoney.length - 6))
-        setThousandChoose(
-            loan?.totalMoney?.slice(
-                loan.totalMoney.length - 6,
-                loan.totalMoney.length - 3
-            )
-        )
-        if (loan.expectedMoney !== null) {
-            setMillionExpectChoose(
-                loan?.expectedMoney?.slice(0, loan.expectedMoney.length - 6)
-            )
-            setThousandExpectChoose(
-                loan?.expectedMoney?.slice(
-                    loan.expectedMoney.length - 6,
-                    loan.expectedMoney.length - 3
-                )
-            )
-        } else {
-            setMillionExpectChoose('2')
-            setThousandExpectChoose('000')
-        }
     }, [loan])
 
     const getConfig = async () => {
@@ -80,19 +39,9 @@ export default function PostInfoPage(props) {
                 setConfig(res.data)
                 var tempMinDuration =
                     res.data.minDuration + loan?.expectedGraduationTime
-                setDurationOption(getOption(tempMinDuration, 72))
-                var tempMin = Number(
-                    res.data.minRaiseMoney
-                        .toString()
-                        .slice(0, res.data.minRaiseMoney.toString().length - 6)
+                setDurationOption(
+                    getOption(tempMinDuration, res.data.maxDuration)
                 )
-                var tempMax = Number(
-                    res.data.maxRaiseMoney
-                        .toString()
-                        .slice(0, res.data.maxRaiseMoney.toString().length - 6)
-                )
-
-                setMillionOption(getOption(tempMin, tempMax))
             })
             .catch((err) => {
                 let path = `/trang-chu/ho-so/chinh-sua/${res.data.id}`
@@ -132,7 +81,16 @@ export default function PostInfoPage(props) {
 
     const getInitialMoneyText = (value) => {
         var money = Number(value)
-        return getText(money) === 'không' ? null : getText(money)
+        var value = null
+        try {
+            value = getText(money)
+            if (value === 'không') {
+                value = null
+            }
+        } catch (error) {
+            value = 'Số tiền quá lớn'
+        }
+        return value
     }
 
     function formatExpectGraduateTime(createTime, time) {
@@ -145,53 +103,22 @@ export default function PostInfoPage(props) {
         return moment(time).format('YYYY-MM-DD')
     }
 
-    const handleChangeMoney = (e, value) => {
-        var num = 0
-        if (e.target.id.includes('million')) {
-            if (Number(value.label + '000000') === config.maxRaiseMoney) {
-                setThousandOption([
-                    {
-                        id: 1,
-                        label: '000',
-                    },
-                ])
-                setThousandChoose('000')
-            } else {
-                setThousandOption([
-                    {
-                        id: 2,
-                        label: '500',
-                    },
-                    {
-                        id: 1,
-                        label: '000',
-                    },
-                ])
-            }
-            setMillionChoose(value.label)
-            num = value.label + thousandChoose + '000'
-        } else {
-            setThousandChoose(value.label)
-            num = millionChoose + value.label + '000'
-        }
-        handleChange(null, 'totalMoney', num)
+    const handleChangeTotalMoney = (e) => {
+        handleChange(e)
     }
 
-    const handleChangeExpectMoney = (e, value) => {
-        var num = 0
-        if (e.target.id.includes('million')) {
-            setMillionExpectChoose(value.label)
-            num = value.label + thousandChoose + '000'
-        } else {
-            setThousandExpectChoose(value.label)
-            num = millionChoose + value.label + '000'
-        }
-        handleChange(null, 'expectedMoney', num)
+    const handleChangeExpectMoney = (e) => {
+        handleChange(e)
     }
 
     return (
         <>
-            <Box component="div" sx={{ padding: '3rem 0rem' }} id="post-info">
+            <Box
+                component="div"
+                sx={{ padding: '3rem 0rem' }}
+                id="post-info"
+                name="post-info"
+            >
                 <SuiTypography
                     variant="h4"
                     align="center"
@@ -231,13 +158,19 @@ export default function PostInfoPage(props) {
                         </SuiTypography>
                     </Grid>
                     <Grid item xs="12" md="7">
-                        <SuiInput
-                            multiline
-                            placeholder="Tiêu đề"
-                            value={loan.title}
-                            onChange={handleOnchange}
-                            name="title"
-                        />
+                        <Element name="scrollTitle">
+                            <SuiInput
+                                multiline
+                                placeholder="Tiêu đề"
+                                value={loan.title}
+                                onChange={handleOnchange}
+                                name="title"
+                                error={
+                                    errorMess &&
+                                    (loan.title === null || loan.title === '')
+                                }
+                            />
+                        </Element>
                     </Grid>
                 </Grid>
             </Container>
@@ -357,6 +290,7 @@ export default function PostInfoPage(props) {
                         >
                             Mô tả *
                         </SuiTypography>
+
                         <SuiTypography
                             variant="button"
                             fontWeight="regular"
@@ -375,14 +309,21 @@ export default function PostInfoPage(props) {
                             },
                         }}
                     >
-                        <SuiInput
-                            rows={10}
-                            multiline
-                            placeholder="Mô tả..."
-                            onChange={handleOnchange}
-                            name="description"
-                            value={loan.description}
-                        />
+                        <Element name="scrollDescription">
+                            <SuiInput
+                                rows={10}
+                                multiline
+                                placeholder="Mô tả..."
+                                onChange={handleOnchange}
+                                name="description"
+                                value={loan.description}
+                                error={
+                                    errorMess &&
+                                    (loan.description === null ||
+                                        loan.description === '')
+                                }
+                            />
+                        </Element>
                     </Grid>
                 </Grid>
             </Container>
@@ -419,68 +360,39 @@ export default function PostInfoPage(props) {
                                 </SuiTypography>
                             </Grid>
                             <Grid item xs="12" md="6">
-                                {/* <SuiInput
-                                    onChange={getMoneyText}
-                                    type="number"
-                                    name="totalMoney"
-                                    value={loan.totalMoney}
-                                    icon={{
-                                        component: 'đ',
-                                        direction: 'right',
-                                    }}
-                                /> */}
-                                <Grid container>
-                                    <Grid item xs={12} md={4}>
-                                        <Autocomplete
-                                            disablePortal
-                                            id="combo-box-million"
-                                            value={millionChoose}
-                                            options={millionOption}
-                                            onChange={(event, value) =>
-                                                handleChangeMoney(event, value)
-                                            }
-                                            isOptionEqualToValue={(
-                                                option,
-                                                value
-                                            ) => option.label === value}
-                                            disableClearable
-                                            sx={{ width: '100%' }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={4}>
-                                        <Autocomplete
-                                            disablePortal
-                                            disableClearable
-                                            onChange={(event, value) =>
-                                                handleChangeMoney(event, value)
-                                            }
-                                            isOptionEqualToValue={(
-                                                option,
-                                                value
-                                            ) => option.label === value}
-                                            id="combo-box-thousand"
-                                            value={thousandChoose}
-                                            options={thousandOption}
-                                            sx={{ width: '100%' }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={4}>
-                                        <SuiInput
-                                            value="000"
-                                            icon={{
-                                                component: 'đ',
-                                                direction: 'right',
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                <Element name="scrollTotalMoney">
+                                    <SuiInput
+                                        onChange={handleChangeTotalMoney}
+                                        type="number"
+                                        name="totalMoney"
+                                        value={loan.totalMoney}
+                                        icon={{
+                                            component: 'đ',
+                                            direction: 'right',
+                                        }}
+                                        error={
+                                            errorMess &&
+                                            (loan.totalMoney === null ||
+                                                loan.totalMoney === '')
+                                        }
+                                    />
+                                </Element>
                             </Grid>
+                            {loan.totalMoney > config?.maxRaiseMoney ||
+                            loan.totalMoney < config?.minRaiseMoney ? (
+                                <Grid item xs="12" md="6">
+                                    <SuiTypography
+                                        variant="caption"
+                                        color="error"
+                                    >
+                                        Số tiền phải trong khoảng (
+                                        {fCurrencyNoVND(config?.minRaiseMoney)}{' '}
+                                        -{' '}
+                                        {fCurrencyNoVND(config?.maxRaiseMoney)})
+                                    </SuiTypography>
+                                </Grid>
+                            ) : null}
+
                             <Grid item xs="12" md="12">
                                 <SuiTypography
                                     variant="button"
@@ -489,9 +401,7 @@ export default function PostInfoPage(props) {
                                     name="moneyText"
                                     textTransform="capitalize"
                                 >
-                                    {getInitialMoneyText(
-                                        millionChoose + thousandChoose + '000'
-                                    )}
+                                    {getInitialMoneyText(loan?.totalMoney)}
                                 </SuiTypography>
                             </Grid>
                         </Grid>
@@ -533,90 +443,39 @@ export default function PostInfoPage(props) {
                                 </SuiTypography>
                             </Grid>
                             <Grid item xs="12" md="6">
-                                {/* <SuiInput
-                                    onChange={getMoneyText}
-                                    type="number"
-                                    name="expectedMoney"
-                                    value={loan.expectedMoney}
-                                    icon={{
-                                        component: 'đ',
-                                        direction: 'right',
-                                    }}
-                                /> */}
-                                <Grid container>
-                                    <Grid item xs={12} md={4}>
-                                        <Autocomplete
-                                            disablePortal
-                                            id="combo-box-million"
-                                            defaultValue={millionExpectChoose}
-                                            value={millionExpectChoose}
-                                            inputValue={millionExpectChoose}
-                                            options={getOption(
-                                                2,
-                                                Number(millionChoose)
-                                            )}
-                                            onChange={(event, value) =>
-                                                handleChangeExpectMoney(
-                                                    event,
-                                                    value
-                                                )
-                                            }
-                                            isOptionEqualToValue={(
-                                                option,
-                                                value
-                                            ) => option.label === value}
-                                            disableClearable
-                                            sx={{ width: '100%' }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={4}>
-                                        <Autocomplete
-                                            disablePortal
-                                            disableClearable
-                                            onChange={(event, value) =>
-                                                handleChangeExpectMoney(
-                                                    event,
-                                                    value
-                                                )
-                                            }
-                                            isOptionEqualToValue={(
-                                                option,
-                                                value
-                                            ) => option.label === value}
-                                            id="combo-box-thousand"
-                                            defaultValue={thousandExpectChoose}
-                                            value={thousandExpectChoose}
-                                            inputValue={thousandExpectChoose}
-                                            options={[
-                                                {
-                                                    id: 2,
-                                                    label: '500',
-                                                },
-                                                {
-                                                    id: 1,
-                                                    label: '000',
-                                                },
-                                            ]}
-                                            sx={{ width: '100%' }}
-                                            renderInput={(params) => (
-                                                <TextField {...params} />
-                                            )}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={4}>
-                                        <SuiInput
-                                            value="000"
-                                            icon={{
-                                                component: 'đ',
-                                                direction: 'right',
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                <Element name="scrollExpectedMoney">
+                                    <SuiInput
+                                        onChange={handleChangeExpectMoney}
+                                        type="number"
+                                        name="expectedMoney"
+                                        value={loan.expectedMoney}
+                                        icon={{
+                                            component: 'đ',
+                                            direction: 'right',
+                                        }}
+                                        error={
+                                            errorMess &&
+                                            (loan.expectedMoney === null ||
+                                                loan.expectedMoney === '')
+                                        }
+                                    />
+                                </Element>
                             </Grid>
+                            {errorMess &&
+                            (loan.expectedMoney > loan.totalMoney ||
+                                loan.expectedMoney < config?.minRaiseMoney) ? (
+                                <Grid item xs="12" md="6">
+                                    <SuiTypography
+                                        variant="caption"
+                                        color="error"
+                                    >
+                                        Số tiền phải trong khoảng (
+                                        {fCurrencyNoVND(config?.minRaiseMoney)}{' '}
+                                        - {fCurrencyNoVND(loan?.totalMoney)})
+                                    </SuiTypography>
+                                </Grid>
+                            ) : null}
+
                             <Grid item xs="12" md="12">
                                 <SuiTypography
                                     variant="button"
@@ -625,11 +484,7 @@ export default function PostInfoPage(props) {
                                     name="moneyText"
                                     textTransform="capitalize"
                                 >
-                                    {getInitialMoneyText(
-                                        millionExpectChoose +
-                                            thousandExpectChoose +
-                                            '000'
-                                    )}
+                                    {getInitialMoneyText(loan?.expectedMoney)}
                                 </SuiTypography>
                             </Grid>
                         </Grid>

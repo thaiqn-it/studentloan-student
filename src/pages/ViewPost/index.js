@@ -58,11 +58,12 @@ export default function ViewPost() {
                         ? 'Xem hồ sơ vay-StudentLoan'
                         : res.data.loan.title + '-StudentLoan'
                 )
-                setLoanHistories(res.data.loan.LoanHistories)
-                console.log(res.data.loan)
+                var loanHist = res.data.loan.LoanHistories
+                setLoanHistories(loanHist)
                 setIsLoading(false)
                 if (
-                    res.data.loan.LoanHistories.pop().type === LOAN_STATUS.DELETED
+                    loanHist.lenght > 0 &&
+                    loanHist[loanHist.length - 1].type === LOAN_STATUS.DELETED
                 ) {
                     throw new Error()
                 }
@@ -87,10 +88,61 @@ export default function ViewPost() {
         return fileName
     }
 
+    const renderEditButton = () => {
+        if (loanHistories !== null) {
+            var current = loanHistories[loanHistories?.length -1 ]?.type
+            if (
+                current === LOAN_STATUS.DRAFT ||
+                current === LOAN_STATUS.WAITING ||
+                current === LOAN_STATUS.REJECTED
+            ) {
+                return (
+                    <>
+                        <Grid
+                            item
+                            xs="6"
+                            md="12"
+                            sx={{
+                                marginTop: '1rem',
+                            }}
+                        >
+                            <SuiTypography variant="h3" color="text">
+                                {fToNowNumber(loan.postExpireAt)}
+                            </SuiTypography>
+                            <SuiTypography
+                                variant="h6"
+                                color="text"
+                                fontWeight="regular"
+                            >
+                                ngày trước khi hết hạn
+                            </SuiTypography>
+                        </Grid>
+                        <Grid item xs="12" md="12">
+                            <SuiButton
+                                color="primary"
+                                fullWidth
+                                href={`/trang-chu/ho-so/chinh-sua/${id}`}
+                                sx={{
+                                    marginTop: {
+                                        xs: 0,
+                                        lg: 16,
+                                    },
+                                }}
+                            >
+                                Chỉnh sửa
+                            </SuiButton>
+                        </Grid>
+                    </>
+                )
+            }
+        } else {
+            return null
+        }
+    }
+
     const renderStatusTimeline = (item, index) => {
-        console.log(item)
         var objectStatus = renderStatus(item.type)
-        var isLastItem = true
+        var isLastItem = index === loanHistories.length - 1
         return (
             <TimelineItem
                 key={index}
@@ -126,7 +178,11 @@ export default function ViewPost() {
     return (
         <>
             <Paper sx={{ boxShadow: 0 }}>
-                <TabInfo onChangeTab={onChangeTab} currentTab={currentTab} />
+                <TabInfo
+                    onChangeTab={onChangeTab}
+                    currentTab={currentTab}
+                    status={loanHistories}
+                />
                 {isLoading ? <Loading /> : null}
                 {currentTab === '1' ? (
                     <SuiBox py={5}>
@@ -230,45 +286,7 @@ export default function ViewPost() {
                                                         nhà đầu tư
                                                     </SuiTypography>
                                                 </Grid>
-                                                <Grid
-                                                    item
-                                                    xs="6"
-                                                    md="12"
-                                                    sx={{
-                                                        marginTop: '1rem',
-                                                    }}
-                                                >
-                                                    <SuiTypography
-                                                        variant="h3"
-                                                        color="text"
-                                                    >
-                                                        {fToNowNumber(
-                                                            loan.postExpireAt
-                                                        )}
-                                                    </SuiTypography>
-                                                    <SuiTypography
-                                                        variant="h6"
-                                                        color="text"
-                                                        fontWeight="regular"
-                                                    >
-                                                        ngày trước khi hết hạn
-                                                    </SuiTypography>
-                                                </Grid>
-                                                <Grid item xs="12" md="12">
-                                                    <SuiButton
-                                                        color="primary"
-                                                        fullWidth
-                                                        href={`/trang-chu/ho-so/chinh-sua/${id}`}
-                                                        sx={{
-                                                            marginTop: {
-                                                                xs: 0,
-                                                                lg: 16,
-                                                            },
-                                                        }}
-                                                    >
-                                                        Chỉnh sửa
-                                                    </SuiButton>
-                                                </Grid>
+                                                {renderEditButton()}
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -304,19 +322,25 @@ export default function ViewPost() {
                                     <Grid container spacing={3}>
                                         {loan?.LoanMedia?.filter(
                                             (item) => item.type !== 'VIDEO'
-                                        ).map((item) => (
-                                            <Grid item xs={12} md={4}>
-                                                <SuiTypography
-                                                    color="black"
-                                                    mb={1}
-                                                >
-                                                    {item.description}
-                                                </SuiTypography>
-                                                <ImageCard
-                                                    image={item.imageUrl}
-                                                />
-                                            </Grid>
-                                        ))}
+                                        ).map((item) => {
+                                            if (item.imageUrl !== '') {
+                                                return (
+                                                    <Grid item xs={12} md={4}>
+                                                        <SuiTypography
+                                                            color="black"
+                                                            mb={1}
+                                                        >
+                                                            {item.description}
+                                                        </SuiTypography>
+                                                        <ImageCard
+                                                            image={
+                                                                item.imageUrl
+                                                            }
+                                                        />
+                                                    </Grid>
+                                                )
+                                            }
+                                        })}
 
                                         {/* <Grid item xs={12} md={6}>
                                             <SuiTypography color="black" mb={1}>

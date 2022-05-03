@@ -50,6 +50,10 @@ const verifyPassword = (data) => {
     return defaultInstance.post('/user/verifyPassword', data)
 }
 
+const chagnePassword = (data) =>{
+    return defaultInstance.put('/user/change-password', data)
+}
+
 export const userApi = {
     login,
     getUserById,
@@ -62,4 +66,5 @@ export const userApi = {
     getStudentProfile,
     updateUser,
     verifyPassword,
+    chagnePassword
 }

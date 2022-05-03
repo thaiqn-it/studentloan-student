@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { paypalApi } from 'apis/paypalApi'
 import {
     Box,
@@ -29,7 +30,7 @@ export default function Transfer({
     currentMoney,
 }) {
     const title = 'Rút tiền'
-
+    const history = useHistory()
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
     const [error, setError] = useState()
@@ -48,40 +49,48 @@ export default function Transfer({
     }, [])
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        if (email.length < 1) return setEmailError('Email không được để trống')
-        try {
-            const res = await paypalApi.transfer({
-                email: email,
-                money: money,
-                accountId: walletId,
-            })
+        var path = '/trang-chu/thanh-toan/rut-tien'
+        history.push({
+            pathname: path,
+            state: {
+                paypal: {
+                    email: email,
+                    money: money,
+                },
+            },
+        })
+        // try {
+        //     const res = await paypalApi.transfer({
+        //         email: email,
+        //         money: money,
+        //         accountId: walletId,
+        //     })
 
-            const data = {
-                money,
-                type: WALLET_TYPE.WITHDRAW,
-                description: 'Rút tiền sang ví paypal',
-                walletId,
-                recipientId: null,
-                recipientName: 'Paypal',
-                senderId: '',
-                senderName: 'Ví của tôi',
-                transactionFee: transactionFee,
-                status: 'SUCCESS',
-                paypalTransaction: res.data.payoutId,
-            }
-            const transactionRes = await transactionApi.createTransaction(data)
-            const walletRes = await walletApi.updateWalletById(
-                walletId,
-                -1 * money
-            )
-            handleClose()
-            reloadData()
-            if (!res) throw new Error()
-            // const transaction = aw
-        } catch (e) {
-            if (e.response.status === 400) setError(e.response.data.error)
-            console.log(e.response.data.error)
-        }
+        //     const data = {
+        //         money,
+        //         type: 'WITHDRAW',
+        //         description: 'Rút tiền sang ví paypal',
+        //         walletId,
+        //         recipientId: null,
+        //         recipientName: 'Paypal',
+        //         senderId: '',
+        //         senderName: 'Ví của tôi',
+        //         transactionFee: '',
+        //         status: 'SUCCESS',
+        //         paypalTransaction: res.data.payoutId,
+        //     }
+        //     const transactionRes = await transactionApi.createTransaction(data)
+        //     const walletRes = await walletApi.updateWalletById(
+        //         walletId,
+        //         -1 * money
+        //     )
+        //     handleClose()
+        //     reloadData()
+        //     if (!res) throw new Error()
+        //     // const transaction = aw
+        // } catch (e) {
+        //     console.log(e)
+        // }
     }
 
     return (
