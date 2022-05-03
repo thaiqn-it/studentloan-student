@@ -19,13 +19,31 @@ import SuiButton from 'components/SuiButton'
 import { fCurrency } from 'utils/formatNumber'
 import SuiTypography from 'components/SuiTypography'
 
-export default function Transfer({ open, handleClose, walletId, reloadData }) {
-    const history = useHistory()
+import { WALLET_TYPE } from 'utils/enum/index'
+import { systemConfigApi } from 'apis/systemConfigApi'
+
+export default function Transfer({
+    open,
+    handleClose,
+    walletId,
+    reloadData,
+    currentMoney,
+}) {
     const title = 'Rút tiền'
 
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
 
+    const loadConfig = async () => {
+        try {
+            const res = await systemConfigApi.getFee()
+            if (res.data.transactionFee) return setTransactionFee()
+        } catch (e) {}
+    }
+
+    useEffect(() => {
+        loadConfig()
+    }, [])
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         var path = '/trang-chu/thanh-toan/rut-tien'

@@ -18,8 +18,8 @@ import { useAuthState, useAuthDispatch } from 'context/authContext'
 import { reloadData } from 'context/userAction'
 
 import { useHistory } from 'react-router'
-import { onMessageListener } from '..//..//firebase'
-
+import { isAuthenticated } from 'context/authContext'
+import { JWT_TOKEN } from 'constants'
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]
 
@@ -98,12 +98,13 @@ const StudentDashboard = () => {
             const user = await reloadData(authDispatch)
         } catch (e) {}
     }
-
+    const auth = localStorage.getItem(JWT_TOKEN)
     useEffect(() => {
         reloadUserData()
         if (history.location.pathname === '/trang-chu') {
             history.push('/trang-chu/main')
         }
+        if (!auth) history.push('/dang-nhap')
     }, [])
 
     return (

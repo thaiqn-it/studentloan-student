@@ -163,12 +163,13 @@ const Wallet = () => {
     const user = authObj.user
 
     useEffect(() => {
-        setDocTitle("Thông tin ví-StudentLoan")
+        setDocTitle('Thông tin ví-StudentLoan')
         initData()
     }, [])
 
     const checkAction = (action) => {
-        if (user.data.status !== USER_STATUS.VERIFIED) return handleNotVerifyOpen()
+        if (user.data.status !== USER_STATUS.VERIFIED)
+            return handleNotVerifyOpen()
 
         switch (action) {
             case 'TopUp':
@@ -195,7 +196,7 @@ const Wallet = () => {
                 <SuiBox mb={3} sx={{ marginTop: '20px' }}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6} xl={3}>
-                            <Card style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
+                            <Card style={{ boxShadow: '1px 2px 4px #9E9E9E' }}>
                                 <SuiBox variant="gradient">
                                     <SuiBox p={2}>
                                         <Grid container alignItems="center">
@@ -216,7 +217,9 @@ const Wallet = () => {
                                                             color="dark"
                                                         >
                                                             {/* {formattedBalance} */}
-                                                            {fCurrency(wallet?.money)}
+                                                            {fCurrency(
+                                                                wallet?.money
+                                                            )}
                                                         </SuiTypography>
                                                     </Box>
                                                 </SuiBox>
@@ -226,7 +229,7 @@ const Wallet = () => {
                                 </SuiBox>
                             </Card>
                         </Grid>
-                        <Grid item xs={12} sm={6} xl={3} >
+                        <Grid item xs={12} sm={6} xl={2}>
                             <Box onClick={() => checkAction('TopUp')}>
                                 <MiniStatisticsCard
                                     title={{ text: 'Nạp tiền' }}
@@ -242,12 +245,15 @@ const Wallet = () => {
                                 walletId={wallet.id}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6} xl={3}>
+                        <Grid item xs={12} sm={6} xl={2}>
                             <Box onClick={() => checkAction('Transfer')}>
                                 <MiniStatisticsCard
                                     title={{ text: 'Rút tiền' }}
                                     // percentage={{ color: 'success', text: '+55%' }}
-                                    icon={{ color: 'warning', component: 'logout' }}
+                                    icon={{
+                                        color: 'warning',
+                                        component: 'logout',
+                                    }}
                                 />
                             </Box>
 
@@ -299,7 +305,10 @@ const Wallet = () => {
                         )}
                     </Grid>
                     <Grid item xs={12} md={5}>
-                        <Card sx={{ height: '70%' }} style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
+                        <Card
+                            sx={{ height: '70%' }}
+                            style={{ boxShadow: '1px 2px 4px #9E9E9E' }}
+                        >
                             {/* <SuiBox pt={3} px={2}>
                                 <SuiTypography>
                                     Transaction detail
