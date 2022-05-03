@@ -29,21 +29,12 @@ export default function Transfer({
     reloadData,
     currentMoney,
 }) {
+    const history = useHistory()
     const title = 'Rút tiền'
 
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
 
-    const loadConfig = async () => {
-        try {
-            const res = await systemConfigApi.getFee()
-            if (res.data.transactionFee) return setTransactionFee()
-        } catch (e) {}
-    }
-
-    useEffect(() => {
-        loadConfig()
-    }, [])
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         var path = '/trang-chu/thanh-toan/rut-tien'

@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { userApi } from 'apis/userApi'
 import Loading from 'components/Loading'
 import SnackbarMessage from 'components/SnackbarMessage'
+import { Helmet } from 'react-helmet'
 
 export default function PasswordPage() {
     const [input, setInput] = useState({
@@ -69,6 +70,9 @@ export default function PasswordPage() {
     return (
         <>
             {loading ? <Loading /> : null}
+            <Helmet>
+                <title>Đổi mật khẩu-StudentLoan</title>
+            </Helmet>
             <SnackbarMessage
                 snack={snack}
                 open={openSnack}

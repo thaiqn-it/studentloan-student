@@ -24,12 +24,12 @@ import MediaPage from './MediaPage'
 
 import { renderStatus } from 'utils/renderStatus'
 import Loading from 'components/Loading'
-import { setDocTitle } from 'utils/dynamicDocTitle'
 import { loanMediaApi } from 'apis/loanMediaApi'
 import { LOAN_STATUS } from 'utils/enum'
 import ConfirmSign from './components/ConfirmSign'
 import SnackbarMessage from 'components/SnackbarMessage'
 import ComfirmDelete from 'components/ComfirmDelete'
+import { Helmet } from 'react-helmet'
 
 export default function EditLoanPost() {
     const { id } = useParams()
@@ -64,11 +64,6 @@ export default function EditLoanPost() {
                 setLoan(restLoanData)
                 setLoanMedia(convertArrayToObject(LoanMedia, 'type'))
                 setStudentInfo(Student)
-                setDocTitle(
-                    restLoanData.title === null
-                        ? 'Chỉnh sửa hồ sơ-StudentLoan'
-                        : restLoanData.title + '-StudentLoan'
-                )
                 setIsLoading(false)
             })
             .catch((error) => {
@@ -190,12 +185,15 @@ export default function EditLoanPost() {
     const handleConfirm = (value) => {
         if (value) {
             setIsLoading(true)
-            notificationApi.pushNotifToAdmin({message: "Long vừa gửi",redirectUrl: "" }).then(res=>{
-                console.log(res)
-                setIsLoading(false)
-            }).catch(err=>{
-                console.log(err)
-            })
+            notificationApi
+                .pushNotifToAdmin({ message: 'Long vừa gửi', redirectUrl: '' })
+                .then((res) => {
+                    console.log(res)
+                    setIsLoading(false)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
             // for (const [key, value] of Object.entries(loanMedia)) {
             //     const { id, ...rest } = value
             //     if (value.currentStatus === 'new') {
@@ -316,6 +314,11 @@ export default function EditLoanPost() {
     return (
         <>
             {isLoading ? <Loading /> : null}
+            <Helmet>
+                <title>{ loan.title === null
+                        ? 'Chỉnh sửa hồ sơ-StudentLoan'
+                        : loan.title + '-StudentLoan'}</title>
+            </Helmet>
             <SuiBox
                 position="fixed"
                 sx={{ zIndex: 1, bottom: 0, boxShadow: 3 }}
