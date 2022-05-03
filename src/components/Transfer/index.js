@@ -19,16 +19,7 @@ import SuiButton from 'components/SuiButton'
 import { fCurrency } from 'utils/formatNumber'
 import SuiTypography from 'components/SuiTypography'
 
-import { WALLET_TYPE } from 'utils/enum/index'
-import { systemConfigApi } from 'apis/systemConfigApi'
-
-export default function Transfer({
-    open,
-    handleClose,
-    walletId,
-    reloadData,
-    currentMoney,
-}) {
+export default function Transfer({ open, handleClose, walletId, reloadData }) {
     const history = useHistory()
     const title = 'Rút tiền'
 

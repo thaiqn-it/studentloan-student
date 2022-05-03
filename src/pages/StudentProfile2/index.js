@@ -164,7 +164,8 @@ export default function StudentProfile2() {
                     {objectStatus.message}
                 </SuiButton>
                 {(userInfo?.status !== 'UNVERIFIED' ||
-                userInfo?.status !== 'BAN') && userInfo?.reason !== null ? (
+                    userInfo?.status !== 'BAN') &&
+                userInfo?.reason !== null ? (
                     <Box
                         display="flex"
                         flexDirection="row"

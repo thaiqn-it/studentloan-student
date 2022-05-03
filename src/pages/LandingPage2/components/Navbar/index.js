@@ -38,7 +38,6 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 import breakpoints from 'assets/theme/base/breakpoints'
 
 import ReleaseLogo from '../../../../assets/newLogo.png'
-import { Switch } from '@mui/material'
 
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
@@ -156,7 +155,7 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         route="contact"
                         light={light}
                     /> */}
-                        <Switch />
+
                         <DefaultNavbarLink
                             icon="account_circle"
                             name="Đăng kí"
