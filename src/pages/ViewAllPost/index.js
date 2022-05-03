@@ -1,4 +1,12 @@
-import { Box, Divider, Grid, InputLabel, MenuItem, Pagination, Select } from '@mui/material'
+import {
+    Box,
+    Divider,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Pagination,
+    Select,
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 
 import { loanApi } from 'apis/loanApi'
@@ -35,10 +43,10 @@ export default function ViewAllPost() {
             })
     }
 
-    const [age, setAge] = React.useState(10);
+    const [age, setAge] = React.useState(10)
     const handleChange = (event) => {
-        setAge(event.target.value);
-      };
+        setAge(event.target.value)
+    }
     return (
         <>
             {isLoading ? (
@@ -47,20 +55,6 @@ export default function ViewAllPost() {
                 <>
                     {listLoan.length > 0 ? (
                         <>
-                            <InputLabel id="demo-simple-select-label">
-                                Age
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={age}
-                                label="Age"
-                                onChange={handleChange}
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
                             <SuiTypography variant="button">
                                 Gần đây
                             </SuiTypography>
@@ -89,14 +83,14 @@ export default function ViewAllPost() {
                                     }
                                 })}
                             </Grid>
-                            <Box
+                            {/* <Box
                                 m={2}
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                             >
                                 <Pagination count={10} />
-                            </Box>
+                            </Box> */}
                         </>
                     ) : (
                         <>

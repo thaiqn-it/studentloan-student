@@ -12,6 +12,7 @@ import ViewAllPost from 'pages/ViewAllPost'
 import Verify from 'pages/Verify'
 import TutorDetail from 'pages/TutorDetail'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import SchoolIcon from '@mui/icons-material/School';
 
 import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
@@ -25,6 +26,7 @@ import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import PasswordPage from 'pages/PasswordPage'
+import PaymentTuition from 'pages/PaymentTuition'
 let routes = [
     {
         type: 'collapse',
@@ -74,7 +76,7 @@ let routes = [
     // },
     {
         type: 'collapse',
-        name: 'Ví',
+        name: 'Quản lý ví',
         key: 'vi',
         route: '/vi',
         icon: <AccountBalanceWalletIcon size="12px" />,

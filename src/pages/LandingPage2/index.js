@@ -11,6 +11,8 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    Stack,
+    Collapse,
 } from '@mui/material'
 import SuiButton from 'components/SuiButton'
 import SuiTypography from 'components/SuiTypography'
@@ -23,6 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 import landing from '../../assets/undraw_collaborating_re_l43g.svg'
 import Footer from './components/Footer'
+import AccordionGuide from 'components/AccordionGuide'
 
 function valuetext(value) {
     return `${value}..000`
@@ -67,7 +70,7 @@ export default function LandingPage() {
                                 <SuiTypography
                                     variant="h1"
                                     fontWeight="bold"
-                                    margin="50px 0 20px 0"
+                                    margin="50px 0 0 0"
                                     color="black"
                                 >
                                     Xin chào,
@@ -75,7 +78,7 @@ export default function LandingPage() {
                                 <SuiTypography
                                     variant="h2"
                                     fontWeight="regular"
-                                    marginBottom="20px"
+                                    marginBottom="40px"
                                     color="black"
                                 >
                                     Student Loan sẽ giúp bạn kêu gọi một khoản
@@ -84,7 +87,7 @@ export default function LandingPage() {
                                 <SuiTypography
                                     variant="h6"
                                     fontWeight="regular"
-                                    marginBottom="40px"
+                                    marginBottom="20px"
                                     color="text"
                                 >
                                     Đây là nền tảng cho vay tín chấp dựa trên
@@ -117,18 +120,16 @@ export default function LandingPage() {
                     </Box>
                 </Container>
             </Box>
-            {/* <Box
+            <Box
                 id="contact"
-                height="100vh"
-                position="relative"
-                padding="0 20px 0 20px"
-                marginTop="0"
+                p={3}
                 sx={{
+                   background: '#ffffff',
                     '@media (max-width: 1024px)': {
                         marginTop: '150px',
                     },
                     '@media (max-width: 786px)': {
-                        marginTop: '200px',
+                        marginTop: '50px',
                     },
                 }}
             >
@@ -158,7 +159,7 @@ export default function LandingPage() {
 
                     <Grid
                         container
-                        marginTop="180px"
+                        marginTop="100px"
                         spacing={3}
                         sx={{
                             '@media (max-width: 1024px)': {
@@ -185,9 +186,6 @@ export default function LandingPage() {
 
                                 <Slider
                                     defaultValue={50000000}
-                                    aria-label="Default"
-                                    size="medium"
-                                    color="secondary"
                                     onChange={handleSliderChange}
                                     min={2000000}
                                     max={50000000}
@@ -320,8 +318,8 @@ export default function LandingPage() {
                         </Grid>
                     </Grid>
                 </Container>
-            </Box> */}
-            <Box height="100vh" p={3}>
+            </Box>
+            <Box p={3}>
                 <Container maxWidth="lg">
                     <SuiTypography
                         variant="h3"
@@ -332,18 +330,18 @@ export default function LandingPage() {
                         Kế hoạch trả góp học phí cho sinh viên
                     </SuiTypography>
                     <SuiTypography
-                        variant="h5"
-                        fontWeight="light"
+                        variant="h6"
+                        fontWeight="regular"
                         color="black"
                         align="center"
-                        sx={{mt:1}}
+                        sx={{ mt: 1 }}
                     >
                         Cho dù bạn là sinh viên năm nhất đại học hay đang học
                         đại học, chúng tôi có thể hỗ trợ tài chính cho quá trình
                         học tập của bạn.
                     </SuiTypography>
 
-                    <Card sx={{ mt: 5 }}>
+                    <Card sx={{ mt: 5, boxShadow: 5 }}>
                         <Box sx={{ p: 3 }}>
                             <Grid container>
                                 <Grid item xs={12} md={6}>
@@ -361,17 +359,17 @@ export default function LandingPage() {
                                         fontWeight="regular"
                                         color="black"
                                     >
-                                        The Bukas Tuition Installment Plan
-                                        offers students an alternative way to
-                                        pay for their tuition with longer
-                                        payment terms, competitive interest
-                                        rates, and a hassle-free online process.
+                                        Kế hoạch chi trả học phí của Student
+                                        Loan cung cấp cho sinh viên một cách
+                                        thay thế để thanh toán học phí với thời
+                                        hạn thanh toán dài hơn, lãi suất cạnh
+                                        tranh và quy trình trực tuyến không rắc
+                                        rối.
                                     </SuiTypography>
                                 </Grid>
                             </Grid>
                         </Box>
                         <Divider />
-
                         <Box sx={{ background: '#f7f5f2', p: 3 }}>
                             <Grid container>
                                 <Grid item xs={12} md={6}>
@@ -380,7 +378,7 @@ export default function LandingPage() {
                                         fontWeight="bold"
                                         color="black"
                                     >
-                                        Payment frequency
+                                        Khoản phải trả trong quá trình học
                                     </SuiTypography>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
@@ -389,7 +387,7 @@ export default function LandingPage() {
                                         fontWeight="regular"
                                         color="black"
                                     >
-                                        Pay monthly
+                                        200.000 VND
                                     </SuiTypography>
                                 </Grid>
                             </Grid>
@@ -404,7 +402,7 @@ export default function LandingPage() {
                                         fontWeight="bold"
                                         color="black"
                                     >
-                                        Installment duration*
+                                        Thời hạn thanh toán
                                     </SuiTypography>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
@@ -413,12 +411,14 @@ export default function LandingPage() {
                                         fontWeight="regular"
                                         color="black"
                                     >
-                                        12 months
+                                        Thanh toán hàng tháng
                                     </SuiTypography>
                                 </Grid>
                             </Grid>
                         </Box>
+
                         <Divider />
+
                         <Box sx={{ background: '#f7f5f2', p: 3 }}>
                             <Grid container>
                                 <Grid item xs={12} md={6}>
@@ -427,7 +427,7 @@ export default function LandingPage() {
                                         fontWeight="bold"
                                         color="black"
                                     >
-                                        Interest rate*
+                                        Thời hạn trả
                                     </SuiTypography>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
@@ -436,65 +436,113 @@ export default function LandingPage() {
                                         fontWeight="regular"
                                         color="black"
                                     >
-                                        1.5 % per month
+                                        10 tháng - 6 năm
+                                    </SuiTypography>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Divider />
+                        <Box sx={{ p: 3 }}>
+                            <Grid container>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="bold"
+                                        color="black"
+                                    >
+                                        Lãi suất
+                                    </SuiTypography>
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <SuiTypography
+                                        variant="h6"
+                                        fontWeight="regular"
+                                        color="black"
+                                    >
+                                        1 % một tháng
                                     </SuiTypography>
                                 </Grid>
                             </Grid>
                         </Box>
                     </Card>
-                    <Box mt={5} display="flex" alignItems="center">
-                        <SuiTypography
-                            variant="button"
-                            fontWeight="regular"
-                            align="center"
-                        >
-                            *A one-time origination fee of 3% is also added to
-                            the principal amount on our standard tuition
-                            installment plans. Interest rates may vary depending
-                            on the underwriting and the amount you ask for.
+                    <Box
+                        mt={3}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <SuiTypography variant="button" fontWeight="regular">
+                            *Khi hồ sơ đã kêu gọi thành công, sinh viên có thể
+                            chuyển trực tiếp số tiền kêu gọi được sang tài khoản
+                            của trường đại học
                         </SuiTypography>
                     </Box>
                 </Container>
             </Box>
-            <Box height="100vh" sx={{ background: '#f7f5f2', p: 3 }}>
+            <Box sx={{ background: '#f7f5f2', p: 3, pb: 10 }}>
                 <Container maxWidth="xl">
+                    <SuiTypography variant="h3" sx={{ mb: 1 }}>
+                        Bukas Quick Guide
+                    </SuiTypography>
+                    <Box sx={{ mb: 3 }}>
+                        <SuiTypography variant="caption">
+                            Here are the frequently asked questions about Bukas.
+                            Need more help?
+                        </SuiTypography>
+                    </Box>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1a-content"
-                                    id="panel1a-header"
-                                >
-                                    <SuiTypography>Accordion 1</SuiTypography>
-                                </AccordionSummary>
-                                {/* <Divider /> */}
-                                <AccordionDetails>
-                                    <SuiTypography>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit. Suspendisse malesuada
-                                        lacus ex, sit amet blandit leo lobortis
-                                        eget.
+                            <Stack spacing={1.5}>
+                                <AccordionGuide
+                                    title="What are the requirements?"
+                                    message="You need to be a Filipino citizen, at least 18 years old, and enrolled as an undergraduate or graduate student at one of our partner schools."
+                                />
+                                <AccordionGuide
+                                    title="How can I pay for my monthly dues?"
+                                    message="You can pay via GCASH, Paymaya, Unionbank over the counter, Unionbank online, official Bayad Center branches and through over 3,000 DragonPay online or over-the-counter partner channels (BPI, BDO, Metrobank, RCBC, 7-Eleven, SM Dept. Store, Cebuana Lhuillier, M. Lhuillier, etc.). "
+                                />
+
+                                <AccordionGuide
+                                    title="How long does it take to get my application approved?"
+                                    message="It usually takes 3 to 5 working days to get your application approved. Make sure you provide all necessary information to avoid any delays."
+                                />
+                                <AccordionGuide
+                                    title="Can I get funding for the whole school year?"
+                                    message="Yes, you can! You can apply for a new installment plan every term to get additional coverage. Make sure you pay for your monthly dues on time to qualify for multiple installment plans."
+                                />
+
+                                <AccordionGuide
+                                    title="Why hasn’t my payment reflected on my dashboard?"
+                                    message="Payments made will reflect on your payment dashboard after 1-3 working days. Contact our Payments Team at payments@bukas.ph if there are any delays."
+                                />
+
+                                <AccordionGuide
+                                    title="How can I edit my (or my guarantor’s) profile information?"
+                                    message="Send us an email at info@bukas.ph to request for edits on your profile information."
+                                />
+                            </Stack>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Box
+                                display="flex"
+                                height="100%"
+                                sx={{
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <SuiTypography variant="h3" sx={{ mb: 1 }}>
+                                    Our team is ready to help you with your
+                                    questions
+                                </SuiTypography>
+                                <Box>
+                                    <SuiTypography variant="caption">
+                                        We’ve got your back. Our customer
+                                        support team is dedicated to helping you
+                                        with your concerns.
                                     </SuiTypography>
-                                </AccordionDetails>
-                            </Accordion>
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel2a-content"
-                                    id="panel2a-header"
-                                >
-                                    <SuiTypography>Accordion 2</SuiTypography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <SuiTypography>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit. Suspendisse malesuada
-                                        lacus ex, sit amet blandit leo lobortis
-                                        eget.
-                                    </SuiTypography>
-                                </AccordionDetails>
-                            </Accordion>
+                                </Box>
+                            </Box>
                         </Grid>
                     </Grid>
                 </Container>
