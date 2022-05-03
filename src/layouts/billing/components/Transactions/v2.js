@@ -33,17 +33,7 @@ import SuiInput from 'components/SuiInput'
 
 import moment from 'moment'
 
-import { WALLET_TYPE } from 'utils/enum'
 const Group = ({ transactions, handleClick, selectedTransaction }) => {
-    const checkType = (transactionType) => {
-        if (
-            transactionType === WALLET_TYPE.TOPUP ||
-            transactionType === WALLET_TYPE.RECEIVE
-        )
-            return true
-        return false
-    }
-
     return (
         <>
             <SuiBox mb={2}>
@@ -71,22 +61,16 @@ const Group = ({ transactions, handleClick, selectedTransaction }) => {
                             <Transaction
                                 date={transaction.date}
                                 color={
-                                    checkType(transaction.type)
-                                        ? 'success'
-                                        : 'error'
+                                    transaction.type !== "TRANSFER" ? 'success' : 'error'
                                 }
                                 icon={
-                                    checkType(transaction.type)
+                                    transaction.type !== "TRANSFER"
                                         ? 'arrow_upward'
                                         : 'arrow_downward'
                                 }
                                 name={transaction.description}
                                 description={transaction.date}
-                                value={
-                                    checkType(transaction.type)
-                                        ? transaction.money
-                                        : -transaction.money
-                                }
+                                value={transaction.type !== "TRANSFER" ? transaction.money : -transaction.money}
                                 handleClick={handleClick}
                                 id={transaction.id}
                                 selected={

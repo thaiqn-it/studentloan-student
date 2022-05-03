@@ -250,7 +250,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
                 </SuiBox>
                 <SuiBox
                     component={NavLink}
-                    to="/trang-chu/trang-chinh"
+                    to="/"
                     display="flex"
                     alignItems="center"
                 >

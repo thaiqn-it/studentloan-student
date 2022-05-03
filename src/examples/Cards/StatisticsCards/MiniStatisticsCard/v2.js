@@ -24,7 +24,6 @@ import Icon from '@mui/material/Icon'
 // Soft UI Dashboard PRO React components
 import SuiBox from 'components/SuiBox'
 import SuiTypography from 'components/SuiTypography'
-import { CardActionArea } from '@mui/material'
 
 function MiniStatisticsCard({
     bgColor,
@@ -35,13 +34,73 @@ function MiniStatisticsCard({
     direction,
 }) {
     return (
-        <Card>
-            <CardActionArea>
-                <SuiBox bgColor={bgColor} variant="gradient">
-                    <SuiBox p={2}>
-                        <Grid container alignItems="center">
-                            {direction === 'left' ? (
-                                <Grid item>
+        <Card style={{ boxShadow: "1px 2px 4px #9E9E9E"}}>
+            <SuiBox bgColor={bgColor} variant="gradient">
+                <SuiBox p={2}>
+                    <Grid container alignItems="center">
+                        {direction === 'left' ? (
+                            <Grid item>
+                                <SuiBox
+                                    variant="gradient"
+                                    bgColor={
+                                        bgColor === 'white'
+                                            ? icon.color
+                                            : 'white'
+                                    }
+                                    color={
+                                        bgColor === 'white' ? 'white' : 'dark'
+                                    }
+                                    width="3rem"
+                                    height="3rem"
+                                    borderRadius="md"
+                                    display="flex"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    shadow="md"
+                                >
+                                    <Icon fontSize="small" color="inherit">
+                                        {icon.component}
+                                    </Icon>
+                                </SuiBox>
+                            </Grid>
+                        ) : null}
+                        <Grid item xs={8}>
+                            <SuiBox
+                                ml={direction === 'left' ? 2 : 0}
+                                lineHeight={1}
+                            >
+                                <SuiTypography
+                                    variant="button"
+                                    color={
+                                        bgColor === 'white' ? 'text' : 'white'
+                                    }
+                                    opacity={bgColor === 'white' ? 1 : 0.7}
+                                    textTransform="capitalize"
+                                    fontWeight={title.fontWeight}
+                                >
+                                    {title.text}
+                                </SuiTypography>
+                                <SuiTypography
+                                    variant="h5"
+                                    fontWeight="bold"
+                                    color={
+                                        bgColor === 'white' ? 'dark' : 'white'
+                                    }
+                                >
+                                    {count}{' '}
+                                    <SuiTypography
+                                        variant="button"
+                                        color={percentage.color}
+                                        fontWeight="bold"
+                                    >
+                                        {percentage.text}
+                                    </SuiTypography>
+                                </SuiTypography>
+                            </SuiBox>
+                        </Grid>
+                        {direction === 'right' ? (
+                            <Grid item xs={4}>
+                                {icon && (
                                     <SuiBox
                                         variant="gradient"
                                         bgColor={
@@ -56,6 +115,7 @@ function MiniStatisticsCard({
                                         }
                                         width="3rem"
                                         height="3rem"
+                                        marginLeft="auto"
                                         borderRadius="md"
                                         display="flex"
                                         justifyContent="center"
@@ -66,84 +126,12 @@ function MiniStatisticsCard({
                                             {icon.component}
                                         </Icon>
                                     </SuiBox>
-                                </Grid>
-                            ) : null}
-                            <Grid item xs={8}>
-                                <SuiBox
-                                    ml={direction === 'left' ? 2 : 0}
-                                    lineHeight={1}
-                                >
-                                    <SuiTypography
-                                        variant="button"
-                                        color={
-                                            bgColor === 'white'
-                                                ? 'text'
-                                                : 'white'
-                                        }
-                                        opacity={bgColor === 'white' ? 1 : 0.7}
-                                        textTransform="capitalize"
-                                        fontWeight={title.fontWeight}
-                                    >
-                                        {title.text}
-                                    </SuiTypography>
-                                    <SuiTypography
-                                        variant="h5"
-                                        fontWeight="bold"
-                                        color={
-                                            bgColor === 'white'
-                                                ? 'dark'
-                                                : 'white'
-                                        }
-                                    >
-                                        {count}{' '}
-                                        <SuiTypography
-                                            variant="button"
-                                            color={percentage.color}
-                                            fontWeight="bold"
-                                        >
-                                            {percentage.text}
-                                        </SuiTypography>
-                                    </SuiTypography>
-                                </SuiBox>
+                                )}
                             </Grid>
-                            {direction === 'right' ? (
-                                <Grid item xs={4}>
-                                    {icon && (
-                                        <SuiBox
-                                            variant="gradient"
-                                            bgColor={
-                                                bgColor === 'white'
-                                                    ? icon.color
-                                                    : 'white'
-                                            }
-                                            color={
-                                                bgColor === 'white'
-                                                    ? 'white'
-                                                    : 'dark'
-                                            }
-                                            width="3rem"
-                                            height="3rem"
-                                            marginLeft="auto"
-                                            borderRadius="md"
-                                            display="flex"
-                                            justifyContent="center"
-                                            alignItems="center"
-                                            shadow="md"
-                                        >
-                                            <Icon
-                                                fontSize="small"
-                                                color="inherit"
-                                            >
-                                                {icon.component}
-                                            </Icon>
-                                        </SuiBox>
-                                    )}
-                                </Grid>
-                            ) : null}
-                        </Grid>
-                    </SuiBox>
+                        ) : null}
+                    </Grid>
                 </SuiBox>
-            </CardActionArea>
+            </SuiBox>
         </Card>
     )
 }

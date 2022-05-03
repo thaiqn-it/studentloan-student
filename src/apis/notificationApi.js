@@ -6,4 +6,12 @@ const getNotification = (id, type) => {
     return defaultInstance.get('/notification')
 }
 
-export const notificationApi = { getNotification }
+const updateNotification = (id, data) => {
+    return defaultInstance.put(`/notification/${id}`, data)
+}
+
+const pushNotifToAdmin = (data) => {
+    return defaultInstance.post(`/notification/admin`, data)
+}
+
+export const notificationApi = { getNotification, updateNotification, pushNotifToAdmin }

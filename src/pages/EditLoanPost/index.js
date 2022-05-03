@@ -10,6 +10,8 @@ import SuiButton from 'components/SuiButton'
 import SuiBox from 'components/SuiBox'
 
 import DeleteIcon from '@mui/icons-material/Delete'
+import SendIcon from '@mui/icons-material/Send'
+import SaveIcon from '@mui/icons-material/Save'
 
 import Scroll, { Link, scroller } from 'react-scroll'
 var scroll = Scroll.animateScroll
@@ -17,6 +19,7 @@ var scroll = Scroll.animateScroll
 import { useParams, useHistory, useLocation } from 'react-router-dom'
 
 import { loanApi } from '../../apis/loanApi'
+import { notificationApi } from '..//..//apis/notificationApi'
 import MediaPage from './MediaPage'
 
 import { renderStatus } from 'utils/renderStatus'
@@ -118,92 +121,99 @@ export default function EditLoanPost() {
     const handleSubmit = () => {
         var flag = true
         var scrollTo = ''
-        if (
-            loanMedia.TRANSCRIPT.imageUrl === '' ||
-            loanMedia.TRANSCRIPT.imageUrl === null
-        ) {
-            flag = false
-            scrollTo = 'scrollTranscript'
-        }
-        if (
-            loanMedia.STUDENTCERT.imageUrl === '' ||
-            loanMedia.STUDENTCERT.imageUrl === null
-        ) {
-            flag = false
-            scrollTo = 'scrollStudentCert'
-        }
+        // if (
+        //     loanMedia.TRANSCRIPT.imageUrl === '' ||
+        //     loanMedia.TRANSCRIPT.imageUrl === null
+        // ) {
+        //     flag = false
+        //     scrollTo = 'scrollTranscript'
+        // }
+        // if (
+        //     loanMedia.STUDENTCERT.imageUrl === '' ||
+        //     loanMedia.STUDENTCERT.imageUrl === null
+        // ) {
+        //     flag = false
+        //     scrollTo = 'scrollStudentCert'
+        // }
 
-        if (
-            loanMedia.DEMANDNOTE.imageUrl === '' ||
-            loanMedia.DEMANDNOTE.imageUrl === null
-        ) {
-            flag = false
-            scrollTo = 'scrollDemandNote'
-            console.log(loanMedia.DEMANDNOTE)
-        }
-        if (
-            loanMedia.VIDEO.imageUrl === '' ||
-            loanMedia.VIDEO.imageUrl === null
-        ) {
-            flag = false
-            scrollTo = 'scrollVideo'
-        }
-        if (loan.expectedMoney === null || loan.expectedMoney === '') {
-            flag = false
-            scrollTo = 'scrollExpectedMoney'
-        }
-        if (loan.totalMoney === null || loan.totalMoney === '') {
-            flag = false
-            scrollTo = 'scrollTotalMoney'
-        }
-        if (loan.description === null || loan.description === '') {
-            flag = false
-            scrollTo = 'scrollDescription'
-        }
-        if (loan.title === null || loan.title === '') {
-            flag = false
-            scrollTo = 'scrollTitle'
-        }
+        // if (
+        //     loanMedia.DEMANDNOTE.imageUrl === '' ||
+        //     loanMedia.DEMANDNOTE.imageUrl === null
+        // ) {
+        //     flag = false
+        //     scrollTo = 'scrollDemandNote'
+        //     console.log(loanMedia.DEMANDNOTE)
+        // }
+        // if (
+        //     loanMedia.VIDEO.imageUrl === '' ||
+        //     loanMedia.VIDEO.imageUrl === null
+        // ) {
+        //     flag = false
+        //     scrollTo = 'scrollVideo'
+        // }
+        // if (loan.expectedMoney === null || loan.expectedMoney === '') {
+        //     flag = false
+        //     scrollTo = 'scrollExpectedMoney'
+        // }
+        // if (loan.totalMoney === null || loan.totalMoney === '') {
+        //     flag = false
+        //     scrollTo = 'scrollTotalMoney'
+        // }
+        // if (loan.description === null || loan.description === '') {
+        //     flag = false
+        //     scrollTo = 'scrollDescription'
+        // }
+        // if (loan.title === null || loan.title === '') {
+        //     flag = false
+        //     scrollTo = 'scrollTitle'
+        // }
 
-        if (flag == true) {
-            setOpenConfirm(true)
-        } else {
-            setError(true)
-            // scroll.scrollTo(scrollTo, {
-            //     duration: 100,
-            //     delay: 0,
-            //     smooth: 'easeInOutQuart',
-            // })
-            scroller.scrollTo(scrollTo, {
-                duration: 100,
-                delay: 0,
-                smooth: 'easeInOutQuart',
-                offset: -150,
-            })
-        }
+        // if (flag == true) {
+        //     setOpenConfirm(true)
+        // } else {
+        //     setError(true)
+        //     // scroll.scrollTo(scrollTo, {
+        //     //     duration: 100,
+        //     //     delay: 0,
+        //     //     smooth: 'easeInOutQuart',
+        //     // })
+        //     scroller.scrollTo(scrollTo, {
+        //         duration: 100,
+        //         delay: 0,
+        //         smooth: 'easeInOutQuart',
+        //         offset: -150,
+        //     })
+        // }
+        setOpenConfirm(true)
     }
 
     const handleConfirm = (value) => {
         if (value) {
             setIsLoading(true)
-            for (const [key, value] of Object.entries(loanMedia)) {
-                const { id, ...rest } = value
-                if (value.currentStatus === 'new') {
-                    loanMediaApi.createLoanMedia(rest)
-                } else {
-                    loanMediaApi.updateLoanMedia(id, rest)
-                }
-            }
-            loanApi
-                .updateLoanPost(id, 'WAITING', { loan, loanHistory })
-                .then((res) => {
-                    setIsChange(Date.now())
-                    setIsLoading(false)
-                    setOpenConfirm(false)
-                })
-                .catch((err) => {
-                    setIsLoading(false)
-                })
+            notificationApi.pushNotifToAdmin({message: "Long vừa gửi",redirectUrl: "" }).then(res=>{
+                console.log(res)
+                setIsLoading(false)
+            }).catch(err=>{
+                console.log(err)
+            })
+            // for (const [key, value] of Object.entries(loanMedia)) {
+            //     const { id, ...rest } = value
+            //     if (value.currentStatus === 'new') {
+            //         loanMediaApi.createLoanMedia(rest)
+            //     } else {
+            //         loanMediaApi.updateLoanMedia(id, rest)
+            //     }
+            // }
+            // loanApi
+            //     .updateLoanPost(id, 'WAITING', { loan, loanHistory })
+            //     .then((res) => {
+            //         setIsChange(Date.now())
+            //         setIsLoading(false)
+            //         setOpenConfirm(false)
+            //     })
+            //     .catch((err) => {
+            //         setIsLoading(false)
+            //     })
         } else {
             setOpenConfirm(false)
         }
@@ -286,6 +296,7 @@ export default function EditLoanPost() {
                     variant="outlined"
                     size="large"
                     onClick={handleSave}
+                    startIcon={<SaveIcon />}
                 >
                     Lưu
                 </SuiButton>
@@ -294,6 +305,7 @@ export default function EditLoanPost() {
                     size="large"
                     sx={{ mb: 3 }}
                     onClick={handleSubmit}
+                    endIcon={<SendIcon />}
                 >
                     Gửi
                 </SuiButton>

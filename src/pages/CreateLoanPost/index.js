@@ -83,9 +83,8 @@ export default function CreateLoanPost(props) {
     const createLoan = async () => {
         if (isNullish(userData)) {
             if (
-                config.minRaiseMoney <=
-                userData.totalMoney <=
-                config.maxRaiseMoney
+                config.minRaiseMoney <= userData.totalMoney &&
+                userData.totalMoney <= config.maxRaiseMoney
             ) {
                 setError(false)
 
@@ -131,13 +130,19 @@ export default function CreateLoanPost(props) {
 
     const handleChangeExpectGraduationTime = (e) => {
         var day = new Date(e.target.value)
+        var firstDay = new Date(day.getFullYear(), day.getMonth(), 1)
         var day2 = new Date()
-        var realValue = diff_months(day, day2)
+        var firstDay2 = new Date(day2.getFullYear(), day2.getMonth(), 1)
+
+        var realValue = diff_months(firstDay, firstDay2)
         var tempMinDuration = config.minDuration + realValue
         setDurationOption(
             getOption(config.minDuration + realValue, config.maxDuration)
         )
         setDuration(tempMinDuration.toString())
+
+        console.log(realValue)
+
         setUserData({
             ...userData,
             expectedGraduationTime: realValue,
@@ -326,12 +331,18 @@ export default function CreateLoanPost(props) {
                                             justifyContent="space-between"
                                             mb={1}
                                         >
-                                            <SuiTypography variant="caption">
+                                            <SuiTypography
+                                                variant="caption"
+                                                fontWeight="bold"
+                                            >
                                                 {fCurrencyNoVND(
                                                     config?.minRaiseMoney
                                                 )}
                                             </SuiTypography>
-                                            <SuiTypography variant="caption">
+                                            <SuiTypography
+                                                variant="caption"
+                                                fontWeight="bold"
+                                            >
                                                 {fCurrencyNoVND(
                                                     config?.maxRaiseMoney
                                                 )}

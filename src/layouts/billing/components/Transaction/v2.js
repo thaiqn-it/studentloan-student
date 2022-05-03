@@ -86,7 +86,7 @@ function Transaction({
                             gap: '30px',
                         }}
                     >
-                        <Box sx={{}}>
+                        <Box sx={{ width: 200 }}>
                             <SuiTypography
                                 variant="body2"
                                 color={value >= 0 ? 'success' : 'error'}

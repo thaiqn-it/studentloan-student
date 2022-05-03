@@ -27,6 +27,7 @@ import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import Icon from '@mui/material/Icon'
+import { Badge } from '@mui/material'
 
 // Soft UI Dashboard PRO React components
 import SuiBox from 'components/SuiBox'
@@ -55,12 +56,14 @@ import {
 } from 'context'
 
 // Images
-import team2 from 'assets/images/team-2.jpg'
-import logoSpotify from 'assets/images/small-logos/logo-spotify.svg'
+import newLogo from 'assets/newLogo.png'
+
 import { useAuthState } from 'context/authContext'
 import { notificationApi } from 'apis/notificationApi'
 import { logOut } from 'context/userAction'
 import { useAuthDispatch } from 'context/authContext'
+import { onMessageListener } from '..//..//..//firebase'
+import { fToNow } from '..//..//..//utils/formatTime'
 
 function DashboardNavbar({ absolute, light, isMini }) {
     const [navbarType, setNavbarType] = useState()
@@ -71,6 +74,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const route = useLocation().pathname.split('/').slice(1)
     const context = useAuthState()
     const [data, setData] = useState()
+    const [notifications, setNotifications] = useState([])
 
     const loadNotification = async () => {
         try {
@@ -114,16 +118,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav)
     const handleConfiguratorOpen = () =>
         setOpenConfigurator(dispatch, !openConfigurator)
-    const handleOpenMenu = (event) => setOpenMenu(event.currentTarget)
+    const handleOpenMenu = (event) => {
+        setNotifications([])
+        setOpenMenu(event.currentTarget)
+    }
     const handleCloseMenu = () => setOpenMenu(false)
     const history = useHistory()
-    const handleNoti = (redirectUrl) => {
+    const handleNoti = async (item) => {
         setOpenMenu(false)
-        if(!redirectUrl) return
-        const url = new URL(redirectUrl)
-        if(url) return history.push(url.pathname)
-        // console.log(redirectUrl.split("/"))
-        // if (redirectUrl) return history.push(redirectUrl)
+        await notificationApi.updateNotification(item.id, { isRead: true })
+        if (item.redirectUrl) return (window.location.href = item.redirectUrl)
     }
 
     const formatTime = (date) => {
@@ -135,6 +139,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
         await logOut(authDispatch)
         history.push('/authentication/sign-in')
     }
+
+    onMessageListener()
+        .then((payload) => {
+            var noti = notifications.concat(payload)
+            setNotifications(noti)
+            console.log(payload)
+        })
+        .catch((err) => console.log('failed: ', err))
+
     // Render the notifications menu
     const renderMenu = () => (
         <Menu
@@ -149,49 +162,20 @@ function DashboardNavbar({ absolute, light, isMini }) {
             sx={{ mt: 2 }}
         >
             {/* <NotificationItem
-                image={<img src={team2} alt="person" />}
+                image={<img src={newLogo} alt="noti" />}
                 title={['New message', 'from Laur']}
                 date="13 minutes ago"
-                onClick={handleCloseMenu}
-            />
-            <NotificationItem
-                image={<img src={logoSpotify} alt="person" />}
-                title={['New album', 'by Travis Scott']}
-                date="1 day"
-                onClick={handleCloseMenu}
-            />
-            <NotificationItem
-                color="secondary"
-                image={
-                    <Icon
-                        fontSize="small"
-                        sx={{ color: ({ palette: { white } }) => white.main }}
-                    >
-                        payment
-                    </Icon>
-                }
-                title={['', 'Payment successfully completed']}
-                date="2 days"
                 onClick={handleCloseMenu}
             /> */}
             {data?.notifications?.map((notification) => {
                 return (
                     <NotificationItem
                         color="secondary"
-                        image={
-                            <Icon
-                                fontSize="small"
-                                sx={{
-                                    color: ({ palette: { white } }) =>
-                                        white.main,
-                                }}
-                            >
-                                payment
-                            </Icon>
-                        }
+                        image={<img src={newLogo} alt="noti" />}
                         title={['', notification.description]}
-                        date={`${formatTime(notification.createdAt)} ngày`}
-                        onClick={() =>{handleNoti(notification.redirectUrl)}}
+                        date={fToNow(notification.createdAt)}
+                        isRead={notification.isRead}
+                        onClick={() => handleNoti(notification)}
                     />
                 )
             })}
@@ -211,22 +195,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     color="inherit"
                     mb={{ xs: 1, md: 0 }}
                     sx={(theme) => navbarRow(theme, { isMini })}
-                >
-                    {/* <Breadcrumbs
-                        icon="home"
-                        title={route[route.length - 1]}
-                        route={route}
-                        light={light}
-                    /> */}
-                </SuiBox>
+                ></SuiBox>
                 {isMini ? null : (
                     <SuiBox sx={(theme) => navbarRow(theme, { isMini })}>
-                        {/* <SuiBox pr={1}>
-              <SuiInput
-                placeholder="Type here..."
-                icon={{ component: "search", direction: "left" }}
-              />
-            </SuiBox> */}
                         <SuiBox color={light ? 'white' : 'inherit'}>
                             <IconButton
                                 sx={navbarIconButton}
@@ -280,13 +251,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
                                 variant="contained"
                                 onClick={handleOpenMenu}
                             >
-                                <Icon
-                                    className={
-                                        light ? 'text-white' : 'text-dark'
-                                    }
+                                <Badge
+                                    badgeContent={notifications.length}
+                                    color="primary"
                                 >
-                                    notifications
-                                </Icon>
+                                    <Icon
+                                        className={
+                                            light ? 'text-white' : 'text-dark'
+                                        }
+                                    >
+                                        notifications
+                                    </Icon>
+                                </Badge>
                             </IconButton>
                             {renderMenu()}
                         </SuiBox>

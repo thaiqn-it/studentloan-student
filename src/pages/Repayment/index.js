@@ -176,8 +176,8 @@ export default function Repayment() {
                 walletApi
                     .updateWalletById(wallet.id, -1 * totalMoney)
                     .then((res) => {
-                        console.log(res)
                         setLoading(false)
+                        history.push('/trang-chu/vi')
                     })
                     .catch((err) => {
                         setLoading(false)
@@ -201,7 +201,6 @@ export default function Repayment() {
                         }
                     })
                     .catch((err) => {
-                        console.log(err)
                         setLoading(false)
                     })
             } else if (id === 'rut-tien') {
@@ -319,14 +318,25 @@ export default function Repayment() {
     return (
         <>
             {isLoading ? <Loading /> : null}
-            <SuiTypography
-                variant="h4"
-                fontWeight="regular"
-                color="black"
-                my={2}
-            >
-                Thanh toán khoản vay
-            </SuiTypography>
+            {transactionFee ? (
+                <SuiTypography
+                    variant="h4"
+                    fontWeight="regular"
+                    color="black"
+                    my={2}
+                >
+                    Thanh toán rút tiền
+                </SuiTypography>
+            ) : (
+                <SuiTypography
+                    variant="h4"
+                    fontWeight="regular"
+                    color="black"
+                    my={2}
+                >
+                    Thanh toán khoản vay
+                </SuiTypography>
+            )}
             <Container maxWidth="lg">
                 <Card sx={{ boxShadow: 3 }}>
                     <Box p={3}>

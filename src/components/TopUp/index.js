@@ -21,23 +21,22 @@ import { walletApi } from 'apis/walletApi'
 import SuiTypography from 'components/SuiTypography'
 import { fCurrency } from 'utils/formatNumber'
 import SuiButton from 'components/SuiButton'
-import { WALLET_TYPE } from 'utils/enum'
 
-// const source = 'https://studentloanfpt.ddns.net'
-// const TopUpModal = ({ open, onClose, url }) => {
-//     useEffect(() => {
-//         window.addEventListener('message', (e) => {
-//             if (e.origin !== source) return
+const source = 'https://studentloanfpt.ddns.net'
+const TopUpModal = ({ open, onClose, url }) => {
+    useEffect(() => {
+        window.addEventListener('message', (e) => {
+            if (e.origin !== source) return
 
-//             onClose(e.data)
-//         })
-//     }, [])
-//     return (
-//         <Modal open={open}>
-//             <iframe title="Top Up" id="top-up-modal" href={url} />
-//         </Modal>
-//     )
-// }
+            onClose(e.data)
+        })
+    }, [])
+    return (
+        <Modal open={open}>
+            <iframe title="Top Up" id="top-up-modal" href={url} />
+        </Modal>
+    )
+}
 
 export default function TopUp({ open, handleClose, reloadData, walletId }) {
     const title = 'Nạp tiền'
@@ -81,7 +80,7 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
         try {
             const data = {
                 money,
-                type: WALLET_TYPE.TOPUP,
+                type: 'type',
                 description: 'Nạp tiền từ paypal',
                 walletId,
                 recipientId: null,
@@ -124,11 +123,11 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
     }, [money])
     return (
         <>
-            {/* <TopUpModal
+            <TopUpModal
                 open={modalOpen}
                 src={url}
                 handleClose={handleModalClose}
-            /> */}
+            />
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth={'sm'}>
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
@@ -140,15 +139,13 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
                             >
                                 Số tiền
                             </Typography>
-                            <SuiTypography align="center" variant="h4">
-                                {fCurrency(money)}
-                            </SuiTypography>
+                            <SuiTypography align="center" variant="h4">{fCurrency(money)}</SuiTypography>
                             <SuiInput
                                 value={money}
                                 onChange={handleMoneyChange}
                                 name={'money'}
                                 type="number"
-                                sx={{ mt: 3 }}
+                                sx={{mt:3}}
                             />
                             {/* <Grid container mt={1}>
                                 <Grid item xs={12} md={3}>
@@ -184,14 +181,7 @@ export default function TopUp({ open, handleClose, reloadData, walletId }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <SuiButton
-                        color="dark"
-                        onClick={handleClose}
-                        size="large"
-                        variant="text"
-                    >
-                        Hủy
-                    </SuiButton>
+                    <SuiButton color="dark" onClick={handleClose} size="large" variant="text">Hủy</SuiButton>
                 </DialogActions>
             </Dialog>
         </>

@@ -4,7 +4,7 @@ import { USER_ID, JWT_TOKEN } from 'constants/index'
 const { userApi } = require('apis/userApi')
 const { USER_REDUCER_ACTION } = require('./authContext')
 
-export const loginUser = async (dispatch, email, password) => {
+export const loginUser = async (dispatch, email, password, pushToken) => {
     try {
         dispatch({ type: USER_REDUCER_ACTION.REQUEST_LOGIN })
         const tokenRes = await userApi.login(email, password)
@@ -14,13 +14,17 @@ export const loginUser = async (dispatch, email, password) => {
 
         localStorage.setItem(JWT_TOKEN, token)
         loadToken()
+      
         const user = await userApi.getStudentProfile()
 
         if (user.status !== 200 || !user.data) throw new Error(user.data.msg)
         const data = user.data
         const student = data.Student
-        // const data = null
-        // const student = null
+
+        if(data.pushToken === null || data.pushToken !== pushToken){
+            await userApi.updateUser({pushToken})
+        }
+
         dispatch({
             type: USER_REDUCER_ACTION.LOGIN_SUCCESS,
             payload: {

@@ -35,6 +35,7 @@ import curved9 from 'assets/images/curved-images/curved-6.jpg'
 import { loginUser } from 'context/userAction.js'
 import { useHistory } from 'react-router-dom'
 import { useAuthDispatch } from 'context/authContext'
+import { getFirebaseToken } from '..//..//..//firebase';
 
 import LoginImage from 'assets/loginImage.svg'
 
@@ -45,6 +46,10 @@ function SignIn() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(false)
+
+    const [isTokenFound, setTokenFound] = useState(false);
+    getFirebaseToken(setTokenFound);
+
     const errorMessage = 'Tài Khoản Đăng Nhập Hoặc Mật Khẩu Bị Sai'
     const history = useHistory()
     const dispatch = useAuthDispatch()
@@ -53,9 +58,9 @@ function SignIn() {
             e.preventDefault()
             setError(false)
 
-            const response = await loginUser(dispatch, email, password)
+            const response = await loginUser(dispatch, email, password, isTokenFound)
             if (!response.data.id) return setError(errorMessage)
-            history.push('/trang-chu/trang-chinh')
+            history.push('/trang-chu')
         } catch (err) {
             //handle Login
             setError(true)
@@ -169,17 +174,6 @@ function SignIn() {
                                 Đăng kí
                             </SuiTypography>
                         </SuiTypography>
-                        <SuiBox>
-                            <SuiTypography
-                                component={Link}
-                                to="/"
-                                variant="caption"
-                                color="dark"
-                                fontWeight="medium"
-                            >
-                                Quay lại
-                            </SuiTypography>
-                        </SuiBox>
                     </SuiBox>
                 </SuiBox>
             </CoverLayout>

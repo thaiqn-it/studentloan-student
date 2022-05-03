@@ -6,22 +6,12 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import ContentPasteIcon from '@mui/icons-material/ContentPaste'
 import { fCurrency } from 'utils/formatNumber'
 import { fDateTimeMin } from 'utils/formatTime'
-import { WALLET_TYPE } from 'utils/enum'
 
 export default function TransactionDetail({ transaction }) {
-    const checkType = (transactionType) => {
-        if (
-            transactionType === WALLET_TYPE.TOPUP ||
-            transactionType === WALLET_TYPE.RECEIVE
-        )
-            return true
-        return false
-    }
-
     return (
         <>
             {transaction && (
-                <SuiBox pt={3} px={2}>
+                <SuiBox pt={3} px={2} > 
                     <Box
                         sx={{
                             display: 'flex',
@@ -57,15 +47,20 @@ export default function TransactionDetail({ transaction }) {
                         >
                             <SuiTypography
                                 color={
-                                    checkType(transaction.type)
-                                        ? 'success'
-                                        : 'error'
+                                    transaction?.type === 'TRANSFER'
+                                        ? 'error'
+                                        : 'success'
                                 }
                                 variant="h3"
                             >
-                                {checkType(transaction.type)
-                                    ? fCurrency(transaction?.money)
-                                    : fCurrency(-1 * transaction?.money)}
+                                {transaction?.type === 'TRANSFER' ? (
+                                    <>
+                                        {'-'}
+                                        {fCurrency(transaction?.money)}
+                                    </>
+                                ) : (
+                                    fCurrency(transaction?.money)
+                                )}
                             </SuiTypography>
                         </Box>
                         <Box
@@ -121,9 +116,7 @@ export default function TransactionDetail({ transaction }) {
                                 }
                                 variant="h6"
                             >
-                                {transaction?.status === 'SUCCESS'
-                                    ? 'Thành công'
-                                    : 'Không thành công'}
+                                {transaction?.status === "SUCCESS" ? "Thành công" : "Không thành công"}
                             </SuiTypography>
                         </Box>
                         <Box

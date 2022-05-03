@@ -25,7 +25,7 @@ import SuiTypography from 'components/SuiTypography'
 
 // Soft UI Dashboard PRO React example components
 // import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-import DefaultNavbar from '..//..//..//..//pages/LandingPage2/Navbar'
+import DefaultNavbar from '../../../../pages/LandingPage2/components/Navbar'
 import PageLayout from 'examples/LayoutContainers/PageLayout'
 
 // Authentication layout components

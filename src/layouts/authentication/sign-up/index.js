@@ -65,21 +65,6 @@ function SignUp() {
     const [data, setData] = useState(userData)
     const handleSetAgremment = () => setAgremment(!agreement)
 
-    const verifyOTP = async () => {
-        // try {
-        //   const token = otp;
-        //   const secret = otpSecret;
-        //   const res = await userApi.verifyOTP(token, secret);
-        //   console.log(res);
-        //   const isValid = res.data.isValid;
-        //   if (isValid) {
-        //     createAccount();
-        //   }
-        // } catch (e) {
-        //   setError({ serverError: "server is not avaiable" });
-        // }
-      };
-
     const handleSubmit = async (e) => {
         e.preventDefault()
 

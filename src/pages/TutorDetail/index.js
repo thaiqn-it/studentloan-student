@@ -41,9 +41,6 @@ export default function TutorDetail() {
     const [loading, setLoading] = useState(false)
     const [tutor, setTutor] = useState(data)
 
-    let location = useLocation()
-    const tempProfileChange = location.state?.tempProfileChange
-    console.log('Tutor page', tempProfileChange)
     const [openComfirm, setOpenConfirm] = useState(false)
     const [deleteValue, setDeleteValue] = useState(null)
     const [error, setError] = useState(false)
@@ -53,7 +50,7 @@ export default function TutorDetail() {
     }, [])
 
     const fetchData = async () => {
-        if (id != 'tao-moi') {
+        if (id != 'tao') {
             setLoading(true)
             await tutorApi
                 .getTutorById(id)
@@ -127,17 +124,19 @@ export default function TutorDetail() {
 
     const handleSubmit = () => {
         if (id === 'tao') {
-            tutorApi
-                .createTutor(tutor)
-                .then((res) => {
-                    // history.push(`/trang-chu/thong-tin/`)
-                    handleChangePage()
-                })
-                .catch((err) => {})
+            if (isNullish(tutor)) {
+                tutorApi
+                    .createTutor(tutor)
+                    .then((res) => {
+                        history.push(`/trang-chu/thong-tin/`)
+                    })
+                    .catch((err) => {})
+            } else {
+                setError(true)
+            }
         } else {
             tutorApi.updateTutor(id, tutor).then((res) => {
-                // history.push(`/trang-chu/thong-tin/`)
-                handleChangePage()
+                history.push(`/trang-chu/thong-tin/`)
             })
         }
     }
@@ -168,14 +167,11 @@ export default function TutorDetail() {
     }
 
     const handleDelete = () => {
-        if (id === 'tao-moi') return handleChangePage()
-
         tutorApi
             .deleteTutor(id)
             .then((res) => {
                 setOpenConfirm(false)
-                // history.push(`/trang-chu/thong-tin/`)
-                handleChangePage()
+                history.push(`/trang-chu/thong-tin/`)
             })
             .catch((err) => {
                 setOpenConfirm(false)
@@ -184,13 +180,6 @@ export default function TutorDetail() {
 
     const handleClose = () => {
         setOpenConfirm(false)
-    }
-
-    const handleChangePage = () => {
-        history.push({
-            pathname: `/trang-chu/thong-tin/`,
-            state: { tempProfileChange: tempProfileChange },
-        })
     }
 
     return (

@@ -37,7 +37,8 @@ import DefaultNavbarMobile from './DefaultNavbarMobile'
 // Soft UI Dashboard PRO React base styles
 import breakpoints from 'assets/theme/base/breakpoints'
 
-import ReleaseLogo from '../../../assets/newLogo.png'
+import ReleaseLogo from '../../../../assets/newLogo.png'
+import { Switch } from '@mui/material'
 
 function DefaultNavbar({ transparent, light, action, title }) {
     const [mobileNavbar, setMobileNavbar] = useState(false)
@@ -125,7 +126,7 @@ function DefaultNavbar({ transparent, light, action, title }) {
                             src={ReleaseLogo}
                             height={30}
                             width={30}
-                            sx={{ margin: '0', objectFit: 'contain', my:2 }}
+                            sx={{ margin: '0', objectFit: 'contain', my: 2 }}
                         />
                         <SuiTypography
                             variant="h6"
@@ -139,6 +140,7 @@ function DefaultNavbar({ transparent, light, action, title }) {
                     <SuiBox
                         color="inherit"
                         display={{ xs: 'none', lg: 'flex' }}
+                        sx={{ alignItems: 'center' }}
                         m={0}
                         p={0}
                     >
@@ -154,16 +156,17 @@ function DefaultNavbar({ transparent, light, action, title }) {
                         route="contact"
                         light={light}
                     /> */}
+                        <Switch />
                         <DefaultNavbarLink
                             icon="account_circle"
                             name="Đăng kí"
-                            route="/authentication/sign-up"
+                            route="/xac-thuc/dang-ky"
                             light={light}
                         />
                         <DefaultNavbarLink
                             icon="key"
                             name="Đăng nhập"
-                            route="/authentication/sign-in"
+                            route="/xac-thuc/dang-nhap"
                             light={light}
                         />
                     </SuiBox>

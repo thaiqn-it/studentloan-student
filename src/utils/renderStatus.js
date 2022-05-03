@@ -126,3 +126,28 @@ export function renderTutorStatus(status) {
     }
     return statusObject
 }
+
+export function paramToType(param) {
+    var value = null
+    if (param != '') {
+        switch (param) {
+            case 'dang-cho-duyet':
+                value = LOAN_STATUS.WAITING
+                break
+            case 'dang-keu-goi':
+                value = LOAN_STATUS.FUNDING
+                break
+            case 'thanh-cong':
+                value = LOAN_STATUS.FINISH
+                break
+
+            case 'dang-thanh-toan':
+                value = LOAN_STATUS.ONGOING
+                break
+            default:
+                value = null
+        }
+    }
+
+    return value
+}

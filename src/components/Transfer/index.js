@@ -19,20 +19,13 @@ import SuiButton from 'components/SuiButton'
 import { fCurrency } from 'utils/formatNumber'
 import SuiTypography from 'components/SuiTypography'
 
-import { WALLET_TYPE } from 'utils/enum/index'
-import { systemConfigApi } from 'apis/systemConfigApi'
-
-export default function Transfer({
-    open,
-    handleClose,
-    walletId,
-    reloadData,
-    currentMoney,
-}) {
-    const title = 'Rút tiền'
+export default function Transfer({ open, handleClose, walletId, reloadData }) {
     const history = useHistory()
+    const title = 'Rút tiền'
+
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
+
     const [error, setError] = useState()
     const [emailError, setEmailError] = useState()
     const [transactionFee, setTransactionFee] = useState()
@@ -44,54 +37,40 @@ export default function Transfer({
         } catch (e) {}
     }
 
-    useEffect(() => {
-        loadConfig()
-    }, [])
-    const handleFormSubmit = async (e) => {
-        e.preventDefault()
-        var path = '/trang-chu/thanh-toan/rut-tien'
-        history.push({
-            pathname: path,
-            state: {
-                paypal: {
-                    email: email,
-                    money: money,
-                },
-            },
-        })
-        // try {
-        //     const res = await paypalApi.transfer({
-        //         email: email,
-        //         money: money,
-        //         accountId: walletId,
-        //     })
+    // useEffect(() => {
+    //     })
+    //     //     const res = await paypalApi.transfer({
+    //     //         email: email,
+    //     //         money: money,
+    //     //         accountId: walletId,
+    //     //     })
 
-        //     const data = {
-        //         money,
-        //         type: 'WITHDRAW',
-        //         description: 'Rút tiền sang ví paypal',
-        //         walletId,
-        //         recipientId: null,
-        //         recipientName: 'Paypal',
-        //         senderId: '',
-        //         senderName: 'Ví của tôi',
-        //         transactionFee: '',
-        //         status: 'SUCCESS',
-        //         paypalTransaction: res.data.payoutId,
-        //     }
-        //     const transactionRes = await transactionApi.createTransaction(data)
-        //     const walletRes = await walletApi.updateWalletById(
-        //         walletId,
-        //         -1 * money
-        //     )
-        //     handleClose()
-        //     reloadData()
-        //     if (!res) throw new Error()
-        //     // const transaction = aw
-        // } catch (e) {
-        //     console.log(e)
-        // }
-    }
+    //     //     const data = {
+    //     //         money,
+    //     //         type: 'WITHDRAW',
+    //     //         description: 'Rút tiền sang ví paypal',
+    //     //         walletId,
+    //     //         recipientId: null,
+    //     //         recipientName: 'Paypal',
+    //     //         senderId: '',
+    //     //         senderName: 'Ví của tôi',
+    //     //         transactionFee: '',
+    //     //         status: 'SUCCESS',
+    //     //         paypalTransaction: res.data.payoutId,
+    //     //     }
+    //     //     const transactionRes = await transactionApi.createTransaction(data)
+    //     //     const walletRes = await walletApi.updateWalletById(
+    //     //         walletId,
+    //     //         -1 * money
+    //     //     )
+    //     //     handleClose()
+    //     //     reloadData()
+    //     //     if (!res) throw new Error()
+    //     //     // const transaction = aw
+    //     // } catch (e) {
+    //     //     console.log(e)
+    //     // }
+    // }
 
     return (
         <>
@@ -112,13 +91,14 @@ export default function Transfer({
                             <SuiInput
                                 type={'number'}
                                 value={money}
-                                error={error}
-                                onChange={(e) => {
-                                    setError(null)
-                                    setMoney(e.target.value)
-                                }}
+                                onChange={(e) => setMoney(e.target.value)}
                                 name={'money'}
                             />
+                            {/* {error && (
+                    <Typography variant="caption" className={classes.error}>
+                        {helperText}
+                    </Typography>
+                )} */}
                         </Box>
                         <Box className={classes.inputBox}>
                             <Typography
@@ -130,30 +110,14 @@ export default function Transfer({
                             <SuiInput
                                 type={'email'}
                                 value={email}
-                                error={emailError}
-                                onChange={(e) => {
-                                    setEmail(e.target.value)
-                                    setEmailError(null)
-                                }}
+                                onChange={(e) => setEmail(e.target.value)}
                                 name={'email'}
                             />
-                            {emailError && (
-                                <Typography
-                                    variant="caption"
-                                    className={classes.error}
-                                >
-                                    {emailError}
-                                </Typography>
-                            )}
-                            {error && (
-                                <Typography
-                                    variant="caption"
-                                    color="error"
-                                    className={classes.error}
-                                >
-                                    {error}
-                                </Typography>
-                            )}
+                            {/* {error && (
+                    <Typography variant="caption" className={classes.error}>
+                        {helperText}
+                    </Typography>
+                )} */}
                         </Box>
                     </Box>
                 </DialogContent>
