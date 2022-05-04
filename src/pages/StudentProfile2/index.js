@@ -50,9 +50,6 @@ export default function StudentProfile2() {
         // setDocTitle('Thông tin - StudentLoan')
         fetchData()
     }, [isChange])
-    useEffect(() => {
-        console.log('profile page', tempProfileChange)
-    }, [])
 
     const fetchData = async () => {
         setLoading(true)

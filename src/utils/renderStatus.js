@@ -128,7 +128,7 @@ export function renderTutorStatus(status) {
 }
 
 export function paramToType(param) {
-    var value = null
+    var value = ''
     if (param != '') {
         switch (param) {
             case 'dang-cho-duyet':
@@ -145,7 +145,7 @@ export function paramToType(param) {
                 value = LOAN_STATUS.ONGOING
                 break
             default:
-                value = null
+                value = ''
         }
     }
 

@@ -71,7 +71,19 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
     //     //     console.log(e)
     //     // }
     // }
-
+    const handleFormSubmit = async (e) => {
+        e.preventDefault()
+        var path = '/trang-chu/thanh-toan/rut-tien'
+        history.push({
+            pathname: path,
+            state: {
+                paypal: {
+                    email: email,
+                    money: money,
+                },
+            },
+        })
+    }
     return (
         <>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth={'sm'}>

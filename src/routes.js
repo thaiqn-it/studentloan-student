@@ -31,8 +31,8 @@ let routes = [
     {
         type: 'collapse',
         name: 'Trang chính',
-        key: 'main',
-        route: '/main',
+        key: 'trang-chinh',
+        route: '/trang-chinh',
         icon: <ContentPasteIcon size="12px" />,
         component: Main,
         noCollapse: true,

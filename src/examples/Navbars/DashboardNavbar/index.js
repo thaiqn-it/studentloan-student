@@ -137,7 +137,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const authDispatch = useAuthDispatch()
     const handleLogout = async () => {
         await logOut(authDispatch)
-        history.push('/authentication/sign-in')
+        history.push('/xac-thuc/dang-nhap')
     }
 
     onMessageListener()

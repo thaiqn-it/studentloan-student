@@ -104,9 +104,9 @@ const StudentDashboard = () => {
     useEffect(() => {
         reloadUserData()
         if (history.location.pathname === '/trang-chu') {
-            history.push('/trang-chu/main')
+            history.push('/trang-chu/trang-chinh')
         }
-        if (!auth) history.push('/dang-nhap')
+        if (!auth) history.push('/xac-thuc/dang-nhap')
     }, [])
 
     return (

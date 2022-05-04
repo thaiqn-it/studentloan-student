@@ -82,6 +82,7 @@ export default function CreateLoanPost(props) {
 
     const createLoan = async () => {
         if (isNullish(userData)) {
+            console.log(config)
             if (
                 config.minRaiseMoney <= userData.totalMoney &&
                 userData.totalMoney <= config.maxRaiseMoney
