@@ -199,6 +199,7 @@ export default function EditLoanPost() {
                         .pushNotifToAdmin({
                             message: `${studentInfo.User.firstName} ${studentInfo.User.lastName} yêu cầu đăng tải hồ sơ`,
                             redirectUrl: `dashboard/viewPost/${id}`,
+                            notiType: NOTIFICATION_TYPE.USER,
                         })
                         .then((res) => {
                             setIsChange(Date.now())
