@@ -120,9 +120,9 @@ export default function MediaPage(props) {
         var id = getYoutubeId(url)
 
         if (id !== false) {
-            var loandMediaId = ''
+            var loandMediaId = null
             var current = 'new'
-            if (loanMedia.VIDEO) {
+            if (loanMedia.VIDEO.id !== undefined) {
                 loandMediaId = loanMedia.VIDEO.id
                 current = 'update'
             }
@@ -235,14 +235,14 @@ export default function MediaPage(props) {
                         {videoUrl === null || videoUrl?.length < 43 ? null : (
                             <YoutubeEmbed url={youtubeVideo?.imageUrl} />
                         )}
-                        {videoUrl !== null && videoUrl.length < 43 ? (
+                        {/* {videoUrl !== null && videoUrl.length < 43 ? (
                             <SuiTypography
                                 variant="button"
                                 fontWeight="regular"
                             >
                                 Video không hợp lệ
                             </SuiTypography>
-                        ) : null}
+                        ) : null} */}
                     </Grid>
                 </Grid>
             </Container>

@@ -287,7 +287,6 @@ export default function PaperCard(props) {
                                         disabled={
                                             userStatus === USER_STATUS.VERIFIED
                                         }
-                                        type="number"
                                         placeholder="Mã sinh viên"
                                         value={studentInfo?.studentCardId || ''}
                                         name="studentCardId"
