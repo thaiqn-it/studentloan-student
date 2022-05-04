@@ -20,6 +20,8 @@ import { renderUserStatus } from 'utils/renderStatus'
 import { isNullish } from 'utils/isNullish'
 import { USER_STATUS } from 'utils/enum'
 import SnackbarMessage from 'components/SnackbarMessage'
+import { notificationApi } from 'apis/notificationApi'
+import { NOTIFICATION_TYPE } from 'utils/enum'
 
 export default function StudentProfile2() {
     const [loading, setLoading] = useState(true)
@@ -258,7 +260,18 @@ export default function StudentProfile2() {
                     studentApi
                         .updateStudentInfo(temp, { status: 'PENDING' })
                         .then((res) => {
-                            setIsChange(Date.now())
+                            notificationApi
+                                .pushNotifToAdmin({
+                                    message: `${userInfo.firstName} ${userInfo.lastName} yêu cầu xác thực tài khoản`,
+                                    redirectUrl: `dashboard/student/${userInfo.id}`,
+                                    notiType: NOTIFICATION_TYPE.USER,
+                                })
+                                .then((res) => {
+                                    setIsChange(Date.now())
+                                })
+                                .catch((err) => {
+                                    console.log(err)
+                                })
                         })
                         .catch((err) => {})
                 })

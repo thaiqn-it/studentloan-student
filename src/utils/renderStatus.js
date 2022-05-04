@@ -144,6 +144,9 @@ export function paramToType(param) {
             case 'dang-thanh-toan':
                 value = LOAN_STATUS.ONGOING
                 break
+            case 'tat-ca':
+                value = null
+                break
             default:
                 value = ''
         }
