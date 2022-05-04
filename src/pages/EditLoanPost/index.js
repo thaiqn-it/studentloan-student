@@ -138,13 +138,13 @@ export default function EditLoanPost() {
             flag = false
             scrollTo = 'scrollDemandNote'
         }
-        if (
-            loanMedia.VIDEO.imageUrl === '' ||
-            loanMedia.VIDEO.imageUrl === null
-        ) {
-            flag = false
-            scrollTo = 'scrollVideo'
-        }
+        // if (
+        //     loanMedia.VIDEO.imageUrl === '' ||
+        //     loanMedia.VIDEO.imageUrl === null
+        // ) {
+        //     flag = false
+        //     scrollTo = 'scrollVideo'
+        // }
         if (loan.expectedMoney === null || loan.expectedMoney === '') {
             flag = false
             scrollTo = 'scrollExpectedMoney'
@@ -183,9 +183,9 @@ export default function EditLoanPost() {
     const handleConfirm = (value) => {
         if (value) {
             setIsLoading(true)
-
             for (const [key, value] of Object.entries(loanMedia)) {
                 const { id, ...rest } = value
+                console.log(value)
                 if (value.currentStatus === 'new') {
                     loanMediaApi.createLoanMedia(rest)
                 } else {
@@ -222,6 +222,7 @@ export default function EditLoanPost() {
         setIsLoading(true)
         for (const [key, value] of Object.entries(loanMedia)) {
             const { id, ...rest } = value
+            console.log(value)
             if (value.currentStatus === 'new') {
                 loanMediaApi.createLoanMedia(rest)
             } else {
