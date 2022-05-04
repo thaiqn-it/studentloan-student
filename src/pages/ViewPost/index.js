@@ -38,6 +38,7 @@ import { fDateTime } from 'utils/formatTime'
 
 import { LOAN_STATUS } from 'utils/enum'
 import { Helmet } from 'react-helmet'
+import { investmentApi } from 'apis/investmentApi'
 
 export default function ViewPost() {
     const { id } = useParams()
@@ -48,12 +49,18 @@ export default function ViewPost() {
     const [loanHistories, setLoanHistories] = useState(null)
 
     useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = () => {
         setIsLoading(true)
+
         loanApi
             .getLoanById(id, 'view')
             .then((res) => {
                 setLoan(res.data.loan)
                 var loanHist = res.data.loan.LoanHistories
+
                 setLoanHistories(loanHist)
                 setIsLoading(false)
                 if (
@@ -70,7 +77,7 @@ export default function ViewPost() {
                     state: { content: 'Không tìm thấy hồ sơ' },
                 })
             })
-    }, [])
+    }
 
     const onChangeTab = (tab) => {
         setCurrentTab(tab)
@@ -89,6 +96,7 @@ export default function ViewPost() {
             if (
                 current === LOAN_STATUS.DRAFT ||
                 current === LOAN_STATUS.WAITING ||
+                current === LOAN_STATUS.CANCEL ||
                 current === LOAN_STATUS.REJECTED
             ) {
                 return (
@@ -135,9 +143,53 @@ export default function ViewPost() {
         }
     }
 
+    const renderCancelButton = () => {
+        if (loanHistories !== null) {
+            var current = loanHistories[loanHistories?.length - 1]?.type
+            if (current === LOAN_STATUS.FUNDING) {
+                return (
+                    <>
+                        <Grid item xs="12" md="12">
+                            <SuiButton
+                                color="warning"
+                                fullWidth
+                                sx={{
+                                    marginTop: {
+                                        xs: 0,
+                                        lg: 27,
+                                    },
+                                }}
+                                onClick={handleCancel}
+                            >
+                                Thu hồi
+                            </SuiButton>
+                        </Grid>
+                    </>
+                )
+            }
+        } else {
+            return null
+        }
+    }
+
+    const handleCancel = () => {
+        loanApi
+            .updateLoanPost(id, 'CANCEL', {
+                loan,
+                loanHistory: loanHistories[loanHistories.length - 1],
+            })
+            .then((res) => {
+                investmentApi
+                    .updateInvestmentByLoanId(id, { status: 'FAIL' })
+                    .then((res) => {
+                        fetchData()
+                    })
+            })
+    }
+
     const renderStatusTimeline = (item, index) => {
         var objectStatus = renderStatus(item.type)
-        var isLastItem = index === loanHistories.length - 1
+        var isLastItem = index === loanHistories?.length - 1
         return (
             <TimelineItem
                 key={index}
@@ -289,6 +341,7 @@ export default function ViewPost() {
                                                     </SuiTypography>
                                                 </Grid>
                                                 {renderEditButton()}
+                                                {renderCancelButton()}
                                             </Grid>
                                         </Grid>
                                     </Grid>

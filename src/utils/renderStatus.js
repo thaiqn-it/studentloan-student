@@ -45,6 +45,12 @@ export function renderStatus(status) {
             statusObject.message = LOAN_STATUS_MESSAGE.FUNDING
             statusObject.icon = 'monetization_on'
             break
+        case LOAN_STATUS.CANCEL:
+            statusObject.color = 'warning'
+            statusObject.status = 'Thu hồi'
+            statusObject.message = LOAN_STATUS_MESSAGE.CANCEL
+            statusObject.icon = 'replay'
+            break
         case LOAN_STATUS.FAIL:
             statusObject.color = 'error'
             statusObject.status = 'Không thành công'

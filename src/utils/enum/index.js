@@ -8,6 +8,7 @@ exports.LOAN_STATUS_MESSAGE = {
     ONGOING: 'Hồ sơ đang trong quá trình thanh toán',
     FINISH: 'Hồ sơ đã hoàn thành',
     INCOMPLETE: 'Người vay không có khả năng thanh toán',
+    CANCEL: 'Hồ sơ thu hồi bởi người tạo',
 }
 
 exports.USER_STATUS_MESSAGE = {
@@ -31,6 +32,8 @@ exports.LOAN_STATUS = {
     FAIL: 'FAIL',
     ONGOING: 'ONGOING',
     FINISH: 'FINISH',
+    CANCEL: 'CANCEL',
+    INCOMPLETE: 'INCOMPLETE',
 }
 
 exports.LOAN_SCHEDULE_STATUS = {
