@@ -13,16 +13,15 @@ import Verify from 'pages/Verify'
 import TutorDetail from 'pages/TutorDetail'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import SchoolIcon from '@mui/icons-material/School';
+import ListIcon from '@mui/icons-material/List';
 
 import StudentProfile2 from 'pages/StudentProfile2'
 import Main from 'pages/Main'
 import NotFound from 'pages/NotFound'
 import LocalAtmIcon from '@mui/icons-material/LocalAtm'
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
-import ListIcon from '@mui/icons-material/List'
 import Repayment from 'pages/Repayment'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import PasswordPage from 'pages/PasswordPage'
@@ -33,7 +32,7 @@ let routes = [
         name: 'Trang chính',
         key: 'main',
         route: '/main',
-        icon: <ContentPasteIcon size="12px" />,
+        icon: <DashboardIcon size="12px" />,
         component: Main,
         noCollapse: true,
     },
@@ -88,7 +87,7 @@ let routes = [
         name: 'Thông tin',
         key: 'thong-tin',
         route: '/thong-tin',
-        icon: <PermIdentityIcon size="12px" />,
+        icon: <AccountBoxIcon size="12px" />,
         component: StudentProfile2,
         noCollapse: false,
     },
@@ -103,7 +102,7 @@ let routes = [
                 name: 'Tất cả',
                 key: 'tat-ca',
                 route: '/ho-so/tat-ca',
-                icon: "dashboard",
+                icon: "menu",
                 component: ViewAllPost,
                 noCollapse: true,
             },

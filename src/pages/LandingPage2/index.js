@@ -757,6 +757,7 @@ export default function LandingPage() {
                                             borderRadius: 3,
                                             boxShadow: 1,
                                             border: '0.1rem solid #DCDEDD',
+                                            height: "245px"
                                         }}
                                     >
                                         <CardHeader
@@ -792,6 +793,7 @@ export default function LandingPage() {
                                             borderRadius: 3,
                                             boxShadow: 1,
                                             border: '0.1rem solid #DCDEDD',
+                                            height: "245px"
                                         }}
                                     >
                                         <CardHeader
@@ -827,6 +829,7 @@ export default function LandingPage() {
                                             borderRadius: 3,
                                             boxShadow: 1,
                                             border: '0.1rem solid #DCDEDD',
+                                            height: "245px"
                                         }}
                                     >
                                         <CardHeader
@@ -863,6 +866,7 @@ export default function LandingPage() {
                                             borderRadius: 3,
                                             boxShadow: 1,
                                             border: '0.1rem solid #DCDEDD',
+                                            height: "245px"
                                         }}
                                     >
                                         <CardHeader

@@ -6,12 +6,13 @@ importScripts(
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-    apiKey: 'AIzaSyDxQ8DoH4p5R4moIB03-ErIUDcD9n2p7OQ',
-    authDomain: 'studentloan-c5392.firebaseapp.com',
-    projectId: 'studentloan-c5392',
-    storageBucket: 'studentloan-c5392.appspot.com',
-    messagingSenderId: '843800565009',
-    appId: '1:843800565009:web:862d7fc5d6cc790b6de8b0',
+    apiKey: 'AIzaSyDYsjufZklXVJSKPJ32TKxZuhJPTSEKeak',
+    authDomain: 'loan-student.firebaseapp.com',
+    projectId: 'loan-student',
+    storageBucket: 'loan-student.appspot.com',
+    messagingSenderId: '761167549872',
+    appId: '1:761167549872:web:deb06f4c84d51c76507275',
+    measurementId: 'G-3WTQ4TP3BP',
 }
 
 firebase.initializeApp(firebaseConfig)
