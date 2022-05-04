@@ -18,7 +18,7 @@ export default function ConfirmSign(props) {
     const [name, setName] = useState(null)
 
     const handleClick = () => {
-        if (name === firstName + lastName) {
+        if (name === firstName + ' ' + lastName) {
             handleConfirm(true)
         }
     }
@@ -58,7 +58,7 @@ export default function ConfirmSign(props) {
                         <SuiTypography variant="button" fontWeight="regular">
                             Vui lòng nhập{' '}
                             <SuiTypography variant="button">
-                                {firstName + lastName}{' '}
+                                {firstName + ' ' + lastName}{' '}
                             </SuiTypography>
                             để xác nhận
                         </SuiTypography>
@@ -69,7 +69,7 @@ export default function ConfirmSign(props) {
                         sx={{ borderRadius: 0, mt: 2 }}
                         fullWidth
                         onClick={handleClick}
-                        disabled={name !== firstName + lastName}
+                        disabled={name !== firstName + ' ' + lastName}
                     >
                         <SuiTypography
                             variant="button"

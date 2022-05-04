@@ -1,9 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 
-const REACT_VAPID_KEY =
-    'BND2LegSUf6eikqwFppHn4u8_BHcFaTjmQurixDDTwc2aJQapEotTu90h7zT3qCAmlDmV-QFt2CxSe5FIdmQ74Y'
-
 const firebaseConfig = {
     apiKey: 'AIzaSyDYsjufZklXVJSKPJ32TKxZuhJPTSEKeak',
     authDomain: 'loan-student.firebaseapp.com',
@@ -18,7 +15,10 @@ const firebaseApp = initializeApp(firebaseConfig)
 const messaging = getMessaging(firebaseApp)
 
 export const getFirebaseToken = (setTokenFound) => {
-    return getToken(messaging, { vapidKey: REACT_VAPID_KEY })
+    return getToken(messaging, {
+        vapidKey:
+            'BND2LegSUf6eikqwFppHn4u8_BHcFaTjmQurixDDTwc2aJQapEotTu90h7zT3qCAmlDmV-QFt2CxSe5FIdmQ74Y',
+    })
         .then((currentToken) => {
             if (currentToken) {
                 console.log('current token for client: ', currentToken)
