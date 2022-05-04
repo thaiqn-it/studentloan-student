@@ -35,7 +35,7 @@ import Separator from 'layouts/authentication/components/Separator'
 
 // Images
 import curved6 from 'assets/images/curved-images/curved14.jpg'
-import signupImage from "../../../assets/signupImage.svg"
+import signupImage from '../../../assets/signupImage.svg'
 import { userApi } from 'apis/userApi'
 import { studentApi } from 'apis/studentApi'
 import { ThemeProvider } from '@mui/material'
@@ -344,7 +344,7 @@ function SignUp() {
                                         Bạn đã có tài khoản ?&nbsp;
                                         <SuiTypography
                                             component={Link}
-                                            to="/authentication/sign-in"
+                                            to="/xac-thuc/dang-nhap"
                                             variant="button"
                                             color="primary"
                                             fontWeight="bold"

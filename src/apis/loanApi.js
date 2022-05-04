@@ -5,7 +5,7 @@ const createLoanPost = (data) => {
 }
 
 const getLoanById = (id, type) => {
-    return defaultInstance.get(`/loan/student/${id}/${type}`)
+    return defaultInstance.get(`/loan/student/${id}/` , {})
 }
 
 const getLoanStudent = (type) => {

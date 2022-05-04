@@ -72,6 +72,41 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
         // }
     }
 
+    // useEffect(() => {
+    //     })
+    //     //     const res = await paypalApi.transfer({
+    //     //         email: email,
+    //     //         money: money,
+    //     //         accountId: walletId,
+    //     //     })
+
+    //     //     const data = {
+    //     //         money,
+    //     //         type: 'WITHDRAW',
+    //     //         description: 'Rút tiền sang ví paypal',
+    //     //         walletId,
+    //     //         recipientId: null,
+    //     //         recipientName: 'Paypal',
+    //     //         senderId: '',
+    //     //         senderName: 'Ví của tôi',
+    //     //         transactionFee: '',
+    //     //         status: 'SUCCESS',
+    //     //         paypalTransaction: res.data.payoutId,
+    //     //     }
+    //     //     const transactionRes = await transactionApi.createTransaction(data)
+    //     //     const walletRes = await walletApi.updateWalletById(
+    //     //         walletId,
+    //     //         -1 * money
+    //     //     )
+    //     //     handleClose()
+    //     //     reloadData()
+    //     //     if (!res) throw new Error()
+    //     //     // const transaction = aw
+    //     // } catch (e) {
+    //     //     console.log(e)
+    //     // }
+    // }
+
     return (
         <>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth={'sm'}>

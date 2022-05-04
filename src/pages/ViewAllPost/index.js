@@ -34,6 +34,7 @@ export default function ViewAllPost() {
         await loanApi
             .getLoanStudent(type)
             .then((res) => {
+                console.log(res)
                 setListLoan(res.data)
                 setIsLoading(false)
             })

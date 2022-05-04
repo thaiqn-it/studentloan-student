@@ -47,7 +47,7 @@ export default function StudentProfile2() {
 
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [isChange])
 
     const fetchData = async () => {
         setLoading(true)
