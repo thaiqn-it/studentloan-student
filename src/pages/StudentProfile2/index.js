@@ -263,7 +263,7 @@ export default function StudentProfile2() {
                             notificationApi
                                 .pushNotifToAdmin({
                                     message: `${userInfo.firstName} ${userInfo.lastName} yêu cầu xác thực tài khoản`,
-                                    redirectUrl: `dashboard/student/${userInfo.id}`,
+                                    redirectUrl: `/dashboard/student/${userInfo.id}`,
                                     notiType: NOTIFICATION_TYPE.USER,
                                 })
                                 .then((res) => {

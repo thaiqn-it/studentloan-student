@@ -18,6 +18,7 @@ import { LOAN_SCHEDULE_TYPE } from 'utils/enum'
 import newLogo from 'assets/newLogo.png'
 import { paypalApi } from 'apis/paypalApi'
 import { transactionApi } from 'apis/transactionApi'
+import { Helmet } from 'react-helmet'
 
 export default function Repayment() {
     const { id } = useParams()
