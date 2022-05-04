@@ -19,7 +19,17 @@ import { Button } from '@mui/material';
 import { PRIMARY_COLOR, SECONDARY_COLOR } from '../../constants/color'
 
 import ProgressBar from "@ramonak/react-progress-bar";
+import { loanApi } from 'apis/loanApi';
+import { LOAN_STATUS } from 'utils/enum';
+import { loanScheduleApi } from './../../apis/loanScheduleApi';
 export default function Main() {
+    const loadAllLoanSchedule = async () =>{
+        const loansRes = await loanApi.getLoanStudent('');
+    const ongoingLoan = loansRes.data.filter(l => l.LoanHistories[0].type === LOAN_STATUS.ONGOING);
+    
+      
+    }
+    
     return (
         <>
             <SuiBox mb={3}>       
