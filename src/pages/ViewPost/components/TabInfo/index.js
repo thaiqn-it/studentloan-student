@@ -26,7 +26,7 @@ export default function TabInfo(props) {
             }
         }
         window.addEventListener('resize', handleResize)
-        setCurrentStatus(status)
+        // setCurrentStatus(status)
     }, [status])
 
     const handleChange = (event, newValue) => {
@@ -34,14 +34,13 @@ export default function TabInfo(props) {
     }
 
     const renderInvestorTab = () => {
-        if (currentStatus !== null) {
-            var current = currentStatus[currentStatus.length - 1].type
+        if (status !== null) {
+            var current = status[status.length - 1].type
             if (
                 current === LOAN_STATUS.FUNDING ||
                 current === LOAN_STATUS.FAIL ||
                 current === LOAN_STATUS.ONGOING ||
                 current === LOAN_STATUS.FINISH ||
-                current === LOAN_STATUS.CANCEL ||
                 current === LOAN_STATUS.INCOMPLETE
             ) {
                 return (
@@ -61,13 +60,12 @@ export default function TabInfo(props) {
     }
 
     const renderRepaymentTab = () => {
-        if (currentStatus !== null) {
-            var current = currentStatus[currentStatus.length - 1].type
+        if (status !== null) {
+            var current = status[status.length - 1].type
             if (
                 current === LOAN_STATUS.FAIL ||
                 current === LOAN_STATUS.ONGOING ||
                 current === LOAN_STATUS.FINISH ||
-                current === LOAN_STATUS.CANCEL ||
                 current === LOAN_STATUS.INCOMPLETE
             ) {
                 return (
