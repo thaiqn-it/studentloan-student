@@ -14,10 +14,10 @@ import NotFoundImage from '../../assets/searching2.svg'
 
 import PostItem from './PostItem'
 import Loading from '..//..//components/Loading'
-import { setDocTitle } from 'utils/dynamicDocTitle'
 import SuiTypography from 'components/SuiTypography'
 import { paramToType } from 'utils/renderStatus'
 import { useLocation } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 export default function ViewAllPost() {
     const location = useLocation()
@@ -26,7 +26,6 @@ export default function ViewAllPost() {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        setDocTitle('Tất cả hồ sơ vay-StudentLoan')
         setIsLoading(true)
         fetchData(paramToType(location.pathname.split('/')[3]))
     }, [])
@@ -56,6 +55,9 @@ export default function ViewAllPost() {
                 <>
                     {listLoan.length > 0 ? (
                         <>
+                            <Helmet>
+                                <title>Tất cả hồ sơ vay-StudentLoan</title>
+                            </Helmet>
                             <SuiTypography variant="button">
                                 Gần đây
                             </SuiTypography>

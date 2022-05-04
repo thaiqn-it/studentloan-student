@@ -19,7 +19,6 @@ import { imageApi } from 'apis/imageApi'
 import { renderUserStatus } from 'utils/renderStatus'
 import { isNullish } from 'utils/isNullish'
 import { USER_STATUS } from 'utils/enum'
-import { setDocTitle } from 'utils/dynamicDocTitle'
 import SnackbarMessage from 'components/SnackbarMessage'
 
 export default function StudentProfile2() {
@@ -47,7 +46,6 @@ export default function StudentProfile2() {
     const [openSnack, setOpenSnack] = useState(false)
 
     useEffect(() => {
-        // setDocTitle('Thông tin - StudentLoan')
         fetchData()
     }, [isChange])
 

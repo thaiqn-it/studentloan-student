@@ -33,12 +33,12 @@ import { loanApi } from '../../apis/loanApi'
 import { systemConfigApi } from '../../apis/systemConfigApi'
 import { userApi } from 'apis/userApi'
 import { isNullish } from 'utils/isNullish'
-import { setDocTitle } from 'utils/dynamicDocTitle'
 import { getOption } from 'utils/moneyCall'
 import { fCurrency, fCurrencyNoVND } from 'utils/formatNumber'
 import { addMonth } from 'utils/formatTime'
 import { fDisplayMonth } from 'utils/formatTime'
 import RequestVerify from 'components/RequestVerify'
+import { Helmet } from 'react-helmet'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="right" ref={ref} {...props} />
@@ -172,7 +172,6 @@ export default function CreateLoanPost(props) {
             .getStudentProfile()
             .then((res) => {
                 if (res.data.status === 'VERIFIED') {
-                    setDocTitle('Tạo hồ sơ vay - StudentLoan')
                     getInterest()
                     setOpen(true)
                 } else if (res.data.status === 'BAN') {
@@ -258,6 +257,9 @@ export default function CreateLoanPost(props) {
                 TransitionComponent={Transition}
             >
                 <>
+                    <Helmet>
+                        <title>Tạo hồ sơ vay - StudentLoan</title>
+                    </Helmet>
                     <AppBar sx={{ position: 'relative' }}>
                         <Toolbar>
                             <SuiTypography

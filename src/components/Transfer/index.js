@@ -26,15 +26,50 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
     const [money, setMoney] = useState()
     const [email, setEmail] = useState()
 
-    const [error, setError] = useState()
-    const [emailError, setEmailError] = useState()
-    const [transactionFee, setTransactionFee] = useState()
+    const handleFormSubmit = async (e) => {
+        e.preventDefault()
+        var path = '/trang-chu/thanh-toan/rut-tien'
+        history.push({
+            pathname: path,
+            state: {
+                paypal: {
+                    email: email,
+                    money: money,
+                },
+            },
+        })
+        // try {
+        //     const res = await paypalApi.transfer({
+        //         email: email,
+        //         money: money,
+        //         accountId: walletId,
+        //     })
 
-    const loadConfig = async () => {
-        try {
-            const res = await systemConfigApi.getFee()
-            if (res.data.transactionFee) return setTransactionFee()
-        } catch (e) {}
+        //     const data = {
+        //         money,
+        //         type: 'WITHDRAW',
+        //         description: 'Rút tiền sang ví paypal',
+        //         walletId,
+        //         recipientId: null,
+        //         recipientName: 'Paypal',
+        //         senderId: '',
+        //         senderName: 'Ví của tôi',
+        //         transactionFee: '',
+        //         status: 'SUCCESS',
+        //         paypalTransaction: res.data.payoutId,
+        //     }
+        //     const transactionRes = await transactionApi.createTransaction(data)
+        //     const walletRes = await walletApi.updateWalletById(
+        //         walletId,
+        //         -1 * money
+        //     )
+        //     handleClose()
+        //     reloadData()
+        //     if (!res) throw new Error()
+        //     // const transaction = aw
+        // } catch (e) {
+        //     console.log(e)
+        // }
     }
 
     // useEffect(() => {
@@ -71,19 +106,7 @@ export default function Transfer({ open, handleClose, walletId, reloadData }) {
     //     //     console.log(e)
     //     // }
     // }
-    const handleFormSubmit = async (e) => {
-        e.preventDefault()
-        var path = '/trang-chu/thanh-toan/rut-tien'
-        history.push({
-            pathname: path,
-            state: {
-                paypal: {
-                    email: email,
-                    money: money,
-                },
-            },
-        })
-    }
+
     return (
         <>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth={'sm'}>

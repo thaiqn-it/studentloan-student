@@ -14,7 +14,6 @@ import { fDate } from 'utils/formatTime'
 import Loading from 'components/Loading'
 import ConfirmPayment from './ConfirmPayment'
 import SnackbarMessage from 'components/SnackbarMessage'
-import { setDocTitle } from 'utils/dynamicDocTitle'
 import { LOAN_SCHEDULE_TYPE } from 'utils/enum'
 import newLogo from 'assets/newLogo.png'
 import { paypalApi } from 'apis/paypalApi'
@@ -317,6 +316,9 @@ export default function Repayment() {
 
     return (
         <>
+            <Helmet>
+                <title>Thanh toán-StudentLoan</title>
+            </Helmet>
             {isLoading ? <Loading /> : null}
             {transactionFee ? (
                 <SuiTypography

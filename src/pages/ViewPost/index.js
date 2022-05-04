@@ -30,7 +30,6 @@ import { getThumbnail } from 'utils/youtube'
 import InvestorPage from './InvestorPage'
 import ReportPage from './ReportPage'
 import { fProgress } from 'utils/formatNumber'
-import { setDocTitle } from 'utils/dynamicDocTitle'
 
 import { useHistory } from 'react-router-dom'
 import Loading from 'components/Loading'
@@ -38,6 +37,7 @@ import { renderStatus } from 'utils/renderStatus'
 import { fDateTime } from 'utils/formatTime'
 
 import { LOAN_STATUS } from 'utils/enum'
+import { Helmet } from 'react-helmet'
 
 export default function ViewPost() {
     const { id } = useParams()
@@ -53,11 +53,6 @@ export default function ViewPost() {
             .getLoanById(id, 'view')
             .then((res) => {
                 setLoan(res.data.loan)
-                setDocTitle(
-                    res.data.loan.title === null
-                        ? 'Xem hồ sơ vay-StudentLoan'
-                        : res.data.loan.title + '-StudentLoan'
-                )
                 var loanHist = res.data.loan.LoanHistories
                 setLoanHistories(loanHist)
                 setIsLoading(false)
@@ -90,7 +85,7 @@ export default function ViewPost() {
 
     const renderEditButton = () => {
         if (loanHistories !== null) {
-            var current = loanHistories[loanHistories?.length -1 ]?.type
+            var current = loanHistories[loanHistories?.length - 1]?.type
             if (
                 current === LOAN_STATUS.DRAFT ||
                 current === LOAN_STATUS.WAITING ||
@@ -177,6 +172,13 @@ export default function ViewPost() {
     }
     return (
         <>
+            <Helmet>
+                <title>
+                    {loan.title === null
+                        ? 'Xem hồ sơ vay-StudentLoan'
+                        : loan.title + '-StudentLoan'}
+                </title>
+            </Helmet>
             <Paper sx={{ boxShadow: 0 }}>
                 <TabInfo
                     onChangeTab={onChangeTab}

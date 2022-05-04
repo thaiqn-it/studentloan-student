@@ -39,7 +39,7 @@ import { USER_STATUS } from 'utils/enum'
 import SuiButton from 'components/SuiButton'
 
 import { fCurrency } from 'utils/formatNumber'
-import { setDocTitle } from 'utils/dynamicDocTitle'
+import { Helmet } from 'react-helmet'
 
 const NotifiModal = ({ open, handleClose, onClick }) => {
     return (
@@ -163,7 +163,6 @@ const Wallet = () => {
     const user = authObj.user
 
     useEffect(() => {
-        setDocTitle('Thông tin ví-StudentLoan')
         initData()
     }, [])
 
@@ -185,6 +184,9 @@ const Wallet = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Quản lí ví-StudentLoan</title>
+            </Helmet>
             <NotifiModal
                 open={notVerify}
                 handleClose={handleNotVerifyClose}

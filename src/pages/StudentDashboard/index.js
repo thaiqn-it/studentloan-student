@@ -20,8 +20,6 @@ import { reloadData } from 'context/userAction'
 import { useHistory } from 'react-router'
 import { isAuthenticated } from 'context/authContext'
 import { JWT_TOKEN } from 'constants'
-import { onMessageListener } from '..//..//firebase'
-
 var currentRoute = [...routes]
 var extraRoute = [...extraRoutes]
 
